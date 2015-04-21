@@ -1,0 +1,47 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				&nbsp;
+				{*<h1>Registrasi Peserta <small>Lengkapi form berikut sesuai dengan data diri Anda:</small></h1>*}
+			</div>
+		</div>
+	</div>
+</div>			
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						<form class="form-horizontal" role="form" name="logdiklat" action="{$host}submit-login" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Login Peserta Diklat</h4>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">NIP : </label>
+										<div class="col-sm-3">
+											<input type="text" id='ed_usr' class="form-control" placeholder="Masukkan NIP Anda" name="ed_usr">
+										</div>
+									</div>		
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Password : </label>
+										<div class="col-sm-3">
+											<input type="password" id='ed_psd' class="form-control" placeholder="Masukkan Password Anda" name="ed_psd">
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="form-actions ">
+							<button id='loginnya' class="btn btn-primary" onClick="event.preventDefault();log_psrt();">Login</button>
+						</div>					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

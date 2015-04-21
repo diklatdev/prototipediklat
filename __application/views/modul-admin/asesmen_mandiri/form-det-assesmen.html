@@ -1,0 +1,116 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered tc-table" style='margin-bottom:0px;'>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Nama Peserta</td>
+					<td width='30%'>{$nama_lengkap}</td>
+					<td width='20%' style='background:#F8F8F8;'>No. Registrasi</td>
+					<td width='30%'>{$no_reg}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Skema Sertifikasi</td>
+					<td>{$sertifikasi}</td>
+					<td style='background:#F8F8F8;'>Tanggal Ujian Asesmen</td>
+					<td>{$tanggal_ujian}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Jumlah Kompeten</td>
+					<td>{$kompeten}</td>
+					<td style='background:#F8F8F8;'>Jumlah Tidak Kompeten</td>
+					<td>{$tidak_kompeten}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Persentase Kompeten</td>
+					<td>{$persentase_rekomendasi} %</td>
+					<td style='background:#F8F8F8;'></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
+		<div class="well white">
+			<form class="form-horizontal" role="form" id="detass" action="{$host}verifikasi-asesmen" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="usid" value="{$userid}">
+				<input type="hidden" name="sertid" value="{$id_sertifikasi}">
+				<input type="hidden" name="kdr" value="{$koderegdiklat}">
+			<table class="table table-bordered table-hover tc-table">
+				<thead>
+					<tr>
+						<th width='1%'>No.</th>
+						<th width='5%' style="text-align:center !important;">Kode Unit</th>
+						<th width='30%' style="text-align:center !important;">Judul Unit</th>
+						<th width='10%' style="text-align:center !important;">Dokumen</th>
+						<th width='10%' style="text-align:center !important;">Penilaian Diri</th>
+						<th width='10%' style="text-align:center !important;">Rekomendasi</th>
+					</tr>
+				</thead>
+				<tbody>
+					{assign var=ind value=1}
+					{assign var=ceked value=0}
+					{foreach from=$data item=rows}
+						<input type="hidden" name="idxkomp[]" value="{$rows.id}">
+						<tr>
+							<td >{$ind}</td>
+							<td >{$rows.kode_unit}</td>
+							<td >{$rows.judul_unit}</td>
+							{if $rows.file_pendukung}
+								<td ><a target='_blank' href="{$host}repository/dokumen_peserta/{$no_reg}/file_asesmen_mandiri/{$folder_sertifikasi}/{$rows.file_pendukung|default:'-'}">Preview File</a></td>
+							{else}
+								<td > - </td>	
+							{/if}
+							<td>
+								{if $rows.penilaian eq 'K'}
+									<font color='green'>Kompeten</font>
+								{else}
+									<font color='red'>Belum Kompeten</font>
+								{/if}
+							</td>							
+							<td >
+								<div class="tcb">
+									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" >
+									Terpenuhi
+								</div>
+								<div class="tcb">
+									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="0" >
+									Tidak Terpenuhi
+								</div>
+							</td>
+						</tr>
+						{assign var=ind value=$ind+1}
+						{assign var=ceked value=$ceked+1}
+					{/foreach}
+				</tbody>
+			</table>
+			<table class="table table-bordered tc-table">
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>
+						<label>Rekomendasi</label>
+					</td>
+					<td width='30%'>
+						{$rekomendasi}
+					</td>
+				</tr>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>
+						<label>Keputusan Asesmen</label>
+					</td>
+					<td width='30%'>
+						<select name="hsl_as" id="hsl_as">
+							<option value=''>-- Pilih --</option>
+							<option value='L'>Memenuhi Syarat</option>
+							<option value='TL'>Tidak Memenuhi Syarat</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+			</form>
+			<div class="form-actions ">
+				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();asses('{$ceked}');">Submit</button>
+			</div>
+			
+		</div>
+	</div>
+</div>

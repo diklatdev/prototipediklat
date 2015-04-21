@@ -1,0 +1,260 @@
+
+<div class="mass-head inner" >
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Registrasi Peserta <small>Lengkapi form berikut sesuai dengan data diri Anda:</small></h1>
+			</div>
+		</div>
+	</div>
+</div>			
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+					<form class="form-horizontal" role="form" name="regdiklat" action="{$host}submit-registrasi" method="post" enctype="multipart/form-data">
+						<input type='hidden' name="sst" value="{$editstatus}">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Data Pribadi</h4>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Nama Lengkap : </label>
+										<div class="col-sm-8">
+											<input type="text" id='ed_namalengkap' class="form-control" placeholder="" name="ed_namalengkap">
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>		
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">NIP : </label>
+										<div class="col-sm-6">
+											<input type="text" id='ed_nonip' class="form-control" placeholder="" name="ed_nonip">
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
+										<div class="col-sm-2">
+											<input type="text" id='ed_tmpLahir' class="form-control" placeholder="" name="ed_tmpLahir">
+										</div>			
+										<div class="col-sm-1" >															
+											<select id='tgl_lahir' class="form-control selectpicker" name="tgl_lahir">
+												{$tgl_lahir}
+											</select> 
+										</div>
+										<div class="col-sm-2" >															
+											<select id='bln_lahir' class="form-control" name="bln_lahir">
+												{$bulan_lahir}
+											</select>
+										</div>
+										<div class="col-sm-2" >															
+											<select id='thn_lahir' class="form-control" name="thn_lahir">
+												{$tahun_lahir}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>																
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jenis Kelamin : </label>
+										<div class="col-sm-2">															
+											<select id='ed_jnsKel' class="form-control" name="ed_jnsKel">
+												{$jenis_kelamin}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>		
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kebangsaaan : </label>
+										<div class="col-sm-3">															
+											<select id='ed_bangsa' class="form-control" name="ed_bangsa">
+												{$kebangsaan}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="space-4"></div>	
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Alamat : </label>
+										<div class="col-sm-10">
+											<textarea id='ed_alamatRmh' class="form-control" rows="4" cols="50"  placeholder="" name="ed_alamatRmh"></textarea>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+									</div>						
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kode Pos : </label>
+										<div class="col-sm-2">
+											<input type="text" id='ed_kdPosRmh' class="form-control" placeholder="" name="ed_kdPosRmh">
+										</div>
+									</div>					
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kontak : </label>
+										<div class="col-sm-3">
+											<input type="text" id='ed_tlpRmh' class="form-control" placeholder="Telepon Rumah : (021 xxxxxx)" name="ed_tlpRmh">
+										</div>
+										<div class="col-sm-4">
+											<input type="text" id='ed_hempon' class="form-control" placeholder="No HP : (08xx xxxx xxxx)" name="ed_hempon">
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+									</div>					
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Email : </label>
+										<div class="col-sm-4">
+											<input type="email" id='ed_mailer' class="form-control" placeholder="" name="ed_mailer">
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pass Foto : </label>
+										<div class="col-sm-4">
+											<input class="col-sm-6" id='edFile_passFoto' type="file" name='edFile_passFoto' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .jpg, ukuran file maksimal 500 kb</code></span>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+							<div class="hr-12 hr-double hr-dotted"></div>
+							<h4>Data Pendidikan <small>(Hanya diisi dengan pendidikan formal terakhir dan dilampiri bukti dokumen)</small></h4>
+							<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pendidikan Terakhir : </label>
+										<div class="col-sm-3">															
+											<select id='ed_pend' class="form-control" name="ed_pend">
+												{$idx_pendidikan_id}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Program Studi: </label>
+										<div class="col-sm-6">															
+											<select id='ed_prodi' class="form-control" name="ed_prodi">
+												{$idx_programstudi_id}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Tahun Lulus : </label>
+										<div class="col-sm-2" >															
+											<select id='ed_thLulus' class="form-control" name="ed_thLulus">
+												{$tahun_lahir}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Upload Ijazah : </label>
+										<div class="col-sm-6">
+											<input class="col-sm-6" id='edFile_ijazah' type="file" name='edFile_ijazah' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 500 kb</code></span>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									
+							<div class="hr-12 hr-double hr-dotted"></div>
+							<h4>Data Pekerjaan Sekarang </h4>
+							<div class="hr-12 hr-double hr-dotted"></div>																
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Penentuan Angka Kredit (PAK) : </label>
+										<div class="col-sm-4">															
+											<input class="col-sm-6" id='edFile_pak' type="file" name='edFile_pak' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 500 kb</code></span>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Provinsi : </label>
+										<div class="col-sm-4">															
+											<select id='prv' onChange="processCombo('prv');" class="form-control" name="prv">
+												{$idx_provinsi_instansi_id}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kabupaten : </label>
+										<div class="col-sm-4">															
+											<select id='ka' class="form-control" name="ka">
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
+										<div class="col-sm-6">															
+											<select id='ins' class="form-control" name="ins">
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+										<div class="col-sm-4">															
+											<select id='ed_pangkat' class="form-control" name="ed_pangkat">
+												{$idx_pangkat_id}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>
+									<div class="space-4"></div>	
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jabatan : </label>
+										<div class="col-sm-6">
+											<input type="text" id='ed_jabatan' class="form-control" placeholder="" name="ed_jabatan">
+										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
+									</div>																	
+									<div class="space-4"></div>	
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Alamat : </label>
+										<div class="col-sm-10">
+											<textarea class="form-control" id='ed_alamatKtr' rows="4" cols="50"  placeholder="" name="ed_alamatKtr"></textarea>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+									</div>																						
+							<div class="hr-12 hr-double hr-dotted"></div>
+							<h4>Data Permohonan Sertifikasi </h4>
+							<div class="hr-12 hr-double hr-dotted"></div>
+								<div id="sertifikasi_1">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jenis Aparatur : </label>
+										<div class="col-sm-10">
+											<div class="col-sm-4">															
+												<select id='ap_tk_1' onChange="processCombo('ap_tk_1');" class="form-control" >
+													{$idx_aparatur}
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Sub Jenis Aparatur : </label>
+										<div class="col-sm-10">
+											<div class="col-sm-4">															
+												<select id='sb_ap_tk2' onChange="processCombo('sb_ap_tk2');" class="form-control" name="sb_ap_tk2">
+												</select>
+												<input type='hidden' name='sb_jns_nxx' id='sb_jns_nxx'>
+												<input type='hidden' name='sb_jns_sert' id='sb_jns_sert'>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>															
+						</div>
+					</form>
+					<div class="form-actions ">
+						<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();sbtdl_reg();">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

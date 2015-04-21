@@ -1,0 +1,25 @@
+{if $data_soal}
+{assign var=no value=$penomoran}
+{foreach from=$data_soal item=rws}
+	{assign var=no value=$no+1}
+	<tr>
+		<td width='5%'><input type='hidden' name="idrws[]" class='cks' value='{$rws.idnya}'>{$no}</td>
+		<td width='95%'>{$rws.soalnya}</td>
+	</tr>
+	{foreach from=$rws.jawaban item=uhy}
+		<tr>
+			<td>&nbsp;</td>
+			<td><input type='radio' name='idj_{$rws.idnya}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.idnya}', '{$uhy.id_jwb}'); "> {$uhy.jawabannya}</td>
+		</tr>
+	{/foreach}
+	<tr>
+		<td colspan='2'></td>
+	</tr>
+{/foreach}
+
+<script>
+	setInterval(function(){ 
+		kumpulPoster('sbt-wkt');
+	}, 30000);
+</script>
+{/if}

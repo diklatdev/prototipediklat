@@ -1,0 +1,62 @@
+{if $sts_penj.step_penjadwalan eq "2"}
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Penjadwalan Wawancara Peserta</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id='kontil_pe' style='margin-top:15px;'>
+<div class="container">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th width='1%' style='text-align:center;'>No.</th>
+								<th width='20%' style='text-align:center;'>TUK</th>
+								<th width='10%' style='text-align:center;'>Sisa Kuota</th>
+								<th width='10%' style='text-align:center;'>Tanggal</th>
+								<th width='10%' style='text-align:center;'>Jam</th>
+								<th width='10%' style='text-align:center;'>.:.</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $penjadwalan}
+								{assign var=ind value=1}
+								{foreach from=$penjadwalan item=rows}
+									<tr>
+										<td style='text-align:center;'>{$ind}</td>
+										<td >{$rows.nama_tuk}</td>
+										<td style='text-align:right;'>{$rows.kuota}</td>
+										<td style='text-align:center;'>{$rows.tgl_wawancara}</td>
+										<td style='text-align:center;'>{$rows.jam}</td>
+										<td style='text-align:center;'>
+											<div class="btn-group btn-group-xs ">
+												<a title='Daftar Wawancara' href="" onClick="event.preventDefault();kumpulPoster('dfwa', 'kontil_pe', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-sign-in"></i>Daftar</a>
+											</div>	
+										</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+								{/foreach}
+							{else}
+								<tr>
+									<td colspan='7' style='text-align:center;'>:: Tidak Ada Data ::</td>
+								</tr>
+							{/if}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+</div>
+{/if}

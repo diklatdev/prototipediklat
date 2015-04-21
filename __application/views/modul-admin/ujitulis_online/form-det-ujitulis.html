@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered tc-table" style='margin-bottom:0px;'>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Nama Peserta</td>
+					<td width='30%'>{$namalengkap}</td>
+					<td width='20%' style='background:#F8F8F8;'>No. Registrasi</td>
+					<td width='30%'>{$noreg}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Skema Sertifikasi</td>
+					<td>{$sertifikasi}</td>
+					<td style='background:#F8F8F8;'>Tanggal Ujian Online</td>
+					<td>{$tgl_ujian}</td>
+				</tr>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Total Jawaban Benar</td>
+					<td width='30%'>{$jawabanbenar}</td>
+					<td width='20%' style='background:#F8F8F8;'>Total Jawaban Salah</td>
+					<td width='30%'>{$jawabansalah}</td>					
+				</tr>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Total Soal</td>
+					<td width='30%'>{$total_soal}</td>
+					<td width='20%' style='background:#F8F8F8;'>Persentase Jawaban Benar</td>
+					<td width='30%'>{$persentase_rekomendasi} %</td>					
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<div class="col-lg-12">
+		<div class="well white">
+			<form class="form-horizontal" role="form" id="detuj" action="{$host}verifikasi-ujitulis" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="usid" value="{$userid}">
+				<input type="hidden" name="sertaidd" value="{$idx_sertifikasi_id}">
+				<table class="table table-bordered table-hover tc-table">
+					<thead>
+						<tr>
+							<th width='1%'>No.</th>
+							<th width='30%' style="text-align:center !important;">Soal</th>
+							<th width='20%' style="text-align:center !important;">Jawaban</th>
+							<th width='10%' style="text-align:center !important;">Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						{assign var=ind value=1}
+						{foreach from=$data item=rows}
+							<tr>
+								<td>{$ind}</td>
+								<td>{$rows.soal}</td>
+								<td>{$rows.jawaban}</td>
+								<td>
+									{if $rows.status eq 'B'}
+										<font color='green'>Jawaban Benar</font>
+									{elseif $rows.status eq 'S'}
+										<font color='red'>Jawaban Salah</font>
+									{/if}
+								</td>
+							</tr>
+							{assign var=ind value=$ind+1}
+						{/foreach}
+					</tbody>
+				</table>
+				<table class="table table-bordered tc-table">
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Rekomendasi</label>
+						</td>
+						<td width='30%'>
+							{$rekomendasi}
+						</td>
+					</tr>
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Keputusan Ujian</label>
+						</td>
+						<td width='30%'>
+							<select name="hsl_uj" id="hsl_uj">
+								<option value=''>-- Pilih --</option>
+								<option value='L'>Memenuhi Syarat</option>
+								<option value='TL'>Tidak Memenuhi Syarat</option>
+							</select>
+						</td>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Nilai Yang Diberikan</label>
+						</td>
+						<td width='30%'>
+							<input type='text' name="nilai_uj" id="nilai_uj">
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div class="form-actions ">
+				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();ujnya();">Submit</button>
+			</div>			
+		</div>
+	</div>
+	
+</div>

@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Tambah Sertifikat Aparatur</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well light">		
+			<form class="form-horizontal" role="form" name="regSyarat" id="regSyarat" action="{$host}submit-syarat" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<h4>Persyaratan Sertifikat Aparatur</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div id="sertifikasi_1">					
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Aparatur : </label>
+								<div class="col-sm-10">
+									<div class="col-sm-5">
+										<select id='ap_tk_1' onChange="processCombo('ap_tk_1');" class="form-control">
+											{$idx_aparatur}
+										</select>
+									</div>
+								</div>
+							</div>						
+							<div class="form-group" >
+								<label class="col-sm-2 control-label">Sub Aparatur : </label>
+								<div class="anuan col-sm-10" >
+									<div class="col-sm-5">
+										<select id='sb_ap_tk2' onChange="processCombo('sb_ap_tk2');" class="form-control" name="sb_ap_tk2">
+										</select>
+										<input type='hidden' name='sb_jns_nxx' id='sb_jns_nxx'>
+									</div>
+								</div>
+							</div>	
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Persyaratan Sertifikat : </label>
+							<div class="col-sm-10">
+								<div class="col-lg-12">
+									<textarea class="form-control" id='syarat' rows="3" cols="50"  placeholder="" name="syarat"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="form-actions ">
+				<button onclick="kumpulPost('sv_syarat');" class="btn btn-info" id="btnnya">Submit</button>
+				<button class="btn btn-primary" onclick="loadUrl('{$host}manajemen-sertifikat');">Cancel</button>
+			</div>
+			
+		</div>
+	</div>
+</div>

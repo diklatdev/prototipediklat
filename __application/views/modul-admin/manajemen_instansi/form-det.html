@@ -1,0 +1,262 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white">		
+			<form class="form-horizontal" role="form" name="regdiklat" action="{$host}submit-registrasi" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<h4>Data Pribadi</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">No. Registrasi : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$data.no_registrasi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Nama Lengkap : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_lengkap}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">NIP : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$data.nip}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{$data.tempat_lahir}, {$data.tanggal_lahir}
+								</span>
+							</div>			
+						</div>																
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Jenis Kelamin : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{if $data.jenis_kelamin eq "L"}
+									Laki-Laki
+								{elseif $data.jenis_kelamin eq "P" }
+									Perempuan
+								{/if}
+								</span>							
+							</div>
+						</div>		
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kebangsaaan : </label>
+							<div class="col-sm-3">				
+								<span class="form-control" style="border:none !important;">
+								{$data.kebangsaan}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Alamat : </label>
+							<div class="col-sm-10">
+								<span class="form-control" style="border:none !important;">
+								{$data.alamat_rumah}
+								</span>
+							</div>
+						</div>						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kode Pos : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{$data.kode_pos|default:""}
+								</span>
+							</div>
+						</div>					
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kontak : </label>
+							<div class="col-sm-3">
+								<span class="form-control" style="border:none !important;">
+								Telp. Rumah - {$data.no_telepon}
+								</span>
+							</div>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important;">
+								No. Handphone - {$data.no_handphone}
+								</span>
+							</div>
+						</div>					
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Email : </label>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important;">
+								{$data.email}
+								</span>
+							</div>
+						</div>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Pendidikan</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pendidikan Terakhir : </label>
+							<div class="col-sm-3">															
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_pendidikan}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Program Studi: </label>
+							<div class="col-sm-6">															
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_programstudi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Tahun Lulus : </label>
+							<div class="col-sm-2" >															
+								<span class="form-control" style="border:none !important;">
+								{$data.tahun_lulus}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">File Ijazah : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+								{$data.file_ijazah}
+								</span>
+							</div>
+						</div>			
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Pekerjaan Sekarang </h4>
+						<div class="hr-12 hr-double hr-dotted"></div>																
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Provinsi : </label>
+							<div class="col-sm-4">	
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_provinsi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kabupaten : </label>
+							<div class="col-sm-4">															
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_kabupaten}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
+							<div class="col-sm-6">															
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_instansi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+							<div class="col-sm-4">															
+								<span class="form-control" style="border:none !important;">
+								{$data.nama_pangkat}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Jabatan : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+								{$data.jabatan}
+								</span>
+							</div>
+						</div>																	
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Alamat : </label>
+							<div class="col-sm-10">
+								<span class="form-control" style="border:none !important;">
+								{$data.alamat_instansi}
+								</span>
+							</div>
+						</div>																						
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Permohonan Sertifikasi & Bukti Pendukung Persyaratan Sertifikasi</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Permohonan Sertifikasi : </label>
+							<div class="col-sm-8">
+								<div class="col-sm-4">															
+									<span class="form-control" style="border:none !important;">
+									{$data.nama_aparatur}
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="col-sm-12">	
+							{if $data_file_persyaratan}
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th class="col-small center">No.</th>
+											<th class="col-big center">Persyaratan Sertifikasi</th>
+											<th class="col-small center">File</th>
+											<th class="col-small center">Status</th>
+											<th class="col-small center">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+									{assign var=ind value=1}
+									{foreach from=$data_file_persyaratan item=rows}
+										<tr>
+											<td class="col-small center">{$ind}</td>
+											<td class="col-big">{$rows.nama_persyaratan}</td>
+											<td class="col-small center">{$rows.nama_file}</td>
+											<td class="col-small center">
+												{if $rows.flag eq "BV"}
+													Belum Verifikasi
+												{elseif $rows.flag eq "V"}
+													Verifikasi
+												{/if}
+											</td>
+											<td class="col-small center">
+												<div class="btn-group btn-group-xs ">
+													<a href="#" onClick="" class="btn btn-inverse"><i class="fa fa-check icon-only"></i></a>
+													<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+												</div>	
+											</td>
+										</tr>									
+										{assign var=ind value=$ind+1}
+									{/foreach}
+									</tbody>
+								</table>								
+							{/if}
+						</div>
+					</div>
+				</div>
+			</form>
+			
+			<div class="form-actions ">
+				{if $data.status eq "BV"}
+					<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}' );">Verifikasi Data Ini</button>
+				{elseif $data.status eq "A"}
+					<button id='btnnya' class="btn btn-danger" onClick="">Nonaktifkan User</button>
+				{elseif $data.status eq "I"}
+					<button id='btnnya' class="btn btn-danger" onClick="">Aktifkan User</button>
+				{/if}
+			</div>
+
+		</div>
+	</div>
+</div>

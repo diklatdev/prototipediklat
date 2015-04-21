@@ -1,0 +1,456 @@
+{* detail peserta bro *}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white">		
+			
+			<div class="form-horizontal" >
+				<div class="form-group">
+					<div class="col-sm-12">
+						<h4>Data Pribadi</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">No. Registrasi : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.no_registrasi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Nama Lengkap : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_lengkap}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">NIP : </label>
+							<div class="col-sm-8">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nip}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.tempat_lahir}, {$datapeserta.tanggal_lahir}
+								</span>
+							</div>			
+						</div>																
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Jenis Kelamin : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{if $datapeserta.jenis_kelamin eq "L"}
+									Laki-Laki
+								{elseif $datapeserta.jenis_kelamin eq "P" }
+									Perempuan
+								{/if}
+								</span>							
+							</div>
+						</div>		
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kebangsaaan : </label>
+							<div class="col-sm-3">				
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.kebangsaan}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Alamat : </label>
+							<div class="col-sm-10">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.alamat_rumah}
+								</span>
+							</div>
+						</div>						
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kode Pos : </label>
+							<div class="col-sm-2">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.kode_pos|default:""}
+								</span>
+							</div>
+						</div>					
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kontak : </label>
+							<div class="col-sm-3">
+								<span class="form-control" style="border:none !important;">
+								Telp. Rumah - {$datapeserta.no_telepon}
+								</span>
+							</div>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important;">
+								No. Handphone - {$datapeserta.no_handphone}
+								</span>
+							</div>
+						</div>					
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Email : </label>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.email}
+								</span>
+							</div>
+						</div>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Pendidikan</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pendidikan Terakhir : </label>
+							<div class="col-sm-3">															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_pendidikan}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Program Studi: </label>
+							<div class="col-sm-6">															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_programstudi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Tahun Lulus : </label>
+							<div class="col-sm-2" >															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.tahun_lulus}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">File Ijazah : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+									<a href='{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_ijazah/{$datapeserta.file_ijazah}' target='_blank'>Klik Disini Untuk Melihat Ijazah</a>
+								</span>
+							</div>
+						</div>			
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Pekerjaan Sekarang </h4>
+						<div class="hr-12 hr-double hr-dotted"></div>																
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Provinsi : </label>
+							<div class="col-sm-4">	
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_provinsi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Kabupaten : </label>
+							<div class="col-sm-4">															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_kabupaten}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
+							<div class="col-sm-6">															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_instansi}
+								</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+							<div class="col-sm-4">															
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.nama_pangkat}
+								</span>
+							</div>
+						</div>
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Jabatan : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.jabatan}
+								</span>
+							</div>
+						</div>																	
+						<div class="space-4"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Alamat : </label>
+							<div class="col-sm-10">
+								<span class="form-control" style="border:none !important;">
+								{$datapeserta.alamat_instansi}
+								</span>
+							</div>
+						</div>																						
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<h4>Data Permohonan Sertifikasi & Bukti Pendukung Persyaratan Sertifikasi</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">Permohonan Sertifikasi : </label>
+							<div class="col-sm-8">
+								<div class="col-sm-4">															
+									<span class="form-control" style="border:none !important;">
+									{$datapeserta.nama_aparatur}
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="space-4"></div>
+						<div class="col-sm-12">	
+							{if $data_file_persyaratan}
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th class="col-small center">No.</th>
+											<th class="col-big center">Persyaratan Sertifikasi</th>
+											<th class="col-small center">File</th>
+										</tr>
+									</thead>
+									<tbody>
+									{assign var=ind value=1}
+									{foreach from=$data_file_persyaratan item=rows}
+										<tr>
+											<td class="col-small center">{$ind}</td>
+											<td class="col-big">{$rows.nama_persyaratan}</td>
+											<td class="col-small center">
+												<a href='{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$rows.nama_file}' target='_blank'>Preview File</a>
+											</td>
+										</tr>									
+										{assign var=ind value=$ind+1}
+									{/foreach}
+									</tbody>
+								</table>								
+							{/if}
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	
+	</div>
+</div>
+
+{* Data asesmen mandiri bro *}
+<h4>Data Hasil Ujian Asesmen Mandiri</h4>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered tc-table" style='margin-bottom:0px;'>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Status</td>
+					<td width='30%'>
+						{if $data_asesmen_header.status eq 'L'}
+							<font color="green">MEMENUHI SYARAT</font>
+						{else}
+							<font color="red">TIDAK MEMENUHI SYARAT</font>
+						{/if}
+					</td>
+					<td style='background:#F8F8F8;'>Tanggal Verifikasi</td>
+					<td>{$data_asesmen_header.tanggal_verifikasi}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Petugas Verifikator</td>
+					<td>{$data_asesmen_header.nama_asesor}</td>
+					<td style='background:#F8F8F8;'>Tanggal Ujian Asesmen</td>
+					<td>{$data_asesmen_header.tanggal_ujian}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
+		<div class="well white">
+			<div class="form-horizontal">
+			<table class="table table-bordered table-hover tc-table">
+				<thead>
+					<tr>
+						<th width='1%'>No.</th>
+						<th width='10%' style="text-align:center !important;">Kode Unit</th>
+						<th width='30%' style="text-align:center !important;">Judul Unit</th>
+						<th width='10%' style="text-align:center !important;">Dokumen Portofolio</th>
+						<th width='10%' style="text-align:center !important;">Rekomendasi</th>
+					</tr>
+				</thead>
+				<tbody>
+					{assign var=indas value=1}
+					{foreach from=$data_asesmen item=rows_as}
+						<tr>
+							<td >{$indas}</td>
+							<td >{$rows_as.kode_unit}</td>
+							<td >{$rows_as.judul_unit}</td>
+							{if $rows_as.file_pendukung}
+								<td >
+									<a target='_blank' href="{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_asesmen_mandiri/{$folder_sertifikasi}/{$rows_as.file_pendukung|default:'-'}">Preview File
+								</td>
+							{else}
+								<td > - </td>	
+							{/if}
+							<td>
+							{if $rows_as.status_ver}
+								<font color="green">Terpenuhi</font>
+							{else}
+								<font color="red">Tidak Terpenuhi</font>
+							{/if}
+							</td>
+						</tr>
+						{assign var=indas value=$indas+1}
+					{/foreach}
+				</tbody>
+			</table>
+			</div>
+
+			
+		</div>
+	</div>
+</div>
+
+
+{* Data ujiannya bro *}
+<h4>Data Hasil Ujian Online</h4>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered tc-table" style='margin-bottom:0px;'>
+				<tr>
+					<td style='background:#F8F8F8;'>Status</td>
+					<td>
+						{if $data_ujian_header.status eq 'L'}
+							<font color="green">MEMENUHI SYARAT</font>
+						{else}
+							<font color="red">TIDAK MEMENUHI SYARAT</font>
+						{/if}					
+					</td>
+					<td style='background:#F8F8F8;'>Total Skor</td>
+					<td>{$data_ujian_header.total_skor}</td>
+				</tr>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Total Jawaban Benar</td>
+					<td width='30%'>{$data_ujian_header.jumlah_benar}</td>
+					<td width='20%' style='background:#F8F8F8;'>Total Jawaban Salah</td>
+					<td width='30%'>{$data_ujian_header.jumlah_salah}</td>					
+				</tr>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Tanggal Ujian</td>
+					<td width='30%'>{$data_ujian_header.tanggal_ujian}</td>
+					<td width='20%' style='background:#F8F8F8;'>&nbsp;</td>
+					<td width='30%'>&nbsp;</td>					
+				</tr>
+			</table>
+		</div>
+		<div class="well white">
+			<table class="table table-bordered table-hover tc-table">
+				<thead>
+					<tr>
+						<th width='1%'>No.</th>
+						<th width='30%' style="text-align:center !important;">Soal</th>
+						<th width='20%' style="text-align:center !important;">Jawaban</th>
+						<th width='10%' style="text-align:center !important;">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					{assign var=indduj value=1}
+					{foreach from=$data_ujian item=rows_duj}
+						<tr>
+							<td>{$indduj}</td>
+							<td>{$rows_duj.soal}</td>
+							<td>{$rows_duj.jawaban}</td>
+							<td>
+								{if $rows_duj.status eq 'B'}
+									<font color='green'>Jawaban Benar</font>
+								{elseif $rows_duj.status eq 'S'}
+									<font color='red'>Jawaban Salah</font>
+								{/if}
+							</td>
+						</tr>
+						{assign var=indduj value=$indduj+1}
+					{/foreach}
+				</tbody>
+			</table>
+		</div>
+		
+	</div>
+</div>
+
+{* Detail Ujian Simulasi *}
+<h4>Data Hasil Ujian Simulasi/Praktek</h4>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered tc-table" style='margin-bottom:0px;'>
+				<tr>
+					<td width='20%' style='background:#F8F8F8;'>Hasil Penilaian</td>
+					<td width='30%'>
+						{if $data_ujian_simulasi.status_penilaian eq 'L'}
+							<font color="green">MEMENUHI SYARAT</font>
+						{else}
+							<font color="red">TIDAK MEMENUHI SYARAT</font>
+						{/if}
+					</td>
+					<td width='20%' style='background:#F8F8F8;'>Tanggal Verifikasi</td>
+					<td width='30%'>{$data_ujian_simulasi.tgl_verifikasi}</td>
+				</tr>
+				<tr>
+					<td style='background:#F8F8F8;'>Petugas Verifikator</td>
+					<td>{$data_ujian_simulasi.nama_asesor}</td>
+					<td style='background:#F8F8F8;'>Total Skor</td>
+					<td>{$data_ujian_simulasi.total_skor}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+<br/>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<form class="form-horizontal" role="form" id="dewac" action="{$host}verifikasi-wawancara" method="post" enctype="multipart/form-data">
+				<input type='hidden' name='forbiddenlove' value='{$id_peserta}'>
+				<input type='hidden' name='forbiddenshit' value='{$idx_sertifikasi_id}'>
+				<input type='hidden' name='kdr' value='{$kdreg_diklat}'>
+				<table class="table table-bordered tc-table">
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Keputusan Wawancara</label>
+						</td>
+						<td width='30%'>
+							<select name="hsl_wa" id="hsl_wa">
+								<option value=''>-- Pilih --</option>
+								<option value='L'>Memenuhi Syarat</option>
+								<option value='TL'>Tidak Memenuhi Syarat</option>
+							</select>
+						</td>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Nilai Yang Diberikan</label>
+						</td>
+						<td width='30%'>
+							<input type='text' name="nilai_wa" id="nilai_wa">
+						</td>
+					</tr>
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Memo</label>
+						</td>
+						<td width='30%'>
+							<textarea class="form-control" id='ed_memo' rows="4" cols="50"  placeholder="" name="ed_memo"></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div class="form-actions ">
+				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();wawanya();">Submit</button>
+			</div>			
+		</div>
+	</div>
+</div>

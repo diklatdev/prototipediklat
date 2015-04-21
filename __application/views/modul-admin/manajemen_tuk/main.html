@@ -1,0 +1,63 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Manajemen TUK (Tempat Ujian Kompetensi)</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<!-- END PAGE HEADING ROW -->
+<div id="konten_peserta">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
+			<h4>Data TUK</h4>
+		</div>		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<label>Filter Data :</label> 
+			<select id='kat_filter' style="width:150px;">
+				<option value="">-- Kategori --</option>
+				<option value="">Tester</option>
+			</select>
+			<a class="btn btn-success" href="#" onClick="loadUrl('{$host}form-tuk');" id="id-btn-dialog1"><i class="fa fa-plus icon-only"></i></a>
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-medium center">Nama TUK</th>
+								<th class="hidden-xs col-medium center">Propinsi</th>
+								<th class="hidden-xs col-medium center">Alamat</th>
+								<th class="col-small center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $data}
+								{foreach from=$data item=rows}
+									<tr>
+										<td class="col-medium">{$rows.nama_tuk}</td>
+										<td>{$rows.name}</td>
+										<td>{$rows.alamat_tuk}</td>
+										<td class="col-small center">
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="loadUrl_adds('ps_det','{$host}peserta-detail', 'konten_peserta', '{$rows.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>
+												<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+											</div>	
+										</td>
+									</tr>
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+

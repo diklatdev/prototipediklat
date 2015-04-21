@@ -1,0 +1,244 @@
+<div class="container">
+	<div class="block-s2">
+		{if $type eq "warning-sudah-daftar-test"}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Anda Sudah Terdaftar Ujian</h4>
+				<div class="well light">
+					
+						<div class="form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Informasi Jadwal Ujian Anda</h4>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">TUK : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$data_jadwal.nama_tuk}
+											</span>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Tanggal Pelaksanaan : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$data_jadwal.tgl_wawancara}
+											</span>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jam : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$data_jadwal.jam}
+											</span>
+										</div>
+									</div>
+									<div class="space-4"></div>
+									
+								</div>
+							</div>
+							<div class="form-actions ">
+								<a id='btn_cetak' class="btn btn-primary" href='{$host}cetak-kartu-ujian' target='_blank'>Cetak Kartu Ujian Anda</a>
+							</div>
+						</div>					
+						
+					
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		{if $type eq 'sudah_assesmen'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Assesmen Sudah Dilakukan</h4>
+				<div class="well light">
+					<center>
+						Anda Sudah Melakukan Ujian Asesmen Mandiri ini. <br/>
+						Anda berhak mengikuti ujian-ujian berikutnya. <br/>
+						Nilai Hasil Ujian akan dipublikasikan pada saat step Hasil Akhir. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'tunggu_verifikasi_asesmen'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Verifikasi Ujian Asesmen</h4>
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan Ujian Asesmen. <br/>
+						Dimohon untuk menunggu verifikasi yang dilakukan oleh tim asesor kami. <br/>
+						Hasil ujian akan diumumkan melalui Portal Diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'belum_boleh_asesmen'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Boleh Ujian Asesmen</h4>
+				<div class="well light">
+					<center>
+						Anda belum diperbolehkan untuk mengikuti Ujian Asesmen Mandiri<br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		{if $type eq 'sudah_uji_online'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Ujian Online Sudah Dilakukan</h4>
+				<div class="well light">
+					<center>
+						Anda Sudah Melakukan Ujian Diklat Online. <br/>
+						Anda berhak mengikuti ujian-ujian berikutnya. <br/>
+						Nilai Hasil Ujian akan dipublikasikan pada saat step Hasil Akhir. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'tunggu_verifikasi_ujionline'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Verifikasi Ujian Online</h4>
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan Ujian Online. <br/>
+						Dimohon untuk menunggu verifikasi yang dilakukan oleh tim asesor kami. <br/>
+						Hasil ujian akan diumumkan melalui Portal Diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'belum_boleh_ujianonline'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Boleh Ujian Online</h4>
+				<div class="well light">
+					<center>
+						Anda belum diperbolehkan untuk mengikuti Ujian Online. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		{if $type eq 'sudah_pembayaran'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Pembayaran Sudah Dilakukan</h4>
+				<div class="well light">
+					<center>
+						Anda sudah melakukan Konfirmasi Pembayaran. <br/>
+						Anda berhak mengikuti ujian berikutnya. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'tunggu_verifikasi_pembayaran'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Verifikasi Konfirmasi Pembayaran</h4>
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan Konfirmasi Pembayaran. <br/>
+						Dimohon untuk menunggu verifikasi yang dilakukan oleh tim asesor kami. <br/>
+						Hasil verifikasi akan diumumkan melalui Portal Diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'belum_boleh_pembayaran'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Boleh Konfirmasi Pembayaran</h4>
+				<div class="well light">
+					<center>
+						Anda belum diperbolehkan untuk melakukan Konfirmasi Pembayaran. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		{if $type eq 'belum_boleh_penjadwalan'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Boleh Penjadwalan Wawancara</h4>
+				<div class="well light">
+					<center>
+						Anda belum diperbolehkan untuk melakukan Penjadwalan Wawancara. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		
+		{if $type eq 'tunggu_verifikasi_hasil'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Verifikasi Hasil</h4>
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan semua prosedur ujian diklat. <br/>
+						Dimohon untuk menunggu verifikasi hasil yang dilakukan oleh tim asesor kami. <br/>
+						Hasil verifikasi akan diumumkan selama 15 hari kerja  dari anda melakukan ujian di TUK dan diumumkan melalui Portal Diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}
+		{if $type eq 'belum_boleh_hasil'}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Ada Hasil</h4>
+				<div class="well light">
+					<center>
+						Hasil diklat belum tersedia, silahkan mengikuti prosedur ujian dalam diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}	
+		{if $type eq 'tidak_ada_diklat'}		
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Tidak Ada Diklat</h4>
+				<div class="well light">
+					<center>
+						Anda tidak terdaftar dalam diklat sistem kami. <br/>
+						Silahkan persiapkan berbagai dokumen dan materi untuk mendaftar diklat selanjutnya. <br>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}		
+		
+	</div>
+</div>

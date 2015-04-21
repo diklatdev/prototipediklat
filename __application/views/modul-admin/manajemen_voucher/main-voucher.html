@@ -1,0 +1,78 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Manajemen Voucher Gratis Biaya Sertifikasi</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<!-- END PAGE HEADING ROW -->
+<div id="konten_voucher">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
+			<h4>Data Voucher</h4>
+		</div>		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<label>Filter Data :</label> 
+			<select id='kat_filter' style="width:150px;">
+				<option value="">-- Kategori --</option>
+				<option value="">Tester</option>
+			</select>
+			<div class="btn-group btn-group-sm " style='float:right;margin-left:5px;'>
+				<a href="#" onClick="loadUrl_adds('vcf','{$host}tambah-voucher', 'konten_voucher');" class="btn btn-danger"><i class="fa fa-plus"></i>Buat Voucher</a>
+			</div>
+			<div class="btn-group btn-group-sm " style='float:right;'>
+				<a href="{$host}cetak-voucher" target="_blank" class="btn btn-success"><i class="fa fa-print"></i>Cetak Voucher</a>
+			</div>
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-small center">No.</th>
+								<th class="col-medium center">Kode Voucher</th>
+								<th class="col-medium center">Status Voucher</th>
+								<th class="col-medium center">Sudah Cetak</th>
+								<th class="col-medium center">Tanggal Terbit</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $data}
+								{assign var=ind value=1}
+								{foreach from=$data item=rows}
+									<tr>
+										<td class="col-small center">{$ind}</td>
+										<td>{$rows.kode_voucher}</td>
+										<td>
+											{if $rows.status_data eq '1'}
+												<font color='green'>Tersedia</font>
+											{elseif $rows.status_data eq '0'}
+												<font color='red'>Sudah Digunakan</font>
+											{/if}
+										</td>
+										<td>
+											{if $rows.is_cetak eq '1'}
+												<font color='green'>Belum Cetak</font>
+											{elseif $rows.is_cetak eq '0'}
+												<font color='red'>Sudah Dicetak</font>
+											{/if}
+										</td>
+										<td class="hidden-xs">{$rows.tanggal_terbit}</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

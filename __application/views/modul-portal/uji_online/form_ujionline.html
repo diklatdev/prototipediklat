@@ -1,0 +1,121 @@
+{if $sts_ut.step_uji_test eq "3"}
+<style>
+.right-tab {
+    position: fixed;
+	z-index:99;
+    top: 30%;
+    width: 100px;
+	padding:5px;
+    background-color: #F2F2F2;
+}
+</style>
+
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Ujian Sertifikasi Online</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="kont_suj" style='display:inline;'>
+<div class="container">
+	<div class="block-s2">
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Tata Cara Ujian Sertifikasi Online</h4>
+				<div class="well light">
+					<ul>
+						<li>
+							Peserta harus sudah lulus tahap asesmen mandiri yang sudah terverifikasi oleh admin/asesor.
+						</li>
+						<li>
+							Disarankan peserta untuk belajar materi terlebih dahulu, 
+							untuk memudahkan peserta dalam menjawab pertanyaan yang diberikan melalui sistem ini.
+						</li>
+						<li>
+							Ujian ini berbentuk pilihan ganda, anda diharuskan menjawab pertanyaan yang menurut anda paling tepat.
+						</li>
+						<li>
+							Durasi ujian ini selama 1 jam atau 60 menit.
+						</li>
+						<li>
+							Peserta dilarang menggunakan joki untuk mengerjakan Uji Sertifikasi Online ini,
+							apabila peserta terbukti menggunakan joki maka peserta langsung dinyatakan gagal 
+							dalam Sistem Serfikasi & Penilaian ini.
+						</li>
+						<li>
+							Untuk kenyamanan dalam melakukan ujian,
+							disarankan untuk peserta menggunakan koneksi internet yang baik, cepat dan tidak terputus-putus.
+						</li>
+						<li>
+							Pada saat memulai ujian disarankan untuk tidak me-refresh / me-reload halaman,
+							karena itu akan mengulang ujian anda.
+						</li>
+						<li>
+							Ujian ini bersifat absolute, yang mana admin/asesor berhak menentukan peserta lulus atau tidak.
+						</li>
+					</ul>
+				</div>
+				<div class="form-actions ">
+					<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj', 'kont_suj', '{$auth.idx_sertifikasi_id}');">Mulai Ujian</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<div id='kont_uj_heading' style='display:none;'>
+<div class="right-tab">
+	<center>
+	Waktu Anda <br />
+	<span id="timernya"><span>
+	</center>
+</div>
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+					<input type='hidden' id='pss_v'>
+					<form class="form-horizontal" role="form" name="ujdik" action="{$host}submit-ujian" method="post" enctype="multipart/form-data">
+						<input type='hidden' name='v_di' value='{$auth.id}'>
+						<input type='hidden' id='so_ar' name='so_ar'>
+						<div class="form-group">
+							<div class="col-sm-12">
+								
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th>No.</th>
+											<th>Soal Pertanyaan</th>
+										</tr>
+									</thead>
+									<tbody id='tb-so'>
+									</tbody>
+								</table>
+								
+								<div id='jrn' class="form-actions">
+									<button id='nxt' class="btn btn-success" onClick="event.preventDefault();kumpulPoster('ld-so', 'kont_suj', '{$auth.idx_sertifikasi_id}');">Soal Selanjutnya</button>
+								</div>
+								
+							</div>
+						</div>
+					</form>
+					<div id='sbm' class="form-actions"  style='display:none'>
+						<button id='sbmn' class="btn btn-primary" onClick="event.preventDefault();sbst();">Submit Ujian</button>
+					</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/if}

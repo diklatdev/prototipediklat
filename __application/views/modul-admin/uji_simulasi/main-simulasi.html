@@ -1,0 +1,68 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Ujian Simulasi/Praktek</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<!-- END PAGE HEADING ROW -->
+<div id="konten_simulasi">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
+			<h4>Data Peserta Uji Simulasi</h4>
+		</div>		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<label>Filter Data :</label> 
+			<select id='kat_filter' style="width:150px;">
+				<option value="">-- Kategori --</option>
+				<option value="">Tester</option>
+			</select>
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-small center">No.</th>
+								<th class="col-medium center">Nama Peserta</th>
+								<th class="hidden-xs col-medium center">NIP</th>
+								<th class="hidden-xs col-medium center">No. Registrasi</th>
+								<th class="hidden-xs col-medium center">Sertifikasi</th>
+								<th class="hidden-xs col-medium center">Kode Diklat</th>
+								<th class="col-small center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $data}
+								{assign var=ind value=1}
+								{foreach from=$data item=rows}
+									<tr>
+										<td class="col-small center">{$ind}</td>
+										<td>{$rows.nama_lengkap}</td>
+										<td class="hidden-xs">{$rows.nip}</td>
+										<td class="hidden-xs">{$rows.no_registrasi}</td>
+										<td class="hidden-xs">{$rows.nama_aparatur}</td>
+										<td class="hidden-xs">{$rows.kdreg_diklat}</td>
+										<td class="col-medium center">
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="loadUrl_adds('uj_sm','{$host}simulasi-detail', 'konten_simulasi', '{$rows.id}', '{$rows.nama_lengkap}', '{$rows.nama_aparatur}', '{$rows.no_registrasi}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+											</div>	
+										</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

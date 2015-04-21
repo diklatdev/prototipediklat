@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin - Sistem Informasi Sertifikasi & Penilaian Kementerian Dalam Negeri</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{$host}assets/css/admin/bootstrap.min.css">
+    <link rel="stylesheet" href="{$host}assets/css/fonts.css">
+    <link rel="stylesheet" href="{$host}assets/font-awesome/css/font-awesome.min.css">
+
+    <!-- PAGE LEVEL PLUGINS STYLES -->
+    <link href="{$host}assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="{$host}assets/css/plugins/morris/morris.css" rel="stylesheet">
+    <link rel="stylesheet" href="{$host}assets/css/plugins/bootstrap-datepicker/datepicker.css">
+	<link rel="stylesheet" href="{$host}assets/js/plugins/msgplugin/jquery.msg.css">	
+	<link rel="stylesheet" href="{$host}assets/css/plugins/jqueryui/jquery-ui-1.10.4.full.min.css" />
+    <!-- REQUIRE FOR SPEECH COMMANDS -->
+    <link rel="stylesheet" type="text/css" href="{$host}assets/css/plugins/gritter/jquery.gritter.css" />
+
+    <!-- Tc core CSS -->
+    <link id="qstyle" rel="stylesheet" href="{$host}assets/css/admin/style.css">
+    <!--[if lte IE 8]>
+		<link rel="stylesheet" href="{$host}assets/css/ie-fix.css" />
+	<![endif]-->
+
+    <!-- Add custom CSS here -->
+    <link rel="stylesheet" href="{$host}assets/css/only-for-demos.css">
+    <!-- End custom CSS here -->
+	<script>
+		var hostir = "{$host}";
+	</script>
+	
+    <!-- core JavaScript -->
+    <script src="{$host}assets/js/jquery.min.js"></script>
+    <script src="{$host}assets/js/bootstrap.min.js"></script>
+    <script src="{$host}assets/js/jquery.form.js"></script>	
+    <script src="{$host}assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="{$host}assets/js/plugins/pace/pace.min.js"></script>
+	<script src="{$host}assets/js/plugins/msgplugin/jquery.center.min.js"></script>
+	<script src="{$host}assets/js/plugins/msgplugin/jquery.msg.js"></script>	
+
+    <!-- PAGE LEVEL PLUGINS JS -->
+    <script src="{$host}assets/js/plugins/jqueryui/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="{$host}assets/js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="{$host}assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+
+    <script src="{$host}assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{$host}assets/js/plugins/datatables/datatables.js"></script>
+    <script src="{$host}assets/js/plugins/datatables/datatables.responsive.js"></script>
+	<script src="{$host}assets/js/plugins/bootbox/bootbox.min.js"></script>
+	
+	<script src="{$host}assets/js/plugins/jqueryui/jquery-ui-1.10.4.full.min.js"></script>
+	<script src="{$host}assets/js/plugins/jqueryui/jquery.ui.touch-punch.min.js"></script>
+	<script src="{$host}assets/js/plugins/jqueryui/jquery-ui.init.js"></script>	
+	<!-- Spinner -->
+    <script src="{$host}assets/js/plugins/spinner/spin.js"></script>
+	<script src="{$host}assets/js/plugins/spinner/spin.min.js"></script>
+
+    <!-- Themes Core Scripts -->
+    <script src="{$host}assets/js/main.js"></script>
+	<script src="{$host}assets/js/ffng-adm.js"></script>
+
+    <!-- initial page level scripts for examples -->
+    <script src="{$host}assets/js/plugins/slimscroll/jquery.slimscroll.init.js"></script>
+    <!-- <script src="{$host}assets/js/home-page.init.js"></script> -->
+    <script src="{$host}assets/js/plugins/datatables/datatables.init.js"></script>
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="main-container">
+            <!-- BEGIN TOP NAVIGATION -->
+            {include file = "dashboard-admin/top-navigation.html"}
+            <!-- END TOP NAVIGATION -->
+
+
+            <!-- BEGIN SIDE NAVIGATION -->
+            {include file = "dashboard-admin/side-navigation.html"}
+            <!-- END SIDE NAVIGATION -->
+
+
+            <!-- BEGIN MAIN PAGE CONTENT -->
+            <div id="page-wrapper">
+				<div id='tMain'>
+					{include file = "{$konten}.html"}
+				</div>
+                <!-- BEGIN FOOTER CONTENT -->
+                <div class="footer">
+                    <div class="footer-inner">
+                        <!-- basics/footer -->
+                        <div class="footer-content">
+                            &copy; 2015 <a href="#">Sistem Informasi Penilaian Kompetensi & Sertifikasi Kementerian Dalam Negeri</a>
+                        </div>
+                        <!-- /basics/footer -->
+                    </div>
+                </div>
+                <button type="button" id="back-to-top" class="btn btn-primary btn-sm back-to-top">
+                    <i class="fa fa-angle-double-up icon-only bigger-110"></i>
+                </button>
+                <!-- END FOOTER CONTENT -->
+
+            </div>
+            <!-- /#page-wrapper -->
+            <!-- END MAIN PAGE CONTENT -->
+        </div>
+    </div>
+
+
+    </div>
+    <!-- end live-chat -->
+
+    <script type="text/javascript">
+    $('#minicalendar').datepicker();
+    </script>
+</body>
+
+</html>

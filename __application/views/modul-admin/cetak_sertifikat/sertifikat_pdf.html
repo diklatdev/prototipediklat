@@ -1,0 +1,193 @@
+<div id='header'>
+	<table width="100%">
+		<tr>
+			<td align='right'>
+				<img src='__repository/temp_qrcode/sertifikat/{$qrcode_isi}' style='margin-right:0px;'><br/>
+				{* <span style='margin-right:15px;'>{$data_peserta.no_registrasi}</span> *}
+			</td>
+		</tr>
+	</table>
+</div> 
+
+<div id='content'>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:10px;">
+		  <tr>
+			<td width="100%" align='center'>
+				<img src='assets/images/lambang-garuda.png' width='200px' height='210px'><br/>
+				<h1>
+					KEMENTERIAN DALAM NEGERI <br/>
+					REPUBLIK INDONESIA
+				</h1>
+			</td>
+		  </tr>
+		  <tr>
+			<td width="100%" align='center'>
+				<br/>
+				<font style='font-size:16px;'>
+					LEMBAGA SERTIFIKASI PROFESI <br/>
+					PEMERINTAH DAERAH
+				</font>
+				<br/>
+				<br/>
+				{if $lulus_tidak eq 'L'}
+					<h2>
+						SERTIFIKAT KOMPETENSI
+					</h2>
+				{elseif $lulus_tidak eq 'TL'}
+					<br>
+					<br>
+				{/if}
+				
+			</td>
+		  </tr>
+		  <tr>
+			<td width="100%" align='center'>
+				<br/>
+				<font style='font-size:16px;'>
+					{$data_peserta.no_registrasi}
+				</font>
+				<br/>
+			</td>
+		  </tr>
+	</table>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; ">
+		<tr>
+			<td width="100%" align='center' colspan='3' style='font-size:14px;'>
+				<font >Dengan ini Menyatakan Bahwa :</font>
+				<br/>
+				<br/>
+			</td>
+		</tr>		
+	</table>
+	<table width="100%" style="margin-bottom:10px; font-family:arial;">	
+		<tr>
+			<td width="40%" align='right' style='font-size:14px;'>
+				NAMA
+			</td>
+			<td width="30%" align='center' style='font-size:14px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:14px;'>
+				{$data_peserta.nama_lengkap|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="40%" align='right' style='font-size:14px;'>
+				NIP
+			</td>
+			<td width="30%" align='center' style='font-size:14px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:14px;'>
+				{$data_peserta.nip|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="40%" align='right' style='font-size:14px;'>
+				PANGKAT/GOL. RUANG
+			</td>
+			<td width="30%" align='center' style='font-size:14px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:14px;'>
+				{$data_peserta.nama_pangkat|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="40%" align='right' style='font-size:14px;'>
+				JABATAN
+			</td>
+			<td width="30%" align='center' style='font-size:14px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:14px;'>
+				{$data_peserta.jabatan|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="40%" align='right' style='font-size:14px;'>
+				INSTANSI
+			</td>
+			<td width="30%" align='center' style='font-size:14px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:14px;'>
+				{$data_peserta.nama_instansi|upper}
+			</td>
+		</tr>
+	</table>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; ">
+		<tr>
+			<td width="100%" align='center' colspan='3' style='font-size:14px;'>
+				<br/>
+				{*
+				<font style='font-size:16px;font-style: italic;'>
+					{$data_peserta.no_registrasi}
+				</font>
+				*}
+				<br/>
+				<br/>
+				<br/>
+				<font style='font-size:16px;'>
+					{if $lulus_tidak eq 'L'}
+						Telah Kompeten Pada Bidang Kualifikasi :
+					{elseif $lulus_tidak eq 'TL'}
+						Belum Kompeten Pada Bidang Kualifikasi :
+					{/if}
+				</font>
+				<br/>
+				<br/>
+				<font style='font-size:16px;font-style: italic;font-weight:bold;'>
+					{$data_sertifikasi.nama_aparatur|upper}
+				</font>
+				<br/>
+			</td>
+		</tr>		
+	</table>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; ">
+		<tr>
+			<td width="100%" align='center' style='font-size:14px;'>
+				{if $lulus_tidak eq 'L'}
+					Sertifikat ini merupakan bukti bahwa yang bersangkutan telah lulus Sertifikasi Jabatan Fungsional <br/>
+					Pengawas Pemerintahan dan dapat dipertimbangkan untuk dinaikkan jabatannya menjadi <br/>
+					Pengawas Pemerintah Jenjang Muda. Masa berlaku Sertifikat ini adalah <br/>
+					3 (tiga) tahun sejak tanggal ditetapkan.
+				{elseif $lulus_tidak eq 'TL'}
+					Sertifikat kelulusan belum bisa diberikan dikarenakan anda tidak bisa menyelesaikan sertifikasi dengan baik.<br>
+					Oleh karena itu silahkan anda mempersiapkan diri kembali sebaik-baiknya, kemudian anda dipersilahkan mendaftar kembali sertifikasi.<br>
+					<br>
+				{/if}
+			</td>
+		</tr>		
+	</table>
+	<table width="100%" style="margin-top:50px;font-family:arial; ">
+		<tr>
+			<td width="50%" align='center' style='font-size:14px;font-weight:bold;'>
+				INSPEKTUR JENDERAL <br/>
+				KEMENTERIAN DALAM NEGERI
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				MALIKI HERU SENTOSA
+			</td>
+			<td width="50%" align='center' style='font-size:14px;font-weight:bold;'>
+				KEPALA BADAN DIKLAT <br/>
+				KEMENTERIAN DALAM NEGERI
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
+				AHMAD ZUBAIDI
+			</td>
+		</tr>		
+	</table>
+</div>

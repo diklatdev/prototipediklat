@@ -1,0 +1,262 @@
+<div class="container ">
+	<div class="block-s1"  style="margin-bottom:100px">
+	<!-- BEGIN PAGE HEADING ROW -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header title" style="">
+					<!-- PAGE TITLE ROW -->
+					<h1>Record Kinerja Harian</h1>
+				</div>
+			</div>
+			<!-- /.col-lg-12 -->
+		</div>
+		<!-- /.row -->
+		<!-- END PAGE HEADING ROW -->
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="row">
+					<div class="col-lg-12 col-sm-12">
+						<div class="portlet no-border-bottom">
+							<div class="portlet-heading dark">
+								<div class="portlet-title">
+									<h4><i class="fa fa-list-ul"></i> Daftar Aktivitas Kinerja</h4>
+								</div>
+								<div class="portlet-widgets">
+									<a data-toggle="collapse" data-parent="#accordion" href="#recent" id="show"><i class="fa fa-plus"></i></a>
+								</div>
+								<div class="portlet-widgets">
+									<a data-toggle="collapse" data-parent="#accordion" href="#recent" id="hide" hidden><i class="fa fa-minus"></i></a>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div id="recent" class="panel-collapse collapse in">
+								<div class="portlet-body no-padding">
+									<div class="tc-tabs no-margin">
+										<ul class="nav nav-tabs tab-small-button no-padding">
+											<li class="active"><a href="#tab14" data-toggle="tab">Record Harian</a>
+											</li>
+											<li><a href="#tab15" data-toggle="tab">Penugasan</a>
+											</li>
+											<li><a href="#tab16" data-toggle="tab">Laporan Kerja</a>
+											</li>
+										</ul>
+
+										<div class="tab-content no-padding no-border-left no-border-right no-border-bottom">
+											<div class="tab-pane active" id="tab14">
+												<ul class="lists">
+													<li>
+														<span class="date">17 Jan 2014 07:43</span>
+														Survey Lapangan : Pemantauan Pengerjaan Project Jalan Tol Sumatra
+													</li>
+													<li>
+														<span class="date">18 Jan 2014 05:45</span>
+														Studi Banding Jalan Tol Singapura, File : <a href="#">SK-2009/17/01/I.pdf</a>
+													</li>
+													<li>
+														<span class="date">19 Jan 2014 02:43</span>
+														Rapat konsultasi penyelesaian project.
+													</li>
+													<li>
+														<span class="date">21 Jan 2014 23:36</span>
+														Pemantauan Project Jalan Tol Cinere.
+													</li>
+												</ul>
+											</div>
+
+											<div class="tab-pane" id="tab15">
+												<ul class="lists">
+													<li>
+														<span class="icons"><i class="fa fa-check"></i>
+														</span>
+														<a href="#">SK-208/06/71</a> - Pemantauan Project Pembangunan Jalan Lintas Sumatra 
+													</li>
+													<li>
+														<span class="icons"><i class="fa fa-close"></i>
+														</span>
+														<a href="#">SK-208/06/72</a> - Keikutsertaan dalam pembahasan solusi jangka pendek project LP2UPD 
+													</li>
+													<li>
+														<span class="icons"><i class="fa fa-close"></i>
+														</span>
+														<a href="#">SK-208/06/75</a> - Pelatihan Penanganan Project Skala Besar
+													</li>
+												</ul>
+											</div>
+
+										</div>
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- //col-lg-9 -->
+				</div>
+			</div>
+		</div>
+		<div class="row" id="formAdd" hidden>
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						<div class="portlet-body no-padding">
+							<div class="tc-tabs no-margin">
+								<ul class="nav nav-tabs tab-small-button no-padding">
+									<li class="active"><a href="#harian" data-toggle="tab">Tambah Record Harian</a>
+									</li>
+									<li><a href="#task" data-toggle="tab">Tambah Penugasan</a>
+									</li>
+									<li><a href="#listTask" data-toggle="tab"> Confirm Laporan Kerja</a>
+									</li>
+								</ul>
+								
+								<div class="tab-content no-padding no-border-left no-border-right no-border-bottom">
+									<div class="tab-pane active" id="harian">
+										<form class="form-horizontal" role="form" name="logdiklat" action="{$host}submit-login" method="post" enctype="multipart/form-data">
+											<div class="form-group">
+												<div class="col-sm-12">
+													<h4>Tambah Record Harian</h4>
+													<div class="hr-12 hr-double hr-dotted"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Kegiatan : </label>
+														<div class="col-sm-8">
+															<input type="text" id='ed_usr' class="form-control" placeholder="Kegiatan Harian Anda" name="ed_usr">
+														</div>
+													</div>		
+													<div class="space-4"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Upload File : </label>
+														<div class="col-sm-3">
+															<input type="file" style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+															<span class="help-block"><code>*) Jika Tersedia</code></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+										<div class="form-actions ">
+											<button id='loginnya' class="btn btn-info" onClick="event.preventDefault();log_psrt();">Simpan</button>
+										</div>	
+									</div>	
+									
+									<div class="tab-pane" id="task">
+										<form class="form-horizontal" role="form" name="logdiklat" action="{$host}submit-login" method="post" enctype="multipart/form-data">
+											<div class="form-group">
+												<div class="col-sm-12">
+													<h4>Form Tambah Penugasan</h4>
+													<div class="hr-12 hr-double hr-dotted"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Lokasi Penugasan : </label>
+														<div class="col-sm-5">
+															<select>
+																<option>-- Select Provinsi --</option>
+																<option>DKI Jakarta</option>
+																<option>Jawa Tengah</option>
+															</select>
+														</div>
+													</div>		
+													<div class="space-4"></div><div class="form-group">
+														<label class="col-sm-2 control-label"></label>
+														<div class="col-sm-5">
+															<select>
+																<option>-- Select Kabupaten / Kota --</option>
+																<option>Jakarta Barat</option>
+																<option>Jakarta Pusat</option>
+																<option>Jakarta Selatan</option>
+																<option>Jakarta Utara</option>
+															</select>
+														</div>
+													</div>			
+													<div class="space-4"></div><div class="form-group">
+														<label class="col-sm-2 control-label"></label>
+														<div class="col-sm-5">
+															<select>
+																<option>-- Lembaga Instansi --</option>
+																<option>Inspektorat Jendral Jakarta Selatan</option>
+																<option>Direktorat Jendral Jakarta Selatan</option>
+																<option>Kemendagri Jakarta Selatan</option>
+															</select>
+														</div>
+													</div>	
+													<div class="space-4"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Personal : </label>
+														<div class="col-sm-5">															
+															<select>
+																<option>Jainuddin Muttaqin</option>
+																<option>Slamet Raharjo</option>
+																<option>Kondang Sutisman</option>
+															</select>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Penugasan : </label>
+														<div class="col-sm-8">
+															<input type="text" id='ed_usr' class="form-control" placeholder="Tugas yang dilakukan" name="ed_usr">
+														</div>
+													</div>		
+													<div class="space-4"></div>
+													<div class="form-group">
+														<label class="col-sm-2 control-label">Upload File SK : </label>
+														<div class="col-sm-3">
+															<input type="file" style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+															<span class="help-block"><code>*) Jika Tersedia</code></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+										<div class="form-actions ">
+											<button id='loginnya' class="btn btn-info" onClick="event.preventDefault();log_psrt();">Simpan</button>
+										</div>	
+									</div>	
+									
+									<div class="tab-pane" id="listTask">
+										<ul class="lists">
+											<li>														
+												<input type="checkbox" name="vehicle" value="Bike"><a href="#"> 
+												SK-208/06/71</a> - Pemantauan Project Pembangunan Jalan Lintas Sumatra 
+											</li>
+											<li>
+												<input type="checkbox" name="vehicle" value="Bike"><a href="#"> 
+												<a href="#">SK-208/06/72</a> - Keikutsertaan dalam pembahasan solusi jangka pendek project LP2UPD 
+											</li>
+											<li>
+												<input type="checkbox" name="vehicle" value="Bike"><a href="#"> 
+												<a href="#">SK-208/06/75</a> - Pelatihan Penanganan Project Skala Besar
+											</li>
+										</ul>
+										<div class="form-actions ">
+											<button id='loginnya' class="btn btn-info" onClick="event.preventDefault();log_psrt();">Simpan</button>
+										</div>	
+											</div>
+									
+								</div>
+								
+							</div>
+						</div>
+										
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$('#show').click(function(){
+	$('#formAdd').show();
+	$("#hide").show();
+	$("#show").hide();
+});
+
+$('#hide').click(function(){
+	$('#formAdd').hide();
+	$("#hide").hide();
+	$("#show").show();
+	
+});
+
+</script>
+
+
+

@@ -1,0 +1,33 @@
+<div id="basic" class="panel-collapse collapse in">
+	<div class="portlet-body no-padding">
+		<table class="table table-bordered table-hover tc-table">
+			<thead>
+				<tr>
+					<th class="col-sm-1">No.</th>
+					<th class="col-sm-2">Kode Unit</th>
+					<th class="col-medium center">Unit Kompetensi</th>
+					<th class="col-sm-1 center">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{if $data}
+					{assign var=ind value=1}
+					{foreach from=$data item=rows}
+						<tr>
+							<td class="col-small center">{$ind}</td>
+							<td class="col-small">{$rows.kode_unit}</td>
+							<td class="col-medium">{$rows.judul_unit}</td>
+							<td class="col-small center">
+								<div class="btn-group btn-group-xs ">
+									<a href="#" onClick="loadUrl_adds('ps_det','{$host}peserta-detail', 'konten_peserta', '{$rows.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>
+									<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+								</div>	
+							</td>
+						</tr>
+					{assign var=ind value=$ind+1}
+					{/foreach}
+				{/if}
+			</tbody>
+		</table>												
+	</div>
+</div>

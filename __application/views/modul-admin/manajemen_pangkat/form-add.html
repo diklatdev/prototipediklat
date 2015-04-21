@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Tambah Instansi </h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well light">		
+			<form class="form-horizontal" role="form" name="regPangkat" id="regPangkat" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<h4>Data Instansi</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Nama Pangkat : </label>
+							<div class="col-sm-8">
+								<input class="form-control" value="" name="nama_pangkat"  id="nama_pangkat">
+							</div>
+							<span class="help-block"><code>*) Harus Diisi</code></span>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="form-actions ">
+				<button onclick="kumpulPost('sv_pangkat');" class="btn btn-info" id="btnnya">Submit</button>
+				<button class="btn btn-primary" onclick="loadUrl('{$host}manajemen-pangkat');">Cancel</button>
+			</div>
+			
+		</div>
+	</div>
+</div>

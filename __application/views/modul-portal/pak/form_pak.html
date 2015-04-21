@@ -1,0 +1,210 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11 ">
+				<h1>DAPUK <small>silahkan isi form yang tersedia berikut dengan upload file bukti pendukung.</small></h1>
+			</div>
+			<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 ">
+				<a href="{$host}modul_pak/hasil_pak" class="btn btn-info">HASIL PAK</a>
+			</div>
+		</div>
+	</div>
+</div>		
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						<form class="form-horizontal" role="form" name="aspak" action="{$host}submit-pak" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th width='1%' class="center">Unsur</th>
+											<th width='40%' style="text-align:center !important;">Butir Kegiatan</th>
+											<!-- <th width='30%' style="text-align:center !important;">Butir Kegiatan</th>
+											<th width='20%' style="text-align:center !important;">Sub Kegiatan</th> -->
+											<!-- <th width='5%' style="text-align:center !important;">Bukti Pendukung</th> -->
+										</tr>
+									</thead>
+									<tbody>
+										{foreach from=$level1 item=rows}
+											<input type="hidden" name="idxkomp[]" value="{$rows->id}">
+											<tr>
+												<td class="left"><label>{$rows->nama_unsur_kegiatan}</label></td>
+												{if $level2}
+												<td>
+													<table class="table table-bordered table-hover tc-table">
+													{foreach from=$level2 item=rows2 name=foo}
+														<tr>
+														{if $rows2->id_unsur eq $rows->id}
+															<td width='20%'>
+																<label>{$rows2->nama_unsur_kegiatan}</label> 
+															</td>
+															{if $level3}
+															<td width='80%'>
+																<table class="table table-bordered table-hover tc-table">
+																{foreach from=$level3 item=rows3}
+																	<tr>
+																	{if $rows3->id_sub_unsur eq $rows2->id}
+																		<td width='40%'>
+																			{$rows3->nama_unsur_kegiatan}
+																		</td>
+																		{if !in_array($rows3->id,$cek_keg)}
+																		<!-- <td width='5%'>
+																			<div class="tcb">
+																				<label>
+																					<input type="radio" name="st_kmp_{$rows4->id}" class="uyeman" id="st_kmp_" value="K" >
+																				</label>
+																			</div>
+																		</td> -->
+																		
+																		<td >
+																			<table class="table table-bordered table-hover tc-table">
+																			{foreach from=$angka_kredit item=akred}																			
+																			<input type="hidden" name="idxkomp[]" value="{$akred->id}">
+																				<tr>
+																				{if $akred->idx_kegiatan_pak eq $rows3->id}
+																					{if $akred->idx_jenjang neq 1} 
+																					<td>
+																						<label>{$akred->nama_jenjang}</label>
+																					</td>
+																					{/if}
+																					<td>
+																						{$akred->satuan_hasil}
+																					</td>
+																					<td width='15%'>
+																						<label>{$akred->angka_kredit}</label>
+																					</td>
+																					<td width='5%'>
+																						<div class="tcb">
+																							<label>
+																								<input type="checkbox" name="st_kmp_{$akred->id}" class="uyeman" id="st_kmp_" value="{$akred->id}" >
+																							</label>
+																						</div>
+																					</td>																						
+																					<td width='10%'>
+																						<table id='flpd_{$akred->id}'>
+																							<tr>
+																								<td>
+																									<input type="file" name="fl_pdk_{$akred->id}" class="col-sm-1" style='padding:2px;width:85px;border:1px solid #E5E5E5;background:#fff'>
+																								</td>
+																							</tr>
+																						</table>
+																					</td>		
+																				{/if}
+																				</tr>
+																			{/foreach}
+																			</table>
+																		</td>
+																		{else}
+																		{if $level4}
+																		<td>
+																			<table class="table table-bordered table-hover tc-table">
+																			{foreach from=$level4 key=k item=rows4}
+																				<tr>
+																				{if $rows4->id_kegiatan eq $rows3->id}
+																					<td width='50%'>
+																						{$rows4->nama_unsur_kegiatan}
+																					</td>
+																					<td width="20%">
+																						{foreach from=$angka_kredit item=akred}
+																							{if $akred->idx_kegiatan_pak eq $rows4->id}
+																									{$akred->satuan_hasil}
+																							{/if}
+																						{/foreach}
+																						<!-- </table> -->
+																					</td>
+																					<td width="10%">
+																						{foreach from=$angka_kredit item=akred}
+																							{if $akred->idx_kegiatan_pak eq $rows4->id}
+																									<label>{$akred->angka_kredit}</label>
+																							{/if}
+																						{/foreach}
+																						<!-- </table> -->
+																					</td width="20%">
+																					<td width="5%">																						
+																						{foreach from=$angka_kredit item=akred}
+																							{if $akred->idx_kegiatan_pak eq $rows4->id}	
+																								<div class="tcb">
+																									<input type="checkbox" name="st_kmp_{$akred->id}" class="uyeman" id="st_kmp_" value="{$akred->id}" >
+																								</div>
+																							{/if}
+																						{/foreach}
+																					</td>	
+																					<td >												
+																					{foreach from=$angka_kredit item=akred}
+																						{if $akred->idx_kegiatan_pak eq $rows4->id}
+																						<table id='flpd_{$akred->id}'>
+																							<tr>
+																								<td>
+																									<input type="file" name="fl_pdk_{$akred->id}" class="col-sm-1" style='padding:2px;width:85px;border:1px solid #E5E5E5;background:#fff'>
+																									{*
+																									<span class="labels">
+																										<a href="" ><img src="{$host}assets/images/add.png" title="Tambah" /></a>
+																									</span>
+																									*}
+																								</td>
+																							</tr>
+																						</table>
+																						{/if}
+																					{/foreach}
+																					</td>																		
+																				{/if}
+																				
+																				</tr>
+																			{/foreach}
+																			</table>
+																		</td>
+																		{/if}
+																		{/if}
+																		
+																		
+																		
+																	{/if}
+																	</tr>
+																{/foreach}
+																</table>
+															</td>
+															{/if}
+														{/if}
+														</tr>
+													{/foreach}
+													</table>
+												</td>
+												{/if}
+												<!-- <td >
+													<table id='flpd_{$rows->id}'>
+														<tr>
+															<td>
+																<input type="file" name="fl_pdk[]" class="col-sm-3" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
+																{*
+																<span class="labels">
+																	<a style="padding:5px;" href="" ><img src="{$host}assets/images/add.png" title="Tambah" /></a>
+																</span>
+																*}
+															</td>
+														</tr>
+													</table>
+												</td> -->
+											</tr>
+										{/foreach}
+									</tbody>
+								</table>
+							</div>
+							</div>
+						</form>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();pakass();">Submit</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

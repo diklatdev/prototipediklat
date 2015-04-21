@@ -1,0 +1,75 @@
+<div id='content' style="border:1px solid #000;height:100%;  background-image:url('{$host}assets/images/logo-kartu.png');background-image-opacity:0.03;background-image-resize:0">
+	<div style='margin-top:10px;margin-bottom:10px;text-align:center;font-weight:bold !important;'>
+		<center><h4 style='margin:0px !important;'>Kartu Peserta Sertifikasi Lembaga Sertifikasi Pemerintahan Daerah Kementerian Dalam Negeri</h4></center>
+	</div>
+	<div style='margin-bottom:10px;text-align:center;padding-left:220px;'>
+		<center>
+			<div style='width:90px; height:115px; background:#EEEEEE;text-align:center;'>
+				<img src='__repository/dokumen_peserta/{$auth.no_registrasi}/file_data_diri/{$foto}' style=''>
+			</div>
+		</center>
+	</div>
+	
+	<table width="100%" style="margin-bottom:2px; font-size:10px;padding-left:30px;">	
+		<tr>
+			<td width="10%" align='left' style='font-size:12px;'>
+				NAMA
+			</td>
+			<td width="5%" align='center' style='font-size:12px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:12px;'>
+				{$auth.nama_lengkap|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="10%" align='left' style='font-size:12px;'>
+				NIP
+			</td>
+			<td width="5%" align='center' style='font-size:12px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:12px;'>
+				{$auth.nip|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="10%" align='left' style='font-size:12px;'>
+				NO. REGISTRASI
+			</td>
+			<td width="5%" align='center' style='font-size:12px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:12px;'>
+				{$auth.no_registrasi|upper}
+			</td>
+		</tr>
+		<tr>
+			<td width="10%" align='left' style='font-size:12px;'>
+				SERTIFIKASI
+			</td>
+			<td width="5%" align='center' style='font-size:12px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:12px;'>
+				{$data_sertifikasi.nama_aparatur|upper} - ({$data_sertifikasi.kode_sertifikasi|upper})
+			</td>
+		</tr>
+		<tr>
+			<td width="10%" align='left' style='font-size:12px;'>
+				TUK
+			</td>
+			<td width="5%" align='center' style='font-size:12px;'>
+				:
+			</td>
+			<td width="50%" style='font-size:12px;'>
+				{$data_tuk|upper}
+			</td>			
+		</tr>
+	</table>
+	<div style="width:100%;font-family:arial; font-size:8px; text-align:left;padding-left:5px;">
+		*) Kartu ini wajib dibawa selama anda masih terdaftar menjadi peserta diklat
+		<img src='__repository/temp_qrcode/kartu_ujian/{$qrcode_isi}' style='margin-left:170px;margin-top:8px;'>
+	</div>
+</div>
+

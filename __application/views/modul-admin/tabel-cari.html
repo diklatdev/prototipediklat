@@ -1,0 +1,20 @@
+{if $data}
+	{assign var=ind value=1}
+	{foreach from=$data item=rows}
+		<tr>
+			<td class="col-small center">{$ind}</td>
+			<td>{$rows.nama_lengkap}</td>
+			<td class="hidden-xs">{$rows.nip}</td>
+			<td class="hidden-xs">{$rows.no_registrasi}</td>
+			<td class="hidden-xs">{$rows.nama_aparatur}</td>
+			<td class="col-medium center">
+			{if $type eq 'tbl_peserta_cetak_sertifikat'}
+				<div class="btn-group btn-group-xs ">
+					<a href="{$host}generate-sertifikat/{$rows.id}/{$rows.idx_sertifikasi_id}/{$rows.no_registrasi}" target='_blank' onClick="" class="btn btn-danger"><i class="fa fa-print"> Cetak Sertifikat</i></a>
+				</div>
+			{/if}
+			</td>
+		</tr>
+		{assign var=ind value=$ind+1}
+	{/foreach}
+{/if}

@@ -1,0 +1,162 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			</div>
+		</div>
+	</div>
+</div>		
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						
+						<form class="form-horizontal" role="form" name="aspak" action="{$host}submit-pak" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th class="left" width="70%"><h4>PENETAPAN ANGKA KREDIT (PAK)</h4></th>
+											<th  width="5%" >Lama</th>
+											<th  width="5%" >Baru</th>
+											<th  width="5%" >Jumlah</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR UTAMA</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >50</th>
+											<th  width="5%" >50</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR PENUNJANG</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >20</th>
+											<th  width="5%" >20</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR UTAMA & PENUNJANG</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >70</th>
+											<th  width="5%">70</th>
+										</tr>
+									</thead>
+									<tbody>	
+									</tbody>
+								</table>
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th width='1%' class="center">No</th>
+											<th width='70%' style="text-align:center !important;">Butir Kegiatan</th>
+											<!-- <th width='30%' style="text-align:center !important;">Angka Kredit</th> -->
+											<!-- <th width='20%' style="text-align:center !important;">Sub Kegiatan</th> -->
+											<!-- <th width='5%' style="text-align:center !important;">Bukti Pendukung</th> -->
+										</tr>
+									</thead>
+									<tbody>	
+
+										{assign var=ind value=1}
+										{foreach from=$level1 item=rows}
+											<input type="hidden" name="idxkomp[]" value="{$rows->id}">
+											<tr>
+												<td class="left"><h4>{$ind}</h4></td>
+												<td class="left">
+													<h4>{$rows->nama_unsur_kegiatan}</h4>
+													<table class="table table-bordered table-hover tc-table">
+													{assign var=ind2 value=1}
+													{foreach from=$level2 item=rows2 name=foo}
+														<tr>
+														{if $rows2->id_unsur eq $rows->id}
+															<td class="left"><label>{$ind2}</label></td>
+															<td width='99%'>
+																<label>{$rows2->nama_unsur_kegiatan}</label> 
+																<table class="table table-bordered table-hover tc-table">
+																{foreach from=$level3 item=rows3}
+																	<tr>
+																	{if $rows3->id_sub_unsur eq $rows2->id}
+																		<td width='99%'>
+																			{$rows3->nama_unsur_kegiatan}
+																		{if !in_array($rows3->id,$cek_keg)}		
+																			
+																		{else}
+																		{if $level4}
+																			<table class="table table-bordered table-hover tc-table">
+																			{foreach from=$level4 key=k item=rows4}
+																				<tr>
+																				{if $rows4->id_kegiatan eq $rows3->id}
+																					<td width='50%'>
+																						{$rows4->nama_unsur_kegiatan}
+																					</td>
+																					<td width="2%"><label>0</label></td>
+																					<td width="2%">
+																						{foreach from=$angka_kredit item=akred}
+																							{if $akred->idx_kegiatan_pak eq $rows4->id}
+																									<label>{$akred->angka_kredit}</label>
+																							{/if}
+																						{/foreach}
+																					</td>
+																					<td width="2%">
+																						{foreach from=$angka_kredit item=akred}
+																							{if $akred->idx_kegiatan_pak eq $rows4->id}
+																									<label>{$akred->angka_kredit}</label>
+																							{/if}
+																						{/foreach}
+																					</td>
+																					
+																					
+																				{/if}
+																				
+																				</tr>
+																			{/foreach}
+																			</table>
+																		{/if}
+																		{/if}
+																		
+																		</td>																		
+																		{if !in_array($rows3->id,$cek_keg)}		
+																		<td width="2%"><label>0</label></td>
+																		<td width="2%">
+																			<label>0</label>
+																		</td>
+																		<td width="2%">
+																			<label>0</label>
+																		</td>	
+																		{/if}
+
+																		
+																		
+																	{/if}
+																	</tr>
+																{/foreach}
+																</table>
+															</td>
+														{/if}
+														</tr>
+													{assign var=ind2 value=$ind2+1}
+													{/foreach}
+													</table>
+												</td>
+												
+											</tr>
+										{assign var=ind value=$ind+1}
+										{/foreach}
+									</tbody>
+								</table>
+							</div>
+							</div>
+						</form>
+						<!-- <div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();pakass();">Submit</button>
+						</div> -->
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>\

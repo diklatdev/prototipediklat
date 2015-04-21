@@ -1,0 +1,33 @@
+<div id='content' style="height:100%;  background-image:url('{$host}assets/images/logo-kartu.png');background-image-opacity:0.04;background-image-resize:0">
+	{foreach from=$data item=rows}
+			<div style='margin-top:25px;text-align:center;font-weight:bold !important;'>
+				<center>
+					<h3 style='margin:0px !important;'> 
+						Lembaga Sertifikasi & Pelatihan  <br/>
+						Kementerian Dalam Negeri
+					</h3>
+				</center>
+			</div>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<div style='text-align:center;'>
+				<center>
+					<h4>
+						Kode Voucher : {$rows.kode_voucher}
+						<br>
+						Tanggal Terbit : {$rows.tanggal_terbit}
+					</h4>
+				</center>
+			</div>	
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>	
+	{/foreach}
+</div>
+

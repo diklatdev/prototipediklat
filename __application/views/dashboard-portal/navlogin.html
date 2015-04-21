@@ -1,0 +1,54 @@
+<div class="nav-top">
+	<ul class="nav navbar-nav navbar-left">
+		<li>
+			<a class="active" href="{$host}">Beranda</a>
+		</li>
+		{if $auth}
+		<li><a href="{$host}assesmen-mandiri">Asesmen Mandiri</a></li>
+		<li><a href="{$host}konfirmasi-pembayaran">Pembayaran</a></li>						
+		<li><a href="{$host}penjadwalan-wawancara">Penjadwalan</a></li>						
+		<li><a href="{$host}uji-online-mandiri">Uji Online</a></li>
+		<li><a href="{$host}hasil-akhir" >Hasil Akhir</a></li>						
+		<li><a href="{$host}kinerja" >Kinerja </a></li>
+		<li><a href="{$host}modul_pak">PAK</a></li>
+		{/if}
+		<li>
+			<a class="active" href="{$host}info-kontak">Kontak</a>
+		</li>		
+		<li>
+			<a class="active" href="{$host}faq">FAQ</a>
+		</li>		
+	</ul>
+	
+	{*
+	<ul class="nav navbar-nav navbar-left pull-right">
+		{if $auth}
+			<li class="dropdown right">
+				<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					Akun Saya <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Profil Saya</a></li>
+					<li><a href="#">Logout</a></li>
+				</ul>					
+			</li>
+		{else}
+			<li class="dropdown right">
+				<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					Akun <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="#">Registrasi</a></li>
+					<li><a href="#">Login Akun</a></li>
+				</ul>					
+			</li>
+		{/if}
+	</ul>
+	*}
+	
+	<!-- <ul class="nav navbar-nav navbar-left pull-right">
+		<li>
+			<a href="contact.html" class="btn btn-primary">Live Chat</a>
+		</li>
+	</ul> -->
+</div>

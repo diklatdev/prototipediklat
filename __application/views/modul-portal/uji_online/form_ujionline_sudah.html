@@ -1,0 +1,117 @@
+<style>
+.right-tab {
+    position: fixed;
+	z-index:99;
+    top: 30%;
+    width: 100px;
+	padding:5px;
+    background-color: #F2F2F2;
+}
+</style>
+
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Ujian Sertifikasi Online</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="kont_suj_sudah" style='display:inline;'>
+	<div class="container">
+		<div class="block-s2">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="well light">
+						<center>
+							<h2>
+								ANDA SUDAH IKUT UJI ONLINE
+							</h2>
+						</center>
+						<br/>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj_sudah', 'kont_suj_sudah', '{$datawaktu.jam|default:1}', '{$datawaktu.menit|default:0}', '{$datawaktu.detik|default:0}' );">Mulai Ujian</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	
+</div>
+
+<div id='kont_uj_heading_sudah' style='display:none;'>
+	<div class="right-tab">
+		<center>
+		Waktu Anda <br />
+		<span id="timernya_sudah"><span>
+		</center>
+	</div>
+	<div class="container ">
+		<div class="block-s1">
+			<div class="row">
+				<div class="col-lg-12">						
+					<div class="portlet">
+						<div class="well light">
+							
+							<input type='hidden' id='pss_v' value="{$jmlsoal}">
+							<form class="form-horizontal" role="form" name="ujdik" action="{$host}submit-ujian" method="post" enctype="multipart/form-data">
+								<input type='hidden' name='v_di' value='{$auth.id}'>
+								<input type='hidden' id='so_ar' name='so_ar'>
+								<div class="form-group">
+									<div class="col-sm-12">
+										
+										<table class="table table-bordered table-hover tc-table">
+											<thead>
+												<tr>
+													<th>No.</th>
+													<th>Soal Pertanyaan</th>
+												</tr>
+											</thead>
+											<tbody id='tb-so'>
+												{if $datasoal}
+													{assign var=no value=0}
+													{foreach from=$datasoal item=rws}
+														{assign var=no value=$no+1}
+														<tr>
+															<td width='5%'><input type='hidden' name="idrws[]" class='cks' value='{$rws.id_soal}'>{$no}</td>
+															<td width='95%'>{$rws.soalnya}</td>
+														</tr>
+														{foreach from=$rws.jawaban item=uhy}
+															{if $uhy.selected eq '1'}
+																{assign var=tanda value=checked}
+															{else}
+																{assign var=tanda value=''}
+															{/if}
+															<tr>
+																<td>&nbsp;</td>
+																<td><input type='radio' {$tanda} name='idj_{$rws.id_soal}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.id_soal}', '{$uhy.id_jwb}'); "> {$uhy.jawab}</td>
+															</tr>
+														{/foreach}
+														<tr>
+															<td colspan='2'></td>
+														</tr>
+													{/foreach}
+												{/if}
+											</tbody>
+										</table>
+										
+										<div id='jrn' class="form-actions">
+											<button id='nxt' class="btn btn-success" onClick="event.preventDefault();kumpulPoster('ld-so', 'kont_suj_sudah', '{$auth.idx_sertifikasi_id}');">Soal Selanjutnya</button>
+										</div>
+										
+									</div>
+								</div>
+							</form>
+							<div id='sbm' class="form-actions"  style='display:none'>
+								<button id='sbmn' class="btn btn-primary" onClick="event.preventDefault();sbst();">Submit Ujian</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

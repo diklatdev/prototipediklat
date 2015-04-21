@@ -1,0 +1,170 @@
+{if $sts_pemb.step_pembayaran eq "3"}
+
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Konfirmasi Pembayaran Sertifikasi</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="block-s2">
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Tata Cara Konfirmasi Pembayaran</h4>
+				<div class="well light" style='margin-bottom:0px;'>
+					<ul>
+						<li>
+							Peserta yang dibiayai oleh instansi selain Kemendagri diharapkan mentransfer biaya sertifikasi ke rekening milik negara untuk mendukung kegiatan Pendapatan Negara Bukan Pajak (PNBP). 
+							Silahkan kontak bendahara instansi anda untuk melakukan pembayaran biaya sertifikasi.
+						</li>
+						<li>
+							Peserta yang melakukan pembayaran PNBP silahkan memilih metode pembayaran "PNBP",
+							sementara peserta yang melakukan memiliki voucher silahkan memilih metode pembayaran "APBN" disertai dengan 
+							memasukkan kode voucher di form kode voucher.
+						</li>
+						<li>
+							Peserta yang melakukan pembayaran PNBP diharuskan mengupload scan bukti pembayaran sertifikasi dengan berita acara transfer yaitu kode pembayaran yang sudah disediakan oleh sistem.
+							Peserta yang memiliki voucher gratis silahkan mengupload scan voucher anda yang diberikan oleh instansi Badan Diklat Kemendagri.
+						</li>
+						<li>
+							Setelah peserta melakukan tahap konfirmasi pembayaran ini,
+							peserta diharuskan menunggu verifikasi data yang akan dilakukan oleh admin/asesor 
+							sistem ini.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						<form class="form-horizontal" role="form" name="kpm_ko" action="{$host}submit-konfirmasi-pembayaran" method="post" enctype="multipart/form-data">
+							<input type='hidden' name='usaid' value='{$auth.id}'>
+							<input type='hidden' name='sertaid' value='{$auth.idx_sertifikasi_id}'>
+							<input type='hidden' name='kdr' value='{$auth.kdreg_diklat}'>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Form Konfirmasi Pembayaran</h4>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">No. Registrasi : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$auth.no_registrasi}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Nama Lengkap : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$auth.nama_lengkap}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kode Pembayaran : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$kode_pembayaran}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Total Transfer : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											Rp. {$total_transfer}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Perihal : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											Untuk Pembayaran Sertifikasi {$sertifikasi}
+											</span>
+										</div>
+									</div>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Metode Pembayaran : </label>
+										<div class="col-sm-8">
+											<div class="col-sm-2" style='padding-left:0px !important;'>
+												<select id='mtdp' class="form-control" name="mtdp" onChange="processCombo('mtdp')">
+													<option value=''>-- Pilih --</option>
+													<option value='apbn'>APBN</option>
+													<option value='pnbp'>PNBP</option>
+												</select> 
+											</div>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div id='tgl_byr_bry' style='display:none;'>
+											<label class="col-sm-2 control-label">Tanggal Pembayaran : </label>
+											<div class="col-sm-8">
+												<div class="col-sm-2" style='padding-left:0px !important;'>															
+													<select id='tgl_byr' class="form-control" name="tgl_byr">
+														{$tgl_lahir}
+													</select> 
+												</div>
+												<div class="col-sm-2" >															
+													<select id='bln_byr' class="form-control" name="bln_byr">
+														{$bulan_lahir}
+													</select>
+												</div>
+												<div class="col-sm-2" >															
+													<select id='thn_byr' class="form-control" name="thn_byr">
+														{$tahun_lahir}
+													</select>
+												</div>
+												<span class="help-block"><code>*) Harus Diisi</code></span>
+											</div>
+										</div>
+										<div id='kdvcr_byr_bry' style='display:none;'>
+											<label class="col-sm-2 control-label">Kode Voucher : </label>
+											<div class="col-sm-8">
+												<input class="col-sm-6" id='edKd_vcr' type="text" name='edKd_vcr' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+												<span class="help-block"><code>*) Harus Diisi</code></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Bukti Pembayaran : </label>
+										<div class="col-sm-10">
+											<input class="col-sm-6" id='edBukti_byr' type="file" name='edBukti_byr' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+										<label class="col-sm-2 control-label">&nbsp;</label>
+										<div class="col-sm-10">
+										<span class="help-block"><code>format file harus .pdf & .jpg, ukuran file maksimal 500 kb</code></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();sbtdl_kpm();">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{/if}

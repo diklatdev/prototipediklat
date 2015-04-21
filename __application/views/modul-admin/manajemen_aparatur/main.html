@@ -1,0 +1,82 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Manajemen Hirarki Aparatur</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<!-- END PAGE HEADING ROW -->
+<div id="konten_peserta">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
+			<h4>Data Hirarki Aparatur</h4>
+		</div>		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<!-- <a class="btn btn-success" href="#" onClick="loadUrl('{$host}form-aparatur');" id="id-btn-dialog1"><i class="fa fa-plus icon-only"></i></a> -->
+			<a class="btn btn-success" href="#" onClick="modalOpt('aparat');"><i class="fa fa-plus icon-only"></i></a>
+			<div id="dialog-message" class="hide">
+				<p>Anda diharuskan memilih level sertifikasi untuk ditambahkan.</p>
+					<!-- <a class="btn btn-info" href="#" onClick="loadUrl('{$host}form-sertifikat');">Level 2</a>
+					<a class="btn btn-info" href="#" onClick="modalOpt();">Level 3</a> -->
+			</div>
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-small">Aparatur</th>
+								<th class="hidden-xs col-medium center">Sertifikasi Aparatur</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $data}
+								{foreach from=$data item=rows}
+									<tr>
+										<td class="col-small">{$rows.nama_aparatur}</td>
+										{if $data_tk1}
+											<td class="col-small">
+												<table class="table table-hover">
+													{foreach from=$data_tk1 item=rowstk1}
+													<tr>
+														{if $rowstk1.id_asn eq $rows.id}
+															<td>{$rowstk1.nama_aparatur}</td>
+															{if $data_tk1}
+																<td>
+																	<table class="table table-bordered table-hover tc-table">
+																		<tbody>
+																			{foreach from=$data_tk2 item=rowstk2}	
+																				<tr>											
+																					{if $rowstk2.id_asn eq $rows.id_asn and $rowstk2.id_asn_child_tk1 eq $rowstk1.id}
+																						<td class="hidden-xs">{if $rowstk2.nama_aparatur eq ''}None{else}{$rowstk2.nama_aparatur}{/if}</td>
+																					{/if}
+																				</tr>
+																			{/foreach}
+																		</tbody>
+																	</table>
+																</td>
+															{/if}
+														{/if}
+													</tr>
+													{/foreach}
+												</table>
+											</td>
+										{/if}
+									</tr>									
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+

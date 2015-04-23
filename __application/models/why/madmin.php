@@ -324,22 +324,16 @@ class madmin extends SHIPMENT_Model{
 		$this->db->trans_begin();
 		
 		switch($type){
-			case "ver_reg":
-				/*
-				if($post['st_v'] == "OK"){
-					$arraypost = array(
-						"status" => "A"
-					);
-					$this->db->update("tbl_step_peserta", array("step_registrasi"=>1, "step_asesmen_mandiri"=>3), array('tbl_data_peserta_id'=>$post['idus'], 'idx_sertifikasi_id'=>$post['idxus']) );
-				}elseif($post['st_v'] == "INACTIVE"){
-					$arraypost = array(
-						"status" => "I"
-					);
-				}
-				$this->db->update("tbl_data_peserta", $arraypost, array("id"=>$post['idus']) );
-				*/
-				
+			case "ver_reg":				
 				$this->db->update("tbl_step_peserta", array("step_registrasi"=>1, "step_asesmen_mandiri"=>3), array('tbl_data_peserta_id'=>$post['idus'], 'idx_sertifikasi_id'=>$post['idxus']) );
+			break;
+			case "ver_dok_peryaratan":
+				$array_updater = array(
+					'flag' => "V",
+					'status_penilaian' => $post['kp'],
+					'memo' => $post['mm'],
+				);
+				$this->db->update('tbl_persyaratan_sertifikasi', $array_updater, array('id'=>$post['idws']) );
 			break;
 			case "ver_ass":
 				$countol = count($post['idxkomp'])-1;

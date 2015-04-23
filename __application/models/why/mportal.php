@@ -413,6 +413,7 @@ class mportal extends SHIPMENT_Model{
 				$post_bnr['kode_reg'] = $number_reg;
 				$post_bnr['nama_lengkap'] = $post['ed_namalengkap'];
 				$post_bnr['nip'] = $post['ed_nonip'];
+				$post_bnr['nik'] = $post['ed_nonik'];
 				$post_bnr['tempat_lahir'] = $post['ed_tmpLahir'];
 				$post_bnr['tanggal_lahir'] = $post['thn_lahir']."-".$post['bln_lahir']."-".$post['tgl_lahir'];
 				$post_bnr['jenis_kelamin'] = $post['ed_jnsKel'];
@@ -550,11 +551,39 @@ class mportal extends SHIPMENT_Model{
 									"nama_file" => $filename_p,
 									"flag"=>"BV",
 									"idx_sertifikasi_id"=>$code_sert,
-									"kdreg_diklat" => $kdreg_diklat
+									"kdreg_diklat" => $kdreg_diklat,
+									"status_penilaian" => "0",
 								);
 								$this->db->insert("tbl_persyaratan_sertifikasi", $array_persyaratan);
 							}
 						}
+					}
+				}
+			break;
+			case "revpersyaratan":
+				if($this->auth){
+					$ci =& get_instance();
+					$ci->load->model('why/madmin');
+					
+					$no_reg = $this->auth['no_registrasi'];
+					$id 	= $this->auth['id'];
+					$kdreg_diklat = $this->auth['kdreg_diklat'];
+					$nm_aparatur = $this->auth['nama_aparatur'];
+					$idx_sertifikasi_id = $this->auth['idx_sertifikasi_id'];
+					
+					$n_sert = str_replace(" ", "_", $nm_aparatur);
+					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
+					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
+					
+					$target_path = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/".$folder_sertifikasi."/".$kdreg_diklat."/";
+					if(!empty($_FILES['filenya']['name'])){
+						$file = explode('.', $post['nama_file']);
+						$this->lib->uploadnong($target_path, 'filenya', $file[0]);
+						$array_update = array(
+							'flag' => 'BV',
+							'status_penilaian' => 0
+						);
+						$this->db->update('tbl_persyaratan_sertifikasi', $array_update, array('id'=>$post['idtbl']) );
 					}
 				}
 			break;

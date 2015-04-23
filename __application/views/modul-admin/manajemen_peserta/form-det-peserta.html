@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="well white">		
-			<form class="form-horizontal" role="form" name="regdiklat" action="{$host}submit-registrasi" method="post" enctype="multipart/form-data">
+			<form class="form-horizontal" role="form" name="" action="" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<div class="col-sm-12">
 						<h4>Data Pribadi</h4>
@@ -34,9 +34,9 @@
 						<div class="space-4"></div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
-							<div class="col-sm-2">
+							<div class="col-sm-8">
 								<span class="form-control" style="border:none !important;">
-								{$data.tempat_lahir}, {$data.tanggal_lahir}
+								{$data.tempat_lahir}, {$data.tanggal_lahir|date_format:"%d  %B  %Y"}
 								</span>
 							</div>			
 						</div>																
@@ -83,12 +83,12 @@
 							<label class="col-sm-2 control-label">Kontak : </label>
 							<div class="col-sm-3">
 								<span class="form-control" style="border:none !important;">
-								Telp. Rumah - {$data.no_telepon}
+								Telp. - {$data.no_telepon}
 								</span>
 							</div>
 							<div class="col-sm-4">
 								<span class="form-control" style="border:none !important;">
-								No. Handphone - {$data.no_handphone}
+								No. HP - {$data.no_handphone}
 								</span>
 							</div>
 						</div>					
@@ -133,7 +133,7 @@
 							<label class="col-sm-2 control-label">File Ijazah : </label>
 							<div class="col-sm-6">
 								<span class="form-control" style="border:none !important;">
-									<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_ijazah/{$data.file_ijazah}' target='_blank'>Klik Disini Untuk Melihat Ijazah</a>
+									<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_data_diri/{$data.file_ijazah}' target='_blank'>Klik Disini Untuk Melihat Ijazah</a>
 								</span>
 							</div>
 						</div>			
@@ -209,13 +209,11 @@
 								<table class="table table-bordered table-hover tc-table">
 									<thead>
 										<tr>
-											<th class="col-small center">No.</th>
-											<th class="col-big center">Persyaratan Sertifikasi</th>
-											<th class="col-small center">File</th>
-											{*
-											<th class="col-small center">Status</th>
-											<th class="col-small center">Action</th>
-											*}
+											<th align="center" width='5%'>No.</th>
+											<th class="col-medium center">Persyaratan Sertifikasi</th>
+											<th class="center" width='10%'>File</th>
+											<th align="center" width='10%'>Status</th>
+											<th align="center" width='15%'>Keputusan</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -223,26 +221,56 @@
 									{foreach from=$data_file_persyaratan item=rows}
 										<tr>
 											<td class="col-small center">{$ind}</td>
-											<td class="col-big">{$rows.nama_persyaratan}</td>
+											<td class="col-medium">{$rows.nama_persyaratan}</td>
 											<td class="col-small center">
 												<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$rows.nama_file}' target='_blank'>Preview File</a>
 											</td>
-											{*
 											<td class="col-small center">
-												{if $rows.flag eq "BV"}
-													Belum Verifikasi
-												{elseif $rows.flag eq "V"}
-													Verifikasi
+												<div id='flag_{$rows.id}'>
+													{if $rows.flag eq "BV"}
+														<font color='red'>Belum Verifikasi</font>
+													{elseif $rows.flag eq "V"}
+														<font color='green'>Sudah Verifikasi</font>
+													{/if}
+												</div>
+											</td>
+											<td class="col-small">
+												<span id='sts_{$rows.id}'>
+												{if $rows.status_penilaian eq '0'}
+													<div class="tcb">
+														<input type="radio" name="kep_{$rows.id}" id="kep_{$rows.id}" value="1" >
+														Terpenuhi
+													</div>
+													<div class="tcb">
+														<input type="radio" name="kep_{$rows.id}" id="kep_{$rows.id}" value="0" >
+														Tidak Terpenuhi
+													</div>
+												{else}
+													<font color='green'>Terpenuhi</font>
 												{/if}
+												</span>
+												<input type='hidden' id='sts_nilai_{$rows.id}' value='{$rows.status_penilaian}'>
 											</td>
-											<td class="col-small center">
-												<div class="btn-group btn-group-xs ">
-													<a href="#" onClick="" class="btn btn-inverse"><i class="fa fa-check icon-only"></i></a>
-													<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
-												</div>	
+										</tr>
+										<tr>
+											<td>&nbsp;</td>
+											<td><b>Memo Untuk Peserta</b></td>
+											<td colspan='2'>
+												{if $rows.status_penilaian eq '0'}
+													<textarea cols='30' rows='1' name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
+												{else}
+													{$rows.memo}
+												{/if}
+												<span id='memo_{$rows.id}'></span>
 											</td>
-											*}
-										</tr>									
+											<td>
+												{if $rows.status_penilaian eq '0'}
+													<button id='btn_{$rows.id}' class="btn btn-success" onClick="event.preventDefault();kumpulPost('ver_dokper', '{$rows.id}', {$ind} );">Submit</button>
+												{else}
+													-
+												{/if}	
+											</td>
+										</tr>
 										{assign var=ind value=$ind+1}
 									{/foreach}
 									</tbody>
@@ -253,18 +281,9 @@
 				</div>
 			</form>
 			
-			<div class="form-actions ">
-				{*
-				{if $data.status eq "BV"}
-					<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}' );">Verifikasi Data Ini</button>
-				{elseif $data.status eq "A"}
-					<button id='btnnya' class="btn btn-danger" onClick="">Nonaktifkan User</button>
-				{elseif $data.status eq "I"}
-					<button id='btnnya' class="btn btn-danger" onClick="">Aktifkan User</button>
-				{/if}
-				*}
-				
+			<div class="form-actions ">				
 				<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}', '{$data.idx_sertifikasi_id}' );">Verifikasi Data Ini</button>
+				<button id='btnnya_balik' class="btn btn-inverse" onClick="">Kembali</button>
 			</div>
 
 		</div>

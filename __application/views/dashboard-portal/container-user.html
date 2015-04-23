@@ -110,6 +110,81 @@
 										{/if}
 									</li>
 								</ul>
+								<hr>
+								<h5><b>STATUS FILE PERSYARATAN ANDA</b></h5>
+								<hr>
+								{if $data_file_persyaratan}
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th align="center" width='5%'>No.</th>
+											<th class="col-medium center">Persyaratan Sertifikasi</th>
+											<th class="center" width='10%'>File</th>
+											<th align="center" width='10%'>Status</th>
+											<th align="center" width='15%'>Keputusan</th>
+										</tr>
+									</thead>
+									<tbody>
+									{assign var=ind value=1}
+									{foreach from=$data_file_persyaratan item=rows}
+										<tr>
+											<td class="col-small center">{$ind}</td>
+											<td class="col-medium">{$rows.nama_persyaratan}</td>
+											<td class="col-small center">
+												<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$rows.nama_file}' target='_blank'>Preview File</a>
+											</td>
+											<td class="col-small center">
+												<div id='flag_{$rows.id}'>
+													{if $rows.flag eq "BV"}
+														<font color='red'>Belum Verifikasi</font>
+													{elseif $rows.flag eq "V"}
+														<font color='green'>Sudah Verifikasi</font>
+													{/if}
+												</div>
+											</td>
+											<td class="col-small">
+												<span id='sts_{$rows.id}'>
+												{if $rows.status_penilaian eq "0"}
+													<font color='red'>Tidak Terpenuhi</font>
+												{elseif $rows.status_penilaian eq "1"}
+													<font color='green'>Terpenuhi</font>
+												{/if}
+												</span>
+											</td>
+										</tr>
+										<tr>
+											<td>&nbsp;</td>
+											<td><b>Memo Dari Asesor</b></td>
+											<td colspan='3'>
+												{$rows.memo}
+											</td>
+										</tr>
+										{if $rows.status_penilaian eq '0' && $rows.flag eq 'V'}
+										<tr>
+											<td>&nbsp;</td>
+											<td colspan='4'>
+												<div id="aplod-dok_{$rows.id}">
+													Upload Ulang Dokumen :
+													<div class="col-sm-12">
+														<form method='post' id='persy_{$rows.id}' url="{$host}submit-revisi-persyaratan" enctype="multipart/form-data">
+															<input type='hidden' name="idtbl" value="{$rows.id}" />
+															<input type='hidden' name="nama_file" value="{$rows.nama_file}" />
+															<input type="file" id='file_{$rows.id}' name='filenya' style='float:left;padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+														</form>
+														&nbsp;&nbsp;
+														<button id='btn_{$rows.id}' class="btn btn-success" style='float:left;' onClick="event.preventDefault();kumpulPoster('sbt-rev-pers', '', '{$rows.id}', '{$ind}')">Submit</button>
+													</div>
+												</div>
+											</td>
+										</tr>
+										{/if}
+										{assign var=ind value=$ind+1}
+									{/foreach}
+									</tbody>
+								</table>
+								{/if}
+								
+								
 								{else}
 									<br/>
 									<center><h3>Saat Ini Anda Tidak Mengikuti Diklat Apapun</h3></center>

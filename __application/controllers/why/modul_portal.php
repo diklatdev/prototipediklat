@@ -19,12 +19,16 @@ class modul_portal extends SHIPMENT_Controller{
 			$data_status_peserta = $this->mportal->get_data("status_peserta", "row_array");
 			$data_peserta_detail = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $this->auth['id']);
 			
+			
 			if(!$this->auth['idx_sertifikasi_id']){
 				$data_diklat_terakhir = $this->madmin->get_data("tbl_diklat_terakhir", "row_array", $this->auth['id']);
 				$data_record_diklat = $this->madmin->get_data("tbl_record_diklat", "result_array", $this->auth['id']);
 				
 				$this->smarty->assign('data_diklat_terakhir',$data_diklat_terakhir);
 				$this->smarty->assign('data_record_diklat',$data_record_diklat);
+			}else{
+				$data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
+				$this->smarty->assign('data_file_persyaratan',$data_file_persyaratan);
 			}
 			
 			$this->smarty->assign('sts_psr',$data_status_peserta);

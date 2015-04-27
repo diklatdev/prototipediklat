@@ -123,6 +123,16 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				$("#"+domnya).html(resp);
 			});
 		break;
+		case "kcppt":
+			$.post(urlnya, { 'editstatus':'add' }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "edt_kcppt":
+			$.post(urlnya, { 'editstatus':'edit', 'isdx':p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
 		//**************levi		
 		case "add_uji":
 			$.post(urlnya, function(resp){
@@ -136,6 +146,15 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 function kumpulPost($type, p1, p2, p3){
 	switch($type){
 		case "ver_r_ox":
+			for (i = 1; i <= p3; i++) {
+				/*if($('#sts_nilai_'+i+':checked').length == 0){$('#sts_nilai_'+i).focus();}*/
+				if($('#sts_nilai_'+i).val() == 0){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data File Persyaratan No. "+i+" Harus Terpenuhi!" });
+					return false;
+				}
+			}
+				
+			
 			$.post(hostir+"verifikasi-registrasi", { 'st_v':'OK', 'idus':p1, 'idxus':p2 }, function(rspp){
 				if(rspp == 1){
 					alert('Registrasi Diklat Peserta Diterima.');
@@ -152,14 +171,17 @@ function kumpulPost($type, p1, p2, p3){
 				return false;
 			}
 			
-			$.post(hostir+"verifikasi-dokumen-syarat", { 'idws':p1, 'kp':$('#kep_'+p1+':checked').val(), 'mm':$('#memo_'+p1).val() }, function(rpp){
+			var kepnya = $('#kep_'+p1+':checked').val();
+			$.post(hostir+"verifikasi-dokumen-syarat", { 'idws':p1, 'kp':kepnya, 'mm':$('#memo_'+p1).val() }, function(rpp){
 				if(rpp == 1){
 					$('#flag_'+p1).html('<font color="green">Sudah Verifikasi</font>');
 					if($('#kep_'+p1+':checked').val() == 1){
 						$('#sts_'+p1).html('<font color="green">Terpenuhi</font>');
 						$('#btn_'+p1).remove();
 					}
-					$('sts_nilai_'+p1).val($('#kep_'+p1+':checked').val());
+					
+					//console.log(kepnya);
+					$('#sts_nilai_'+p2).val(kepnya);
 				}
 			});
 			
@@ -260,12 +282,13 @@ function asses(kl){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Isi Hasil Keputusan Ujian!" });
 		return false;
 	}
+	/*
 	if($('#nilai_as').val() == ""){
 		$("#nilai_as").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nilai Ujian Tidak Boleh Kosong!" });
 		return false;
 	}
-
+	*/
 	
 	ajxamsterfrm("detass", function(respo){
 		if(respo == 1){
@@ -436,6 +459,31 @@ function vcfnya(){
 			alert("Data Tersimpan");
 			loadUrl(hostir+'manajemen-voucher');
 			//window.open(hostir+'cetak-voucher','_blank');
+		}else{
+			alert(respo);
+		}
+	});	
+}
+
+function sb_ptjk(){
+	if($('#nm_ser').val() == ""){
+		$("#nm_ser").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nama Sertifikasi Tidak Boleh Kosong!" });
+		return false;
+	}
+	
+	if($('#editstatus').val() == "add"){
+		if($('#edFile_ptjk').val() == ""){
+			$("#edFile_ptjk").focus(); 
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Petunjuk Sertifikasi Tidak Boleh Kosong!" });
+			return false;
+		}
+	}
+	
+	ajxamsterfrm("kcp_act", function(respo){
+		if(respo == 1){
+			alert("Data Tersimpan");
+			loadUrl(hostir+'manajemen-petunjukdokumen');
 		}else{
 			alert(respo);
 		}

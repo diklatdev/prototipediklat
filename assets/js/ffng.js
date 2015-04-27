@@ -489,6 +489,33 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 				}
 			});	
 		break;
+		case "sbt-rev-ases":
+			if($('#file_'+p1).val() == ""){
+				$("#file_"+p1).focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File No. "+p2+" Harus Diisi!" });
+				return false;
+			}
+			if($('#st_kmp_'+p1+':checked').length == 0){
+				$('#st_kmp_'+p1).focus();
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Checkbox Penilaian Diri No. "+p2+" Harap Dipilih Salah Satu!" });
+				return false;
+			}
+			
+			ajxfm("asess_"+p1, function(respo){
+				if(respo == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan, Silahkan Tunggu Verifikasi Dokumen Oleh Asesor." });
+					$('#st_kmp_'+p1).prop('checked', false);
+					$('#file_'+p1).val("");
+					location.reload();
+				}else{
+					//alert(respo);
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Silahkan Coba Lagi Beberapa Saat." });
+					$('#st_kmp_'+p1).prop('checked', false);
+					$('#file_'+p1).val("");
+					location.reload();
+				}
+			});	
+		break;
 	}
 }
 

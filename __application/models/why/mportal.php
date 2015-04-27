@@ -476,7 +476,7 @@ class mportal extends SHIPMENT_Model{
 					";
 					$querynya_peserta = $this->db->query($sql_id_peserta)->row_array();
 					
-					$kdreg_diklat = "KDKL.".$code_sert.".001";
+					$kdreg_diklat = "DK.".$number_reg.".".$code_sert.".001";
 					
 					$array_step = array(
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
@@ -667,7 +667,7 @@ class mportal extends SHIPMENT_Model{
 			break;
 			case "asesmen":
 				if($this->auth){
-					$this->load->model('madmin');
+					$this->load->model('why/madmin');
 					$target_path = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_asesmen_mandiri/";
 					if(!is_dir($target_path)) {
 						mkdir($target_path, 0777);
@@ -715,6 +715,43 @@ class mportal extends SHIPMENT_Model{
 					$this->db->insert("tbl_asessmen_mandiri_header", $array_header);
 				}else{
 					header("Location: " . $this->host);
+				}
+			break;
+			case "rev_asesmen":
+				if($this->auth){
+					$ci =& get_instance();
+					$ci->load->model('why/madmin');
+					
+					$no_reg = $this->auth['no_registrasi'];
+					$id 	= $this->auth['id'];
+					$kdreg_diklat = $this->auth['kdreg_diklat'];
+					$nm_aparatur = $this->auth['nama_aparatur'];
+					$idx_sertifikasi_id = $this->auth['idx_sertifikasi_id'];
+					
+					$n_sert = str_replace(" ", "_", $nm_aparatur);
+					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
+					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
+					
+					$target_path = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_asesmen_mandiri/".$folder_sertifikasi."/".$this->auth['kdreg_diklat']."/";
+					if(!empty($_FILES['fl_pdk']['name'])){
+						$id_asesmen = $post['idtbl'];
+						$memo_asli = str_replace(' (Revisi Upload Dokumen, Tunggu Verifikasi Asesor)', '', $post['me']);
+						
+						if($post['nama_file'] != ""){
+							$file = explode('.', $post['nama_file']);
+						}else{
+							$file = "file_kompetensi_".$post['ind']."(".$post['komp_i'].")"; 
+						}
+						$filename = $this->lib->uploadnong($target_path, 'fl_pdk', $file);
+						
+						$array_update = array(
+							'penilaian' => $post['st_kmp_'.$id_asesmen],
+							'file_pendukung' => $filename,
+							'memo' => $memo_asli." (Revisi Upload Dokumen, Tunggu Verifikasi Asesor)",
+						);
+						
+						$this->db->update('tbl_asessmen_mandiri', $array_update, array('id'=>$post['idtbl']) );
+					}
 				}
 			break;
 			case "savepembayaran":

@@ -1,0 +1,102 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>Assesmen Mandiri <small>berikut hasil verifikasi asesmen mandiri anda, harap perhatikan memo dari asesor.</small></h1>
+			</div>
+		</div>
+	</div>
+</div>		
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
+								<tr>
+									<th width='1%'>No.</th>
+									<th width='5%' style="text-align:center !important;">Kode Unit</th>
+									<th width='30%' style="text-align:center !important;">Judul Unit</th>
+									<th width='10%' style="text-align:center !important;">Dokumen</th>
+									<th width='10%' style="text-align:center !important;">Penilaian Diri</th>
+									<th width='10%' style="text-align:center !important;">Rekomendasi</th>
+								</tr>
+							</thead>
+							<tbody>
+								{assign var=ind value=1}
+								{assign var=ceked value=0}
+								{foreach from=$data item=rows}
+									{if $rows.status_ver eq '1'}
+										{assign var=warna value="#D6FFD6"}
+									{elseif $rows.status_ver eq '0'}
+										{assign var=warna value="#F6D7D7"}
+									{/if}
+									<input type="hidden" name="idxkomp[]" value="{$rows.id}">
+									<tr style='background:{$warna};'>
+										<td >{$ind}</td>
+										<td >{$rows.kode_unit}</td>
+										<td >{$rows.judul_unit}</td>
+										{if $rows.file_pendukung}
+											<td ><a target='_blank' href="{$host}repository/dokumen_peserta/|default:'-'}">Preview File</a></td>
+										{else}
+											<td > - </td>	
+										{/if}
+										<td>
+											{if $rows.penilaian eq 'K'}
+												<font color='green'>Kompeten</font>
+											{else}
+												<font color='red'>Belum Kompeten</font>
+											{/if}
+										</td>							
+										<td >
+											{if $rows.status_ver eq '1'}
+												<font color='green'>Terpenuhi</font>
+											{elseif $rows.status_ver eq '0'}
+												<font color='red'>Belum Terpenuhi</font>
+											{/if}
+										</td>
+									</tr>
+									<tr style='background:{$warna};'>
+										<td>&nbsp;</td>
+										<td style="text-align:right !important;"><b>Memo Dari Asesor</b></td>
+										<td >
+											{$rows.memo}
+										</td>
+										<td colspan='3'>
+											{if $rows.status_ver eq '1'}
+												&nbsp;
+											{elseif $rows.status_ver eq '0'}
+												<div id='revision_{$rows.id}'>
+													<b>Upload Ulang Dokumen :</b> <br/><br/>
+													<form method='post' id='asess_{$rows.id}' url="{$host}submit-revisi-asesmen" enctype="multipart/form-data">
+														<input type='hidden' name="idtbl" value="{$rows.id}" />
+														<input type='hidden' name="me" value="{$rows.memo}" />
+														<input type='hidden' name="ind" value="{$ceked}" />
+														<input type='hidden' name="komp_i" value="{$rows.idx_unit_kompetensi_id}" />
+														<input type='hidden' name="nama_file" value="{$rows.file_pendukung|default:''}" />
+														<input type="radio" name="st_kmp_{$rows.id}" id="st_kmp_{$rows.id}" value="K"> Kompeten
+														<input type="radio" name="st_kmp_{$rows.id}" id="st_kmp_{$rows.id}" value="BK" > Belum Kompeten
+														<br/>
+														<input type="file" id='file_{$rows.id}' name="fl_pdk" class="col-sm-3" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
+													</form>	
+													<button id='btn_{$rows.id}' class="btn btn-success" style='float:left;' onClick="event.preventDefault();kumpulPoster('sbt-rev-ases', '', '{$rows.id}', '{$ind}');">Submit</button>
+												</div>
+											{/if}
+										</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+									{assign var=ceked value=$ceked+1}
+								{/foreach}
+							</tbody>
+						</table>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -285,60 +285,20 @@
 			</div>
 		</div>
 	
-		
-	
-		
-
 		<div class="block-s1 inverse notice no-margin-bottom">
 			<div class="container">
 				<div class="text-center">
-					{if $auth}
-						{if $auth.idx_sertifikasi_id}
-							{if $sts_psr.step_asesmen_mandiri eq '3'}
-								<marquee><h3>Ujian Asesmen Mandiri Siap Dilaksanakan, Silahkan Melakukan Ujian Asesmen Mandiri</h3></marquee>
-							{/if}
-							
-							{if $sts_psr.step_pembayaran eq '3'}
-								<marquee><h3>Ujian Asesmen Mandiri Anda Sudah Terverifikasi & Anda Memenuhi Syarat Ujian Asesmen Mandiri, Silahkan Menuju Halaman <a href='{$host}konfirmasi-pembayaran'>Pembayaran</a> Sebelum Melakukan Transaksi Pembayaran Sertifikasi.</h3></marquee>
-							{/if}						
-							
-							{if $sts_psr.step_penjadwalan eq '2'}
-								<marquee><h3>Konfirmasi Pembayaran Anda Sudah Diverifikasi, Silahkan Melakukan Pendaftaran Jadwal Ujian Online.</h3></marquee>
-							{/if}						
-							
-							{if $sts_psr.step_uji_test eq '3'}
-								<marquee><h3>Ujian Diklat Online Siap Dilaksanakan, Silahkan Datang Ke TUK Untuk Mengikuti Ujian Online</h3></marquee>
-							{/if}
-							
-							{if $sts_psr.step_wawancara eq '2'}
-								<marquee><h3>Prosedur Selanjutnya Adalah Ujian Wawancara. Harap Mempersiapkan Diri Anda Agar Bisa Melakukan Ujian Wawancara Dengan Baik. Semoga Sukses.</h3></marquee>
-							{/if}
-							
-							{if $sts_psr.step_hasil eq '1'}
-								<marquee><h3>Hasil Sertifikasi Diklat Anda Sudah Tersedia. Silahkan Buka Halaman Hasil Akhir Pada Portal Diklat ini.</h3></marquee>
-							{/if}
-							
-							{if $sts_psr.step_hasil eq '2'}
-								<marquee><h3>Hasil Sertifikasi Diklat Anda Sedang Dalam Tahap Verifikasi. Mohon Tunggu Pemberitahuan Selanjutnya.</h3></marquee>
-							{/if}
-						{else}
-							<h3>Sistem Informasi Penilaian Kompetensi & Sertifikasi Kementerian Dalam Negeri</h3>
-						{/if}
-						
-					{else}
-						<h3>Sistem Informasi Penilaian Kompetensi & Sertifikasi Kementerian Dalam Negeri</h3>
-					{/if}
+					<h3>Sistem Informasi Penilaian Kompetensi & Sertifikasi Kementerian Dalam Negeri</h3>
 				</div>
 			</div>
 		</div>
-		
 
 <div class="block-s2">
 	<div class="container">
 		<div class="row">
 			
 			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<h3 style='margin-top:10px !important;'>Artikel Terbaru</h3>						
+				<h3 style='margin-top:10px !important;'>Berita Terbaru</h3>						
 				<ul class="list-unstyled">
 					<li>
 						<h5 style='margin-bottom:0px !important;'><a href="#">A Blog Home Template for Bootstrap 3</a></h5>
@@ -361,6 +321,40 @@
 				<div class="action-buttons">
 					<a href="#" >Lihat Selanjutnya <i class="fa fa-angle-double-right"></i></a>
 				</div>
+			</div>
+			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+				<h3 style='margin-top:10px !important;'>Petunjuk Unggah Dokumen</h3>
+				<table class="table table-bordered table-hover tc-table">
+					<thead>
+						<tr>
+							<th class="col-small center">No.</th>
+							<th class="col-medium center">Sertifikasi</th>
+							<th class="col-small center">::</th>
+						</tr>
+					</thead>
+					<tbody>
+						{if $petunjuk_dokumen}
+							{assign var=ind value=1}
+							{foreach from=$petunjuk_dokumen item=rows}
+								<tr>
+									<td class="col-small center">{$ind}</td>
+									<td>{$rows.nama_sertifikasi}</td>
+									<td class="col-medium center">
+										<a href='#' onClick="">Lihat</a> 
+									</td>
+								</tr>
+								{assign var=ind value=$ind+1}
+							{/foreach}
+						{else}
+							<tr>
+								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
+							</tr>
+						{/if}
+					</tbody>
+				</table>
+				<div class="action-buttons">
+					<a href="#" >Lihat Selanjutnya <i class="fa fa-angle-double-right"></i></a>
+				</div>				
 			</div>
 			
 			

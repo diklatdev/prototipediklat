@@ -11,6 +11,7 @@ $route['logoutadm'] = "login/logoutadm";
 $route['manajemen-peserta'] = "why/modul_admin/getdisplay/manajemen_peserta/";
 $route['peserta-detail'] = "why/modul_admin/getdisplay/detail_peserta/";
 $route['verifikasi-registrasi'] = "why/modul_admin/simpansavedbx/ver_reg/";
+$route['verifikasi-dokumen-syarat'] = "why/modul_admin/simpansavedbx/ver_dok_peryaratan/";
 
 $route['asesmen-peserta'] = "why/modul_admin/getdisplay/asesmen_mandiri/";
 $route['asesmen-detail'] = "why/modul_admin/getdisplay/detail_asesmen/";
@@ -49,6 +50,14 @@ $route['tambah-voucher'] = "why/modul_admin/getdisplay/form_voucher/";
 $route['submit-voucher'] = "why/modul_admin/simpansavedbx/savevoucher/";
 $route['cetak-voucher'] = "why/modul_admin/generate_voucher/";
 
+$route['manajemen-petunjukdokumen'] = "why/modul_admin/getdisplay/petunjuk_dokumen/";
+$route['form-petunjukdokumen'] = "why/modul_admin/getdisplay/form_petunjuk_dokumen/";
+$route['submit-petunjukdokumen'] = "why/modul_admin/simpansavedbx/savepetunjukdokumen/";
+
+$route['manajemen-berita'] = "why/modul_admin/getdisplay/berita/";
+$route['form-berita'] = "why/modul_admin/getdisplay/form_berita/";
+
+
 $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
 
 //Modul Portal
@@ -60,9 +69,12 @@ $route['chk2'] = "why/modul_portal/getdisplay/additional/checking_data_2";
 $route['chk3'] = "why/modul_portal/getdisplay/additional/checking_data_3";
 $route['reg-file'] = "why/modul_portal/getdisplay/additional/registrasi_file_persyaratan";
 $route['submit-registrasi'] = "why/modul_portal/simpansavedbs/registrasi";
+$route['submit-revisi-persyaratan'] = "why/modul_portal/simpansavedbs/revpersyaratan";
 
 $route['assesmen-mandiri'] = "why/modul_portal/getdisplay/assesmen";
 $route['submit-asesmen'] = "why/modul_portal/simpansavedbs/asesmen";
+$route['submit-revisi-asesmen'] = "why/modul_portal/simpansavedbs/rev_asesmen";
+
 
 $route['uji-online-mandiri'] = "why/modul_portal/getdisplay/uji_online";
 $route['minta-soal'] = "why/modul_portal/getdisplay/additional/load_soal";

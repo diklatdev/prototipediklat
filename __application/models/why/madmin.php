@@ -308,6 +308,37 @@ class madmin extends SHIPMENT_Model{
 					WHERE 1=1 $where
 				";
 			break;
+			
+			case "tbl_petunjukdokumen":
+				if($p1 == 'limit'){
+					$limit = " ORDER BY RAND() LIMIT 4 ";
+				}else{
+					$limit = "";
+				}
+				
+				$sql = "
+					SELECT *
+					FROM tbl_petunjukdokumen
+					$where
+					$limit
+				";
+			break;
+			case "tbl_petunjukdokumen_detail":
+				$sql = "
+					SELECT *
+					FROM tbl_petunjukdokumen 
+					WHERE id = '".$p1."'
+				";
+			break;
+			case "tbl_berita":
+				$sql = "
+					SELECT *, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit
+					FROM tbl_berita
+				";
+			break;
+			case "tbl_berita_detail":
+				
+			break;
 						
 		}
 		
@@ -339,7 +370,7 @@ class madmin extends SHIPMENT_Model{
 				$countol = count($post['idxkomp'])-1;
 				for($i = 0; $i <= $countol; $i++){
 					$id_kmp = $post['idxkomp'][$i];
-					$this->db->update("tbl_asessmen_mandiri", array("status_ver"=>$post['rek_'.$id_kmp]), array('id'=>$id_kmp));
+					$this->db->update("tbl_asessmen_mandiri", array("status_ver"=>$post['rek_'.$id_kmp], "memo"=>$post['memo_'.$id_kmp]), array('id'=>$id_kmp));
 				}
 				
 				if($post['hsl_as'] == "L"){
@@ -347,6 +378,7 @@ class madmin extends SHIPMENT_Model{
 					$CI->load->model('mportal');
 					$kode_unik = $CI->mportal->randomString('5');
 					$kode_unik = "KDP-".$kode_unik;
+					$status = "L";
 					
 					$array_pembayaran = array(
 						"tbl_data_peserta_id"=>$post['usid'],
@@ -359,11 +391,12 @@ class madmin extends SHIPMENT_Model{
 					$this->db->update("tbl_step_peserta", array("step_asesmen_mandiri"=>1,"step_pembayaran"=>3), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 				}elseif($post['hsl_as'] == "TL"){
 					//action kalo gak lulus
-					$this->db->update("tbl_step_peserta", array("status"=>0), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
+					//$this->db->update("tbl_step_peserta", array("status"=>0), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
+					$status = "BV";
 				}
 				
 				$array_asesmen_header = array(
-					'status'=>$post['hsl_as'], 
+					'status'=>$status, 
 					'nama_asesor'=>$this->auth['username'], 
 					'tgl_verifikasi'=>date('Y-m-d H:i:s')
 				);
@@ -526,6 +559,26 @@ class madmin extends SHIPMENT_Model{
 					);
 					
 					$this->db->insert('idx_voucher', $array_insert);
+				}
+			break;
+			case "savepetunjukdokumen":
+				$kode_acak = ($post['editstatus'] == 'add' ? $this->lib->randomString(5) : $post['kdac']);
+				if(!empty($_FILES['edFile_ptjk']['name'])){
+					$filepe_path = "./__repository/dokumenpetunjuk/";
+					$file_pe = "petunjukdokumen_".$kode_acak;
+					$filename_pe =  $this->lib->uploadnong($filepe_path, 'edFile_ptjk', $file_pe);
+
+					$post_bnr['file_petunjuk'] = $filename_pe;
+				}
+				$id = $post['ixdx'];
+				
+				$post_bnr['nama_sertifikasi'] = $post['nm_ser'];
+				$post_bnr['kd_acak'] = $kode_acak;
+				
+				if($post['editstatus'] == 'add'){
+					$this->db->insert('tbl_petunjukdokumen', $post_bnr);
+				}elseif($post['editstatus'] == 'edit'){
+					$this->db->update('tbl_petunjukdokumen', $post_bnr, array('id'=>$id));
 				}
 			break;
 			

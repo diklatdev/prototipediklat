@@ -69,14 +69,26 @@
 								{/if}
 							</td>							
 							<td >
-								<div class="tcb">
-									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" >
+								{if $rows.status_ver eq '1'}
+									{assign var=checkmate value="checked"}
+								{elseif $rows.status_ver eq '0'}
+									{assign var=checkmate value=null}
+								{/if}
+								<div class="tcbs">
+									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" {$checkmate}>
 									Terpenuhi
 								</div>
-								<div class="tcb">
+								<div class="tcbs">
 									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="0" >
 									Tidak Terpenuhi
 								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td colspan='2' style="text-align:right !important;"><b>Memo Untuk Peserta</b></td>
+							<td colspan='3' >
+								<textarea id="maxL-3" class="form-control" rows="1" maxlength="225" name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
 							</td>
 						</tr>
 						{assign var=ind value=$ind+1}

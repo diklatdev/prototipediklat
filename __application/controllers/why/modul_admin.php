@@ -293,6 +293,37 @@ class modul_admin extends SHIPMENT_Controller{
 			case "form_voucher":
 				$content = "modul-admin/manajemen_voucher/form-voucher.html";
 			break;			
+			
+			case "petunjuk_dokumen":
+				$content = "modul-admin/konten_petunjukdokumen/main-petunjuk.html";
+				$data = $this->madmin->get_data("tbl_petunjukdokumen","result_array");
+				$this->smarty->assign("data", $data);
+			break;
+			case "form_petunjuk_dokumen":
+				$editstatus = $this->input->post('editstatus');
+				if($editstatus == 'edit'){
+					$id = $this->input->post('isdx');
+					$data_edit = $this->madmin->get_data('tbl_petunjukdokumen_detail', 'row_array', $id);
+					$this->smarty->assign("data", $data_edit);
+				}
+				$content = "modul-admin/konten_petunjukdokumen/form-petunjuk.html";
+				$this->smarty->assign("editstatus", $editstatus);
+			break;
+			case "berita":
+				$content = "modul-admin/konten_berita/main-berita.html";
+				$data = $this->madmin->get_data("tbl_berita", "result_array");
+				$this->smarty->assign("data", $data);
+			break;
+			case "form_berita":
+				$editstatus = $this->input->post('editstatus');
+				if($editstatus == 'edit'){
+					$id = $this->input->post('isdx');
+					$data_edit = $this->madmin->get_data('tbl_berita_detail', 'row_array', $id);
+					$this->smarty->assign("data", $data_edit);
+				}
+				$content = "modul-admin/konten_berita/form-berita.html";
+				$this->smarty->assign("editstatus", $editstatus);
+			break;
 		}
 		$this->smarty->assign('type', $type);
 		$this->smarty->display($content);

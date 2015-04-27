@@ -36,6 +36,9 @@ class modul_portal extends SHIPMENT_Controller{
 			
 			$this->smarty->assign('konten', "dashboard-portal/container-user");
 		}else{
+			$data_petunjukdokumen = $this->madmin->get_data('tbl_petunjukdokumen', 'result_array', 'limit');
+			
+			$this->smarty->assign('petunjuk_dokumen',$data_petunjukdokumen);
 			$this->smarty->assign('konten', "dashboard-portal/container");
 		}
 		
@@ -126,17 +129,21 @@ class modul_portal extends SHIPMENT_Controller{
 				if($data_status_asesmen['step_asesmen_mandiri'] == '1'){
 					$this->getdisplay('sudah_assesmen');
 					exit;
-				}elseif($data_status_asesmen['step_asesmen_mandiri'] == '2'){
-					$this->getdisplay('tunggu_verifikasi_asesmen');
-					exit;
 				}elseif($data_status_asesmen['step_asesmen_mandiri'] == '0'){
 					$this->getdisplay('belum_boleh_asesmen');
 					exit;
 				}
 				
-				$konten = "modul-portal/asesmen_mandiri/form-assesmen";
-				$data_unit_kompetensi = $this->mportal->get_data("data_unit_kompetensi", "result_array");
-				$this->smarty->assign("unit_komp", $data_unit_kompetensi);
+				if($data_status_asesmen['step_asesmen_mandiri'] == '3'){
+					$konten = "modul-portal/asesmen_mandiri/form-assesmen";
+					$data_unit_kompetensi = $this->mportal->get_data("data_unit_kompetensi", "result_array");
+					$this->smarty->assign("unit_komp", $data_unit_kompetensi);
+				}elseif($data_status_asesmen['step_asesmen_mandiri'] == '2'){
+					$this->load->model("why/madmin");
+					$konten = "modul-portal/asesmen_mandiri/form-assesmen-hsl";
+					$data_asesmen_mandiri = $this->madmin->get_data("tbl_test_assemen", "result_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat'] );
+					$this->smarty->assign("data", $data_asesmen_mandiri);
+				}
 				$this->smarty->assign("sts_as", $data_status_asesmen);
 			break;
 			

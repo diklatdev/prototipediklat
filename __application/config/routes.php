@@ -56,7 +56,11 @@ $route['submit-petunjukdokumen'] = "why/modul_admin/simpansavedbx/savepetunjukdo
 
 $route['manajemen-berita'] = "why/modul_admin/getdisplay/berita/";
 $route['form-berita'] = "why/modul_admin/getdisplay/form_berita/";
+$route['submit-berita'] = "why/modul_admin/simpansavedbx/saveberita/";
 
+$route['manajemen-faq'] = "why/modul_admin/getdisplay/faq/";
+$route['form-faq'] = "why/modul_admin/getdisplay/form_faq/";
+$route['submit-faq'] = "why/modul_admin/simpansavedbx/savefaq/";
 
 $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
 
@@ -106,6 +110,11 @@ $route['submit-registrasi-baru'] = "why/modul_portal/simpansavedbs/registrasi_ba
 $route['info-kontak'] = 'why/modul_portal/getdisplay/kontaks';
 $route['faq'] = 'why/modul_portal/getdisplay/faqqs';
 
+$route['berita'] = 'why/modul_portal/getdisplay/konten_berita';
+$route['berita_detail/(:any)'] = 'why/modul_portal/getdisplay/konten_berita_detail/$1';
+
+$route['petunjuk-dokumen'] = 'why/modul_portal/getdisplay/konten_petunjuk_dokumen';
+$route['download-file-petunjuk/(:any)'] = 'why/modul_portal/getdisplay/download_petunjuk_dokumen/$1';
 
 
 //////////////////////////*** LV

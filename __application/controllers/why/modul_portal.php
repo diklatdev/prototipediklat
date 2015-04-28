@@ -36,9 +36,16 @@ class modul_portal extends SHIPMENT_Controller{
 			
 			$this->smarty->assign('konten', "dashboard-portal/container-user");
 		}else{
+			$this->load->library('lib');
 			$data_petunjukdokumen = $this->madmin->get_data('tbl_petunjukdokumen', 'result_array', 'limit');
+			$data_berita = $this->madmin->get_data('tbl_berita', 'result_array', 'limit');
+			
+			foreach($data_berita as $k => $v){
+				$data_berita[$k]['judul_berita'] = $this->lib->cutstring($v['judul_berita'], 40);
+			}
 			
 			$this->smarty->assign('petunjuk_dokumen',$data_petunjukdokumen);
+			$this->smarty->assign('berita',$data_berita);
 			$this->smarty->assign('konten', "dashboard-portal/container");
 		}
 		
@@ -374,7 +381,40 @@ class modul_portal extends SHIPMENT_Controller{
 				$konten = "dashboard-portal/kontak";
 			break;
 			case "faqqs":
+				$this->load->model('why/madmin');
+				$data = $this->madmin->get_data('tbl_faq', 'result_array');
 				$konten = "dashboard-portal/faq";
+				$this->smarty->assign('data', $data);
+			break;
+			case "konten_berita":
+				$this->load->model('why/madmin');
+				$this->load->library('lib');
+				
+				$data = $this->madmin->get_data('tbl_berita', 'result_array');
+				foreach($data as $k => $v){
+					$data[$k]['isi'] = $this->lib->cutstring($v['isi'], 500);
+				}
+				
+				$konten = "dashboard-portal/berita";
+				$this->smarty->assign('data', $data);
+			break;
+			case "konten_berita_detail":
+				$this->load->model('why/madmin');
+				$data = $this->madmin->get_data('tbl_berita_detail', 'row_array', $p1);
+				$konten = "dashboard-portal/berita-detail";
+				$this->smarty->assign('data', $data);
+			break;
+			case "konten_petunjuk_dokumen":
+				$this->load->model('why/madmin');
+				$data = $this->madmin->get_data('tbl_petunjukdokumen', 'result_array');
+				$konten = "dashboard-portal/petunjuk-dokumen";
+				$this->smarty->assign('data', $data);
+			break;
+			case "download_petunjuk_dokumen":
+				$this->load->helper('download');
+				$data = file_get_contents("./__repository/dokumenpetunjuk/".$p1); // Read the file's contents
+				$name = 'file_petunjuk_sertifikasi.pdf';
+				force_download($name, $data);
 			break;
 		}
 		

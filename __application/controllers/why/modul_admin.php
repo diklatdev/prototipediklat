@@ -324,6 +324,22 @@ class modul_admin extends SHIPMENT_Controller{
 				$content = "modul-admin/konten_berita/form-berita.html";
 				$this->smarty->assign("editstatus", $editstatus);
 			break;
+			case "faq":
+				$content = "modul-admin/konten_faq/main-faq.html";
+				$data = $this->madmin->get_data("tbl_faq", "result_array");
+				$this->smarty->assign("data", $data);
+			break;
+			case "form_faq":
+				$editstatus = $this->input->post('editstatus');
+				if($editstatus == 'edit'){
+					$id = $this->input->post('isdx');
+					$data_edit = $this->madmin->get_data('tbl_faq_detail', 'row_array', $id);
+					$this->smarty->assign("data", $data_edit);
+				}
+				$content = "modul-admin/konten_faq/form-faq.html";
+				$this->smarty->assign("editstatus", $editstatus);
+			break;
+
 		}
 		$this->smarty->assign('type', $type);
 		$this->smarty->display($content);
@@ -338,7 +354,8 @@ class modul_admin extends SHIPMENT_Controller{
 	
 	function simpansavedbx($type=""){
 		$post = array();
-        foreach($_POST as $k=>$v) $post[$k] = $this->db->escape_str($this->input->post($k));
+        //foreach($_POST as $k=>$v) $post[$k] = $this->db->escape_str($this->input->post($k));
+        foreach($_POST as $k=>$v) $post[$k] = $this->input->post($k);
 		
 		/*
 		echo "<pre>";

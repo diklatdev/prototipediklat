@@ -1,9 +1,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="well white" style="margin-bottom:0px !important;">
-			
 			<h4>Form Data Petunjuk Dokumen</h4>
-			<hr/>
 			<form class="form-horizontal" role="form" id="kcp_act" action="{$host}submit-petunjukdokumen" method="post" enctype="multipart/form-data">
 				<input type='hidden' name='ixdx' value='{$data.id|default:''}'>
 				<input type='hidden' name='kdac' value='{$data.kd_acak|default:''}'>
@@ -22,7 +20,7 @@
 							<div class="col-sm-8">
 								<input class="col-sm-6" id='edFile_ptjk' type="file" name='edFile_ptjk' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
 								&nbsp;&nbsp;
-								{if $data.file_petunjuk}
+								{if $data.file_petunjuk|default:''}
 									<a href='{$host}__repository/dokumenpetunjuk/{$data.file_petunjuk}' target='_blank'>Lihat File</a>
 								{/if}
 							</div>

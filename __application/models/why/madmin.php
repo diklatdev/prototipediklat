@@ -311,7 +311,7 @@ class madmin extends SHIPMENT_Model{
 			
 			case "tbl_petunjukdokumen":
 				if($p1 == 'limit'){
-					$limit = " ORDER BY RAND() LIMIT 4 ";
+					$limit = " ORDER BY RAND() LIMIT 5 ";
 				}else{
 					$limit = "";
 				}
@@ -331,13 +331,38 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_berita":
+				if($p1 == 'limit'){
+					$limit = " ORDER BY RAND() LIMIT 5 ";
+				}else{
+					$limit = "";
+				}
+				
 				$sql = "
 					SELECT *, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit
 					FROM tbl_berita
+					$where
+					$limit
 				";
 			break;
 			case "tbl_berita_detail":
-				
+				$sql = "
+					SELECT *, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit
+					FROM tbl_berita
+					WHERE id = '".$p1."'
+				";
+			break;
+			case "tbl_faq":
+				$sql = "
+					SELECT *
+					FROM tbl_faq
+				";
+			break;
+			case "tbl_faq_detail":
+				$sql = "
+					SELECT *
+					FROM tbl_faq
+					WHERE id = '".$p1."'
+				";
 			break;
 						
 		}
@@ -579,6 +604,41 @@ class madmin extends SHIPMENT_Model{
 					$this->db->insert('tbl_petunjukdokumen', $post_bnr);
 				}elseif($post['editstatus'] == 'edit'){
 					$this->db->update('tbl_petunjukdokumen', $post_bnr, array('id'=>$id));
+				}
+			break;
+			case "saveberita":
+				$kode_acak = ($post['editstatus'] == 'add' ? $this->lib->randomString(5) : $post['kdac']);
+				if(!empty($_FILES['edFile_gb']['name'])){
+					$filepe_path = "./__repository/gambarberita/";
+					$file_pe = "filegambar_".$kode_acak;
+					$filename_pe =  $this->lib->uploadnong($filepe_path, 'edFile_gb', $file_pe);
+
+					$post_bnr['file_gambar'] = $filename_pe;
+				}
+				$id = $post['ixdx'];
+				
+				$post_bnr['judul_berita'] = $post['jd_ed'];
+				$post_bnr['kd_acak'] = $kode_acak;
+				$post_bnr['isi'] = $post['isbrt_ed'];
+				
+				if($post['editstatus'] == 'add'){
+					$post_bnr['tgl_terbit'] = date('Y-m-d');
+					$post_bnr['diposting_oleh'] = $this->auth['username'];
+					$this->db->insert('tbl_berita', $post_bnr);
+				}elseif($post['editstatus'] == 'edit'){
+					$this->db->update('tbl_berita', $post_bnr, array('id'=>$id));
+				}
+			break;
+			case "savefaq":
+				$id = $post['ixdx'];
+				
+				$post_bnr['pertanyaan'] = $post['prtny_ed'];
+				$post_bnr['jawaban'] = $post['jwb_ed'];
+				
+				if($post['editstatus'] == 'add'){
+					$this->db->insert('tbl_faq', $post_bnr);
+				}elseif($post['editstatus'] == 'edit'){
+					$this->db->update('tbl_faq', $post_bnr, array('id'=>$id));
 				}
 			break;
 			

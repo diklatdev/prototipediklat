@@ -1,0 +1,36 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+				<h1>Kolom Berita Kita</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="block-s2">
+		<div class="row">
+			<div class="col-lg-12">		
+			
+			{if $data|default:''}
+				<div class="blog-posts">
+					{foreach from=$data item=rows}
+						<h3 ><a href='{$host}berita_detail/{$rows.id}/{$smarty.now|date_format:"%m"}/{$smarty.now|date_format:"%Y"}' style='color:#867D76 !important;'>{$rows.judul_berita}</a></h3>
+						<ul class="article-info top">
+							<li><i class="fa fa-calendar"></i>{$rows.tanggal_terbit}</li>
+							<li class="hidden-xs"><i class="fa fa-tags"></i>Diposting Oleh : {$rows.diposting_oleh}</li>
+						</ul>
+						<p align='justify'>{$rows.isi}</p>
+						<div class="action-buttons">
+							<a href='{$host}berita_detail/{$rows.id}/{$smarty.now|date_format:"%m"}/{$smarty.now|date_format:"%Y"}'>Baca Selengkapnya <i class="fa fa-angle-double-right"></i></a>
+						</div>
+						<br/>
+					{/foreach}
+				</div>
+			{/if}
+			
+			</div>
+		</div>
+	</div>
+</div>

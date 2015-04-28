@@ -1,0 +1,32 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<h4>Form Berita</h4>
+			<form class="form-horizontal" role="form" id="faq_act" action="{$host}submit-faq" method="post" enctype="multipart/form-data">
+				<input type='hidden' name='ixdx' value='{$data.id|default:''}'>
+				<input type='hidden' name='editstatus' id='editstatus' value='{$editstatus}'>
+				<div class="form-group">
+					<div class="col-sm-12">
+						<div class="hr-12 hr-double hr-dotted"></div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pertanyaan : </label>
+							<div class="col-sm-8">
+								<input class="form-control"  value="{$data.pertanyaan|default:''}" name="prtny_ed" id="prtny_ed">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Jawaban : </label>
+							<div class="col-sm-8">
+								<input class="form-control"  value="{$data.jawaban|default:''}" name="jwb_ed" id="jwb_ed">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="form-actions ">
+				<button onclick="event.preventDefault();sb_faq();" class="btn btn-info" id="btnnya">Submit</button>
+				<button class="btn btn-primary" onclick="loadUrl('{$host}manajemen-faq');">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,51 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+				<h1>Petunjuk Unggah Dokumen</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="block-s2">
+		<div class="row">
+			<div class="col-lg-12">		
+				
+				<div class="well light">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th width='5%' style='text-align:center !important;'>No.</th>
+								<th width='50%' style='text-align:center !important;'>Sertifikasi</th>
+								<th width='20%' style='text-align:center !important;'>::</th>
+							</tr>
+						</thead>
+						<tbody>
+						{if $data}
+							{assign var=ind value=1}
+							{foreach from=$data item=rows}
+								<tr>
+									<td class="col-small center">{$ind}</td>
+									<td>{$rows.nama_sertifikasi}</td>
+									<td class="col-medium center">
+										<a href='{$host}download-file-petunjuk/{$rows.file_petunjuk}' target='_blank'>Unduh File</a> 
+									</td>
+								</tr>
+								{assign var=ind value=$ind+1}
+							{/foreach}
+						{else}
+							<tr>
+								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
+							</tr>
+						{/if}
+						</tbody>
+					</table>
+				
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

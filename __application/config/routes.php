@@ -151,6 +151,28 @@ $route['manajemen-tuk'] = "lv/modul_admin/getdisplay/manajemen_tuk/";
 $route['form-tuk'] = "lv/modul_admin/getdisplay/form_tuk/";
 $route['submit-tuk'] = "lv/modul_admin/simpansavedbx/sv_tuk";
 
+// Levi PAK routes
+$route['pak'] = "lv/modul_pak/view_pak";
+$route['submit-pak'] = "lv/modul_pak/savedatatodb/pak";
+$route['angka-kredit'] = "lv/modul_pak/combo_angdit";
+///--- yang baru untuk inpassing
+
+$route['pak_inpassing'] = "lv/modul_pak/getdisplay/pak_inpassing";
+$route['submit-pak-inpassing'] = "lv/modul_pak/savedatatodb/pak";
+$route['hasil-pak-temp'] = "lv/modul_pak/getdisplay/hasil_pak_inpassing_temp";
+$route['hasil-pak'] = "lv/modul_pak/getdisplay/hasil_validasi_pak";
+## Admin PAK
+$route['pak-temp'] = "lv/modul_pak/getdisplayadmin/pak_temp_admin";
+$route['pak-pengajuan'] = "lv/modul_pak/getdisplayadmin/pak_pengajuan_det";
+$route['pak-validasi'] = "lv/modul_pak/getdisplayadmin/validasi_pak";
+$route['approve-pak'] = "lv/modul_pak/savedatatodb/approve_pak";
+$route['gen-pak'] = "lv/modul_pak/gen_sertifikat";
+$route['gen-sertifikat'] = "lv/modul_pak/gen_sertifikat";
+$route['gen-sk'] = "lv/modul_pak/gen_keputusan";
+
+$route['pak-result'] = "lv/modul_pak/getdisplayadmin/pak_result_admin";
+$route['peripikasi-pak'] = "lv/modul_pak/savedatatodb/peripikasi_pak";
+
 
 
 $route['404_override'] = '';

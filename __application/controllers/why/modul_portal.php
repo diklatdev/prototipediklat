@@ -19,7 +19,6 @@ class modul_portal extends SHIPMENT_Controller{
 			$data_status_peserta = $this->mportal->get_data("status_peserta", "row_array");
 			$data_peserta_detail = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $this->auth['id']);
 			
-			
 			if(!$this->auth['idx_sertifikasi_id']){
 				$data_diklat_terakhir = $this->madmin->get_data("tbl_diklat_terakhir", "row_array", $this->auth['id']);
 				$data_record_diklat = $this->madmin->get_data("tbl_record_diklat", "result_array", $this->auth['id']);
@@ -54,6 +53,13 @@ class modul_portal extends SHIPMENT_Controller{
 	}
 	
 	function getdisplay($type="", $p1="", $p2="", $p3=""){
+		/*
+		if(!$this->auth['idx_sertifikasi_id']){
+			$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
+			$this->session->sess_destroy();
+			header("Location: " . $this->host);
+		}
+		*/
 		$modul = "front/";
 		switch($type){
 			case "registrasi":
@@ -149,7 +155,12 @@ class modul_portal extends SHIPMENT_Controller{
 					$this->load->model("why/madmin");
 					$konten = "modul-portal/asesmen_mandiri/form-assesmen-hsl";
 					$data_asesmen_mandiri = $this->madmin->get_data("tbl_test_assemen", "result_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat'] );
+					$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $this->auth['idx_sertifikasi_id']);
+					$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
+					$folder_sertifikasi = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
+					
 					$this->smarty->assign("data", $data_asesmen_mandiri);
+					$this->smarty->assign("folder_sertifikasi", $folder_sertifikasi);
 				}
 				$this->smarty->assign("sts_as", $data_status_asesmen);
 			break;
@@ -160,7 +171,7 @@ class modul_portal extends SHIPMENT_Controller{
 					exit;
 				}
 				
-				$this->load->model('madmin');
+				$this->load->model('why/madmin');
 				$data_status_pembayaran = $this->mportal->get_data("status_peserta", "row_array");
 				if($data_status_pembayaran['step_pembayaran'] == '1'){
 					$this->getdisplay('sudah_pembayaran');
@@ -261,7 +272,7 @@ class modul_portal extends SHIPMENT_Controller{
 					exit;
 				}
 				
-				$this->load->model('madmin');
+				$this->load->model('why/madmin');
 				$konten = "modul-portal/hasil_akhir/form_hasilakhir";
 				
 				$data_asesmen_header = $this->madmin->get_data("tbl_asesmen_header", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat'] );

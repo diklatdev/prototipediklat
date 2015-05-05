@@ -42,6 +42,7 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data", $data);
 				$this->smarty->assign("data_file_persyaratan", $data_file_persyaratan);
 				$this->smarty->assign("folder_sertifikasi", $folder);
+				$this->smarty->assign("kdreg_diklat", $kdreg_diklat);
 			break;
 			case "asesmen_mandiri":
 				$content = "modul-admin/asesmen_mandiri/main-asesmen.html";
@@ -228,7 +229,6 @@ class modul_admin extends SHIPMENT_Controller{
 				$data_asesmen = $this->madmin->get_data("tbl_test_assemen", "result_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
 				
 				$data_ujian_header = $this->madmin->get_data("tbl_uji_header", "row_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
-				$data_ujian = $this->madmin->get_data("tbl_test_ujionline", "result_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
 				
 				$data_ujian_simulasi = $this->madmin->get_data("tbl_uji_simulasi_header", "row_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
 				
@@ -243,9 +243,11 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data_asesmen_header", $data_asesmen_header);
 				$this->smarty->assign("data_asesmen", $data_asesmen);
 				$this->smarty->assign("data_ujian_header", $data_ujian_header);
-				$this->smarty->assign("data_ujian", $data_ujian);
 				$this->smarty->assign("data_ujian_simulasi", $data_ujian_simulasi);
 				$this->smarty->assign("folder_sertifikasi", $folder);
+				
+				//$data_ujian = $this->madmin->get_data("tbl_test_ujionline", "result_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
+				//$this->smarty->assign("data_ujian", $data_ujian);
 			break;
 			case "hasil_akhir":
 				$content = "modul-admin/hasil_akhir/main-hasil.html";
@@ -350,6 +352,17 @@ class modul_admin extends SHIPMENT_Controller{
 		$this->smarty->assign('type', $type);
 		$this->smarty->assign('data', $data);
 		$this->smarty->display('modul-admin/tabel-cari.html');
+	}
+	
+	function gettabelpaging($type=""){
+		$data = $this->madmin->get_data($type, "result_array");
+		$perpage = 10;
+		$page = (($this->input->post('page')) ? $this->input->post('page') : 0 );
+		
+		$this->smarty->assign('type', $type);
+		$this->smarty->assign('data', $data);
+		$this->smarty->assign('idx', (($page * $perpage)+1) );
+		$this->smarty->display('modul-admin/tabel-paging.html');
 	}
 	
 	function simpansavedbx($type=""){
@@ -467,7 +480,7 @@ class modul_admin extends SHIPMENT_Controller{
 
 	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){
 		$this->load->helper('db_helper');
-		$this->load->model("mportal");
+		$this->load->model("why/mportal");
 		
 		$v = $this->input->post('v');
 		if($v != ""){

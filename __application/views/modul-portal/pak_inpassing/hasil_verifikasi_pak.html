@@ -1,0 +1,203 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			</div>
+		</div>
+	</div>
+</div>		
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						
+						<form class="form-horizontal" role="form" name="verpak" id="verpak" action="" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover tc-table bg-info">
+									<thead>
+										<tr>
+											<th class="left" width="70%"><h4>HASIL VERIFIKASI DAFTAR USULAN PENETAPAN ANGKA KREDIT</h4></th>
+										</tr>
+									</thead>
+								</table>
+								<table class="table table-bordered table-hover tc-table">
+									<tr>
+										<td class="left" width="1%"><h5>I</h5></td>
+										<td class="left" colspan='3'><h5>KETERANGAN PERORANGAN</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>1.</h5></td>
+										<td class="left" width="20%"><h5>Nama </h5></td>
+										<td  width="60%" colspan="2" ><h5>{$data.nama_lengkap}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>2.</h5></td>
+										<td class="left" width="20%"><h5>NIP </h5></td>
+										<td  width="60%" ><h5>{$data.nip}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>3.</h5></td>
+										<td class="left" width="20%"><h5>Pangkat/Golongan Ruang TMT </h5></td>
+										<td  width="60%" ><h5>{$data.nama_pangkat}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>4.</h5></td>
+										<td class="left" width="20%"><h5>Tempat & Tanggal Lahir </h5></td>
+										<td  width="60%" ><h5>{$data.tempat_lahir}/{$data.tgl_lahir}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>5.</h5></td>
+										<td class="left" width="20%"><h5>Jenis Kelamin </h5></td>
+										<td  width="60%" ><h5>{$data.sex}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>6.</h5></td>
+										<td class="left" width="20%"><h5>Pendidikan </h5></td>
+										<td  width="60%" ><h5>{$data.nama_pendidikan}</h5></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td class="left" width="1%"><h5>7.</h5></td>
+										<td class="left" width="20%"><h5>Masa Kepangkatan </h5></td>
+										<td  width="60%" ><h5>{$pak_temp.masa_kerja}</h5></td>
+									</tr>
+								</table>
+								<table class="table table-bordered table-hover tc-table">
+									<thead>															
+										<tr>
+											<th class="left" width="1%"><h5>II</h5></th>
+											<th class="left" width='80%' colspan='3'><h5>KETERANGAN ANGKA KREDIT</h5></th>
+											<th width='5%' style="text-align:center !important;">Jumlah Diajukan</th>
+											<th width='5%' style="text-align:center !important;">Jumlah Diterima</th>
+										</tr>
+									</thead>
+									<tbody>	
+											<tr>
+												<td width='1%'></td>
+												<td class="left" width='1%'><h5>1.</h5></td>
+												<td class="left" colspan="4" width='99%'>
+													<h5>UNSUR UTAMA</h5>
+													<table class="table table-bordered table-hover tc-table">
+														<tr>
+															<td width='1%' class="left"><label>A.</label></td>
+															<td width='70%'>
+																<label>Pendidikan</label>	
+															</td>
+															<td  width='6%'>{$pak_temp.angka_unsur_pendidikan}</td>
+															<td  width='6%'>{$pak_temp.angka_unsur_pendidikan}</td>
+														</tr>
+														<tr>
+															<td></td>
+															<td>																											
+																	<table class="table table-bordered table-hover tc-table">
+																		<tr>
+																			<td>
+																				1) Pendidikan formal 
+																			</td>
+																		</tr>
+																		<tr>
+																			<td>
+																				2) Pendidikan dan pelatihan fungsional/teknis Jabatan Fungsional 
+																				Polisi Pamong Praja serta memperoleh Surat Tanda Tamat Pendidikan dan 
+																				Pelatihan (STTPP) atau sertifikat 
+																			</td>
+																		</tr>
+																		<tr>
+																			<td>
+																				3) Pendidikan dan pelatihan Prajabatan
+																			</td>
+																		</tr>
+																	</table>
+															</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>B.</label></td>
+															<td width='70%'>
+																<label>Penegakan Peraturan Daerah</label>
+															</td>
+															<td  width='7%'>{(($pak_temp.total_angka_diajukan-25)*0.8)*0.45}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>C.</label></td>
+															<td width='70%'>
+																<label>Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</label>
+															</td>
+															<td  width='7%'>{(($pak_temp.total_angka_diajukan-25)*0.8)*0.45}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>D.</label></td>
+															<td width='70%'>
+																<label>Pengembangan Profesi</label>
+															</td>
+															<td  width='7%'>{(($pak_temp.total_angka_diajukan-25)*0.8)*0.1}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_c}</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td width='1%'></td>
+												<td class="left" width='1%'><h5>2.</h5></td>
+												<td class="left" colspan="4" width='99%'>
+													<h5>UNSUR PENUNJANG</h5>
+													<table class="table table-bordered table-hover tc-table">
+														<tr>
+															<td width='70%'>
+																<label>Penunjang Tugas Polisi Pamong Praja</label>
+															</td>
+															<td  width='6%'>{($pak_temp.total_angka_diajukan-25)*0.2}</td>
+															<td  width='6%' colspan="2">{$pak_temp.angka_unsur_penunjang}</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td width='1%'></td>
+												<td class="left" colspan="3" width="80%">
+													<h5>JUMLAH UNSUR UTAMA DAN PENUNJANG</h5>
+												</td>
+												<td  width='5%'><strong>{$pak_temp.total_angka_diajukan}</strong></td>
+												<td  width='5%' colspan="2"><strong>{$pak_temp.total_angka_diterima}</strong></td>
+											</tr>
+											<tr>
+												<td width='1%'></td>
+												<td class="left" colspan="5">
+													<h5>DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN {$jabatan} / PANGKAT {$data.nama_pangkat} / TMT .......</h5>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="6"><div class="hr-12 hr-double hr-dotted"></div></td>
+											</tr>
+											<tr>
+												<td colspan="6">
+													<h5>
+														Catatan :
+													</h5>
+													<textarea rows="4" cols="135" name="note" disabled>{$pak_temp.catatan}</textarea>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+						</form>	
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

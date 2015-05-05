@@ -1,0 +1,168 @@
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+			</div>
+		</div>
+	</div>
+</div>		
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						
+						<form class="form-horizontal" role="form" name="aspak" action="{$host}submit-pak" method="post" enctype="multipart/form-data">
+							<div class="form-group">
+							<div class="col-sm-12">
+								<table class="table table-bordered table-hover tc-table bg-primary">
+									<thead>
+										<tr>
+											<th class="left" width="70%"><h5>:: DUPAK Anda dalam proses Approval oleh Tim Penilai</h5></th>
+										</tr>
+									</thead>
+								</table>
+								<!--<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th class="left" width="70%"><h4>PENETAPAN ANGKA KREDIT (PAK)</h4></th>
+											<th  width="5%" >Lama</th>
+											<th  width="5%" >Baru</th>
+											<th  width="5%" >Jumlah</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR UTAMA</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >50</th>
+											<th  width="5%" >50</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR PENUNJANG</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >20</th>
+											<th  width="5%" >20</th>
+										</tr>
+										<tr>
+											<th class="left" width="70%"><h5>JUMLAH UNSUR UTAMA & PENUNJANG</h5></th>
+											<th  width="5%" >0</th>
+											<th  width="5%" >70</th>
+											<th  width="5%">70</th>
+										</tr>
+									</thead>
+									<tbody>	
+									</tbody>
+								</table>-->
+								<table class="table table-bordered table-hover tc-table">
+									<thead>
+										<tr>
+											<th width='1%' class="center">No</th>
+											<th width='70%' style="text-align:center !important;">Butir Kegiatan</th>
+											<th width='7%' style="text-align:center !important;">Lama</th>
+											<th width='7%' style="text-align:center !important;">Baru</th>
+											<th width='10%' style="text-align:center !important;">Jumlah</th>
+										</tr>
+									</thead>
+									<tbody>	
+											<tr>
+												<td class="left"><h5>1.</h5></td>
+												<td class="left" colspan="4">
+													<h5>UNSUR UTAMA</h5>
+													<table class="table table-bordered table-hover tc-table">
+														<tr>
+															<td width='1%' class="left"><label>A.</label></td>
+															<td width='70%'>
+																<label>Pendidikan</label>
+															</td>
+															<td  width='7%'>0</td>
+															<td  width='7%'>{$pak_temp.angka_unsur_pendidikan}</td>
+															<td  width='10%'>100</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>B.</label></td>
+															<td width='70%'>
+																<label>Penegakan Peraturan Daerah</label>
+															</td>
+															<td  width='7%'>0</td>
+															<td  width='7%'>{$pak_temp.poin_a}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>C.</label></td>
+															<td width='70%'>
+																<label>Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</label>
+															</td>
+															<td  width='7%'>0</td>
+															<td  width='7%'>{$pak_temp.poin_b}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+														</tr>
+														<tr>
+															<td width='1%' class="left"><label>D.</label></td>
+															<td width='70%'>
+																<label>Pengembangan Profesi</label>
+															</td>
+															<td  width='7%'>0</td>
+															<td  width='7%'>{$pak_temp.poin_c}</td>
+															<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td class="left"><h5>2.</h5></td>
+												<td class="left" colspan="4">
+													<h5>UNSUR PENUNJANG</h5>
+													<table class="table table-bordered table-hover tc-table">
+														<tr>
+															<td width='73%'>
+																<label>Penunjang Tugas Polisi Pamong Praja</label>
+															</td>
+															<td  width='7%'>0</td>
+															<td  width='7%'>{$pak_temp.angka_unsur_penunjang}</td>
+															<td  width='10%' colspan="2">{$pak_temp.angka_unsur_penunjang}</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+											<tr>
+												<td class="left" colspan="2">
+													<h5>JUMLAH UNSUR UTAMA DAN PENUNJANG</h5>
+												</td>
+												<td  width='7%'>0</td>
+												<td  width='7%'>{$pak_temp.total_angka_diajukan}</td>
+												<td  width='10%' colspan="2">{$pak_temp.total_angka_diajukan}</td>
+											</tr>
+											<tr>
+												<td colspan="5"><div class="hr-12 hr-double hr-dotted"></div></td>
+											</tr>
+											<tr>
+												<td colspan="5">
+													<h5>
+														DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN ....................................... / PANGKAT .................... / TMT ....................
+													</h5>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="5">
+													<h5>
+														NOTE :
+													</h5>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+						</form>
+						<!-- <div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();pakass();">Submit</button>
+						</div> -->
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>\

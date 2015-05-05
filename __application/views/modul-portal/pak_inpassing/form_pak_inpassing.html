@@ -1,0 +1,145 @@
+
+<div class="mass-head inner">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+				<h1>ANGKA KREDIT KUMULATIF UNTUK PENYESUAIAN (INPASSING)</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="block-s2">
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Tata Pengisian Form PAK</h4>
+				<div class="well light" style='margin-bottom:0px;'>
+					<ul>
+						<li>
+							Data Tingkat Jabatan Pol PP disesuaikan dengan data saat pengisian form registrasi.
+						</li>
+						<li>
+							Data Golongan Ruang dan Pendidikan disesuaikan dengan data saat pengisian form registrasi.
+						</li>
+						<li>
+							Silahkan memilih Masa Kepangkatan dan disertai dengan mengupload SK Masa Kepangkatan
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container ">
+	<div class="block-s1">
+		<div class="row">
+			<div class="col-lg-12">						
+				<div class="portlet">
+					<div class="well light">
+						
+						<form class="form-horizontal" role="form" name="inpas_in" action="{$host}submit-pak-inpassing" method="post" enctype="multipart/form-data">
+							<input type='hidden' name='usaid' value='{$auth.id}'>
+							<input type='hidden' id="golongan" name='golongan' value='{$peserta.id_gol}'>
+							<input type='hidden' id='pendidikan' name='pendidikan' value='{$peserta.id_pend}'>
+							<input type='hidden' id='tingkat' name='tingkat' value='{if $peserta.tingkat_id eq 21}1{else}2{/if}'>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<h4>Form Konfirmasi Pembayaran</h4>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Nama Lengkap : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$auth.nama_lengkap}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">NIP : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$peserta.nip}
+											</span>
+										</div>
+									</div>									
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Tingkat : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{if $peserta.tingkat_id eq 21}Tingkat Terampil{else}Tingkat Ahli{/if}
+											</span>
+											<!--
+											<div class="col-sm-6" style='padding-left:0px !important;'>
+												<select id='tingkat' class="form-control" name="tingkat" onChange="">
+													<option value=''>-- Pilih --</option>
+													{foreach from=$tingkat item=row}
+													<option value='{$row->id}'>{$row->tingkat_jabatan}</option>
+													{/foreach}
+												</select> 
+											</div>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+											-->
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Golongan Ruang : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$peserta.nama_pangkat}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pendidikan : </label>
+										<div class="col-sm-8">
+											<span class="form-control" style="border:none !important;">
+											{$peserta.nama_pendidikan}
+											</span>
+										</div>
+									</div>								
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Masa Kepangkatan : </label>
+										<div class="col-sm-8">
+											<div class="col-sm-6" style='padding-left:0px !important;'>
+												<select id='masa' class="form-control" name="masa" onChange="processCombo('angdit')" required>
+													<option value=''>-- Pilih --</option>
+													{foreach name=loop from=$masa_kerja item=row}
+													<option value='{$row->id}'>{$row->masa_kerja}</option>
+													{/foreach}
+												</select> 
+											</div>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+									</div>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Angka Kredit : </label>
+										<div class="col-sm-1"  id="didit">
+										</div>
+									</div>
+									<div class="hr-12 hr-double hr-dotted"></div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">SK Kepangkatan : </label>
+										<div class="col-sm-10">
+											<input class="col-sm-6" id='sk_masa' type="file" name='sk_masa' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>*) Harus Diisi</code></span>
+										</div>
+										<label class="col-sm-2 control-label">&nbsp;</label>
+										<div class="col-sm-10">
+										<span class="help-block"><code>format file harus .pdf & .jpg, ukuran file maksimal 500 kb</code></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();pakinass('save');">Submit</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

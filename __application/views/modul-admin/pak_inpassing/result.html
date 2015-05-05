@@ -1,0 +1,75 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Manajemen User Admin</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<!-- END PAGE HEADING ROW -->
+<div id="konten_pak_temp">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
+			<h4>Data PAK Peserta</h4>
+		</div>		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<label>Filter Data :</label> 
+			<select id='kat_filter' style="width:150px;">
+				<option value="">-- Kategori --</option>
+				<option value="">Tester</option>
+			</select>
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-medium center">Nama Peserta</th>
+								<th class="hidden-xs col-medium center">NIP</th>
+								<th class="col-medium center">Golongan</th>
+								<th class="hidden-xs col-medium center">Tingkat</th>
+								<th class="hidden-xs col-small center">Status</th>
+								<th class="col-meium center">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{if $pak_temp}
+								{foreach from=$pak_temp item=rows}
+									<tr>
+										<td class="center">{$rows.nama_lengkap}</td>
+										<td>{$rows.nip}</td>
+										<td class="hidden-xs">{$rows.nama_pangkat}</td>
+										<td class="hidden-xs">{$rows.nama_tingkat}</td>
+										<td class="hidden-xs col-small center">
+											Done
+										</td>
+										<td class="col-medium center">
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="tampil_view('pak_det','{$host}pak-validasi', 'konten_pak_temp', '{$rows.id_peserta}', '{$rows.id_angka_kredit}')" class="btn btn-danger">
+													<i class="fa fa-pencil icon-only"></i> Val PAK
+												</a>
+												<a href="{$host}modul_pak/gen_sertifikat/{$rows.id_peserta}/{$rows.id_angka_kredit}"   class="btn btn-inverse">
+													<i class="fa fa-pencil icon-only"></i> Gen PAK
+												</a>
+												<a href="{$host}modul_pak/gen_keputusan/{$rows.id_peserta}/{$rows.id_angka_kredit}" class="btn btn-danger">
+													<i class="fa fa-pencil icon-only"></i> Gen SK
+												</a>
+											</div>	
+										</td>
+									</tr>
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+

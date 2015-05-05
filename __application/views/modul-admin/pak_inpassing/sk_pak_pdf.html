@@ -1,0 +1,275 @@
+
+
+<div id='header'>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:12px;">
+		<tr>
+			<td align='center'>
+				<h5>PENETAPAN ANGKA KREDIT</h5>
+			</td>
+		</tr>
+		<tr>
+			<td align='center'>
+				<h5>NOMOR : {$pak_val.nomor_sk_keputusan}</h5>
+			</td>
+		</tr>
+	</table>
+</div> 
+
+<div id='content'>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:12px;">
+		  <tr>
+			<td width="50%" align='left'>
+					Instansi : {$pak_val.instansi}
+			</td>
+			<td width="50%" align='right'>
+					Masa Penilaian : {$pak_val.masa_penilaian}
+			</td>
+		  </tr>
+	</table>
+	<table cellspacing="0" cellpadding="5"  width="100%" border='1' style="margin-bottom:10px; font-family:arial; font-size:12px;border-collapse: collapse;">
+		<tr>
+			<td align="left" width="1%"  style="border: 1px solid black;"> <h4>I</h4> </td>
+			<td align='left' colspan="5" cellspacing="0"><h4>KETERANGAN PERORANGAN</h4></td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td align="left" width="14%" >Nama </td>
+			<td  align="left" width="85%" colspan="4">{$data.nama_lengkap}</td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td class="left" width="25%" >NIP </td>
+			<td  width="75%" colspan="4" >{$data.nip}</td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td class="left" width="25%" >Pangkat/Golongan Ruang TMT </td>
+			<td  width="75%" colspan="4" >{$data.nama_pangkat}</td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td class="left" width="24%" >Tempat & Tanggal Lahir </td>
+			<td  width="75%" colspan="4" >{$data.tempat_lahir} / {$data.tgl_lahir}</td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td class="left" width="24%" >Jenis Kelamin </td>
+			<td  width="75%" colspan="4" >{$data.sex}</td>
+		</tr>
+		<tr>
+			<td align="left" width="1%" ></td>
+			<td class="left" width="24%" >Pendidikan </td>
+			<td  width="75%" colspan="4" >{$data.nama_pendidikan}</td>
+		</tr>
+	</table>
+	<table cellspacing="0" cellpadding="5"  border="1" width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;border-collapse: collapse;">
+		<tr>
+			<td align="left" width="1%"> <h4>II</h4> </td>
+			<td align='left' colspan="5"><h4>PENETAPAN ANGKA KREDIT</h4></td>
+			<td align='left' width="5%">Lama</td>
+			<td align='left' width="5%">Baru</td>
+			<td align='left' width="8%">Jumlah</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%">1.</td>
+			<td align='left' colspan="4">UNSUR UTAMA</td>
+			<td align='left' width="5%"></td>
+			<td align='left' width="5%"></td>
+			<td align='left' width="8%"></td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td width="1%">A. </td>
+			<td align='left' width="85%"  colspan="3">Pendidikan</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.angka_unsur_pendidikan}</td>
+			<td align='left' width="8%">{$pak_val.angka_unsur_pendidikan}</td>
+		</tr>		
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td align='left' width="85%"  colspan="3">																											
+				<table cellspacing="0" cellpadding="5"  border="1" style="margin-bottom:10px; font-family:arial; font-size:11px;border-collapse: collapse;">
+					<tr>
+						<td>
+							1) Pendidikan formal 
+						</td>
+					</tr>
+					<tr>
+						<td>
+							2) Pendidikan dan pelatihan fungsional/teknis Jabatan Fungsional 
+							Polisi Pamong Praja serta memperoleh Surat Tanda Tamat Pendidikan dan 
+							Pelatihan (STTPP) atau sertifikat 
+						</td>
+					</tr>
+					<tr>
+						<td>
+							3) Pendidikan dan pelatihan Prajabatan
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td width="1%"></td>
+		</tr>
+		
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td width="1%">B. </td>
+			<td align='left' width="85%"  colspan="3">Penegakan Peraturan Daerah</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.poin_a}</td>
+			<td align='left' width="8%">{$pak_val.poin_a}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td width="1%">C. </td>
+			<td align='left' width="85%"  colspan="3">Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.poin_b}</td>
+			<td align='left' width="8%">{$pak_val.poin_b}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td width="1%">D. </td>
+			<td align='left' width="85%"  colspan="3">Pengembangan Profesi</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.poin_c}</td>
+			<td align='left' width="8%">{$pak_val.poin_c}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td align='left' width="85%"  colspan="4">Jumlah Unsur Utama</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.angka_unsur_utama}</td>
+			<td align='left' width="8%">{$pak_val.angka_unsur_utama}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%">2.</td>
+			<td align='left' colspan="4">UNSUR PENUNJANG</td>
+			<td align='left' width="5%"></td>
+			<td align='left' width="5%"></td>
+			<td align='left' width="8%"></td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td align='left' width="80%"  colspan="4">Penunjang Tugas Polisi Pamong Praja  </td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.angka_unsur_penunjang}</td>
+			<td align='left' width="8%">{$pak_val.angka_unsur_penunjang}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td width="1%"></td>
+			<td align='left' width="80%"  colspan="4">Jumlah Unsur Penunjang</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.angka_unsur_penunjang}</td>
+			<td align='left' width="8%">{$pak_val.angka_unsur_penunjang}</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td align='left' width="80%"  colspan="8" cellspacing="0" cellpadding="10">
+				
+			</td>
+		</tr>
+		<tr>
+			<td width="1%"></td>
+			<td align='left' width="80%"  colspan="5">JUMLAH UNSUR UTAMA DAN UNSUR PENUNJANG</td>
+			<td align='left' width="5%">0</td>
+			<td align='left' width="5%">{$pak_val.total_angka_diterima}</td>
+			<td align='left' width="8%">{$pak_val.total_angka_diterima}</td>
+		</tr>
+		<tr><td width="1%">III</td>
+			<td align='left' width="80%"  colspan="8" cellspacing="0" cellpadding="10">
+				DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN {$jab} / PANGKAT {$data.nama_pangkat} / TMT {$pak_val.tmt}
+			</td>
+		</tr>
+	</table>	
+	<br><br>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;">
+		  <tr>
+			<td align='left' width="70%">
+			</td>
+			<td align='left' width="30%">
+					Ditetapkan di {$pak_val.ditetapkan_di}
+			</td>
+		  </tr>
+		  <tr><td></td></tr>
+		  <tr>			
+			<td align='left' width="70%">
+			</td>
+			<td align='left' width="30%">
+					Pada tanggal {$pak_val.masa_penilaian}
+			</td>
+		  </tr>
+		  <tr><td></td></tr>		  
+		  <tr><td></td></tr>
+		  <tr>			
+			<td align='left'>
+					<strong>ASLI</strong> disampaikan dengan hormat kepada:
+			</td>
+		  </tr>
+		  <tr>			
+			<td align='left'>
+					Kepala BKN/Kantor Regional BKN yang bersangkutan
+			</td>
+		  </tr>
+	</table>
+	<br><br>
+	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;">
+		<tr>
+			<td align='left'  width="70%">
+				Tembusan disampaikan kepada:
+			</td>
+			<td align='left'  width="30%">
+				Nama Lengkap
+			</td>
+		</tr>
+		<tr>
+			<td align='left'  width="70%">
+				1. Polisi Pamong Praja  yang bersangkutan;
+			</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td align='left'>
+				2.	Direktur yang membidangi tugas Pol PP Kementerian Dalam Negeri;
+			</td>
+		</tr>
+		<tr>
+			<td align='left'>
+				3.	Kepala Pusat Pembinaan Jabatan Fungsional Kementerian Dalam Negeri;
+			</td>
+			<td align='left'>{$data.nama_lengkap}</td>
+		</tr>
+		<tr>
+			<td align='left'>
+				4.	Sekretaris Tim Penilai yang bersangkutan;
+			</td>
+			<td align='left'>______________________</td>
+		</tr>
+		<tr>
+			<td align='left'>
+				5.	Kepala Badan Kepegawaian Daerah Provinsi/Kabupaten/Kota; dan
+			</td>
+			<td align='left'  width="30%">
+				NIP. {$data.nip}
+			</td>
+		</tr>
+		<tr>
+			<td align='left'>
+				6.	Pejabat lain yang dianggap perlu.
+			</td>
+		</tr>
+	</table>
+</div>

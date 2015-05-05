@@ -1,0 +1,184 @@
+
+<div class="row">
+	<div class="col-lg-12">						
+		<div class="portlet">
+			<div class="well light">
+				
+				
+				<form class="form-horizontal" role="form" name="apvpak" id="apvpak" action="{$host}approve-pak" method="post" enctype="multipart/form-data">
+					<input type='hidden' name='usaid' value='{$data.id}'>
+					<input type='hidden' name='idpak' value='{$pak_temp.id}'>
+					<div class="form-group">
+					<div class="col-sm-12">
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
+								<tr>
+									<th class="left" width="70%"><h4>DAFTAR USULAN PENETAPAN ANGKA KREDIT</h4></th>
+								</tr>
+								<tr>
+									<th class="left" width="70%"><h5>:: Silahkan Lakukan Approval terhadap pengajuan PAK di bawah :</h5></th>
+								</tr>
+							</thead>
+						</table>
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
+								<tr>
+									<th class="left" colspan='2'><h4>KETERANGAN PERORANGAN</h4></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Nama :</h5></th>
+									<th  width="60%" ><h5>{$data.nama_lengkap}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>NIP :</h5></th>
+									<th  width="60%" ><h5>{$data.nip}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Pangkat/Golongan Ruang TMT :</h5></th>
+									<th  width="60%" ><h5>{$data.nama_pangkat}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Tempat & Tanggal Lahir :</h5></th>
+									<th  width="60%" ><h5>{$data.tempat_lahir}/{$data.tgl_lahir}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Jenis Kelamin :</h5></th>
+									<th  width="60%" ><h5>{$data.sex}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Pendidikan :</h5></th>
+									<th  width="60%" ><h5>{$data.nama_pendidikan}</h5></th>
+								</tr>
+								<tr>
+									<th class="left" width="20%"><h5>Masa Kepangkatan :</h5></th>
+									<th  width="60%" ><h5>{$pak_temp.masa_kerja}</h5></th>
+								</tr>
+							</thead>
+						</table>
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
+								<tr>
+									<th width='1%' class="center">No</th>
+									<th width='70%' style="text-align:center !important;">Butir Kegiatan</th>
+									<th width='7%' style="text-align:center !important;">Lama</th>
+									<th width='7%' style="text-align:center !important;">Baru</th>
+									<th width='10%' style="text-align:center !important;">Jumlah</th>
+								</tr>
+							</thead>
+							<tbody>	
+									<tr>
+										<td class="left"><h5>1.</h5></td>
+										<td class="left" colspan="4">
+											<h5>UNSUR UTAMA</h5>
+											<table class="table table-bordered table-hover tc-table">
+												<tr>
+													<td width='1%' class="left"><label>A.</label></td>
+													<td width='70%'>
+														<label>Pendidikan</label>
+													</td>
+													<td  width='7%'>0</td>
+													<td  width='7%'>{$pak_temp.angka_unsur_pendidikan}</td>
+													<td  width='10%'>{$pak_temp.angka_unsur_pendidikan}</td>
+												</tr>
+												<tr>
+													<td width='1%' class="left"><label>B.</label></td>
+													<td width='70%'>
+														<label>Penegakan Peraturan Daerah</label>
+													</td>
+													<td  width='7%'>0</td>
+													<td  width='7%'>{$pak_temp.poin_a}</td>
+													<td  width='10%' colspan="2">{$pak_temp.poin_a}</td>
+												</tr>
+												<tr>
+													<td width='1%' class="left"><label>C.</label></td>
+													<td width='70%'>
+														<label>Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</label>
+													</td>
+													<td  width='7%'>0</td>
+													<td  width='7%'>{$pak_temp.poin_b}</td>
+													<td  width='10%' colspan="2">{$pak_temp.poin_b}</td>
+												</tr>
+												<tr>
+													<td width='1%' class="left"><label>D.</label></td>
+													<td width='70%'>
+														<label>Pengembangan Profesi</label>
+													</td>
+													<td  width='7%'>0</td>
+													<td  width='7%'>{$pak_temp.poin_c}</td>
+													<td  width='10%' colspan="2">{$pak_temp.poin_c}</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td class="left"><h5>2.</h5></td>
+										<td class="left" colspan="4">
+											<h5>UNSUR PENUNJANG</h5>
+											<table class="table table-bordered table-hover tc-table">
+												<tr>
+													<td width='73%'>
+														<label>Penunjang Tugas Polisi Pamong Praja</label>
+													</td>
+													<td  width='7%'>0</td>
+													<td  width='7%'>{$pak_temp.angka_unsur_penunjang}</td>
+													<td  width='10%' colspan="2">{$pak_temp.angka_unsur_penunjang}</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td class="left" colspan="2">
+											<h5>JUMLAH UNSUR UTAMA DAN PENUNJANG</h5>
+										</td>
+										<td  width='7%'>0</td>
+										<td  width='7%'><strong>{$pak_temp.total_angka_diajukan}</strong></td>
+										<td  width='10%' colspan="2"><strong>{$pak_temp.total_angka_diajukan}</strong></td>
+									</tr>
+									<tr>
+										<td colspan="2"><h5>File Pendukung Masa Kerja</h5></td>
+										<td colspan="3"><a href="{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_pak/{$folder_pak}/{$pak_temp.file_sk_masa_jabatan}">{$pak_temp.file_sk_masa_jabatan}</a></td>
+									</tr>
+									<tr>
+										<td colspan="5"><div class="hr-12 hr-double hr-dotted"></div></td>
+									</tr>
+									<tr>
+										<td colspan="5"><strong>DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN {$jabatan} / PANGKAT {$data.nama_pangkat} / TMT .......</strong></td>
+									</tr>
+									<tr>
+										<td colspan="5"><h5>UBAH MASA KERJA : </h5>											
+											<select id='masa' class="form-control" name="masa" onChange="" required>
+												<option value=''>-- Pilih --</option>
+												{foreach name=loop from=$masa_kerja item=row}
+												<option value='{$row->id}'>{$row->masa_kerja}</option>
+												{/foreach}
+											</select>
+										</td>
+									</tr>
+									<!-- <tr>
+										<td colspan="5">
+											<h5>
+												DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN ....................................... / PANGKAT .................... / TMT ....................
+											</h5>
+										</td>
+									</tr> -->
+									<tr>
+										<td colspan="5">
+											<h5>
+												NOTE :
+											</h5>
+											<textarea rows="4" cols="100" name="note"></textarea>
+										</td>
+									</tr>
+							</tbody>
+						</table>
+					</div>
+					</div>
+				</form>				
+				<div class="form-actions ">
+					<button id='btnnya' class="btn btn-info" onClick="event.preventDefault();pakinass('approve', '{$host}approve-pak');">Approve PAK</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

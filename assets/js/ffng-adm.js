@@ -723,4 +723,58 @@ function nextPage(type, p1, p2, p3, p4){
 }
 //end fungsi paging
 
+//LEVI JS
+
+function tampil_view(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
+	switch(type){
+		case "pak_det":
+			$.post(urlnya, { 'id_peserta' : p1 , 'id_angdit' : p2 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "pak_result":
+			$.post(urlnya, { 'id_peserta' : p1 , 'id_angdit' : p2 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "pak_sk":
+			$.post(urlnya, { 'id_peserta' : p1 , 'id_angdit' : p2 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "pak_ver":
+			$.post(urlnya, { 'id_peserta' : p1 , 'id_angdit' : p2 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+	}
+}
+
+function pakinass(type, urlnya){	
+	switch(type){
+		// case "save":
+			// document.inpas_in.submit();
+		// break;
+		case "approve":
+			$.post( urlnya, $( "#apvpak" ).serialize(), function(resp){
+				if (resp == 1){					
+					alert('Approval PAK Tersimpan!.');
+					loadUrl(hostir+'pak-temp');
+				}else{
+					alert(resp);
+				}
+			});
+		break;
+		case "peripik":
+			$.post( urlnya, $( "#verpak" ).serialize(), function(resp){
+				if (resp == 1){					
+					alert('Verifikasi PAK Tersimpan!.');
+					loadUrl(hostir+'pak-result');
+				}else{
+					alert(resp);
+				}
+			});
+		break;
+	}
+}
 

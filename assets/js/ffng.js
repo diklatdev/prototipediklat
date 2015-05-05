@@ -720,3 +720,15 @@ function clr() {
 	}
 }
 
+// Levi PAK
+function pakinass(type){	
+	switch(type){
+		case "save":
+			document.inpas_in.submit();
+		break;
+		case "approve":
+			document.apvpak.submit();
+		break;
+	}
+}
+

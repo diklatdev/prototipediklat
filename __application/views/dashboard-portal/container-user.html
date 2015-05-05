@@ -23,7 +23,11 @@
 							{if $sts_psr.step_wawancara eq '2'}
 								<marquee><h3>Prosedur Selanjutnya Adalah Ujian Wawancara. Harap Mempersiapkan Diri Anda Agar Bisa Melakukan Ujian Wawancara Dengan Baik. Semoga Sukses.</h3></marquee>
 							{/if}
-							
+							{*
+							{if $sts_psr.step_wawancara eq '1'}
+								<marquee><h3>Hasil Sementara Sertifikasi Anda Sudah Tersedia. Silahkan Buka Halaman Hasil Akhir Untuk Melihat Data Hasil Sementara Anda.</h3></marquee>
+							{/if}
+							*}
 							{if $sts_psr.step_hasil eq '1'}
 								<marquee><h3>Hasil Sertifikasi Diklat Anda Sudah Tersedia. Silahkan Buka Halaman Hasil Akhir Pada Portal Diklat ini.</h3></marquee>
 							{/if}
@@ -49,7 +53,7 @@
 				<div class="well light">
 					<div class="tc-tabs no-margin"><!-- Nav tabs style 10-->
 						<ul class="nav nav-tabs tab-small-button">
-							<li class="active"><a data-toggle="tab" href="#tab26"><i class="fa fa-home"></i> Tahapan Diklat</a></li>
+							<li class="active"><a data-toggle="tab" href="#tab26"><i class="fa fa-home"></i> Data Sertifikasi</a></li>
 							<li class=""><a data-toggle="tab" href="#tab27"><i class="fa fa-user"></i> Data Profil</a></li>
 						</ul>
 						
@@ -184,7 +188,61 @@
 								</table>
 								{/if}
 								
-								
+								<hr>
+								<h5><b>DATA PEKERJAAN ANDA SAAT PENGAJUAN SERTIFIKASI</b></h5>
+								<hr>
+								<div class="form-horizontal" >
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Provinsi : </label>
+										<div class="col-sm-4">	
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_provinsi|default:$data_diklat_terakhir.nama_provinsi}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Kabupaten : </label>
+										<div class="col-sm-4">															
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_kabupaten|default:$data_diklat_terakhir.nama_kabupaten}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
+										<div class="col-sm-6">															
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_instansi|default:$data_diklat_terakhir.nama_instansi}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+										<div class="col-sm-4">															
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_pangkat|default:$data_diklat_terakhir.nama_pangkat}
+											</span>
+										</div>
+									</div>
+									<div class="space-4"></div>	
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jabatan : </label>
+										<div class="col-sm-6">
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.jabatan|default:$data_diklat_terakhir.jabatan}
+											</span>
+										</div>
+									</div>																	
+									<div class="space-4"></div>	
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Alamat : </label>
+										<div class="col-sm-10">
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.alamat_instansi|default:$data_diklat_terakhir.alamat_instansi}
+											</span>
+										</div>
+									</div>																						
+								</div>
 								{else}
 									<br/>
 									<center><h3>Saat Ini Anda Tidak Mengikuti Diklat Apapun</h3></center>
@@ -228,6 +286,7 @@
 								<div class="form-horizontal" >
 									<div class="form-group">
 										<div class="col-sm-12">
+											<div class="hr-12 hr-double hr-dotted"></div>
 											<h4>Data Pribadi</h4>
 											<div class="hr-12 hr-double hr-dotted"></div>
 											<div class="form-group">
@@ -258,9 +317,9 @@
 											<div class="space-4"></div>
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
-												<div class="col-sm-2">
+												<div class="col-sm-8">
 													<span class="form-control" style="border:none !important;">
-													{$datapeserta.tempat_lahir}, {$datapeserta.tanggal_lahir}
+													{$datapeserta.tempat_lahir}, {$datapeserta.tanggal_lahir|date_format:"%d  %B  %Y"}
 													</span>
 												</div>			
 											</div>																
@@ -324,6 +383,14 @@
 													</span>
 												</div>
 											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label">Pass Photo : </label>
+												<div class="col-sm-4">
+													<span class="form-control" style="border:none !important; height:125px !important;">
+														<img src='__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_data_diri/{$datapeserta.foto_profil}' width='100px' height='125px' style='display:block;' >
+													</span>
+												</div>
+											</div>
 											<div class="hr-12 hr-double hr-dotted"></div>
 											<h4>Data Pendidikan</h4>
 											<div class="hr-12 hr-double hr-dotted"></div>
@@ -367,79 +434,7 @@
 											
 											<div class="hr-12 hr-double hr-dotted"></div>
 											<br/>
-											{if $auth.idx_sertifikasi_id}
-											<center><h4>Data Pekerjaan Saat Pengajuan Diklat </h4></center>
-											{else}
-											<center><h4>Data Pekerjaan Terakhir </h4></center>
-											{/if}
-											<div class="hr-12 hr-double hr-dotted"></div>																
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Provinsi : </label>
-												<div class="col-sm-4">	
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_provinsi|default:$data_diklat_terakhir.nama_provinsi}
-													</span>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Kabupaten : </label>
-												<div class="col-sm-4">															
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_kabupaten|default:$data_diklat_terakhir.nama_kabupaten}
-													</span>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
-												<div class="col-sm-6">															
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_instansi|default:$data_diklat_terakhir.nama_instansi}
-													</span>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
-												<div class="col-sm-4">															
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_pangkat|default:$data_diklat_terakhir.nama_pangkat}
-													</span>
-												</div>
-											</div>
-											<div class="space-4"></div>	
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Jabatan : </label>
-												<div class="col-sm-6">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.jabatan|default:$data_diklat_terakhir.jabatan}
-													</span>
-												</div>
-											</div>																	
-											<div class="space-4"></div>	
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Alamat : </label>
-												<div class="col-sm-10">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.alamat_instansi|default:$data_diklat_terakhir.alamat_instansi}
-													</span>
-												</div>
-											</div>																						
-											<div class="hr-12 hr-double hr-dotted"></div>
 											
-											{if $auth.idx_sertifikasi_id}
-											<h4>Data Permohonan Sertifikasi Saat Ini</h4>
-											<div class="hr-12 hr-double hr-dotted"></div>
-											<div class="form-group">
-												<label class="col-sm-3 control-label">Permohonan Sertifikasi : </label>
-												<div class="col-sm-8">
-													<div class="col-sm-4">															
-														<span class="form-control" style="border:none !important;">
-														{$datapeserta.nama_aparatur|default:$data_diklat_terakhir.nama_aparatur}
-														</span>
-													</div>
-												</div>
-											</div>
-											<div class="space-4"></div>
-											{/if}
 										</div>
 									</div>
 								</div>

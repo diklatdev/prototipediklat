@@ -36,9 +36,9 @@
 						<div class="space-4"></div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
-							<div class="col-sm-2">
+							<div class="col-sm-8">
 								<span class="form-control" style="border:none !important;">
-								{$datapeserta.tempat_lahir}, {$datapeserta.tanggal_lahir}
+								{$datapeserta.tempat_lahir}, {$datapeserta.tanggal_lahir|date_format:"%d  %B  %Y"}
 								</span>
 							</div>			
 						</div>																
@@ -102,6 +102,14 @@
 								</span>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pass Photo : </label>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important; height:125px !important;">
+									<img src='__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_data_diri/{$datapeserta.foto_profil}' width='100px' height='125px' style='display:block;' >
+								</span>
+							</div>
+						</div>
 						<div class="hr-12 hr-double hr-dotted"></div>
 						<h4>Data Pendidikan</h4>
 						<div class="hr-12 hr-double hr-dotted"></div>
@@ -135,13 +143,21 @@
 							<label class="col-sm-2 control-label">File Ijazah : </label>
 							<div class="col-sm-6">
 								<span class="form-control" style="border:none !important;">
-									<a href='{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_ijazah/{$datapeserta.file_ijazah}' target='_blank'>Klik Disini Untuk Melihat Ijazah</a>
+									<a href='{$host}__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_data_diri/{$datapeserta.file_ijazah}' target='_blank'>Klik Disini Untuk Melihat Ijazah</a>
 								</span>
 							</div>
 						</div>			
 						<div class="hr-12 hr-double hr-dotted"></div>
 						<h4>Data Pekerjaan Sekarang </h4>
-						<div class="hr-12 hr-double hr-dotted"></div>																
+						<div class="hr-12 hr-double hr-dotted"></div>	
+						<div class="form-group">
+							<label class="col-sm-2 control-label">File PAK : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+									<a href='{$host}__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_penentuan_angka_kredit/{$folder_sertifikasi}/{$datapeserta.kdreg_diklat}/{$datapeserta.file_pak}' target='_blank'>Klik Disini Untuk Melihat File PAK</a>
+								</span>
+							</div>
+						</div>						
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Provinsi : </label>
 							<div class="col-sm-4">	
@@ -223,7 +239,7 @@
 											<td class="col-small center">{$ind}</td>
 											<td class="col-big">{$rows.nama_persyaratan}</td>
 											<td class="col-small center">
-												<a href='{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$rows.nama_file}' target='_blank'>Preview File</a>
+												<a href='{$host}__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$datapeserta.kdreg_diklat}/{$rows.nama_file}' target='_blank'>Preview File</a>
 											</td>
 										</tr>									
 										{assign var=ind value=$ind+1}
@@ -291,7 +307,7 @@
 							<td >{$rows_as.judul_unit}</td>
 							{if $rows_as.file_pendukung}
 								<td >
-									<a target='_blank' href="{$host}repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_asesmen_mandiri/{$folder_sertifikasi}/{$rows_as.file_pendukung|default:'-'}">Preview File
+									<a target='_blank' href="{$host}__repository/dokumen_peserta/{$datapeserta.no_registrasi}/file_asesmen_mandiri/{$folder_sertifikasi}/{$datapeserta.kdreg_diklat}/{$rows_as.file_pendukung|default:'-'}">Preview File
 								</td>
 							{else}
 								<td > - </td>	
@@ -358,25 +374,14 @@
 						<th width='10%' style="text-align:center !important;">Status</th>
 					</tr>
 				</thead>
-				<tbody>
-					{assign var=indduj value=1}
-					{foreach from=$data_ujian item=rows_duj}
-						<tr>
-							<td>{$indduj}</td>
-							<td>{$rows_duj.soal}</td>
-							<td>{$rows_duj.jawaban}</td>
-							<td>
-								{if $rows_duj.status eq 'B'}
-									<font color='green'>Jawaban Benar</font>
-								{elseif $rows_duj.status eq 'S'}
-									<font color='red'>Jawaban Salah</font>
-								{/if}
-							</td>
-						</tr>
-						{assign var=indduj value=$indduj+1}
-					{/foreach}
+				<tbody id='tbl_test_ujionline'>
 				</tbody>
 			</table>
+			<div id='paginationxxx' style='width:98.%;padding:3px;border:1px solid #EAEAEA;border-radius:2px;margin-top:5px;background:#F5F5F5;'>
+				<a href="javascript:void(0);" id='prev' onClick="prevPage('tbl_test_ujionline', '{$id_peserta}', '{$idx_sertifikasi_id}', '{$kdreg_diklat}');">Prev</a>
+				<input type='text' id='page_tbl_test_ujionline' style='width:30px;text-align:center;margin-bottom:0px !important;' value='1' readonly>
+				<a href="javascript:void(0);" id='next' onClick="nextPage('tbl_test_ujionline', '{$id_peserta}', '{$idx_sertifikasi_id}', '{$kdreg_diklat}');">Next</a>
+			</div>
 		</div>
 		
 	</div>
@@ -454,3 +459,9 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$.post(hostir+'paging-data/tbl_test_ujionline', { 'idxss':'{$id_peserta}' , 'idxsert':'{$idx_sertifikasi_id}' , 'kdr':'{$kdreg_diklat}' , 'lmt':10 }, function(rsp){
+		$('#tbl_test_ujionline').html(rsp);
+	});
+</script>

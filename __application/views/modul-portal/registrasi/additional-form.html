@@ -1,7 +1,7 @@
 {if $type eq "form_asn_tk2"}
 	<div id='sert_tam'>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">Sertifikasi Aparatur : </label>
+			<label id='txtsbjnsrt' class="col-sm-2 control-label">Jenjang Sertifikasi : </label>
 			<div class="col-sm-10">
 				<div class="col-sm-4">															
 					<select id='sb_ap_tk3' onChange="processCombo('sb_ap_tk3');" class="form-control" name="sb_ap_tk3">
@@ -16,7 +16,7 @@
 {if $type eq "form_asn_tk3"}
 	<div id='sert_tam_2'>
 		<div class="form-group">
-			<label class="col-sm-2 control-label">Tipologi : </label>
+			<label class="col-sm-2 control-label">Jenjang Sertifikasi : </label>
 			<div class="col-sm-10">
 				<div class="col-sm-4">															
 					<select id='sb_ap_tk4' onChange="processCombo('sb_ap_tk4');" class="form-control" name="sb_ap_tk4">
@@ -73,7 +73,8 @@
 						<label class='col-sm-12'>{$nonya}. {$rows.nama_persyaratan}</label><br/>
 						<input type='hidden' name="idprs[]" value="{$rows.id}" />
 						<div class="col-sm-12">
-							<input type="file" class='file-persyaratan-sertifikasi' id='fl_{$indexs}' name='fl_prsyrt[]' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+							<input type="file" class='file-persyaratan-sertifikasi' id='fl_{$indexs}' onChange="chf('fl_{$indexs}', 1);" name='fl_prsyrt[]' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+							<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='fl_{$indexs}_sts'></span> </span>
 						</div>
 					</div>
 					{assign var=nonya value=$nonya+1}

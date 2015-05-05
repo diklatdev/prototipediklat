@@ -23,10 +23,10 @@
 									<thead>
 										<tr>
 											<th width='1%' class="col-small center">No.</th>
-											<th width='20%' style="text-align:center !important;">Kode</th>
+											<th width='15%' style="text-align:center !important;">Kode</th>
 											<th width='30%' style="text-align:center !important;">Asesmen Mandiri</th>
 											<th width='20%' style="text-align:center !important;">Penilaian Diri</th>
-											<th width='30%' style="text-align:center !important;">Bukti Pendukung</th>
+											<th width='50%' style="text-align:center !important;">Bukti Pendukung</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -56,7 +56,8 @@
 													<table id='flpd_{$rows.id}'>
 														<tr>
 															<td>
-																<input type="file" name="fl_pdk[]" class="col-sm-3" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
+																<input type="file" id="fl_pdk_{$rows.id}" name="fl_pdk[]" onChange="chf('fl_pdk_{$rows.id}', 1);" class="" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
+																<span class="help-block"><code>Extension file .jpg / .pdf, ukuran file maksimal 5 MB</code> </span>
 															</td>
 														</tr>
 													</table>

@@ -100,6 +100,14 @@
 								</span>
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Pass Photo : </label>
+							<div class="col-sm-4">
+								<span class="form-control" style="border:none !important; height:125px !important;">
+									<img src='__repository/dokumen_peserta/{$data.no_registrasi}/file_data_diri/{$data.foto_profil}' width='100px' height='125px' style='display:block;' >
+								</span>
+							</div>
+						</div>
 						<div class="hr-12 hr-double hr-dotted"></div>
 						<h4>Data Pendidikan</h4>
 						<div class="hr-12 hr-double hr-dotted"></div>
@@ -139,7 +147,15 @@
 						</div>			
 						<div class="hr-12 hr-double hr-dotted"></div>
 						<h4>Data Pekerjaan Sekarang </h4>
-						<div class="hr-12 hr-double hr-dotted"></div>																
+						<div class="hr-12 hr-double hr-dotted"></div>		
+						<div class="form-group">
+							<label class="col-sm-2 control-label">File PAK : </label>
+							<div class="col-sm-6">
+								<span class="form-control" style="border:none !important;">
+									<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_penentuan_angka_kredit/{$folder_sertifikasi}/{$data.kdreg_diklat}/{$data.file_pak}' target='_blank'>Klik Disini Untuk Melihat File PAK</a>
+								</span>
+							</div>
+						</div>	
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Provinsi : </label>
 							<div class="col-sm-4">	
@@ -223,7 +239,7 @@
 											<td class="col-small center">{$ind}</td>
 											<td class="col-medium">{$rows.nama_persyaratan}</td>
 											<td class="col-small center">
-												<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$rows.nama_file}' target='_blank'>Preview File</a>
+												<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_persyaratan/{$folder_sertifikasi}/{$kdreg_diklat}/{$rows.nama_file}' target='_blank'>Preview File</a>
 											</td>
 											<td class="col-small center">
 												<div id='flag_{$rows.id}'>

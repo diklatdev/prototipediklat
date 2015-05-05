@@ -1,0 +1,24 @@
+{if $type eq 'tbl_test_ujionline'}
+	{if $data}
+		{assign var=indduj value=$idx}
+		{foreach from=$data item=rows_duj}
+			<tr>
+				<td>{$indduj}</td>
+				<td>{$rows_duj.soal}</td>
+				<td>{$rows_duj.jawaban}</td>
+				<td>
+					{if $rows_duj.status eq 'B'}
+						<font color='green'>Jawaban Benar</font>
+					{elseif $rows_duj.status eq 'S'}
+						<font color='red'>Jawaban Salah</font>
+					{/if}
+				</td>
+			</tr>
+			{assign var=indduj value=$indduj+1}
+		{/foreach}
+	{else}
+		<tr>
+			<td colspan='4' align='center'> :: No Data :: </td>
+		</tr>
+	{/if}
+{/if}

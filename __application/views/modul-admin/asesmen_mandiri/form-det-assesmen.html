@@ -57,7 +57,7 @@
 							<td >{$rows.kode_unit}</td>
 							<td >{$rows.judul_unit}</td>
 							{if $rows.file_pendukung}
-								<td ><a target='_blank' href="{$host}repository/dokumen_peserta/{$no_reg}/file_asesmen_mandiri/{$folder_sertifikasi}/{$rows.file_pendukung|default:'-'}">Preview File</a></td>
+								<td ><a target='_blank' href="{$host}__repository/dokumen_peserta/{$no_reg}/file_asesmen_mandiri/{$folder_sertifikasi}/{$koderegdiklat}/{$rows.file_pendukung|default:'-'}">Preview File</a></td>
 							{else}
 								<td > - </td>	
 							{/if}

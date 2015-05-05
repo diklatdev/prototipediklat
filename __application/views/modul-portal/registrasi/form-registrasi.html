@@ -119,9 +119,9 @@
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pass Foto : </label>
-										<div class="col-sm-4">
-											<input class="col-sm-6" id='edFile_passFoto' type="file" name='edFile_passFoto' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
-											<span class="help-block"><code>format file harus .jpg, ukuran file maksimal 500 kb</code></span>
+										<div class="col-sm-6">
+											<input class="col-sm-6" id='edFile_passFoto' onChange="chf('edFile_passFoto', 2);" type="file" name='edFile_passFoto' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .jpg, ukuran file maksimal 500 KB</code> <span id='edFile_passFoto_sts'></span> </span>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
@@ -160,8 +160,8 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Upload Ijazah : </label>
 										<div class="col-sm-6">
-											<input class="col-sm-6" id='edFile_ijazah' type="file" name='edFile_ijazah' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
-											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 500 kb</code></span>
+											<input class="col-sm-6" id='edFile_ijazah' onChange="chf('edFile_ijazah', '1');" type="file" name='edFile_ijazah' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='edFile_ijazah_sts'></span> </span>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
@@ -171,11 +171,11 @@
 							<div class="hr-12 hr-double hr-dotted"></div>																
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Penentuan Angka Kredit (PAK) : </label>
-										<div class="col-sm-4">															
-											<input class="col-sm-6" id='edFile_pak' type="file" name='edFile_pak' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
-											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 500 kb</code></span>
+										<div class="col-sm-6">															
+											<input class="col-sm-6" id='edFile_pak' onChange="chf('edFile_pak', '1');" type="file" name='edFile_pak' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='edFile_pak_sts'></span> </span>
 										</div>
-										<span class="help-block"><code>*) Harus Diisi</code></span>
+										<span class="help-block"><code>*) Harus Diisi Kecuali Pengajuan Inpassing</code></span>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Provinsi : </label>
@@ -232,7 +232,7 @@
 							<div class="hr-12 hr-double hr-dotted"></div>
 								<div id="sertifikasi_1">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Jenis Aparatur : </label>
+										<label class="col-sm-2 control-label">Jenis Sertifikasi : </label>
 										<div class="col-sm-10">
 											<div class="col-sm-4">															
 												<select id='ap_tk_1' onChange="processCombo('ap_tk_1');" class="form-control" >
@@ -242,7 +242,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Sub Jenis Aparatur : </label>
+										<label id='txtsbjn' class="col-sm-2 control-label">Sub Jenis Sertifikasi : </label>
 										<div class="col-sm-10">
 											<div class="col-sm-4">															
 												<select id='sb_ap_tk2' onChange="processCombo('sb_ap_tk2');" class="form-control" name="sb_ap_tk2">

@@ -63,6 +63,7 @@ $route['form-faq'] = "why/modul_admin/getdisplay/form_faq/";
 $route['submit-faq'] = "why/modul_admin/simpansavedbx/savefaq/";
 
 $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
+$route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 
 //Modul Portal
 $route['combo/(:any)'] = "why/modul_portal/fillcombo/$1/echo";

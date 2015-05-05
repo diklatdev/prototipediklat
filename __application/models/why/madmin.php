@@ -17,7 +17,7 @@ class madmin extends SHIPMENT_Model{
 				}elseif($type == "tbl_data_peserta_detail"){
 					$select = " 
 						A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
-						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id 
+						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat 
 					";
 					$where .= " AND A.id = '".$p1."' ";
 					$join .= "
@@ -185,6 +185,31 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_test_ujionline":
+				$tbl_data_peserta_id = $this->input->post('idxss');
+				$idx_sertifikasi_id = $this->input->post('idxsert');
+				$kdreg_diklat = $this->input->post('kdr');
+				$lmt = $this->input->post('lmt');
+				
+				if(isset($tbl_data_peserta_id)){
+					$p1 = $tbl_data_peserta_id;
+				}
+				if(isset($idx_sertifikasi_id)){
+					$p2 = $idx_sertifikasi_id;
+				}
+				if(isset($kdreg_diklat)){
+					$p3 = $kdreg_diklat;
+				}
+				if(isset($lmt)){
+					$perpage = 10;
+					$page = (($this->input->post('page')) ? $this->input->post('page') : 0 );
+					$start = ($page * $perpage);
+					$limit = $perpage;
+					
+					$limits = " LIMIT $start, $limit ";
+				}else{
+					$limits = "";
+				}
+				
 				$sql = "
 					SELECT A.status, B.soal, C.jawaban
 					FROM tbl_ujitest A
@@ -192,8 +217,10 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN idx_bank_jawaban C ON A.idx_bank_jawaban_id = C.id 
 					WHERE A.tbl_data_peserta_id = '".$p1."' 
 					AND idx_sertifikasi_id = '".$p2."'
-					AND kdreg_diklat = '".$p3."'
+					AND kdreg_diklat = '".$p3."' 
+					$limits
 				";
+				
 			break;
 			
 			case "tbl_uji_simulasi_header":
@@ -400,7 +427,7 @@ class madmin extends SHIPMENT_Model{
 				
 				if($post['hsl_as'] == "L"){
 					$CI =& get_instance();
-					$CI->load->model('mportal');
+					$CI->load->model('why/mportal');
 					$kode_unik = $CI->mportal->randomString('5');
 					$kode_unik = "KDP-".$kode_unik;
 					$status = "L";

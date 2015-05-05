@@ -395,11 +395,16 @@ class mportal extends SHIPMENT_Model{
 					$number_reg = "0000001";
 				}
 				
-				if(isset($post['sb_ap_tk3'])){
-					$kode_sertifikasi = $post['sb_ap_tk3'];
+				if(isset($post['sb_ap_tk4'])){
+					$kode_sertifikasi = $post['sb_ap_tk4'];
 				}else{
-					$kode_sertifikasi = $post['sb_ap_tk2'];
+					if(isset($post['sb_ap_tk3'])){
+						$kode_sertifikasi = $post['sb_ap_tk3'];
+					}else{
+						$kode_sertifikasi = $post['sb_ap_tk2'];
+					}
 				}
+				
 				$sqlkdsert = "
 					SELECT kode_sertifikasi
 					FROM idx_aparatur_sipil_negara
@@ -451,7 +456,7 @@ class mportal extends SHIPMENT_Model{
 				}
 				
 				$username = str_replace(" ", "", $post['ed_nonip']);
-				$password = strtolower($this->randomString(10));
+				$password = "12345"; //strtolower($this->randomString(10));
 				$post_bnr['username'] = $username;
 				$post_bnr['password'] = $this->encrypt->encode($password);
 				$post_bnr['status'] = "BV";
@@ -460,10 +465,22 @@ class mportal extends SHIPMENT_Model{
 				
 				$insert_reg = $this->db->insert("tbl_data_peserta", $post_bnr);
 				if($insert_reg){
+					/*
 					if(isset($post['sb_ap_tk3'])){
 						$code_sert = $post['sb_ap_tk3'];
 					}else{
 						$code_sert = $post['sb_ap_tk2'];
+					}
+					*/
+					
+					if(isset($post['sb_ap_tk4'])){
+						$code_sert = $post['sb_ap_tk4'];
+					}else{
+						if(isset($post['sb_ap_tk3'])){
+							$code_sert = $post['sb_ap_tk3'];
+						}else{
+							$code_sert = $post['sb_ap_tk2'];
+						}
 					}
 					
 					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
@@ -757,7 +774,7 @@ class mportal extends SHIPMENT_Model{
 			case "savepembayaran":
 				if($this->auth){
 					if(!empty($_FILES['edBukti_byr']['name'])){					
-						$this->load->model('madmin');
+						$this->load->model('why/madmin');
 						
 						$ext = explode('.',$_FILES['edBukti_byr']['name']);
 						$exttemp = sizeof($ext) - 1;

@@ -124,15 +124,20 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			});
 		break;
 		case "kcppt":
+		case "fqa":
+		case "brt":
 			$.post(urlnya, { 'editstatus':'add' }, function(resp){
 				$("#"+domnya).html(resp);
 			});
 		break;
 		case "edt_kcppt":
+		case "edt_brt":
+		case "edt_fqa":
 			$.post(urlnya, { 'editstatus':'edit', 'isdx':p1 }, function(resp){
 				$("#"+domnya).html(resp);
 			});
 		break;
+		
 		//**************levi		
 		case "add_uji":
 			$.post(urlnya, function(resp){
@@ -490,6 +495,58 @@ function sb_ptjk(){
 	});	
 }
 
+function sb_brt(){
+	if($('#jd_ed').val() == ""){
+		$("#jd_ed").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Judul Berita Tidak Boleh Kosong!" });
+		return false;
+	}	
+	if($('#editstatus').val() == "add"){
+		if($('#edFile_ptjk').val() == ""){
+			$("#edFile_ptjk").focus(); 
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Gambar Tidak Boleh Kosong!" });
+			return false;
+		}
+	}
+	if($('#isbrt_ed').val() == ""){
+		$("#isbrt_ed").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Isi Berita Tidak Boleh Kosong!" });
+		return false;
+	}
+
+	ajxamsterfrm("brt_act", function(respo){
+		if(respo == 1){
+			alert("Data Tersimpan");
+			loadUrl(hostir+'manajemen-berita');
+		}else{
+			alert(respo);
+		}
+	});	
+	
+}
+
+function sb_faq(){
+	if($('#prtny_ed').val() == ""){
+		$("#prtny_ed").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pertanyaan Tidak Boleh Kosong!" });
+		return false;
+	}	
+	if($('#jwb_ed').val() == ""){
+		$("#jwb_ed").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jawaban Tidak Boleh Kosong!" });
+		return false;
+	}
+	ajxamsterfrm("faq_act", function(respo){
+		if(respo == 1){
+			alert("Data Tersimpan");
+			loadUrl(hostir+'manajemen-faq');
+		}else{
+			alert(respo);
+		}
+	});	
+	
+}
+
 function search_data(type, p1, p2){
 	$('#'+p2).html('');
 	$.post(hostir+"modul_admin/getdatasearch/"+type, { 'nre':$('#'+p1).val() }, function(rspp){
@@ -641,3 +698,29 @@ function modalOpt($type){
 		break;
 	}
 }
+
+//fungsi paging
+function prevPage(type, p1, p2, p3, p4){
+	if(eval($('#page_'+type).val()) <= 1){
+		return false;
+	}
+	
+	var jml_page = (eval($('#page_'+type).val())-1);
+	$.post(hostir+'paging-data/'+type, { 'page':jml_page-1, 'idxss':p1 , 'idxsert':p2 , 'kdr':p3 , 'lmt':10 }, function(respshit){
+		$('#'+type).removeClass('loading-page');
+		$('#'+type).html(respshit);
+		$('#page_'+type).val(jml_page);
+	});
+}
+
+function nextPage(type, p1, p2, p3, p4){
+	var jml_page = (eval($('#page_'+type).val())+1);
+	$.post(hostir+'paging-data/'+type, { 'page':$('#page_'+type).val(), 'idxss':p1 , 'idxsert':p2 , 'kdr':p3 , 'lmt':10 }, function(respshit){
+		$('#'+type).removeClass('loading-page');
+		$('#'+type).html(respshit);
+		$('#page_'+type).val(jml_page);
+	});
+}
+//end fungsi paging
+
+

@@ -22,6 +22,13 @@ function processCombo(type){
 			$('#sert_tam').remove();
 			$('#sert_tam_2').remove();
 			$('#sert_tam_3').remove();
+			
+			if( $('#'+type).val() == 2 ){
+				$('#txtsbjn').html('Urusan Pemerintah : ');
+			}else{
+				$('#txtsbjn').html('Sub Jenis Sertifikasi : ');
+			}
+			
 		break;
 		case "sb_ap_tk2":
 			$.post(host+"chk", { 'id_asn_child_tk1':$('#'+type).val() }, function(resp){
@@ -37,9 +44,16 @@ function processCombo(type){
 					$('#sert_tam').remove();
 					$('#sert_tam_2').remove();
 					$('#sertifikasi_1').append(resp);
+					if( $('#ap_tk_1').val() == 2 ){
+						$('#txtsbjnsrt').html('Tipologi : ');
+					}else{
+						$('#txtsbjnsrt').html('Jenjang Sertifikasi : ');
+					}
 				}
 			});
 			$("#sb_jns_nxx").val($('#'+type+" :selected").text());
+			
+			
 		break;
 		case "sb_ap_tk3":
 			$('#fl_s').remove();
@@ -370,8 +384,8 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 			});
 			
 			$("#timernya").countdowntimer({
-				hours : 0,
-				minutes : 5,
+				hours : 1,
+				//minutes : 5,
 				//seconds : p3,
 				size : "sm",
 				borderColor : "#D15050",
@@ -662,6 +676,41 @@ function kobochan(idf){
 	return false;
 }
 */
+
+function chf(dom, tpy){
+	var file =  $("#"+dom).prop("files")[0];
+	var fileSize = file.size;
+	var sFileName = file.name;
+	var filextension = sFileName.split('.')[sFileName.split('.').length - 1].toLowerCase();
+	var iConvert = (file.size / 1048576).toFixed(2);
+	
+	if(tpy == 1){
+		var arr = ["pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG"];
+		var pesannya = "File Harus Ber-extension .pdf / .PDF / .jpg / .JPG / .jpeg / .JPEG !";
+		var mx = 5;
+		var pesannya2 = "File Harus Berukuran Maximal 5 MB !";
+	}else if(tpy == 2){
+		var arr = ["jpg", "JPG", "jpeg", "JPEG"];
+		var pesannya = "File Harus Ber-extension .jpg / .JPG / .jpeg / .JPEG !";
+		var mx = 0.50;
+		var pesannya2 = "File Harus Berukuran Maximal 500 KB !";
+	}
+		
+	if( $.inArray(filextension, arr) == -1 ){
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : pesannya });
+		$('#'+dom).val('');
+		return false;
+	}
+	
+	if(iConvert >= mx){
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : pesannya2 });
+		$('#'+dom).val('');
+		return false;
+	}
+	
+	$('#'+dom+'_sts').html('- <font color="green">Size File Anda : '+iConvert+' MB </font>');
+	
+}
 
 function clr() { 
 	console.log(window.console);

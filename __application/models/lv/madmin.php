@@ -11,6 +11,13 @@ class madmin extends SHIPMENT_Model{
 		$join = "";
 		switch($type){
 /////////////////****Levi
+			case "folder_sertifikasi":
+				$sql = "
+					SELECT nama_aparatur, kode_sertifikasi
+					FROM idx_aparatur_sipil_negara
+					WHERE id = '".$p1."'
+				";
+			break;
 			case "tbl_user_admin":
 				if($type == "tbl_user_admin"){
 					$select = " A.id, A.real_name, A.username, A.level_admin, A.aktif, A.nip_user ";

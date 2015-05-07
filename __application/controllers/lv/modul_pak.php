@@ -403,6 +403,7 @@ class modul_pak extends SHIPMENT_Controller{
 		if($this->autha){
 			$usid = $_POST['usaid'];			
 			$idpak = $_POST['idpak'];
+			$no_sk = "";
 			
 			$masa_nilai = $_POST['masa_nilai'];
 			$masa_nilai = date("Y-m-d", strtotime($masa_nilai));
@@ -410,11 +411,43 @@ class modul_pak extends SHIPMENT_Controller{
 			$tmt = $_POST['tmt'];
 			$tmt = date("Y-m-d", strtotime($tmt));
 			
+			$no_sk_tbl = $this->db->query("SELECT nomor_sk_keputusan FROM tbl_pengajuan_pak_inpassing 
+				WHERE id = '$idpak'")->row_array();
+			
+			$max_nomor_sk = "SELECT MAX(SUBSTR(nomor_sk_keputusan,1,6)) as nomor_sk FROM `tbl_pengajuan_pak_inpassing`;";
+			$max_nosk = $this->db->query($max_nomor_sk)->row_array();
+			$num_nosk = $this->db->query($max_nomor_sk)->num_rows();
+			
+			if ($num_nosk <= 0){
+				$no_sk = '000001';
+			}else{
+				$no_sk = $max_nosk['nomor_sk']+1;
+			}
+			
+			$no_leng = strlen($no_sk);
+			//echo $no_leng;
+			$nol_bef = '';
+			if ($no_leng == 1){$nol_bef = '00000';}
+			if ($no_leng == 2){$nol_bef = '0000';}
+			if ($no_leng == 3){$nol_bef = '000';}
+			if ($no_leng == 4){$nol_bef = '00';}
+			if ($no_leng == 5){$nol_bef = '0';}
+			if ($no_leng >= 6){$nol_bef = '';}
+			
+			$no_sk_exis = $no_sk_tbl['nomor_sk_keputusan'];
+			if ($no_sk_exis == ''){
+				$no_sk_keputusan = $nol_bef.$no_sk.'/'.$_POST['inisial_daerah'].'/'.date('Y');
+			}else{
+				$no_sk_keputusan = $no_sk_tbl['nomor_sk_keputusan'];
+			}
+			
 			$arayupdate = array(
 							"keputusan" => $_POST['keputusan'],
 							"instansi" => $_POST['instansi'],
 							"masa_penilaian" => $masa_nilai,
 							"tmt" => $tmt,
+							"status" => 2,
+							"nomor_sk_keputusan"=>$no_sk_keputusan,
 							"pejabat_berwenang" => $_POST['pejabat'],
 							"ditetapkan_di" => $_POST['ditetapkan_di']
 						);

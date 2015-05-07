@@ -110,6 +110,15 @@ function processCombo(type){
 				$("#tgl_byr_bry").css({'display':'inline'});
 			}
 		break;
+		/***Levi Combo***/
+		case "angdit":
+			$.post(host+"angka-kredit", { 
+				'tingkat':$('#tingkat').val(),'golongan':$('#golongan').val(),
+				'pendidikan':$('#pendidikan').val(),'masa':$('#masa').val() 
+			}, function(resp){
+				$('#didit').html(resp);
+			});
+		break;
 	}
 	//clr();
 }

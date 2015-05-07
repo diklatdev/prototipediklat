@@ -72,14 +72,14 @@ class mpak extends SHIPMENT_Model{
 					WHERE a.id = '$p3';";
 				}else if ($p2 == 'result'){
 					$sql = "SELECT d.id as id_peserta, d.nama_lengkap, d.nip, p.nama_pendidikan, t.nama_pangkat, n.nama_aparatur as nama_tingkat
-					, i.id as id_angka_kredit
+					, i.id as id_angka_kredit, i.status
 					FROM tbl_pengajuan_pak_inpassing i 
 					LEFT JOIN tbl_data_peserta d ON d.id = i.id_peserta
 					LEFT JOIN idx_pendidikan p ON p.id = d.idx_pendidikan_id
 					LEFT JOIN tbl_data_diklat l ON l.tbl_data_peserta_id = d.id
 					LEFT JOIN idx_pangkat t ON t.id = l.idx_pangkat_id
 					LEFT JOIN idx_aparatur_sipil_negara n ON n.id = l.idx_sertifikasi_id
-					WHERE i.status = 1;";
+					WHERE i.status != 0;";
 				}
 			break;
 			case 'data_pribadi_peserta':

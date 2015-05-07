@@ -115,4 +115,42 @@ class modul_admin extends SHIPMENT_Controller{
 		echo $this->madmin->simpansavedatabase($type, $post);
 	}
 	
+	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){
+		$this->load->helper('db_helper');
+		$this->load->model("lv/mportal");
+		
+		$v = $this->input->post('v');
+		if($v != ""){
+			$selTxt = $v;
+		}else{
+			$selTxt = $p1;
+		}
+		
+		$optTemp = "";
+		
+		if($type == 'bulan'){
+			$data = arraydate('bulan');
+		}else{
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = $this->mportal->get_data($type, 'result_array', $p1, $p2);
+		}
+
+		if($data){
+			foreach($data as $k=>$v){
+				if($selTxt == $v['kode']){
+					$optTemp .= '<option selected value="'.$v['kode'].'">'.$v['txt'].'</option>';
+				}else{ 
+					$optTemp .= '<option value="'.$v['kode'].'">'.$v['txt'].'</option>';	
+				}
+			}
+		}
+		
+		if($balikan == 'return'){
+			return $optTemp;
+		}elseif($balikan == 'echo'){
+			echo $optTemp;
+		}
+
+	}
+	
 }

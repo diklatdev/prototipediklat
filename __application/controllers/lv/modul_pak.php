@@ -469,7 +469,7 @@ class modul_pak extends SHIPMENT_Controller{
 	}
 	
 	function savePakInpassing($type, $post){
-		$this->load->model('madmin');
+		$this->load->model('lv/madmin');
 		if($this->auth){			
 			$target_path = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_pak/";
 			if(!is_dir($target_path)) {
@@ -799,7 +799,7 @@ class modul_pak extends SHIPMENT_Controller{
 	}
 	
 	function savePakForm($type, $post){
-		$this->load->model('madmin');
+		$this->load->model('lv/madmin');
 		if($this->auth){
 			//echo $this->auth['no_registrasi']."id :".$this->auth['idx_sertifikasi_id'];
 			$target_path = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_pak/";

@@ -27,6 +27,7 @@ class modul_pak extends SHIPMENT_Controller{
 			case "pak_inpassing":
 				$peng_pak = $this->db->query("SELECT * FROM tbl_pengajuan_pak_inpassing WHERE id_peserta = '".$this->auth['id']."';");
 				$rows_num = $peng_pak->num_rows();
+				
 				if ($rows_num > 0){
 					
 					header("Location: " . $this->host ."hasil-pak");
@@ -52,69 +53,77 @@ class modul_pak extends SHIPMENT_Controller{
 				$konten = "modul-portal/pak_inpassing/hasil_pak_inpassing_temp";
 			break;
 			case "hasil_validasi_pak":
-				$this->load->model("lv/madmin");
-				$id_peserta = $this->auth['id'];				
-				$pak_inpass = $this->db->query("SELECT * FROM tbl_pengajuan_pak_inpassing WHERE id_peserta = '$id_peserta'")->row_array();
-				$id_inpass = $pak_inpass['id'];
+			
+				$peng_pak = $this->db->query("SELECT * FROM tbl_pengajuan_pak_inpassing WHERE id_peserta = '".$this->auth['id']."';");
+				$rows_pak = $peng_pak->row_array();
 				
-				$data_diklat = $this->db->query("SELECT idx_sertifikasi_id 
-					FROM tbl_data_diklat WHERE tbl_data_peserta_id = '$id_peserta'")->row_array();
-				$idx_sertifikasi_id = $data_diklat['idx_sertifikasi_id'];
-				
-				$pak_inpassing_temp = $this->mpak->get_data('tbl_pengajuan_pak_inpassing', 'row_array', $id_peserta, 'det_pengajuan', $id_inpass);
-				$data_peserta = $this->mpak->get_data('data_pribadi_peserta', 'row_array', $id_peserta);
-				$masa_kerja = $this->mpak->get_data('idx_masa_kerja', 'result');
-				
-				$id_tingkat = $pak_inpassing_temp['id_tingkat'];
-				$id_pendidikan = $pak_inpassing_temp['id_pendidikan'];
-				$tot_aju = $pak_inpassing_temp['total_angka_diterima'];
-				
-				if ( $id_tingkat == '1'){
-					if ($id_pendidikan == 7 || $id_pendidikan == 6){
-						if ($tot_aju >= '25' && $tot_aju < '40'){$jabatan = 'PELAKSANA PEMULA';}
-						if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
-						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+				if ($rows_pak['status'] == 0){					
+					header("Location: " . $this->host ."hasil-pak-temp");
+				}else{
+					$this->load->model("lv/madmin");
+					$id_peserta = $this->auth['id'];				
+					$pak_inpass = $this->db->query("SELECT * FROM tbl_pengajuan_pak_inpassing WHERE id_peserta = '$id_peserta'")->row_array();
+					$id_inpass = $pak_inpass['id'];
+					
+					$data_diklat = $this->db->query("SELECT idx_sertifikasi_id 
+						FROM tbl_data_diklat WHERE tbl_data_peserta_id = '$id_peserta'")->row_array();
+					$idx_sertifikasi_id = $data_diklat['idx_sertifikasi_id'];
+					
+					$pak_inpassing_temp = $this->mpak->get_data('tbl_pengajuan_pak_inpassing', 'row_array', $id_peserta, 'det_pengajuan', $id_inpass);
+					$data_peserta = $this->mpak->get_data('data_pribadi_peserta', 'row_array', $id_peserta);
+					$masa_kerja = $this->mpak->get_data('idx_masa_kerja', 'result');
+					
+					$id_tingkat = $pak_inpassing_temp['id_tingkat'];
+					$id_pendidikan = $pak_inpassing_temp['id_pendidikan'];
+					$tot_aju = $pak_inpassing_temp['total_angka_diterima'];
+					
+					if ( $id_tingkat == '1'){
+						if ($id_pendidikan == 7 || $id_pendidikan == 6){
+							if ($tot_aju >= '25' && $tot_aju < '40'){$jabatan = 'PELAKSANA PEMULA';}
+							if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+							if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+						}
+						elseif ($id_pendidikan == 5){
+							if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+							if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+						}
+						elseif ($id_pendidikan == 4){
+							if ($tot_aju >= '60' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+							if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+						}
 					}
-					elseif ($id_pendidikan == 5){
-						if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
-						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+					elseif ( $id_tingkat == '2'){
+						if ($id_pendidikan == 3){
+							if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+							if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+						}
+						elseif ($id_pendidikan == 2){
+							if ($tot_aju >= '150' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+							if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+						}
+						elseif ($id_pendidikan == 1){
+							if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+							if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+						}
 					}
-					elseif ($id_pendidikan == 4){
-						if ($tot_aju >= '60' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
-						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
-					}
+					
+					$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
+					$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
+					$folder_pak = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
+					
+					$this->smarty->assign('pak_temp', $pak_inpassing_temp);
+					$this->smarty->assign('data', $data_peserta);;
+					$this->smarty->assign('folder_pak', $folder_pak);
+					$this->smarty->assign('masa_kerja', $masa_kerja);
+					$this->smarty->assign('jabatan', $jabatan);
+					
+					$konten = "modul-portal/pak_inpassing/hasil_verifikasi_pak";
 				}
-				elseif ( $id_tingkat == '2'){
-					if ($id_pendidikan == 3){
-						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
-						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
-					}
-					elseif ($id_pendidikan == 2){
-						if ($tot_aju >= '150' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
-						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
-					}
-					elseif ($id_pendidikan == 1){
-						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
-						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
-					}
-				}
-				
-				$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
-				$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
-				$folder_pak = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
-				
-				$this->smarty->assign('pak_temp', $pak_inpassing_temp);
-				$this->smarty->assign('data', $data_peserta);;
-				$this->smarty->assign('folder_pak', $folder_pak);
-				$this->smarty->assign('masa_kerja', $masa_kerja);
-				$this->smarty->assign('jabatan', $jabatan);
-				
-				$konten = "modul-portal/pak_inpassing/hasil_verifikasi_pak";
 			break;
 			case "dupak-gagal":
 				$konten = "modul-portal/pak_inpassing/hasil_pak_inpassing";

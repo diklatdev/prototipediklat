@@ -123,6 +123,11 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				$("#"+domnya).html(resp);
 			});
 		break;
+		case "vcf-krm":
+			$.post(urlnya, { 'idvcf':p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
 		case "kcppt":
 		case "fqa":
 		case "brt":
@@ -200,6 +205,16 @@ function kumpulPost($type, p1, p2, p3){
 					alert(rspp);
 				}
 			});
+		break;		
+		case "krmvcf":
+			ajxamsterfrm("vcf_kr_act", function(respo){
+				if(respo == 1){
+					alert("Data Tersimpan");
+					loadUrl(hostir+'manajemen-voucher');
+				}else{
+					alert(respo);
+				}
+			});	
 		break;		
 
 //*******Levi

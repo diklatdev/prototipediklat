@@ -539,6 +539,23 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 				}
 			});	
 		break;
+		case "sbm-komplain":
+			if($('#klm_komplain').val() == ""){
+				$("#klm_komplain").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kolom Komplain Tidak Boleh Kosong" });
+				return false;
+			}
+			
+			$.post(host+"sbm-komplain-peserta", { 'kmpl':$('#klm_komplain').val() }, function(rsssp){
+				if(rsssp == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Komplain Anda Sudah Masuk Dalam Sistem Kami!" });
+					location.reload();
+				}else{
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Sistem Error!" });
+					//location.reload();
+				}
+			});
+		break;
 	}
 }
 

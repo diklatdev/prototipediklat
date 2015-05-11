@@ -265,9 +265,9 @@ class modul_portal extends SHIPMENT_Controller{
 				if($data_status_terakhir['step_hasil'] == '0'){
 					$this->getdisplay('belum_boleh_hasil');
 					exit;
-				}elseif($data_status_terakhir['step_hasil'] == '2'){
-					$this->getdisplay('tunggu_verifikasi_hasil');
-					exit;
+				//}elseif($data_status_terakhir['step_hasil'] == '2'){
+				//	$this->getdisplay('tunggu_verifikasi_hasil');
+					//exit;
 				}
 				
 				$this->load->model('why/madmin');
@@ -277,13 +277,16 @@ class modul_portal extends SHIPMENT_Controller{
 				$data_ujian_header = $this->madmin->get_data("tbl_uji_header", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
 				$data_simulasi_header = $this->madmin->get_data("tbl_uji_simulasi_header", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
 				$data_wawancara_header = $this->madmin->get_data("tbl_wawancara_header", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
-				$datahasil = $this->db->get_where('tbl_hasil_akhir', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], 'kdreg_diklat'=>$this->auth['kdreg_diklat']) )->row_array('status_penilaian');
+				
+				if($data_status_terakhir['step_hasil'] == '1'){
+					$datahasil = $this->db->get_where('tbl_hasil_akhir', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], 'kdreg_diklat'=>$this->auth['kdreg_diklat']) )->row_array('status_penilaian');
+					$this->smarty->assign("datahasil", $datahasil);
+				}
 				
 				$this->smarty->assign("data_asesmen_header", $data_asesmen_header);
 				$this->smarty->assign("data_ujian_header", $data_ujian_header);
 				$this->smarty->assign("data_simulasi_header", $data_simulasi_header);
 				$this->smarty->assign("data_wawancara_header", $data_wawancara_header);
-				$this->smarty->assign("datahasil", $datahasil);
 				$this->smarty->assign("sts_akh", $data_status_terakhir);
 			break;
 			
@@ -441,6 +444,8 @@ class modul_portal extends SHIPMENT_Controller{
 		$filefoto = $this->db->get_where('tbl_data_peserta', array('no_registrasi'=>$this->auth['no_registrasi']) )->row_array();
 		$this->smarty->assign('data_sertifikasi', $data_sertifikasi);
 		$this->smarty->assign('data_tuk', $data_tuk['nama_tuk']);
+		$this->smarty->assign('tgl_wawancara', $data_tuk['tgl_wawancara']);
+		$this->smarty->assign('jam', $data_tuk['jam']);
 		
 		//$barcode_isi = $this->auth['no_registrasi'];
 		//$nama_file_barcode = $this->auth['nip']."-".$this->auth['idx_tujuan_assesmen_id'];
@@ -483,7 +488,7 @@ class modul_portal extends SHIPMENT_Controller{
 	
 	function simpansavedbs($type=""){
 		$post = array();
-        foreach($_POST as $k=>$v) $post[$k] = $this->db->escape_str($this->input->post($k));
+        foreach($_POST as $k=>$v) $post[$k] = ( $type == 'save_komplain' ? $this->input->post($k) : $this->db->escape_str($this->input->post($k)) );
 		
 		//echo count($post['idxfl']);
 		//exit;

@@ -2,13 +2,18 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-				<h1>Hasil Akhir Sertifikasi</h1>
+				{if $sts_akh.step_hasil eq '1'}
+					<h1>Hasil Akhir Sertifikasi</h1>
+				{elseif $sts_akh.step_hasil eq '2'}
+					<h1>Hasil Sementara</h1>
+				{/if}
 			</div>
 		</div>
 	</div>
 </div>
 
 {if $sts_akh.step_hasil eq '1'}
+		
 		<div class="mass-head tp-slider">
 			<div class="tp-banner-container">
 				<div class="tp-banner">
@@ -90,9 +95,28 @@
 				</div>
 			</div>
 		</div>
-
+{elseif $sts_akh.step_hasil eq '2'}
 <div class="container">
 	<div class="block-s2">		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan semua prosedur ujian diklat. <br/>
+						Dimohon untuk menunggu verifikasi hasil yang dilakukan oleh tim asesor kami. <br/>
+						Hasil verifikasi akan diumumkan selama 15 hari kerja  dari anda melakukan ujian di TUK dan diumumkan melalui Portal Diklat ini. <br/>
+						Berikut dibawah ini kami sajikan hasil ujian sertifikasi yang sudah anda lewati. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/if}
+
+<div class="container">
+	<div class="block-s2" style='padding-top:0px !important;'>		
 		<h4>Data Hasil Test Asesmen Mandiri</h4>
 		<div class="row">
 			<div class="col-lg-12">
@@ -108,14 +132,14 @@
 									<font color='red'>TIDAK MEMENUHI SYARAT</font>
 								{/if}
 							</td>
-							<td style='background:#F8F8F8;'>Tanggal Verifikasi</td>
-							<td>{$data_asesmen_header.tanggal_verifikasi}</td>
+							<td width='20%' style='background:#F8F8F8;'>Tanggal Verifikasi</td>
+							<td width='30%' >{$data_asesmen_header.tanggal_verifikasi}</td>
 						</tr>
 						<tr>
-							<td style='background:#F8F8F8;'>Petugas Asesor</td>
-							<td>{$data_asesmen_header.nama_asesor}</td>
-							<td style='background:#F8F8F8;'>Tanggal Ujian Asesmen</td>
-							<td>{$data_asesmen_header.tanggal_ujian}</td>
+							<td width='20%' style='background:#F8F8F8;'>Petugas Asesor</td>
+							<td width='30%'>{$data_asesmen_header.nama_asesor}</td>
+							<td width='20%' style='background:#F8F8F8;'>Tanggal Ujian Asesmen</td>
+							<td width='30%' >{$data_asesmen_header.tanggal_ujian}</td>
 						</tr>
 					</table>		
 				
@@ -153,12 +177,6 @@
 							<td width='20%' style='background:#F8F8F8;'>Tanggal Verifikasi</td>
 							<td width='30%'>{$data_ujian_header.tanggal_verifikasi}</td>					
 						</tr>
-						<tr>
-							<td width='20%' style='background:#F8F8F8;'>Petugas Asesor</td>
-							<td width='30%'>{$data_ujian_header.nama_asesor}</td>
-							<td width='20%' style='background:#F8F8F8;'>&nbsp;</td>
-							<td width='30%'>&nbsp;</td>					
-						</tr>
 					</table>
 					
 				</div>
@@ -186,7 +204,7 @@
 							<td width='20%' style='background:#F8F8F8;'>Petugas Asesor</td>
 							<td width='30%'>{$data_simulasi_header.nama_asesor}</td>
 							<td width='20%' style='background:#F8F8F8;'>Tanggal Verifikasi</td>
-							<td width='30%'>{$data_simulasi_header.tanggal_verifikasi}</td>					
+							<td width='30%'>{$data_simulasi_header.tgl_verifikasi}</td>					
 						</tr>
 					</table>
 				</div>
@@ -217,11 +235,35 @@
 							<td width='20%' style='background:#F8F8F8;'>Tanggal Verifikasi</td>
 							<td width='30%'>{$data_wawancara_header.tanggal_verifikasi}</td>					
 						</tr>
+						<tr>
+							<td width='20%' style='background:#F8F8F8;'>Memo Asesor</td>
+							<td width='30%'>{$data_wawancara_header.memo}</td>
+							<td width='20%' style='background:#F8F8F8;'>&nbsp;</td>
+							<td width='30%'>&nbsp;</td>					
+						</tr>
 					</table>
 					
 				</div>
 			</div>
 		</div>
+		
+		<h4>Kolom Komplain Peserta</h4>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="well white" style="margin-bottom:0px !important;">	
+					{if $sts_akh.step_hasil eq '1'}
+						{$data_wawancara_header.komplain|default:''}
+					{elseif $sts_akh.step_hasil eq '2'}
+						<textarea class="form-control" rows="5" name='klm_komplain' id='klm_komplain' >{$data_wawancara_header.komplain|default:''}</textarea>
+						<br/>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('sbm-komplain');">Submit</button>
+						</div>
+					{/if}	
+				</div>
+			</div>
+		</div>
+		
 		
 		<br/>
 		<div class="row">
@@ -231,7 +273,7 @@
 					<h5><b>Bagi Peserta Yang Kompeten :</b></h5>
 					<ul>
 						<li>
-							Anda sudah dinyatakan kompeten dalam diklat sertifikasi & penilaian bidang {$auth.nama_aparatur}, anda dipersilahkan untuk mengambil sertifikat.
+							Anda sudah dinyatakan kompeten dalam diklat sertifikasi & penilaian bidang {$auth.nama_aparatur}.
 						</li>
 						<li>
 							Sertifikat asli akan dikirim/diantar ke alamat rumah anda atau ke instansi dimana anda bekerja.
@@ -244,7 +286,7 @@
 					<h5><b>Bagi Peserta Yang Belum Kompeten :</b></h5>
 					<ul>
 						<li>
-							Anda sudah dinyatakan belum kompeten dalam diklat sertifikasi & penilaian bidang {$auth.nama_aparatur}, anda dipersilahkan untuk mengambil sertifikat.
+							Anda sudah dinyatakan belum kompeten dalam diklat sertifikasi & penilaian bidang {$auth.nama_aparatur}.
 						</li>
 						<li>
 							Anda berhak mendapatkan remedial diklat sertifikasi ini dalam kurun waktu 4 bulan terhitung dari tanggal diumumkan-nya hasil diklat ini.
@@ -261,4 +303,3 @@
 	</div>
 </div>
 		
-{/if}

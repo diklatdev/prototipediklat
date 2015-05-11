@@ -38,9 +38,17 @@
 										<td style='text-align:center;'>{$rows.tgl_wawancara}</td>
 										<td style='text-align:center;'>{$rows.jam}</td>
 										<td style='text-align:center;'>
-											<div class="btn-group btn-group-xs ">
-												<a title='Daftar Wawancara' href="" onClick="event.preventDefault();kumpulPoster('dfwa', 'kontil_pe', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-sign-in"></i>Daftar</a>
-											</div>	
+											{if $rows.idx_tuk_id eq $auth.idx_tuk_id}
+												{if $rows.kuota neq 0}
+													<div class="btn-group btn-group-xs ">
+														<a title='Daftar Wawancara' href="" onClick="event.preventDefault();kumpulPoster('dfwa', 'kontil_pe', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-sign-in"></i>Daftar</a>
+													</div>	
+												{else}
+													<font color='red'>Kuota Sudah Penuh</font>
+												{/if}
+											{else}
+												-
+											{/if}
 										</td>
 									</tr>
 									{assign var=ind value=$ind+1}

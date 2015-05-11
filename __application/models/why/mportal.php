@@ -156,7 +156,7 @@ class mportal extends SHIPMENT_Model{
 				*/
 				$sql = "
 					SELECT A.*, B.idx_sertifikasi_id, B.status as status_diklat_aktif, C.name as nama_provinsi, D.name as nama_kabupaten,
-						E.nama_instansi, F.nama_pangkat, B.kdreg_diklat, G.nama_aparatur, B.idx_pangkat_id
+						E.nama_instansi, F.nama_pangkat, B.kdreg_diklat, G.nama_aparatur, B.idx_pangkat_id, B.idx_tuk_id
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status='1') B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
@@ -306,7 +306,7 @@ class mportal extends SHIPMENT_Model{
 			break;
 			case 'tuk_peserta':
 				$sql = "
-					SELECT C.nama_tuk
+					SELECT C.nama_tuk, DATE_FORMAT( B.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara, B.jam
 						FROM tbl_daftar_test A
 					LEFT JOIN tbl_jadwal_wawancara B ON A.tbl_jadwal_wawancara_id = B.id
 					LEFT JOIN idx_tuk C ON B.idx_tuk_id = C.id
@@ -814,6 +814,15 @@ class mportal extends SHIPMENT_Model{
 						$post_bnr['file_bukti_pembayaran'] = null;
 					}
 					
+					$sql_asesor = "
+						SELECT id
+						FROM tbl_user_admin
+						WHERE idx_tuk_id = '".$this->auth['idx_tuk_id']."' AND level_admin = '5'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					
+					$post_bnr['idx_bendahara_id'] = $query_asesor['id'];
 					$post_bnr['tbl_data_peserta_id'] = $post['usaid'];
 					$post_bnr['idx_sertifikasi_id'] = $post['sertaid'];
 					$post_bnr['metode_pembayaran'] = $post['mtdp'];
@@ -836,21 +845,14 @@ class mportal extends SHIPMENT_Model{
 			case "savedaftarwawancara":
 				if($this->auth){
 					$idx_tuk_id = $this->input->post('tkuid');
-					$sql_asesor = "
-						SELECT id
-						FROM tbl_user_admin
-						WHERE idx_tuk_id = '".$idx_tuk_id."'
-						ORDER BY RAND() LIMIT 1
-					";
-					$query_asesor = $this->db->query($sql_asesor)->row_array();
 					
 					$array_header = array(
 						'tbl_data_peserta_id' => $this->auth['id'],
 						'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'],
-						'tbl_assesor_id' => $query_asesor['id'],
 						'tbl_jadwal_wawancara_id' => $post['iddf'],
 						'tgl_daftar' => date('Y-m-d H:i:s'),
-						'status_data' => 1
+						'status_data' => 1,
+						'kdreg_diklat' => $this->auth['kdreg_diklat']
 					);
 					$cek_kuota = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$post['iddf']))->row_array();
 					$kurangi_kuota = ($cek_kuota['kuota']-1);
@@ -1088,6 +1090,19 @@ class mportal extends SHIPMENT_Model{
 					}
 				}
 			break;
+			case "save_komplain":
+				if($this->auth){
+					$array_where = array(
+						'tbl_data_peserta_id' => $this->auth['id'], 
+						'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'], 
+						"kdreg_diklat" => $this->auth['kdreg_diklat']
+					);
+					$array_update = array(
+						'komplain' => $post['kmpl']
+					);
+					$this->db->update('tbl_wawancara_header', $array_update, $array_where);
+				}
+			break;			
 		}
 		
 		if($this->db->trans_status() == false){

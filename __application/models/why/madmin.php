@@ -303,7 +303,7 @@ class madmin extends SHIPMENT_Model{
 			
 			case "tbl_wawancara_header":
 				$sql = "
-					SELECT nilai, status, nama_asesor, memo,
+					SELECT nilai, status, nama_asesor, memo, komplain,
 						DATE_FORMAT( tgl_verifikasi,  '%d-%m-%Y' ) AS tanggal_verifikasi
 					FROM tbl_wawancara_header 
 					WHERE tbl_data_peserta_id = '".$p1."'
@@ -513,7 +513,7 @@ class madmin extends SHIPMENT_Model{
 			case "ver_konfpembayaran":
 				$array_pembayaran_header = array(
 					"status" => $post['hsl_konf'],
-					'nama_asesor'=>$this->auth['username'],
+					'nama_asesor'=>$this->auth['real_name'],
 					'tgl_verifikasi'=>date('Y-m-d H:i:s'),
 				);
 				
@@ -575,7 +575,7 @@ class madmin extends SHIPMENT_Model{
 					"idx_sertifikasi_id" => $post['sertid'],
 					"total_skor" => $post['nl_ujsm'],
 					"status_penilaian" => $post['hsl_ujsm'],
-					"nama_asesor" => $this->auth['username'],
+					"nama_asesor" => $this->auth['real_name'],
 					"tanggal_verifikasi" => date('Y-m-d H:i:s'),
 					"status_data" => "1",
 					"kdreg_diklat" => $post['kdr'],
@@ -605,7 +605,7 @@ class madmin extends SHIPMENT_Model{
 					"nilai" => $post['nilai_wa'],
 					"status" => $post['hsl_wa'],
 					"memo" => $post['ed_memo'],
-					"nama_asesor" => $this->auth['username'],
+					"nama_asesor" => $this->auth['real_name'],
 					"tgl_verifikasi" => date('Y-m-d H:i:s'),
 					'tgl_wawancara' => date('Y-m-d'),
 					"kdreg_diklat" => $post['kdr'],
@@ -629,7 +629,7 @@ class madmin extends SHIPMENT_Model{
 					"idx_sertifikasi_id" => $post['idxsrt'],
 					//"nilai" => $post['nilai_hs'],
 					"status_penilaian" => $post['hsl_hs'],
-					"nama_asesor" => $this->auth['username'],
+					"nama_asesor" => $this->auth['real_name'],
 					"tgl_verifikasi" => date('Y-m-d H:i:s'),
 					"status_data" => '1',
 					"kdreg_diklat" => $post['kdr'],
@@ -723,7 +723,6 @@ class madmin extends SHIPMENT_Model{
 					$this->db->update('tbl_faq', $post_bnr, array('id'=>$id));
 				}
 			break;
-			
 		}
 		
 		if($this->db->trans_status() == false){

@@ -49,6 +49,8 @@ $route['manajemen-voucher'] = "why/modul_admin/getdisplay/voucher/";
 $route['tambah-voucher'] = "why/modul_admin/getdisplay/form_voucher/";
 $route['submit-voucher'] = "why/modul_admin/simpansavedbx/savevoucher/";
 $route['cetak-voucher'] = "why/modul_admin/generate_voucher/";
+$route['form-kirim-voucher'] = "why/modul_admin/getdisplay/form_kirim_voucher/";
+$route['submit-kirim-voucher'] = "why/modul_admin/kirimvoucher/";
 
 $route['manajemen-petunjukdokumen'] = "why/modul_admin/getdisplay/petunjuk_dokumen/";
 $route['form-petunjukdokumen'] = "why/modul_admin/getdisplay/form_petunjuk_dokumen/";

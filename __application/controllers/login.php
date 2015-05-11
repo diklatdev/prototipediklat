@@ -8,44 +8,25 @@ class login extends SHIPMENT_Controller{
 		$this->load->model(array("why/mportal", "why/madmin"));
 	}
 	
-	function loginadm(){
+	function loginadm(){		
 		$this->load->library('encrypt');
-		//$username = $this->input->post("username");
-		//$pass = $this->input->post("password");
-		//$pass = $this->encrypt->encode($pass);
-		$username = "admin";
-		$pass = "admin";
 		
+		$user = $this->db->escape_str($this->input->post('username'));
+		$pass = $this->db->escape_str($this->input->post('password'));
+		//$pass = $this->input->post('password');
 		
-		if (!$username OR !$pass){echo "Password/Username Tidak Boleh Kosong";}
+		/*			
+		//echo $this->encrypt->encode($pass);
+		//exit;
+		*/
 		
-		/*$sql = "SELECT * FROM admin WHERE nama = '".$username."';";
-				
-		$rs  = $this->db->query($sql)->row();
-		$pass = "demo";
-		if ($rs){
-			$row['password'] = $rs->password;
-			$passInput = md5($pass);
-			$passdb = $row['password'];
-			
-			if($passdb != $passInput){
-				echo "<script>alert('Password Yang Anda Masukkan Salah!'); </script>";
-			}
-			else{
-                $row['username'] 	=  $rs->nama;
-				$row['level_user'] 		=  $rs->level_user;
-				*/
-                $row['username'] 	=  $username;
-				$row['level_user'] 	=  $pass;
-				
-                $this->session->set_userdata('d1kl4tkem3nd49r1', base64_encode(serialize($row)));
-				//header("Location: " . $this->host ."dashboard");
-				
-				redirect('/admin-ctrlpnl','refresh');
-			/*}
-        }else {
-			echo "<script>alert('Password atau Username Yang Anda Masukkan Salah!');</script>";
-		}*/
+		$data = $this->madmin->get_data("data_login_admin", "row_array", trim($user)); 		
+		if($data && $pass == $this->encrypt->decode($data["password"])){
+			$this->session->set_userdata('d1kl4tkem3nd49r1', base64_encode(serialize($data)));	
+			header("Location: " . $this->host . "admin-ctrlpnl");
+		}else{
+			header("Location: " . $this->host . "admin-ctrlpnl");
+		}
 		
 	}
 	function logoutadm(){
@@ -57,8 +38,8 @@ class login extends SHIPMENT_Controller{
 		$this->load->library('encrypt');
 		
 		$user = $this->db->escape_str($this->input->post('ed_usr'));
-		//$pass = $this->db->escape_str($this->input->post('ed_psd'));
-		$pass = $this->input->post('ed_psd');
+		$pass = $this->db->escape_str($this->input->post('ed_psd'));
+		//$pass = $this->input->post('ed_psd');
 		
 		//echo $user.' -> '.$pass;exit;
 		//echo $this->encrypt->encode($pass);

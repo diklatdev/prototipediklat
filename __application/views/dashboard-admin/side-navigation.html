@@ -8,197 +8,228 @@
 			<!-- BEGIN SIDE NAV MENU -->							
 			<!-- Navigation category -->
 			<li>
-				<h4>Navigation</h4> 								
+				<h4 style='color:#fff;'>Menu Utama</h4> 								
 			</li>
 			<!-- END Navigation category -->
 			
 			<li>
 				<a href="{$host}admin-ctrlpnl">
-					<i class="fa fa-dashboard"></i> Dashboard
+					<i class="fa fa-dashboard"></i> Beranda
 				</a>
 			</li>
+			{if $manajemenkonten eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#konten">
 					<i class="fa fa-list"></i> Manajemen Konten <span class="fa arrow"></span>
 				</a>
 				<ul class="collapse nav " id="konten">	
+					{if $berita eq '1'}
 					<li>
 						<a href="#" onClick="loadUrl('{$host}manajemen-berita');">
 							<i class="fa fa-angle-double-right"></i> Berita
 						</a>
 					</li>
+					{/if}
+					{if $petunjukdokumen eq '1'}
 					<li>
 						<a href="#" onClick="loadUrl('{$host}manajemen-petunjukdokumen');">
 							<i class="fa fa-angle-double-right"></i> Petunjuk Dokumen
 						</a>
 					</li>
+					{/if}
+					{if $faq eq '1'}
 					<li>
 						<a href="#" onClick="loadUrl('{$host}manajemen-faq');">
 							<i class="fa fa-angle-double-right"></i> FAQ
 						</a>
 					</li>
-					{*
-					<li>
-						<a href="#" onClick="loadUrl('{$host}manajemen-galeri');">
-							<i class="fa fa-angle-double-right"></i> Galeri Foto
-						</a>
-					</li>
-					*}
+					{/if}
 				</ul>
 			</li>
+			{/if}
+			{if $masterdata eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#components">
 					<i class="fa fa-list"></i> Master Data <span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="components">	
+						{if $manajemenuser eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-admin');">
 								<i class="fa fa-angle-double-right"></i> Manajemen User
 							</a>
 						</li>
+						{/if}
+						{if $programstudi eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-peserta');">
 								<i class="fa fa-angle-double-right"></i> Program Studi
 							</a>
 						</li>
+						{/if}
+						{if $lembagainstansi eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-instansi');">
 								<i class="fa fa-angle-double-right"></i> Lembaga/Instansi
 							</a>
 						</li>
+						{/if}
+						{if $pangkatgolongan eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-pangkat');">
 								<i class="fa fa-angle-double-right"></i> Pangkat/Golongan
 							</a>
 						</li>
+						{/if}
+						{if $hirarkiaparatur eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-aparatur');">
 								<i class="fa fa-angle-double-right"></i> Hirarki Aparatur
 							</a>
 						</li>
+						{/if}
+						{if $persyaratansertifikasi eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-sertifikasi');">
 								<i class="fa fa-angle-double-right"></i> Persyaratan Sertifikasi
 							</a>
 						</li>
+						{/if}
+						{if $ujimandiri eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-uji-mandiri');">
 								<i class="fa fa-angle-double-right"></i> Uji Mandiri
 							</a>
 						</li>
+						{/if}
+						{if $manajementuk eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-tuk');">
 								<i class="fa fa-angle-double-right"></i> Manajaemen TUK
 							</a>
 						</li>
+						{/if}
+						{if $jadwalujian eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}penjadwalan-peserta');">
 								<i class="fa fa-angle-double-right"></i> Jadwal Ujian
 							</a>
-						</li>												
+						</li>			
+						{/if}
+						{if $voucher eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-voucher');">
 								<i class="fa fa-angle-double-right"></i> Voucher
 							</a>
-						</li>												
+						</li>		
+						{/if}
 					</ul>
 			</li>
-			<!-- <li>
-				<a class="" href="{$host}admin/form">
-					<i class="fa fa-edit"></i> Form Pengajuan
-				</a>
-			</li> -->
-			<!-- BEGIN COMPONENTS DROPDOWN -->
+			{/if}
+			{if $diklat eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#componentss">
 					<i class="fa fa-list"></i> Diklat<span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="componentss">
+						{if $registrasipeserta eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-peserta');">
 								<i class="fa fa-angle-double-right"></i> Registrasi Peserta
 							</a>
 						</li>
+						{/if}
+						{if $asesmenmandiri eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}asesmen-peserta');">
 								<i class="fa fa-angle-double-right"></i> Asesmen Mandiri
 							</a>
 						</li>
+						{/if}
+						{if $pembayaran eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}pembayaran-peserta');">
 								<i class="fa fa-angle-double-right"></i> Pembayaran
 							</a>
-						</li>						
+						</li>			
+						{/if}
+						{if $ujitulis eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}ujitulis-peserta');">
 								<i class="fa fa-angle-double-right"></i> Uji Tulis
 							</a>
 						</li>
+						{/if}
+						{if $ujisimulasi eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}ujisimulasi-peserta');">
 								<i class="fa fa-angle-double-right"></i> Uji Simulasi
 							</a>
 						</li>
+						{/if}
+						{if $wawancara eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}wawancara-peserta');">
 								<i class="fa fa-angle-double-right"></i> Wawancara
 							</a>
 						</li>
+						{/if}
+						{if $hasilakhir eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}hasil-peserta');">
 								<i class="fa fa-angle-double-right"></i> Hasil Akhir
 							</a>
 						</li>
+						{/if}
+						{if $printsertifikat eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}cetak-sertifikat');">
 								<i class="fa fa-angle-double-right"></i> Print Sertifikat
 							</a>
 						</li>
+						{/if}
 					</ul>
 			</li>
-			<!-- END COMPONENTS DROPDOWN -->
+			{/if}
+			{if $pak eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#pak">
 					<i class="fa fa-tag"></i> PAK <span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="pak">
+						{if $pakinpassing eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}pak-temp');">
 								<i class="fa fa-angle-double-right"></i> PAK Inpassing
 							</a>
 						</li>
+						{/if}
+						{if $pakresult eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}pak-result');">
 								<i class="fa fa-angle-double-right"></i> PAK Result
 							</a>
 						</li>
+						{/if}
 					</ul>
 			</li>
-
-			<!-- BEGIN CHARTS DROPDOWN -->
+			{/if}
+			{if $laporan eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#charts">
 					<i class="fa fa-tag"></i> Laporan <span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav" id="charts">
+						{if $peserta eq '1'}
 						<li>
 							<a href="flot.html">
 								<i class="fa fa-angle-double-right"></i> Peserta
 							</a>
 						</li>
-						<li>
-							<a href="flot.html">
-								<i class="fa fa-angle-double-right"></i> Archive Sertifikasi
-							</a>
-						</li>
-						<li>
-							<a href="morris.html">
-								<i class="fa fa-angle-double-right"></i> Archive Assessment
-							</a>
-						</li>
+						{/if}
 					</ul>
 			</li>
-			<!-- END CHARTS DROPDOWN -->
+			{/if}
 		</ul>
 		
 	</div><!-- /.navbar-collapse -->

@@ -10,6 +10,31 @@ class madmin extends SHIPMENT_Model{
 		$where = " WHERE 1=1 ";
 		$join = "";
 		switch($type){
+			// User Manajemen & ACL
+			case "data_login_admin":
+				$sql = "
+					SELECT A.*
+					FROM tbl_user_admin A
+					WHERE A.username = '".$p1."' AND A.aktif = '1'
+				";
+			break;
+			case "get_module":
+				$sql = "
+					SELECT A.nama_module, B.id as function_id
+					FROM idx_menu_module A
+					LEFT JOIN idx_menu_submodule B ON A.id = B.idx_module_id
+					WHERE B.nama_submodule = 'Main Menu'
+				";
+			break;
+			case "get_submodule":
+				$sql = "
+					SELECT nama_submodule, id as function_id
+					FROM idx_menu_submodule
+					WHERE nama_submodule <> 'Main Menu'
+				";
+			break;
+			// End User Manajemen & ACL
+			
 			case "tbl_data_peserta":
 			case "tbl_data_peserta_detail":
 				if($type == "tbl_data_peserta"){
@@ -79,6 +104,12 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_data_peserta_diklat":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat
@@ -86,10 +117,16 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
-					WHERE B.step_registrasi = '2'
+					WHERE B.step_registrasi = '2' $where
 				";
 			break;
 			case "tbl_peserta_asesmen":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian, E.idx_sertifikasi_id, 
@@ -99,7 +136,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_asessmen_mandiri_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					WHERE B.step_asesmen_mandiri = '2'
+					WHERE B.step_asesmen_mandiri = '2' $where
 				";
 			break;
 			case "tbl_asesmen_header":
@@ -125,6 +162,12 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_peserta_pembayaran":
+				if($this->auth['level_admin'] == 5){
+					$where = " AND D.idx_bendahara_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tanggal_pembayaran,  '%d-%m-%Y' ) AS tanggal_pembayaran, 
@@ -136,7 +179,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_pembayaran_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					WHERE B.step_pembayaran = '2'
+					WHERE B.step_pembayaran = '2' $where
 				";
 			break;
 			case "tbl_penjadwalan":
@@ -149,6 +192,12 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_peserta_ujitulis_sekarang":
+				if($this->auth['level_admin'] == 7){
+					$where = " AND E.idx_tuk_id = '".$this->auth['idx_tuk_id']."' ";
+				}else{
+					$where = "";
+				}
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat
@@ -157,7 +206,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_daftar_test WHERE status_data=1) F ON A.id = F.tbl_data_peserta_id
-					WHERE B.step_uji_test = '4'
+					WHERE B.step_uji_test = '4' $where
 				";
 			break;			
 			case "tbl_peserta_ujitulis":
@@ -234,6 +283,12 @@ class madmin extends SHIPMENT_Model{
 			break;
 			
 			case "tbl_peserta_simulasi":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat
@@ -242,7 +297,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_uji_simulasi_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					WHERE B.step_uji_simulasi = '2'
+					WHERE B.step_uji_simulasi = '2' $where
 				";
 			break;
 			
@@ -256,6 +311,12 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_peserta_wawancara":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+			
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat
@@ -264,7 +325,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_wawancara_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					WHERE B.step_wawancara = '2'
+					WHERE B.step_wawancara = '2' $where
 				";
 			break;
 			case "tbl_peserta_hasil":
@@ -323,16 +384,11 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "idx_voucher":
-				if($p1 == 'cetak'){
-					$where = " AND status_data = '1' AND is_cetak = '1' ";
-				}else{
-					$where = " AND status_data = '1' ";
-				}
 				$sql = "
-					SELECT kode_voucher, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit,
-						status_data, is_cetak
+					SELECT id, kode_voucher, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit,
+						status_data
 					FROM idx_voucher
-					WHERE 1=1 $where
+					WHERE 1=1 AND status_data = '1'
 				";
 			break;
 			
@@ -449,7 +505,7 @@ class madmin extends SHIPMENT_Model{
 				
 				$array_asesmen_header = array(
 					'status'=>$status, 
-					'nama_asesor'=>$this->auth['username'], 
+					'nama_asesor'=>$this->auth['real_name'], 
 					'tgl_verifikasi'=>date('Y-m-d H:i:s')
 				);
 				$this->db->update("tbl_asessmen_mandiri_header", $array_asesmen_header, array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
@@ -607,7 +663,6 @@ class madmin extends SHIPMENT_Model{
 						'kode_voucher'=>$kode_beneran,
 						'tgl_terbit'=>date('Y-m-d'),
 						'status_data'=>1,
-						'is_cetak'=>1
 					);
 					
 					$this->db->insert('idx_voucher', $array_insert);
@@ -678,6 +733,21 @@ class madmin extends SHIPMENT_Model{
 			return $this->db->trans_commit();
 		}
 	
+	}
+	
+	function is_access($function_id="", $level_id=""){
+		$get_policy = $this->db->get_where('idx_menu_policy', array('idx_submodule_id'=>$function_id, 'idx_level_user_id'=>$level_id))->row_array();
+		$ret = false;
+		
+		if($get_policy){
+			if($get_policy['is_access'] == 1){
+				$ret = true;
+			}else{
+				$ret = false;
+			}
+		}
+		
+		return $ret;
 	}
 	
 	

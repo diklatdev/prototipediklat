@@ -25,9 +25,11 @@
 			<div class="btn-group btn-group-sm " style='float:right;margin-left:5px;'>
 				<a href="#" onClick="loadUrl_adds('vcf','{$host}tambah-voucher', 'konten_voucher');" class="btn btn-danger"><i class="fa fa-plus"></i>Buat Voucher</a>
 			</div>
+			{*
 			<div class="btn-group btn-group-sm " style='float:right;'>
 				<a href="{$host}cetak-voucher" target="_blank" class="btn btn-success"><i class="fa fa-print"></i>Cetak Voucher</a>
 			</div>
+			*}
 		</div>
 		<div class="portlet"><!-- /Portlet -->
 			<div id="basic" class="panel-collapse collapse in">
@@ -38,8 +40,9 @@
 								<th class="col-small center">No.</th>
 								<th class="col-medium center">Kode Voucher</th>
 								<th class="col-medium center">Status Voucher</th>
-								<th class="col-medium center">Sudah Cetak</th>
-								<th class="col-medium center">Tanggal Terbit</th>
+								<th class="col-medium center">Dikirim Kepada</th>
+								<th class="col-medium center">Tanggal Kirim</th>
+								<th class="col-small center">::</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -56,14 +59,17 @@
 												<font color='red'>Sudah Digunakan</font>
 											{/if}
 										</td>
+										<td>{$rows.dikirim_ke|default:'-'}</td>
+										<td>{$rows.tgl_kirim|date_format:"%d  %B  %Y"|default:'-'}</td>
 										<td>
-											{if $rows.is_cetak eq '1'}
-												<font color='green'>Belum Cetak</font>
-											{elseif $rows.is_cetak eq '0'}
-												<font color='red'>Sudah Dicetak</font>
+											{if $rows.dikirim_ke|default:'-' neq null}
+												<div class="btn-group btn-group-xs ">
+													<a href="#" onClick="loadUrl_adds('vcf-krm','{$host}form-kirim-voucher', 'konten_voucher', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-location-arrow"> Kirim</i></a>
+												</div>
+											{else}
+												<font color='green'>Sudah Terdistribusi</font>
 											{/if}
 										</td>
-										<td class="hidden-xs">{$rows.tanggal_terbit}</td>
 									</tr>
 									{assign var=ind value=$ind+1}
 								{/foreach}

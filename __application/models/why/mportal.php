@@ -136,6 +136,7 @@ class mportal extends SHIPMENT_Model{
 				$sql = "
 					SELECT id as kode, nama_tuk as txt
 					FROM idx_tuk
+					WHERE is_aktif = '1'
 				";
 			break;
 			//end combobox
@@ -507,7 +508,8 @@ class mportal extends SHIPMENT_Model{
 						"step_wawancara" => "0",
 						"step_hasil" => "0",
 						"status" => "1",
-						"kdreg_diklat" => $kdreg_diklat
+						"kdreg_diklat" => $kdreg_diklat,
+						
 					);
 					$this->db->insert("tbl_step_peserta", $array_step);
 					
@@ -527,6 +529,14 @@ class mportal extends SHIPMENT_Model{
 						$filename_pak = "";
 					}
 					
+					$sql_asesor = "
+						SELECT id
+						FROM tbl_user_admin
+						WHERE idx_tuk_id = '".$post['tku_dxi']."' AND idx_keahlian = '".$code_sert."'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					
 					$array_sert = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
@@ -541,7 +551,9 @@ class mportal extends SHIPMENT_Model{
 						"tahun" => date('Y'),
 						"tanggal_daftar" => date('Y-m-d'),
 						"jml_coba" => 1,
-						"kdreg_diklat" => $kdreg_diklat
+						"kdreg_diklat" => $kdreg_diklat,
+						"idx_tuk_id" => $post['tku_dxi'],
+						"idx_asesor_id" => $query_asesor['id']
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					
@@ -1084,55 +1096,6 @@ class mportal extends SHIPMENT_Model{
 		} else{
 			return $this->db->trans_commit();
 		}
-	}
-	
-	function kirimemail($type="", $email="", $p1="", $p2=""){
-		$this->load->library('email');
-		$html = "";
-		$subject = "";
-		switch($type){
-			case "email_registrasi":
-				$html = "
-					Informasi akun anda dalam Sistem Informasi Sertifikasi dan Penilaian Kementerian Dalam Negeri <br />
-					Username : ".$p1." <br/>
-					Password : ".$p2." <br/>
-					Silahkan login akun anda ke dalam sistem kami, dan dimohon untuk menjaga kerahasiaan data akun anda ini. <br/>
-					Terima Kasih.
-					<br />
-					<br />
-					<br />
-					<br />
-					<br />
-					<br />
-					Hormat Kami, ".date("d-m-Y")." 
-					<br />
-					<br />
-					<br />
-					<br />
-					Portal Lembaga Sertifikasi & Penilaian Kementerian Dalam Negeri
-				";
-				$subject = "Registrasi Sistem Informasi Sertifikasi dan Penilaian Kementerian Dalam Negeri";
-			break;
-		}
-		$config = array(
-			"protocol"	=>"smtp"
-			,"mailtype" => "html"
-			,"smtp_host" => "ssl://smtp.gmail.com"
-			,"smtp_user" => "triwahyunugros@gmail.com"
-			,"smtp_pass" => "ms6713saa"
-			,"smtp_port" => 465
-		);
-		$this->email->initialize($config);
-		$this->email->from("triwahyunugros@gmail.com");
-		$this->email->to($email);
-		$this->email->subject($subject);
-		$this->email->message($html);
-		$this->email->set_newline("\r\n");
-		if($this->email->send())
-			echo "<h3> SUKSES EMAIL ke $email </h3>";
-		else
-			echo $this->email->print_debugger();
-		return 1;
 	}
 	
 	function randomString($length,$parameter="") {

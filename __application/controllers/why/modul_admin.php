@@ -13,11 +13,33 @@ class modul_admin extends SHIPMENT_Controller{
 	}
 	
 	function index() {
-		if(!$this->auth) {
-			$this->smarty->display('login.html');
-		}else {
+		if($this->auth) {
+			$module = $this->madmin->get_data('get_module', 'result_array');
+			$submodule = $this->madmin->get_data('get_submodule', 'result_array');
+			
+			foreach($module as $k=>$v){
+				$menu = strtolower($v['nama_module']);
+				$menu = str_replace(" ","", $menu);
+				$menu = str_replace("/","", $menu);
+				
+				$access = $this->madmin->is_access($v['function_id'], $this->auth['level_admin']);
+				$this->smarty->assign($menu, $access);
+			}
+			
+			foreach($submodule as $y=>$t){
+				$menu = strtolower($t['nama_submodule']);
+				$menu = str_replace(" ","", $menu);
+				$menu = str_replace("/","", $menu);
+				
+				$access = $this->madmin->is_access($t['function_id'], $this->auth['level_admin']);
+				$this->smarty->assign($menu, $access);
+			}
+			
+			
 			$this->smarty->assign('konten', "dashboard-admin/main-page");		
 			$this->smarty->display('index-admin.html');
+		}else {
+			$this->smarty->display('login.html');
 		}
 	}
 	
@@ -294,6 +316,11 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "form_voucher":
 				$content = "modul-admin/manajemen_voucher/form-voucher.html";
+			break;
+			case "form_kirim_voucher":
+				$id_voucher = $this->input->post('idvcf');
+				$content = "modul-admin/manajemen_voucher/form-kirim-voucher.html";
+				$this->smarty->assign('idvcf', $id_voucher);
 			break;			
 			
 			case "petunjuk_dokumen":
@@ -451,10 +478,30 @@ class modul_admin extends SHIPMENT_Controller{
 		$spdf->Output('repository/temp_sertifikat/'.$filename.'.pdf', 'I'); // view file
 	}
 	
+	function kirimvoucher(){
+		$this->load->library('lib');
+		$id = $this->input->post('idxv');
+		$email = $this->input->post('email');
+		$data = $this->db->get_where('idx_voucher', array('id'=>$id) )->row_array();
+		
+		$kirimemail = $this->lib->kirimemail('email_voucher', $email, $data['kode_voucher'], $data['tgl_terbit']);
+		if($kirimemail == 1){
+			$array_update = array(
+				'status_data' => 0,
+				'dikirim_ke' => $email,
+				'tgl_kirim' => date('Y-m-d'),
+				'nama_petugas' => $this->auth['real_name'],
+			);
+			echo $this->db->update('idx_voucher', $array_update, array('id'=>$id));
+		}else{
+			echo $kirimemail;
+		}
+	}
+	
 	function generate_voucher(){
 		$data = $this->madmin->get_data('idx_voucher', 'result_array', 'cetak');
-		$this->smarty->assign('data', $data);
 		
+		$this->smarty->assign('data', $data);
 		$htmlcontent = $this->smarty->fetch('modul-admin/manajemen_voucher/voucher_pdf.html');
 		
 		$this->load->library('mlpdf');	

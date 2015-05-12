@@ -23,7 +23,22 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "form_admin":
 				$content = "modul-admin/manajemen_admin/form-add-admin.html";		
-				$this->smarty->assign('idx_level_user', $this->fillcombo('idx_level_user', 'return') );
+				$this->smarty->assign('idx_level_user', $this->fillcombo('idx_level_user', 'return') );			
+				$tuk = $this->madmin->get_data("idx_tuk","result_array");
+				$this->smarty->assign("tuk", $tuk);
+			break;
+			case "form_edit_admin":
+				$content = "modul-admin/manajemen_admin/form-edit-admin.html";		
+				$data = $this->madmin->get_data("tbl_user_admin","row_array", $this->input->post('id_u'));
+				$this->smarty->assign("data", $data);				
+				$level = $this->madmin->get_data("idx_level_user","result_array");
+				$this->smarty->assign("level", $level);			
+				$tuk = $this->madmin->get_data("idx_tuk","result_array");
+				$this->smarty->assign("tuk", $tuk);
+				
+				$this->load->library('encrypt');
+				$pass = $this->encrypt->decode($data['password']);
+				$this->smarty->assign("pass", $pass);
 			break;
 			case "manajemen_aparatur":				
 				$content = "modul-admin/manajemen_aparatur/main.html";
@@ -79,14 +94,26 @@ class modul_admin extends SHIPMENT_Controller{
 				$content = "modul-admin/manajemen_instansi/form-add.html";	
 				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return') );		
 			break;
+			case "edit_instansi":	
+				$content = "modul-admin/manajemen_instansi/form-edit.html";	
+				//$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return') );		
+				$prop = $this->madmin->get_data("idx_prov","result_array",'prop');
+				$this->smarty->assign("prop", $prop);		
+				$data = $this->madmin->get_data("idx_instansi","row_array", $this->input->post('id_row'));
+				$this->smarty->assign("data", $data);						
+			break;
 			case "manajemen_pangkat":
 				$content = "modul-admin/manajemen_pangkat/main.html";
 				$data = $this->madmin->get_data("idx_pangkat","result_array");
 				$this->smarty->assign("data", $data);				
 			break;
 			case "form_pangkat":	
-				$content = "modul-admin/manajemen_pangkat/form-add.html";	
-				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return') );		
+				$content = "modul-admin/manajemen_pangkat/form-add.html";		
+			break;
+			case "edit_pangkat":	
+				$content = "modul-admin/manajemen_pangkat/form-edit.html";	
+				$data = $this->madmin->get_data("idx_pangkat","row_array",$this->input->post('id_row'));
+				$this->smarty->assign("data", $data);		
 			break;
 			case "manajemen_tuk":
 				$content = "modul-admin/manajemen_tuk/main.html";
@@ -102,7 +129,7 @@ class modul_admin extends SHIPMENT_Controller{
 		$this->smarty->display($content);
 	}
 	
-	function simpansavedbx($type=""){
+	function simpansavedbx($type="", $met=""){
 		$post = array();
         foreach($_POST as $k=>$v) $post[$k] = $this->db->escape_str($this->input->post($k));
 		
@@ -112,7 +139,7 @@ class modul_admin extends SHIPMENT_Controller{
 		exit;
 		//*/
 		
-		echo $this->madmin->simpansavedatabase($type, $post);
+		echo $this->madmin->simpansavedatabase($type, $post, $met);
 	}
 	
 	function fillcombo($type="", $balikan="", $p1="", $p2="", $p3=""){

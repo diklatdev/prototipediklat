@@ -791,6 +791,11 @@ function tampil_view(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				$("#"+domnya).html(resp);
 			});
 		break;
+		case "pdf_keputusan":
+			// $.post(urlnya, { 'id_peserta' : p1 , 'id_angdit' : p2 }, function(resp){
+				window.open(urlnya, p1, p2);
+			// });
+		break;
 	}
 }
 
@@ -836,6 +841,11 @@ function loadMan_edit(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 		break;
 		case "pang_ed":
 			$.post(urlnya, { 'id_row' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "ap_tk_1":
+			$.post(urlnya, { 'id_tk1' : $('#ap_tk_1').val() }, function(resp){
 				$("#"+domnya).html(resp);
 			});
 		break;

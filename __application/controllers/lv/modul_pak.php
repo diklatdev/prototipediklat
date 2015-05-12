@@ -639,6 +639,95 @@ class modul_pak extends SHIPMENT_Controller{
 		}
 	}
 	
+	function gen_val_pak($p1="", $p2="", $p3=""){
+		$this->load->model('lv/madmin');
+		$id_peserta = $p1;
+		$id_angdit = $p2;
+		if ($this->autha){
+			$this->load->library('mlpdf');
+			
+			$data_diklat = $this->db->query("SELECT idx_sertifikasi_id 
+					FROM tbl_data_diklat WHERE tbl_data_peserta_id = '$id_peserta'")->row_array();
+				$idx_sertifikasi_id = $data_diklat['idx_sertifikasi_id'];
+				
+				$pak_inpassing_temp = $this->mpak->get_data('tbl_pengajuan_pak_inpassing', 'row_array', $id_peserta, 'det_pengajuan', $id_angdit);
+				$data_peserta = $this->mpak->get_data('data_pribadi_peserta', 'row_array', $id_peserta);
+				$masa_kerja = $this->mpak->get_data('idx_masa_kerja', 'result');
+				
+				$id_tingkat = $pak_inpassing_temp['id_tingkat'];
+				$id_pendidikan = $pak_inpassing_temp['id_pendidikan'];
+				$tot_aju = $pak_inpassing_temp['total_angka_diterima'];
+				
+				if ( $id_tingkat == '1'){
+					if ($id_pendidikan == 7 || $id_pendidikan == 6){
+						if ($tot_aju >= '25' && $tot_aju < '40'){$jabatan = 'PELAKSANA PEMULA';}
+						if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+					}
+					elseif ($id_pendidikan == 5){
+						if ($tot_aju >= '40' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+					}
+					elseif ($id_pendidikan == 4){
+						if ($tot_aju >= '60' && $tot_aju < '100'){$jabatan = 'PELAKSANA';}
+						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PELAKSANA LANJUTAN';}
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'PENYELIA';}
+					}
+				}
+				elseif ( $id_tingkat == '2'){
+					if ($id_pendidikan == 3){
+						if ($tot_aju >= '100' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+					}
+					elseif ($id_pendidikan == 2){
+						if ($tot_aju >= '150' && $tot_aju < '200'){$jabatan = 'PERTAMA';}
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+					}
+					elseif ($id_pendidikan == 1){
+						if ($tot_aju >= '200' && $tot_aju < '400'){$jabatan = 'MUDA';}
+						if ($tot_aju >= '400' && $tot_aju < '800'){$jabatan = 'MADYA';}
+					}
+				}
+				
+				$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
+				$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
+				$folder_pak = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
+				
+				$this->smarty->assign('pak_val', $pak_inpassing_temp);
+				$this->smarty->assign('data', $data_peserta);;
+				$this->smarty->assign('folder_pak', $folder_pak);
+				$this->smarty->assign('masa_kerja', $masa_kerja);
+				$this->smarty->assign('jabatan', $jabatan);
+			
+			//$htmlheader = $this->smarty->fetch('modul-admin/pak_inpassing/sertifikat_header.html');
+			$htmlcontent = $this->smarty->fetch('modul-admin/pak_inpassing/sk_pak_val_pdf.html');
+			
+			$pdf = $this->mlpdf->load();
+			$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 5, 20, 5, 2, 'P');
+			$spdf->ignore_invalid_utf8 = true;
+			// bukan sulap bukan sihir sim salabim jadi apa prok prok prok
+			$spdf->allow_charset_conversion = true;     // which is already true by default
+			$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+			$spdf->SetDisplayMode('fullpage');		
+			//$spdf->SetHTMLHeader($htmlheader);
+			$spdf->SetHTMLFooter('
+				<div style="font-family:arial; font-size:8px; text-align:center; font-weight:bold;">
+					Sistem Informasi Sertifikasi & Penilaian Kementerian Dalam Negeri
+				</div>
+			');				
+			$spdf->SetProtection(array('print'));				
+			$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+			//$spdf->Output('repositories/Dokumen_LS/LS_PDF/'.$filename.'.pdf', 'F'); // save to file because we can
+			$spdf->Output('__repository/temp_sertifikat/'.$filename.'.pdf', 'I'); // view file
+		}else{
+			header("Location: " . $this->host);	
+		}
+	}
+	
 	function gen_sertifikat($p1="", $p2="", $p3=""){
 		if ($this->autha){
 			$this->load->library('mlpdf');
@@ -722,6 +811,9 @@ class modul_pak extends SHIPMENT_Controller{
 	}
 	
 	function gen_keputusan($p1="", $p2="", $p3=""){
+		// $p1 = $this->input->post('id_peserta');
+		// $p2 = $this->input->post('id_angdit');
+		// $p3="";
 		if ($this->autha){
 			$this->load->library('mlpdf');
 			

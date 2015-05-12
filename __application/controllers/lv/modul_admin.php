@@ -48,6 +48,8 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data_tk1", $data_tk1);
 				$data_tk2 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk2');
 				$this->smarty->assign("data_tk2", $data_tk2);
+				$data_tk3 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk3');
+				$this->smarty->assign("data_tk3", $data_tk3);
 			break;
 			case "form_aparatur":	
 				$content = "modul-admin/manajemen_aparatur/form-add-aparatur.html";				
@@ -117,12 +119,26 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "manajemen_tuk":
 				$content = "modul-admin/manajemen_tuk/main.html";
-				$data = $this->madmin->get_data("idx_tuk","result_array");
+				$data = $this->madmin->get_data("tbl_tuk","result_array");
 				$this->smarty->assign("data", $data);				
 			break;
 			case "form_tuk":	
 				$content = "modul-admin/manajemen_tuk/form-add.html";	
 				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return') );		
+			break;
+			case "add_combo":	
+				$content = "modul-admin/manajemen_aparatur/add-combo.html";	
+				$asn = $this->input->post('id_tk1');
+				$data = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", '$asn');
+				$this->smarty->assign("data", $data);
+				$data_tk3 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk3');
+				$this->smarty->assign("data_tk3", $data_tk3);
+				
+				$data_tk2 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk2');
+				$this->smarty->assign("data_tk2", $data_tk2);
+				
+				
+				$this->smarty->assign("asn", $asn);
 			break;
 		}
 		$this->smarty->assign('type', $type);

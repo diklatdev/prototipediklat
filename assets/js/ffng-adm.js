@@ -264,10 +264,30 @@ function kumpulPost($type, p1, p2, p3){
 				}			
 			});
 		break;
+		case "up_instansi":			
+			$.post(hostir+"update-instansi", $('#regInstansi').serialize(),function (rspp){
+				if(rspp == 1){
+						alert('Instansi Berhasil Diperbaharui!');
+						loadUrl(hostir+'manajemen-instansi');
+					}else{
+						alert(rspp);
+				}			
+			});
+		break;
 		case "sv_pangkat":			
 			$.post(hostir+"submit-pangkat", $('#regPangkat').serialize(),function (rspp){
 				if(rspp == 1){
 						alert('Pangkat Berhasil Ditambahkan!');
+						loadUrl(hostir+'manajemen-pangkat');
+					}else{
+						alert(rspp);
+				}			
+			});
+		break;
+		case "up_pangkat":			
+			$.post(hostir+"update-pangkat", $('#regPangkat').serialize(),function (rspp){
+				if(rspp == 1){
+						alert('Pangkat Berhasil Diperbaharui!');
 						loadUrl(hostir+'manajemen-pangkat');
 					}else{
 						alert(rspp);
@@ -570,7 +590,7 @@ function search_data(type, p1, p2){
 }
 
 //****************LEVI
-function sv_admin(){
+function sv_admin($type, urlnya){
 	if($('#nip').val() == ""){
 		$("#nip").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "NIP Harus Diisi!" });
@@ -601,7 +621,16 @@ function sv_admin(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Tidak Sama!" });
 		return false;
 	}
-	document.regAdmin.submit();
+	// document.regAdmin.submit();
+	
+	$.post( urlnya, $( "#regAdmin" ).serialize(), function(resp){
+		if (resp == 1){					
+			alert('Data Admin User Tersimpan!.');
+			loadUrl(hostir+'manajemen-admin');
+		}else{
+			alert(resp);
+		}
+	});
 }
 
 function fillCombo(url, SelID, value, value2, value3, value4){
@@ -788,6 +817,26 @@ function pakinass(type, urlnya){
 				}else{
 					alert(resp);
 				}
+			});
+		break;
+	}
+}
+
+function loadMan_edit(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
+	switch(type){
+		case "us_ed":
+			$.post(urlnya, { 'id_u' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "ins_ed":
+			$.post(urlnya, { 'id_row' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "pang_ed":
+			$.post(urlnya, { 'id_row' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
 			});
 		break;
 	}

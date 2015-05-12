@@ -129,6 +129,8 @@ $route['combos/(:any)'] = "why/modul_portal/fillcombo/$1/echo";
 $route['manajemen-admin'] = "lv/modul_admin/getdisplay/manajemen_admin/";
 $route['form-admin'] = "lv/modul_admin/getdisplay/form_admin/";
 $route['submit-admin'] = "lv/modul_admin/simpansavedbx/sv_admin";
+$route['edit-admin'] = "lv/modul_admin/getdisplay/form_edit_admin";
+$route['update-admin'] = "lv/modul_admin/simpansavedbx/up_admin";
 
 $route['manajemen-aparatur'] = "lv/modul_admin/getdisplay/manajemen_aparatur/";
 $route['form-aparatur'] = "lv/modul_admin/getdisplay/form_aparatur/";
@@ -145,11 +147,16 @@ $route['submit-uji-man'] = "lv/modul_admin/simpansavedbx/sv_uji_man";
 
 $route['manajemen-instansi'] = "lv/modul_admin/getdisplay/manajemen_instansi/";
 $route['form-instansi'] = "lv/modul_admin/getdisplay/form_instansi/";
-$route['submit-instansi'] = "lv/modul_admin/simpansavedbx/sv_instansi";
+$route['form-instansi'] = "lv/modul_admin/getdisplay/form_instansi/";
+$route['submit-instansi'] = "lv/modul_admin/simpansavedbx/sv_instansi/sv";
+$route['edit-instansi'] = "lv/modul_admin/getdisplay/edit_instansi/";
+$route['update-instansi'] = "lv/modul_admin/simpansavedbx/sv_instansi/up";
 
 $route['manajemen-pangkat'] = "lv/modul_admin/getdisplay/manajemen_pangkat/";
 $route['form-pangkat'] = "lv/modul_admin/getdisplay/form_pangkat/";
-$route['submit-pangkat'] = "lv/modul_admin/simpansavedbx/sv_pangkat";
+$route['submit-pangkat'] = "lv/modul_admin/simpansavedbx/sv_pangkat/sv";
+$route['update-pangkat'] = "lv/modul_admin/simpansavedbx/sv_pangkat/up";
+$route['edit-pangkat'] = "lv/modul_admin/getdisplay/edit_pangkat/";
 
 $route['manajemen-tuk'] = "lv/modul_admin/getdisplay/manajemen_tuk/";
 $route['form-tuk'] = "lv/modul_admin/getdisplay/form_tuk/";

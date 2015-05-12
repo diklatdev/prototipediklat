@@ -59,16 +59,21 @@ class mpak extends SHIPMENT_Model{
 					WHERE i.status = 0;
 					";
 				}else if ($p2 == 'det_pengajuan'){
-					$sql = "SELECT a.id, file_sk_masa_jabatan, b.masa_kerja, a.id_pendidikan, a.id_tingkat, a.id_golongan, a.catatan,
+					$sql = "SELECT a.id, file_sk_masa_jabatan, b.masa_kerja as masa_kerja, a.id_pendidikan, a.id_tingkat, a.id_golongan, a.catatan,
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM angka_unsur_pendidikan) AS char)))) AS angka_unsur_pendidikan,
-					(angka_unsur_utama*0.45) as poin_a, (angka_unsur_utama*0.45) as poin_b, (angka_unsur_utama*0.1) as poin_c,
-					angka_unsur_penunjang, angka_unsur_utama,
+					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM (angka_unsur_utama*0.45)) AS char)))) AS poin_a, 
+					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM (angka_unsur_utama*0.45)) AS char))))  as poin_b, 
+					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM (angka_unsur_utama*0.1)) AS char)))) as poin_c,
+					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM angka_unsur_penunjang) AS char)))) AS angka_unsur_penunjang, 
+					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM angka_unsur_utama) AS char)))) AS angka_unsur_utama,
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM total_angka_diajukan) AS char)))) AS total_angka_diajukan, 
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM total_angka_diterima) AS char)))) AS total_angka_diterima,
 					a.keputusan, a.instansi, DATE_FORMAT(a.masa_penilaian, '%d-%m-%Y') as masa_penilaian, 
-					DATE_FORMAT(a.tmt, '%d-%m-%Y') as tmt, pejabat_berwenang, ditetapkan_di, nomor_sk_keputusan
+					DATE_FORMAT(a.tmt, '%d-%m-%Y') as tmt, pejabat_berwenang, ditetapkan_di, nomor_sk_keputusan, k.masa_kerja as masa_kerja_diterima
 					FROM tbl_pengajuan_pak_inpassing a
 					LEFT JOIN idx_masa_kerja b ON b.id = a.id_masa_kerja
+					LEFT JOIN idx_angka_kredit_inpassing i ON i.id = a.id_angka_kredit_diterima
+					LEFT JOIN idx_masa_kerja k ON k.id = i.id_masa_kerja
 					WHERE a.id = '$p3';";
 				}else if ($p2 == 'result'){
 					$sql = "SELECT d.id as id_peserta, d.nama_lengkap, d.nip, p.nama_pendidikan, t.nama_pangkat, n.nama_aparatur as nama_tingkat

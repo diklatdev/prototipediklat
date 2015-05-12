@@ -34,13 +34,18 @@ class madmin extends SHIPMENT_Model{
 			break;
 			case "idx_aparatur_sipil_negara":
 				if($type == "idx_aparatur_sipil_negara"){
-					$select = " A.id, A.id_asn, A.id_asn_child_tk1, A.id_asn_child_tk2, A.nama_aparatur, A.level ";
+					$select = " A.id, A.id_asn, A.id_asn_child_tk1, A.id_asn_child_tk2,A.id_asn_child_tk2, A.nama_aparatur, A.level ";
+					$other = '';
 					if ($p1 == 'asn'){
 						$where .= " AND A.level = '1' ";
 					}else if ($p1 == 'asn_tk1'){
-						$where .= " AND A.level = '2' ";					
+						$where .= " AND A.level = '2'";					
 					}else if ($p1 == 'asn_tk2'){
-						$where .= " AND A.level = '3' ";					
+						if ($p2){$other = "AND A.id_asn = '$p2'";}
+						$where .= " AND A.level = '3' $other ";					
+					}else if ($p1 == 'asn_tk3'){
+						if ($p2){$other = "AND A.id_asn = '$p2'";}
+						$where .= " AND A.level = '4' $other ";					
 					}
 				}
 				
@@ -58,8 +63,8 @@ class madmin extends SHIPMENT_Model{
 			break;
 			case 'idx_tuk':
 				$sql = "
-					SELECT id as kode, nama_tuk as txt
-					FROM $type
+					SELECT A.id as kode, A.nama_tuk as txt, A.*
+					FROM $type AS A
 				";
 			break;
 			case 'idx_prov':
@@ -112,7 +117,7 @@ class madmin extends SHIPMENT_Model{
 					$join
 					$where";
 			break;
-			case "idx_tuk":
+			case "tbl_tuk":
 				
 				$sql = "
 					SELECT A.id, A.nama_tuk, P.name, A.alamat_tuk

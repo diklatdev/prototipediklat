@@ -17,27 +17,14 @@
 							<h4>Hirarki Sertifikasi Aparatur</h4>
 							<div class="hr-12 hr-double hr-dotted"></div>
 							<div class="form-group">
-								<label class="col-sm-2 control-label">Aparatur : </label>
+								<label class="col-sm-2 control-label">Jenis Sertifikasi : </label>
 								<div class="col-sm-5">
-									<select id='ap_tk_1' name="ap_tk_1" onChange="processCombo('ap_tk_1');" class="form-control" >
+									<select id='ap_tk_1' name="ap_tk_1" onChange="loadMan_edit('ap_tk_1','{$host}add-combo','add_combo');" class="form-control" >
 										{$idx_aparatur}
 									</select>
 								</div>
 							</div>						
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Sub Aparatur : </label>
-								<div class="col-sm-3">
-									<select id='sb_ap_tk2' class="form-control" name="sb_ap_tk2">
-									</select>
-									<input type='hidden' name='sb_jns_nxx' id='sb_jns_nxx'>
-								</div>
-							</div>						
-							<div class="form-group">
-								<label class="col-sm-2 control-label">Sertifikasi Aparatur : </label>
-								<div class="col-sm-2">
-									<input name='sertifikasi' id='sertifikasi' type="text">
-								</div>
-							</div>	
+							<div id="add_combo"></div>
 						</div>
 					</div>
 				</div>

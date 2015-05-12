@@ -62,8 +62,14 @@
 								<tr>
 									<th></th>
 									<th class="left" width="1%"><h5>7.</h5></th>
-									<th class="left" width="20%"><h5>Masa Kepangkatan </h5></th>
+									<th class="left" width="20%"><h5>Masa Kepangkatan Diajukan</h5></th>
 									<th  width="60%" ><h5>{$pak_temp.masa_kerja}</h5></th>
+								</tr>	
+								<tr>
+									<th></th>
+									<th class="left" width="1%"><h5>7.</h5></th>
+									<th class="left" width="20%"><h5>Masa Kepangkatan Diterima</h5></th>
+									<th  width="60%" ><h5>{$pak_temp.masa_kerja_diterima}</h5></th>
 								</tr>	
 							</thead>
 						</table>
@@ -283,8 +289,10 @@
 					</div>
 				</form>				
 				<div class="form-actions ">
-					<button id='btnnya' class="btn btn-info" onClick="event.preventDefault();pakinass('peripik', '{$host}peripikasi-pak');">PRINT Verifikasi PAK</button>
-				</div>
+					<button id='btnnya' class="btn btn-danger" onClick="event.preventDefault();pakinass('peripik', '{$host}peripikasi-pak');">SUBMIT Verifikasi PAK</button>
+					<button id='btnnya' class="btn btn-info" onClick=" window.open('{$host}lv/modul_pak/gen_val_pak/{$data.id}/{$pak_temp.id}')">PRINT Verifikasi PAK</button>
+					<button id='btnnya' class="btn btn-warning" onClick="loadUrl('{$host}pak-result');">CANCEL</button>
+				</div>	
 				
 			</div>
 		</div>

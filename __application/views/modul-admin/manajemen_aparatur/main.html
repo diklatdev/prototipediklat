@@ -46,15 +46,44 @@
 													{foreach from=$data_tk1 item=rowstk1}
 													<tr>
 														{if $rowstk1.id_asn eq $rows.id}
-															<td>{$rowstk1.nama_aparatur}</td>
-															{if $data_tk1}
+															<td>{$rowstk1.nama_aparatur}</td>	
+															{if $data_tk2}
 																<td>
-																	<table class="table table-bordered table-hover tc-table">
+																	<table class="table  table-hover tc-table">
 																		<tbody>
 																			{foreach from=$data_tk2 item=rowstk2}	
 																				<tr>											
 																					{if $rowstk2.id_asn eq $rows.id_asn and $rowstk2.id_asn_child_tk1 eq $rowstk1.id}
-																						<td class="hidden-xs">{if $rowstk2.nama_aparatur eq ''}None{else}{$rowstk2.nama_aparatur}{/if}</td>
+																						<td class="hidden-xs">
+																							{if $rowstk2.nama_aparatur eq ''}None{else}{$rowstk2.nama_aparatur}{/if}
+																						</td>																							
+																						{if $data_tk3}
+																						<td>
+																							<table class="table table-bordered table-hover tc-table">
+																								{foreach from=$data_tk3 item=rowstk3}
+																								{if $rowstk3.id_asn eq $rows.id_asn and $rowstk3.id_asn_child_tk1 eq $rowstk1.id and $rowstk3.id_asn_child_tk2 eq $rowstk2.id }
+																								<tr>
+																									<td>
+																									{if $rowstk3.nama_aparatur eq ''}None{else}{$rowstk3.nama_aparatur}{/if}
+																									</td>																										
+																									<td class="col-medium center">
+																										<div class="btn-group btn-group-xs ">
+																											<a href="#" onClick="loadMan_edit('us_ed','{$host}edit-admin', 'konten_peserta', '{$rowstk3.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>
+																											<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+																										</div>
+																									</td>
+																								</tr>
+																								{/if}
+																								{/foreach}
+																							</table>
+																						</td>
+																						{/if}
+																						<td class="col-medium center">
+																							<div class="btn-group btn-group-xs ">
+																								<a href="#" onClick="loadMan_edit('us_ed','{$host}edit-admin', 'konten_peserta', '{$rowstk2.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>
+																								<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+																							</div>
+																						</td>
 																					{/if}
 																				</tr>
 																			{/foreach}

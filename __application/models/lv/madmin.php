@@ -20,8 +20,11 @@ class madmin extends SHIPMENT_Model{
 			break;
 			case "tbl_user_admin":
 				if($type == "tbl_user_admin"){
-					$select = " A.id, A.real_name, A.username, A.level_admin, A.aktif, A.nip_user ";
+					$select = " A.id, A.real_name, A.username, A.level_admin, A.aktif, A.nip_user, A.email, 
+					A.password, A.level_admin, A.aktif as stats, A.idx_tuk_id ";
 				}
+				
+				if ($p1){ $where = "WHERE id = $p1 ";}
 				
 				$sql = "
 					SELECT $select 
@@ -47,6 +50,27 @@ class madmin extends SHIPMENT_Model{
 					$join
 					$where";
 			break;
+			case 'idx_level_user':
+				$sql = "
+					SELECT id as kode, nama_level as txt
+					FROM $type
+				";
+			break;
+			case 'idx_tuk':
+				$sql = "
+					SELECT id as kode, nama_tuk as txt
+					FROM $type
+				";
+			break;
+			case 'idx_prov':
+				if ($p1 == 'prop'){$where = "WHERE level = 1 ";}
+				if ($p1 == 'kab'){$where = "WHERE level = 2 ";}
+				$sql = "
+					SELECT id as kode, name as txt, idprov
+					FROM idx_area
+					$where
+				";
+			break;
 			case "idx_persyaratan_registrasi";
 				if($type == "idx_persyaratan_registrasi"){
 					$select = " A.id, A.idx_asn_id, A.nama_persyaratan";
@@ -71,6 +95,7 @@ class madmin extends SHIPMENT_Model{
 					$where";
 			break;
 			case "idx_instansi":
+				if ($p1){$where = "WHERE A.id = $p1";}
 				
 				$sql = "
 					SELECT A.id, A.nama_instansi, A.idx_provinsi_id, R.name
@@ -80,7 +105,7 @@ class madmin extends SHIPMENT_Model{
 					$where";
 			break;
 			case "idx_pangkat":
-				
+				if ($p1){ $where = "WHERE A.id = $p1";}
 				$sql = "
 					SELECT A.id, A.nama_pangkat
 					FROM idx_pangkat A 
@@ -122,8 +147,24 @@ class madmin extends SHIPMENT_Model{
 				$post_bnr['email'] = $post['email'];
 				$post_bnr['level_admin'] = $post['level'];
 				$post_bnr['aktif'] = $post['status'];
+				$post_bnr['idx_tuk_id'] = $post['tuk'];
 				
 				$insert_reg = $this->db->insert("tbl_user_admin", $post_bnr);
+			break;
+			case "up_admin":
+				$this->load->library('encrypt');
+				$post_bnr = array();
+				$post_bnr['nip_user'] = $post['nip'];
+				$post_bnr['real_name'] = $post['realName'];
+				$post_bnr['username'] = $post['username'];
+				$post_bnr['password'] = $this->encrypt->encode($post['pass']);
+				$post_bnr['email'] = $post['email'];
+				$post_bnr['level_admin'] = $post['level'];
+				$post_bnr['aktif'] = $post['status'];
+				$post_bnr['idx_tuk_id'] = $post['tuk'];
+				
+				$insert_reg = $this->db->where("id", $post['kode']);
+				$insert_reg = $this->db->update("tbl_user_admin", $post_bnr);
 			break;
 			case "sv_aparat":
 				$post_bnr = array();
@@ -158,15 +199,23 @@ class madmin extends SHIPMENT_Model{
 				$post_bnr = array();
 				$post_bnr['idx_provinsi_id'] = $post['prv'];
 				$post_bnr['nama_instansi'] = $post['nama_ins'];
-				$post_bnr['idx_kab_id'] = $post['ka'];
-				
-				$insert_reg = $this->db->insert("idx_instansi", $post_bnr);
+				//$post_bnr['idx_kab_id'] = $post['ka'];
+				if ($p1 == 'sv'){
+					$insert_reg = $this->db->insert("idx_instansi", $post_bnr);
+				}elseif ($p1 == 'up'){
+					$insert_reg = $this->db->where("id", $post['kode']);
+					$insert_reg = $this->db->update("idx_instansi", $post_bnr);
+				}
 			break;
 			case "sv_pangkat":
 				$post_bnr = array();
 				$post_bnr['nama_pangkat'] = $post['nama_pangkat'];
-				
-				$insert_reg = $this->db->insert("idx_pangkat", $post_bnr);
+				if ($p1 == 'sv'){
+					$insert_reg = $this->db->insert("idx_pangkat", $post_bnr);
+				}elseif ($p1 == 'up'){
+					$insert_reg = $this->db->where("id", $post['kode']);
+					$insert_reg = $this->db->update("idx_pangkat", $post_bnr);
+				}
 			break;
 			case "sv_tuk":
 				$post_bnr = array();

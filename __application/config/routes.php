@@ -184,6 +184,8 @@ $route['gen-sk'] = "lv/modul_pak/gen_keputusan";
 $route['pak-result'] = "lv/modul_pak/getdisplayadmin/pak_result_admin";
 $route['peripikasi-pak'] = "lv/modul_pak/savedatatodb/peripikasi_pak";
 
+$route['add-combo'] = "lv/modul_admin/getdisplay/add_combo";
+
 
 
 $route['404_override'] = '';

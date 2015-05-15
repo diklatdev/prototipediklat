@@ -768,6 +768,8 @@ class mportal extends SHIPMENT_Model{
 						
 						if($post['nama_file'] != ""){
 							$file = explode('.', $post['nama_file']);
+							$expnya = sizeof($file) - 1;
+							$file = $file[0];
 						}else{
 							$file = "file_kompetensi_".$post['ind']."(".$post['komp_i'].")"; 
 						}

@@ -6,13 +6,13 @@ class SHIPMENT_Controller extends CI_Controller{
 		parent::__construct();
 		
 		$this->load->database();
-		
 		$this->cuti = $this->config->item('base_url');
 		$this->USER = unserialize(base64_decode($this->session->userdata('shipment_session')));		
 		$this->host	= $this->config->item('base_url');
 		
 		$this->smarty->assign('USER', $this->USER);
 		$this->smarty->assign('host', $this->cuti);
+		
 		
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");

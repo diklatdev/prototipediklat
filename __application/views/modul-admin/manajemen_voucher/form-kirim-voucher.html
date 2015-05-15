@@ -1,0 +1,25 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			
+			<h4>Kirim Voucher</h4>
+			<hr/>
+			<form class="form-horizontal" role="form" id="vcf_kr_act" action="{$host}submit-kirim-voucher" method="post" enctype="multipart/form-data">
+				<input type='hidden' name='idxv' value='{$idvcf}'>
+				<table class="table table-bordered tc-table">
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Alamat Email</label>
+						</td>
+						<td width='80%'>
+							<input type='text' name="email" id="email" class="col-sm-6" />
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div class="form-actions ">
+				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPost('krmvcf');">Submit</button>
+			</div>			
+		</div>
+	</div>
+</div>

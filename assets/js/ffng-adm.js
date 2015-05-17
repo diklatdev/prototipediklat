@@ -412,6 +412,8 @@ function sbmjdw(){
 		if(respo == 1){
 			alert("Data Tersimpan");
 			loadUrl(hostir+'penjadwalan-peserta');
+		}else if(respo == 2){
+			alert("Data Sudah Ada Dalam Sistem! Ubah TUK / Tanggal Pelaksanaan.");
 		}else{
 			alert(respo);
 		}

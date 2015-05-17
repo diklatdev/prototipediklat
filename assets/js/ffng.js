@@ -14,7 +14,18 @@ function processCombo(type){
 	switch(type){
 		case "prv":
 			fillCombo(host+"combo/ka/", 'ka', "", $('#'+type).val() );
-			fillCombo(host+"combo/ins/", 'ins', "", $('#'+type).val() );
+			//fillCombo(host+"combo/ins/", 'ins', "", $('#'+type).val() );
+		break;
+		case "ck_tku":
+			$.post(host+"ck-tku", { 'xtu_id':$('#tku_dxi').val() }, function(rsp){
+				if(rsp == 0){
+					$('#res-cku').html('<font color="red">Maaf, Jadwal Ujian TUK Tidak Tersedia. Pilih TUK Lain.</font>');
+					$('#tku_dxi').val('');
+				}else{
+					var data = $.parseJSON(rsp)
+					$('#res-cku').html('<font color="green">Jadwal Ujian TUK Tanggal '+data.tanggal+' - Masih Tersedia.</font>');
+				}
+			});
 		break;
 		case "ap_tk_1":
 			fillCombo(host+"combo/sb_ap_tk2/", 'sb_ap_tk2', "", $('#'+type).val() );
@@ -189,6 +200,24 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Ijazah Harus Diisi!" });
 		return false;
 	}
+	
+	if($('#kmnt').val() == ""){
+		$("#kmnt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kementerian Harus Diisi!" });
+		return false;
+	}
+	if($('#frms').val() == ""){
+		$("#frms").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Formasi Harus Diisi!" });
+		return false;
+	}
+	if($('#lks').val() == ""){
+		$("#lks").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Lokasi Harus Diisi!" });
+		return false;
+	}
+	
+	
 	if($('#prv').val() == ""){
 		$("#prv").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
@@ -233,6 +262,14 @@ function sbtdl_reg(){
 		}
 	}
 	
+	if($('#tku_dxi').length != 0){
+		if($('#tku_dxi').val() == ""){
+			$("#tku_dxi").focus(); 
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "TUK Terdekat Harus Diisi!" });
+			return false;
+		}
+	}
+	
 	var jml_sert = $('.file-persyaratan-sertifikasi').length;
 	if(jml_sert != 0){
 		var jms = eval((jml_sert-1));
@@ -248,9 +285,21 @@ function sbtdl_reg(){
 		return false;
 	}
 	
+	$.post(host+'chkdt-regpes', { 'npi':$('#ed_nonip').val() }, function(resp){
+		if(resp == 0){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+			return false;
+		}
+	});
+	$.post(host+'chkdt-kutoax', { 'xtu_id':$('#tku_dxi').val() }, function(resp){
+		if(resp == 0){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+			return false;
+		}
+	});
+	
 	
 	document.regdiklat.submit();
-	
 	//clr();
 }
 

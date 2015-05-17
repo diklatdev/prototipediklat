@@ -32,8 +32,13 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('data_diklat_terakhir',$data_diklat_terakhir);
 				$this->smarty->assign('data_record_diklat',$data_record_diklat);
 			}else{
+				$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $this->auth['idx_sertifikasi_id']);
+				$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
+				$folder_sertifikasi = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
 				$data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
+				
 				$this->smarty->assign('data_file_persyaratan',$data_file_persyaratan);
+				$this->smarty->assign('folder_sertifikasi',$folder_sertifikasi);
 			}
 			
 			

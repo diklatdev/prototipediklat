@@ -155,6 +155,18 @@ class lib {
 			break;
 		}
 		
+		$config = Array(
+              'protocol' => 'smtp',
+              'smtp_host' => 'students.paramadina.ac.id',
+              'smtp_port' => 25,
+              'smtp_user' => 'orangbaik@students.paramadina.ac.id', // change it to yours
+              'smtp_pass' => 'S@l4mb3l@k4ng', // change it to yours
+              'mailtype' => 'html',
+              'charset' => 'iso-8859-1',
+              'wordwrap' => TRUE
+        );   
+		
+		/*
 		$config = array(
 			"protocol"	=>"smtp"
 			,"mailtype" => "html"
@@ -163,9 +175,10 @@ class lib {
 			,"smtp_pass" => "ms6713saa"
 			,"smtp_port" => 465
 		);
+		*/
 		
 		$ci->email->initialize($config);
-		$ci->email->from("triwahyunugros@gmail.com");
+		$ci->email->from("orangbaik@students.paramadina.ac.id");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);

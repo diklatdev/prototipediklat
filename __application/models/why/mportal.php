@@ -6,7 +6,7 @@ class mportal extends SHIPMENT_Model{
 		$this->auth = unserialize(base64_decode($this->session->userdata('d1kl4tkem3nd49r1-p0rt4L')));
 	}
 	
-	function get_data($type="", $balikan="", $p1="", $p2="", $p3=""){
+	function get_data($type="", $balikan="", $p1="", $p2="", $p3="", $p4=""){
 		$where = "";
 		switch($type){
 			//Untuk combobox
@@ -37,16 +37,30 @@ class mportal extends SHIPMENT_Model{
 					WHERE level = '1'
 				";
 			break;
-			case 'ins': //idx_instansi
+			case 'idx_instansi':
+				/*
 				$provinsi = $this->input->post("v2");
 				if(!$provinsi){
 					$provinsi = $p2;
 				}
+				WHERE idx_provinsi_id = '".$provinsi."'
+				*/
 				
 				$sql = "
 					SELECT id as kode, nama_instansi as txt
 					FROM idx_instansi
-					WHERE idx_provinsi_id = '".$provinsi."'
+				";
+			break;			
+			case 'idx_kementerian':
+				$sql = "
+					SELECT id as kode, nama_kementerian as txt
+					FROM idx_kementerian
+				";
+			break;			
+			case 'idx_formasi':
+				$sql = "
+					SELECT id as kode, nama_formasi as txt
+					FROM idx_formasi
 				";
 			break;			
 			case 'ka': //idx_kabupaten
@@ -156,7 +170,8 @@ class mportal extends SHIPMENT_Model{
 				*/
 				$sql = "
 					SELECT A.*, B.idx_sertifikasi_id, B.status as status_diklat_aktif, C.name as nama_provinsi, D.name as nama_kabupaten,
-						E.nama_instansi, F.nama_pangkat, B.kdreg_diklat, G.nama_aparatur, B.idx_pangkat_id, B.idx_tuk_id
+						E.nama_instansi, F.nama_pangkat, B.kdreg_diklat, G.nama_aparatur, B.idx_pangkat_id, B.idx_tuk_id, H.nama_kementerian,
+						I.nama_formasi, B.idx_lokasi_id
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status='1') B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
@@ -164,10 +179,31 @@ class mportal extends SHIPMENT_Model{
 					LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
 					LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
 					LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id
+					LEFT JOIN idx_kementerian H ON B.idx_kementerian_id = H.id
+					LEFT JOIN idx_formasi I ON B.idx_formasi_id = I.id
 					WHERE A.username = '".$p1."'
 				";
 			break;
 			//end data login
+			
+			//ambil data checking & data additional
+			case "":
+				$sql = "
+					SELECT kuota
+					FROM tbl_jadwal_wawancara A
+					WHERE A.idx_tuk_id = '".$p1."' AND A.kuota <> '0' AND A.status = 'A'
+				";
+			break;
+			case "dashboard_jadwal":
+				$sql = "
+					SELECT B.tanggal_wawancara, DATE_FORMAT( B.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_beneran
+					FROM tbl_daftar_test A
+					LEFT JOIN tbl_jadwal_wawancara B ON A.tbl_jadwal_wawancara_id = B.id
+					WHERE tbl_data_peserta_id = '".$p1."' AND idx_sertifikasi_id = '".$p2."' 
+					AND kdreg_diklat = '".$p3."' AND A.status_data = '1'
+				";
+			break;			
+			//end ambil data checking
 			
 			//untuk ambil2 data dah
 			case "data_unit_kompetensi":
@@ -296,6 +332,9 @@ class mportal extends SHIPMENT_Model{
 				if($p1){
 					$where .= " AND A.id = '".$p1."' ";
 				}
+				if($p2){
+					$where .= " AND A.idx_tuk_id = '".$p2."' AND status = 'A' ";
+				}
 				$sql = "
 					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
 						B.nama_tuk
@@ -383,7 +422,6 @@ class mportal extends SHIPMENT_Model{
 		switch($type){
 			case "registrasi":
 				$this->load->library('encrypt');
-				
 				$sqlreg = "
 					SELECT MAX(kode_reg) as reg
 					FROM tbl_data_peserta
@@ -465,15 +503,7 @@ class mportal extends SHIPMENT_Model{
 				//$this->kirimemail("email_registrasi", $post["ed_mailer"], $username, $password);
 				
 				$insert_reg = $this->db->insert("tbl_data_peserta", $post_bnr);
-				if($insert_reg){
-					/*
-					if(isset($post['sb_ap_tk3'])){
-						$code_sert = $post['sb_ap_tk3'];
-					}else{
-						$code_sert = $post['sb_ap_tk2'];
-					}
-					*/
-					
+				if($insert_reg){					
 					if(isset($post['sb_ap_tk4'])){
 						$code_sert = $post['sb_ap_tk4'];
 					}else{
@@ -501,8 +531,8 @@ class mportal extends SHIPMENT_Model{
 						"idx_sertifikasi_id" => $code_sert,
 						"step_registrasi" => "2",
 						"step_asesmen_mandiri" => "0",
-						"step_pembayaran" => "0",
-						"step_penjadwalan" => "0",
+						"step_pembayaran" => "1",
+						"step_penjadwalan" => "1",
 						"step_uji_test" => "0",
 						"step_uji_simulasi" => "0",
 						"step_wawancara" => "0",
@@ -541,6 +571,9 @@ class mportal extends SHIPMENT_Model{
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
 						"file_pak" => $filename_pak,
+						"idx_kementerian_id" => $post['kmnt'],
+						"idx_formasi_id" => $post['frms'],
+						"idx_lokasi_id" => $post['lks'],
 						"idx_provinsi_instansi_id" => $post['prv'],
 						"idx_kabupaten_instansi_id" => $post['ka'],
 						"idx_instansi_id" => $post['ins'],
@@ -557,6 +590,22 @@ class mportal extends SHIPMENT_Model{
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					
+					$sql_datajadwal = "
+						SELECT A.*
+						FROM tbl_jadwal_wawancara A
+						WHERE A.idx_tuk_id = '".$post['tku_dxi']."' AND A.status = 'A'
+					";
+					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					$array_daftar_test = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $querynya_peserta['id'],
+						'tbl_jadwal_wawancara_id'=> $data_jadwal['id'],
+						'status_data'=> 1,
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					$kurangi_kuota = ($data_jadwal['kuota']-1);
+					$this->db->insert('tbl_daftar_test', $array_daftar_test);
+					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$data_jadwal['id']) );
 					
 					$serfifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/";
 					mkdir($serfifikasi_path, 0777);
@@ -726,7 +775,7 @@ class mportal extends SHIPMENT_Model{
 							"tbl_data_peserta_id" => $this->auth['id'],
 							"idx_sertifikasi_id" => $this->auth['idx_sertifikasi_id'],
 							"penilaian" => $post['st_kmp_'.$id_kmp],
-							"status_ver" => 0,
+							"status_ver" => -1,
 							"file_pendukung"=> $filename_a,
 							"kdreg_diklat" => $this->auth['kdreg_diklat']
 						);
@@ -778,6 +827,7 @@ class mportal extends SHIPMENT_Model{
 						$array_update = array(
 							'penilaian' => $post['st_kmp_'.$id_asesmen],
 							'file_pendukung' => $filename,
+							'status_ver' => -1,
 							'memo' => $memo_asli." (Revisi Upload Dokumen, Tunggu Verifikasi Asesor)",
 						);
 						

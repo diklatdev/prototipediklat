@@ -73,6 +73,8 @@
 									{assign var=checkmate value="checked"}
 								{elseif $rows.status_ver eq '0'}
 									{assign var=checkmate value=null}
+								{elseif $rows.status_ver eq '-1'}
+									{assign var=checkmate value=null}
 								{/if}
 								<div class="tcbs">
 									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" {$checkmate}>
@@ -86,7 +88,14 @@
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
-							<td colspan='2' style="text-align:right !important;"><b>Memo Untuk Peserta</b></td>
+							<td style="text-align:center !important;">
+								{if $rows.status_ver eq '-1'}
+									<font color='red'>Belum Verifikasi</font>
+								{else}	
+									<font color='green'>Sudah Verifikasi</font>
+								{/if}
+							</td>
+							<td style="text-align:right !important;"><b>Memo Untuk Peserta</b></td>
 							<td colspan='3' >
 								<textarea id="maxL-3" class="form-control" rows="1" maxlength="225" name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
 							</td>
@@ -113,7 +122,7 @@
 						<select name="hsl_as" id="hsl_as">
 							<option value=''>-- Pilih --</option>
 							<option value='L'>Memenuhi Syarat</option>
-							<option value='TL'>Tidak Memenuhi Syarat</option>
+							<option value='TL'>Belum Memenuhi Syarat</option>
 						</select>
 					</td>
 				</tr>

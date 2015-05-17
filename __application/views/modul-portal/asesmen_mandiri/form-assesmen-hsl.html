@@ -34,6 +34,8 @@
 										{assign var=warna value="#D6FFD6"}
 									{elseif $rows.status_ver eq '0'}
 										{assign var=warna value="#F6D7D7"}
+									{elseif $rows.status_ver eq '-1'}
+										{assign var=warna value="#E7EEF6"}
 									{/if}
 									<input type="hidden" name="idxkomp[]" value="{$rows.id}">
 									<tr style='background:{$warna};'>
@@ -57,6 +59,8 @@
 												<font color='green'>Terpenuhi</font>
 											{elseif $rows.status_ver eq '0'}
 												<font color='red'>Belum Terpenuhi</font>
+											{elseif $rows.status_ver eq '-1'}	
+												<font color='red'>Belum Verifikasi</font>
 											{/if}
 										</td>
 									</tr>

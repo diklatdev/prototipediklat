@@ -16,6 +16,9 @@
 								<marquee><h3>Konfirmasi Pembayaran Anda Sudah Diverifikasi, Silahkan Melakukan Pendaftaran Jadwal Ujian Online.</h3></marquee>
 							{/if}						
 							
+							{if $sts_psr.step_uji_test eq '4'}
+								<marquee><h3>Jadwal Ujian Sertifikasi di TUK Anda : {$tglujian}, Informasi TUK Ujian Anda Ada Dihalaman Penjadwalan. Jangan Lupa & Jangan Telat Hadir.</h3></marquee>
+							{/if}
 							{if $sts_psr.step_uji_test eq '3'}
 								<marquee><h3>Ujian Diklat Online Siap Dilaksanakan, Silahkan Datang Ke TUK Untuk Mengikuti Ujian Online</h3></marquee>
 							{/if}
@@ -23,11 +26,7 @@
 							{if $sts_psr.step_wawancara eq '2'}
 								<marquee><h3>Prosedur Selanjutnya Adalah Ujian Wawancara. Harap Mempersiapkan Diri Anda Agar Bisa Melakukan Ujian Wawancara Dengan Baik. Semoga Sukses.</h3></marquee>
 							{/if}
-							{*
-							{if $sts_psr.step_wawancara eq '1'}
-								<marquee><h3>Hasil Sementara Sertifikasi Anda Sudah Tersedia. Silahkan Buka Halaman Hasil Akhir Untuk Melihat Data Hasil Sementara Anda.</h3></marquee>
-							{/if}
-							*}
+							
 							{if $sts_psr.step_hasil eq '1'}
 								<marquee><h3>Hasil Sertifikasi Diklat Anda Sudah Tersedia. Silahkan Buka Halaman Hasil Akhir Pada Portal Diklat ini.</h3></marquee>
 							{/if}
@@ -62,7 +61,19 @@
 							<div id="tab26" class="tab-pane active">
 								{if $auth.idx_sertifikasi_id}
 								<br/>
-								<h5>Saat Ini Anda Terdaftar Sebagai Peserta Sertifikasi - <b>{$sts_psr.nama_aparatur} (Kode Sertifikasi: {$sts_psr.kode_sertifikasi})</b> :</h5>
+								<h5>Saat Ini Anda Terdaftar Sebagai Peserta Sertifikasi - <b>{$sts_psr.nama_aparatur} (Kode Sertifikasi: {$sts_psr.kode_sertifikasi})</b></h5>
+								<br/>
+								<h5>Tanggal Ujian Anda Adalah <b>{$tglujian} / (<font color='red'>{$countdownwaktu} Hari Lagi</font>) </b></h5>
+								
+								{if $sts_psr.step_registrasi eq '2'}
+									<br/>
+									Segera Selesaikan <font color='red'>Persyaratan Registrasi</font> Anda, Apabila Ada Revisi Persyaratan Dari Asesor.
+								{/if}
+								
+								{if $sts_psr.step_asesmen_mandiri eq '3'}
+									<br/>
+									Segera Selesaikan <font color='red'>Asesmen Mandiri</font> Anda, Mohon Selalu Buka Halaman Asesmen Mandiri Untuk Memantau Apabila Ada Revisi Dari Asesor. 
+								{/if}
 								<hr/>
 								<ul class="list-group no-margin-bottom"><!-- List Group Style 3-->
 									<li class="list-group-item">
@@ -115,7 +126,7 @@
 									</li>
 								</ul>
 								<hr>
-								<h5><b>STATUS FILE PERSYARATAN ANDA</b></h5>
+								<h5><b>STATUS PERSYARATAN REGISTRASI ANDA</b></h5>
 								<hr>
 								{if $data_file_persyaratan}
 								<table class="table table-bordered table-hover tc-table">
@@ -193,10 +204,47 @@
 								<hr>
 								<div class="form-horizontal" >
 									<div class="form-group">
+										<label class="col-sm-2 control-label">Kementerian : </label>
+										<div class="col-sm-4">	
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_kementerian|default:'-'}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Formasi : </label>
+										<div class="col-sm-4">	
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_formasi|default:'-'}
+											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Lokasi : </label>
+										<div class="col-sm-4">	
+											<span class="form-control" style="border:none !important;">
+											{if $datapeserta.idx_lokasi_id|default:'-' eq 'P'}
+												Pusat
+											{else}
+												Daerah
+											{/if}
+											</span>
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
+										<div class="col-sm-6">															
+											<span class="form-control" style="border:none !important;">
+											{$datapeserta.nama_instansi|default:'-'}
+											</span>
+										</div>
+									</div>									
+									<div class="form-group">
 										<label class="col-sm-2 control-label">Provinsi : </label>
 										<div class="col-sm-4">	
 											<span class="form-control" style="border:none !important;">
-											{$datapeserta.nama_provinsi|default:$data_diklat_terakhir.nama_provinsi}
+											{$datapeserta.nama_provinsi|default:'-'}
 											</span>
 										</div>
 									</div>
@@ -204,15 +252,7 @@
 										<label class="col-sm-2 control-label">Kabupaten : </label>
 										<div class="col-sm-4">															
 											<span class="form-control" style="border:none !important;">
-											{$datapeserta.nama_kabupaten|default:$data_diklat_terakhir.nama_kabupaten}
-											</span>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
-										<div class="col-sm-6">															
-											<span class="form-control" style="border:none !important;">
-											{$datapeserta.nama_instansi|default:$data_diklat_terakhir.nama_instansi}
+											{$datapeserta.nama_kabupaten|default:'-'}
 											</span>
 										</div>
 									</div>
@@ -220,7 +260,7 @@
 										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
 										<div class="col-sm-4">															
 											<span class="form-control" style="border:none !important;">
-											{$datapeserta.nama_pangkat|default:$data_diklat_terakhir.nama_pangkat}
+											{$datapeserta.nama_pangkat|default:'-'}
 											</span>
 										</div>
 									</div>
@@ -229,7 +269,7 @@
 										<label class="col-sm-2 control-label">Jabatan : </label>
 										<div class="col-sm-6">
 											<span class="form-control" style="border:none !important;">
-											{$datapeserta.jabatan|default:$data_diklat_terakhir.jabatan}
+											{$datapeserta.jabatan|default:'-'}
 											</span>
 										</div>
 									</div>																	
@@ -238,7 +278,7 @@
 										<label class="col-sm-2 control-label">Alamat : </label>
 										<div class="col-sm-10">
 											<span class="form-control" style="border:none !important;">
-											{$datapeserta.alamat_instansi|default:$data_diklat_terakhir.alamat_instansi}
+											{$datapeserta.alamat_instansi|default:'-'}
 											</span>
 										</div>
 									</div>																						
@@ -283,7 +323,7 @@
 							</div>
 							<div id="tab27" class="tab-pane">
 								
-								<div class="form-horizontal" >
+								<form class="form-horizontal" >
 									<div class="form-group">
 										<div class="col-sm-12">
 											<div class="hr-12 hr-double hr-dotted"></div>
@@ -293,15 +333,7 @@
 												<label class="col-sm-2 control-label">No. Registrasi : </label>
 												<div class="col-sm-8">
 													<span class="form-control" style="border:none !important;">
-													{$datapeserta.no_registrasi}
-													</span>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="col-sm-2 control-label">Nama Lengkap : </label>
-												<div class="col-sm-8">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_lengkap}
+														{$datapeserta.no_registrasi|default:''}
 													</span>
 												</div>
 											</div>
@@ -310,7 +342,15 @@
 												<label class="col-sm-2 control-label">NIP : </label>
 												<div class="col-sm-8">
 													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nip}
+														{$datapeserta.nip}
+													</span>
+												</div>
+											</div>											
+											<div class="form-group">
+												<label class="col-sm-2 control-label">Nama Lengkap : </label>
+												<div class="col-sm-8">
+													<span class="form-control" style="border:none !important;">
+														{$datapeserta.nama_lengkap|default:''}
 													</span>
 												</div>
 											</div>
@@ -349,38 +389,28 @@
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Alamat : </label>
 												<div class="col-sm-10">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.alamat_rumah}
-													</span>
+													<textarea id='ed_alamatRmh' class="form-control" rows="4" cols="50"  placeholder="" name="ed_alamatRmh">{$datapeserta.alamat_rumah}</textarea>
 												</div>
 											</div>						
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Kode Pos : </label>
 												<div class="col-sm-2">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.kode_pos|default:""}
-													</span>
+													<input type="text" id='ed_tmpLahir' class="form-control" placeholder="" name="ed_tmpLahir" value="{$datapeserta.kode_pos|default:""}">
 												</div>
 											</div>					
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Kontak : </label>
-												<div class="col-sm-3">
-													<span class="form-control" style="border:none !important;">
-													Telp. Rumah - {$datapeserta.no_telepon}
-													</span>
+												<div class="col-sm-4">
+													<input type="text" id='ed_tlpRmh' class="form-control" placeholder="Telepon Rumah" name="ed_tlpRmh" value="{$datapeserta.no_telepon|default:''}">
 												</div>
 												<div class="col-sm-4">
-													<span class="form-control" style="border:none !important;">
-													No. Handphone - {$datapeserta.no_handphone}
-													</span>
+													<input type="text" id='ed_hempon' class="form-control" placeholder="No HP : (08xx xxxx xxxx)" name="ed_hempon" value="{$datapeserta.no_handphone|default:''}">
 												</div>
 											</div>					
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Email : </label>
 												<div class="col-sm-4">
-													<span class="form-control" style="border:none !important;">
-													{$datapeserta.email}
-													</span>
+													<input type="email" id='ed_mailer' class="form-control" placeholder="" name="ed_mailer" value='{$datapeserta.email}'>
 												</div>
 											</div>
 											<div class="form-group">
@@ -398,26 +428,44 @@
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Pendidikan Terakhir : </label>
 												<div class="col-sm-3">															
+													<select id='ed_pend' class="form-control" name="ed_pend">
+														{$idx_pendidikan_id}
+													</select>
+													
+													{*
 													<span class="form-control" style="border:none !important;">
-													{$datapeserta.nama_pendidikan}
+														{ $datapeserta.nama_pendidikan }
 													</span>
+													*}
 												</div>
 											</div>
 											<div class="space-4"></div>
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Program Studi: </label>
 												<div class="col-sm-6">															
+													<select id='ed_prodi' class="form-control" name="ed_prodi">
+														{$idx_programstudi_id}
+													</select>
+													
+													{*
 													<span class="form-control" style="border:none !important;">
 													{$datapeserta.nama_programstudi}
 													</span>
+													*}
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Tahun Lulus : </label>
 												<div class="col-sm-2" >															
+													<select id='ed_thLulus' class="form-control" name="ed_thLulus">
+														{$tahun_lulus}
+													</select>
+													
+													{*
 													<span class="form-control" style="border:none !important;">
 													{$datapeserta.tahun_lulus}
 													</span>
+													*}
 												</div>
 											</div>
 											
@@ -437,7 +485,7 @@
 											
 										</div>
 									</div>
-								</div>
+								</form>
 								
 								
 								

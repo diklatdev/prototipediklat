@@ -77,11 +77,13 @@ $route['chk3'] = "why/modul_portal/getdisplay/additional/checking_data_3";
 $route['reg-file'] = "why/modul_portal/getdisplay/additional/registrasi_file_persyaratan";
 $route['submit-registrasi'] = "why/modul_portal/simpansavedbs/registrasi";
 $route['submit-revisi-persyaratan'] = "why/modul_portal/simpansavedbs/revpersyaratan";
+$route['ck-tku'] = "why/modul_portal/getdisplay/additional/checking_tuk/";
+$route['chkdt-regpes'] = "why/modul_portal/getdisplay/additional/checking_datareg/";
+$route['chkdt-kutoax'] = "why/modul_portal/getdisplay/additional/checking_kuota/";
 
 $route['assesmen-mandiri'] = "why/modul_portal/getdisplay/assesmen";
 $route['submit-asesmen'] = "why/modul_portal/simpansavedbs/asesmen";
 $route['submit-revisi-asesmen'] = "why/modul_portal/simpansavedbs/rev_asesmen";
-
 
 $route['uji-online-mandiri'] = "why/modul_portal/getdisplay/uji_online";
 $route['minta-soal'] = "why/modul_portal/getdisplay/additional/load_soal";

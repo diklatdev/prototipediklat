@@ -42,7 +42,8 @@ class madmin extends SHIPMENT_Model{
 				}elseif($type == "tbl_data_peserta_detail"){
 					$select = " 
 						A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
-						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat 
+						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat,  
+						J.nama_kementerian, K.nama_formasi, B.idx_lokasi_id
 					";
 					$where .= " AND A.id = '".$p1."' ";
 					$join .= "
@@ -54,6 +55,8 @@ class madmin extends SHIPMENT_Model{
 						LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id 
 						LEFT JOIN idx_pendidikan H ON A.idx_pendidikan_id = H.id 
 						LEFT JOIN idx_programstudi I ON A.idx_programstudi_id = I.id 
+						LEFT JOIN idx_kementerian J ON J.id = B.idx_kementerian_id
+						LEFT JOIN idx_formasi K ON K.id = B.idx_formasi_id
 					";
 				}
 			
@@ -482,12 +485,12 @@ class madmin extends SHIPMENT_Model{
 				}
 				
 				if($post['hsl_as'] == "L"){
-					$CI =& get_instance();
-					$CI->load->model('why/mportal');
-					$kode_unik = $CI->mportal->randomString('5');
+					
+					/* Blok Program Untuk Insert Pembayaran Peserta
+					$this->load->library('lib');
+					$kode_unik = $this->lib->randomString('5');
 					$kode_unik = "KDP-".$kode_unik;
 					$status = "L";
-					
 					$array_pembayaran = array(
 						"tbl_data_peserta_id"=>$post['usid'],
 						"idx_sertifikasi_id"=>$post['sertid'],
@@ -496,10 +499,11 @@ class madmin extends SHIPMENT_Model{
 						"kdreg_diklat"=>$post['kdr']
 					);
 					$this->db->insert('tbl_pembayaran_header', $array_pembayaran);
-					$this->db->update("tbl_step_peserta", array("step_asesmen_mandiri"=>1,"step_pembayaran"=>3), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
+					*/
+					
+					$status = "L";
+					$this->db->update("tbl_step_peserta", array("step_asesmen_mandiri"=>1,"step_uji_test"=>4), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 				}elseif($post['hsl_as'] == "TL"){
-					//action kalo gak lulus
-					//$this->db->update("tbl_step_peserta", array("status"=>0), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 					$status = "BV";
 				}
 				
@@ -511,6 +515,7 @@ class madmin extends SHIPMENT_Model{
 				$this->db->update("tbl_asessmen_mandiri_header", $array_asesmen_header, array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 			break;
 			case "ver_konfpembayaran":
+				/* Blok Program Untuk Verifikasi Pembayaran Peserta Oleh Admin
 				$array_pembayaran_header = array(
 					"status" => $post['hsl_konf'],
 					'nama_asesor'=>$this->auth['real_name'],
@@ -523,10 +528,16 @@ class madmin extends SHIPMENT_Model{
 					//action kalo gak lulus
 					//$this->db->update("tbl_step_peserta", array("status"=>0), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd']) );
 				}
-				
 				$this->db->update("tbl_pembayaran_header", $array_pembayaran_header, array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
+				*/
 			break;	
 			case "savejadwal":
+				$cekdata = $this->db->get_where('tbl_jadwal_wawancara', array("idx_tuk_id" => $post['edtuk'],"tanggal_wawancara" => $post['tggw']) )->row_array();
+				if($cekdata){
+					return 2;
+					exit;
+				}
+				
 				$array_save = array(
 					"idx_tuk_id" => $post['edtuk'],
 					"tanggal_wawancara" => $post['tggw'],
@@ -544,7 +555,7 @@ class madmin extends SHIPMENT_Model{
 				$this->db->update("tbl_step_peserta", array("step_uji_test"=>3), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
 			break;
 			case "ver_ujol":
-				/*
+				/* Blok Program Ujian Online Old
 				$array_ujitest_header = array(
 					'total_skor'=>$post['nilai_uj'],
 					'status'=>$post['hsl_uj'],

@@ -42,7 +42,12 @@
 							{if $data}
 								{assign var=ind value=1}
 								{foreach from=$data item=rows}
-									<tr>
+									{if $rows.step_asesmen_mandiri eq '2'}
+										{assign var=warna value="#D6FFD6"}
+									{elseif $rows.step_asesmen_mandiri eq '3'}
+										{assign var=warna value="#F6D7D7"}
+									{/if}
+									<tr style='background:{$warna};'>
 										<td class="col-small center">{$ind}</td>
 										<td>{$rows.nama_lengkap}</td>
 										<td class="hidden-xs">{$rows.nip}</td>
@@ -50,9 +55,13 @@
 										<td class="hidden-xs">{$rows.nama_aparatur}</td>
 										<td class="hidden-xs col-small center">{$rows.kdreg_diklat}</td>
 										<td class="col-medium center">
-											<div class="btn-group btn-group-xs ">
-												<a href="#" onClick="loadUrl_adds('as_dt','{$host}asesmen-detail', 'konten_asesmen', '{$rows.id}', '{$rows.nama_lengkap}', '{$rows.nama_aparatur}', '{$rows.no_registrasi}', '{$rows.idx_sertifikasi_id}', '{$rows.tanggal_ujian}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
-											</div>	
+											{if $rows.step_asesmen_mandiri eq '2'}
+												<div class="btn-group btn-group-xs ">
+													<a href="#" onClick="loadUrl_adds('as_dt','{$host}asesmen-detail', 'konten_asesmen', '{$rows.id}', '{$rows.nama_lengkap}', '{$rows.nama_aparatur}', '{$rows.no_registrasi}', '{$rows.idx_sertifikasi_id}', '{$rows.tanggal_ujian}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+												</div>	
+											{elseif $rows.step_asesmen_mandiri eq '3'}
+												In Progress
+											{/if}
 										</td>
 									</tr>
 									{assign var=ind value=$ind+1}

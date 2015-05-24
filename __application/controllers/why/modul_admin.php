@@ -277,6 +277,7 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data", $data);
 			break;
 			case "detail_hasil":
+			case "detail_remedial":
 				$id_peserta = $this->input->post('cdn');
 				$idx_sertifikasi_id = $this->input->post('dxisert');
 				$no_reg = $this->input->post('nreg');
@@ -303,12 +304,20 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data_ujian_header", $data_ujian_header);
 				$this->smarty->assign("data_ujian_simulasi", $data_ujian_simulasi);
 				$this->smarty->assign("data_wawancara_header", $data_wawancara_header);
+				$this->smarty->assign("type", $type);
 			break;
 			case "print_sertifikat":
 				$content = "modul-admin/cetak_sertifikat/main-cetak.html";
 				$data = $this->madmin->get_data("tbl_peserta_cetak_sertifikat","result_array");
 				$this->smarty->assign("data", $data);
 			break;
+			case "peserta_tidak_lulus":
+				$content = "modul-admin/hasil_akhir/main-hasil.html";
+				$data = $this->madmin->get_data("tbl_peserta_tidak_lulus","result_array");
+				$this->smarty->assign("data", $data);
+				$this->smarty->assign("type", $type);
+			break;
+			
 			case "voucher":
 				$content = "modul-admin/manajemen_voucher/main-voucher.html";
 				$data = $this->madmin->get_data("idx_voucher","result_array");
@@ -496,6 +505,7 @@ class modul_admin extends SHIPMENT_Controller{
 		}else{
 			echo $kirimemail;
 		}
+		
 	}
 	
 	function generate_voucher(){
@@ -561,6 +571,60 @@ class modul_admin extends SHIPMENT_Controller{
 			echo $optTemp;
 		}
 
+	}
+	
+	function imel(){
+		$html = "
+			<table width='100%'>
+				<tr>
+					<td style='background-color:#124162;font-size:18px;color:#fff;'>
+						Lembaga Sertifikasi Profesi Pemerintahan Daerah - Kementerian Dalam Negeri
+					</td>
+				</tr>
+				<tr>
+					<td style='background-color:#ECECEC;font-size:16px;color:#fff;'>
+						Voucher APBN Sertifikasi
+					</td>
+				</tr>
+				<tr>
+					<td style='background-color:#ECECEC;font-size:16px;color:#fff;'>
+						Kode Voucher : Peler <br/>
+						Tanggal Terbit : Kuda <br/>
+					</td>
+				</tr>
+				<tr>
+					<td align='center' style='background-color:#124162;font-size:12px;color:#fff;'>
+						Sistem Informasi Penilaian Kompetensi & Sertifikasi Pemerintahan Dalam Negeri
+					</td>
+				</tr>
+			</table>
+		";
+		$subject = "Distribusi Voucher APBN Sertifikasi Profesi Pemerintahan Daerah - Kementerian Dalam Negeri";
+		
+		$config = Array(
+              'protocol' => 'smtp',
+              'smtp_host' => 'students.paramadina.ac.id',
+              'smtp_port' => 25,
+              'smtp_user' => 'orangbaik@students.paramadina.ac.id', // change it to yours
+              'smtp_pass' => 'S@l4mb3l@k4ng', // change it to yours
+              'mailtype' => 'html',
+              'charset' => 'iso-8859-1',
+              'wordwrap' => TRUE
+        );   
+		
+		$this->load->library('email', $config);
+		
+		$this->email->from("orangbaik@students.paramadina.ac.id");
+		$this->email->to("triwahyunugroho11@gmai.com");
+		$this->email->subject($subject);
+		$this->email->message($html);
+		$this->email->set_newline("\r\n");
+		if($this->email->send())
+			//echo "<h3> SUKSES EMAIL ke $email </h3>";
+			echo 1;
+		else
+			//echo $this->email->print_debugger();
+			echo $this->email->print_debugger();		
 	}
 	
 	

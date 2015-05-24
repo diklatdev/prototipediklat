@@ -348,14 +348,21 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="well white" style="margin-bottom:0px !important;">
-			<form class="form-horizontal" role="form" id="dehs" action="{$host}verifikasi-hasil" method="post" enctype="multipart/form-data">
+			{if $type eq 'detail_remedial'}
+				{assign var=url value="{$host}verifikasi-remedial"}
+				{assign var=label value="Keputusan Hasil Remedial"}
+			{else}
+				{assign var=url value="{$host}}verifikasi-hasil"}
+				{assign var=label value="Keputusan Hasil Diklat"}
+			{/if}
+			<form class="form-horizontal" role="form" id="dehs" action="{$url}" method="post" enctype="multipart/form-data">
 				<input type='hidden' name='ibdff' value='{$id_peserta}'>
 				<input type='hidden' name='idxsrt' value='{$idx_sertifikasi_id}'>
 				<input type='hidden' name='kdr' value='{$kdreg_diklat}'>
 				<table class="table table-bordered tc-table">
 					<tr>
 						<td width='20%' style='background:#F8F8F8;'>
-							<label>Keputusan Hasil Diklat</label>
+							<label>{$label}</label>
 						</td>
 						<td width='30%'>
 							<select name="hsl_hs" id="hsl_hs">
@@ -371,6 +378,16 @@
 							{* <input type='text' name="nilai_hs" id="hsl_hs"> *}
 						</td>
 					</tr>
+					{if $type eq 'detail_remedial'}
+					<tr>
+						<td width='20%' style='background:#F8F8F8;'>
+							<label>Memo Remedial</label>
+						</td>
+						<td colspan='3' width='30%'>
+							<textarea class="form-control" rows="5" name='memo_rem' id='memo_rem' ></textarea>
+						</td>
+					</tr>
+					{/if}
 				</table>
 			</form>
 			<div class="form-actions ">

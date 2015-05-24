@@ -3,7 +3,11 @@
     <div class="col-lg-12">
         <div class="page-header title" style="">
             <!-- PAGE TITLE ROW -->
-            <h1>Hasil Akhir Sertifikasi</h1>
+            {if $type eq 'peserta_tidak_lulus'}
+				<h1>Daftar Peserta Remedial</h1>
+			{else}
+				<h1>Hasil Akhir Sertifikasi</h1>
+			{/if}
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -38,6 +42,13 @@
 						<tbody>
 							{if $data}
 								{assign var=ind value=1}
+								
+								{if $type eq 'peserta_tidak_lulus'}
+									{assign var=url value="{$host}remedial-detail"}
+								{else}
+									{assign var=url value="{$host}hasil-detail"}
+								{/if}
+								
 								{foreach from=$data item=rows}
 									<tr>
 										<td class="col-small center">{$ind}</td>
@@ -52,7 +63,7 @@
 											<input type='hidden' id='upin_{$rows.id}' value="{$rows.nip}">
 											<input type='hidden' id='kdr_{$rows.id}' value="{$rows.kdreg_diklat}">
 											<div class="btn-group btn-group-xs ">
-												<a href="#" onClick="loadUrl_adds('hs_dt','{$host}hasil-detail', 'konten_hasil', '{$rows.id}', '{$rows.idx_sertifikasi_id}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+												<a href="#" onClick="loadUrl_adds('hs_dt','{$url}', 'konten_hasil', '{$rows.id}', '{$rows.idx_sertifikasi_id}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
 											</div>	
 										</td>
 									</tr>

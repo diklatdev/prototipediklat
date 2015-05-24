@@ -1123,7 +1123,13 @@ class mportal extends SHIPMENT_Model{
 						AND kdreg_diklat = '".$this->auth['kdreg_diklat']."'
 					";
 					$querycekdata = $this->db->query($cekdata)->row_array();
-					$waktunya = trim($post['tmzon']);
+					if(isset($post['tmzon'])){
+						$timezone = $post['tmzon'];
+					}else{
+						$timezone = $post['tmzon2'];
+					}
+					
+					$waktunya = trim($timezone);
 					$waktunya = explode(":",$waktunya);
 					
 					$array_waktu = array(

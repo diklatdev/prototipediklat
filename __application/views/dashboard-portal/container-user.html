@@ -60,20 +60,28 @@
 						<div class="tab-content">
 							<div id="tab26" class="tab-pane active">
 								{if $auth.idx_sertifikasi_id}
-								<br/>
-								<h5>Saat Ini Anda Terdaftar Sebagai Peserta Sertifikasi - <b>{$sts_psr.nama_aparatur} (Kode Sertifikasi: {$sts_psr.kode_sertifikasi})</b></h5>
-								<br/>
-								<h5>Tanggal Ujian Anda Adalah <b>{$tglujian} / (<font color='red'>{$countdownwaktu} Hari Lagi</font>) </b></h5>
+									{if $sts_psr.step_uji_test eq '0' || $sts_psr.step_uji_test eq '4'}
+										<br/>
+										<h5>Saat Ini Anda Terdaftar Sebagai Peserta Sertifikasi - <b>{$sts_psr.nama_aparatur} (Kode Sertifikasi: {$sts_psr.kode_sertifikasi})</b></h5>
+										<br/>
+										<h5>Tanggal Ujian Anda Adalah <b>{$tglujian} / (<font color='red'>{$countdownwaktu} Hari Lagi</font>) </b></h5>
+									{/if}
+									
+									{if $sts_psr.step_registrasi eq '2'}
+										<br/>
+										Segera Selesaikan <font color='red'>Persyaratan Registrasi</font> Anda, Apabila Ada Revisi Persyaratan Dari Asesor.
+									{/if}
+									
+									{if $sts_psr.step_asesmen_mandiri eq '3'}
+										<br/>
+										Segera Selesaikan <font color='red'>Asesmen Mandiri</font> Anda, Mohon Selalu Buka Halaman Asesmen Mandiri Untuk Memantau Apabila Ada Revisi Dari Asesor. 
+									{/if}
+									
+									{if $sts_psr.step_uji_test eq '4'}
+										<br/>
+										Untuk Kartu Ujian, Silahkan Download Kartu Ujian Anda, Kemudian Dicetak dan Dibawa Saat Ujian Di TUK.
+									{/if}
 								
-								{if $sts_psr.step_registrasi eq '2'}
-									<br/>
-									Segera Selesaikan <font color='red'>Persyaratan Registrasi</font> Anda, Apabila Ada Revisi Persyaratan Dari Asesor.
-								{/if}
-								
-								{if $sts_psr.step_asesmen_mandiri eq '3'}
-									<br/>
-									Segera Selesaikan <font color='red'>Asesmen Mandiri</font> Anda, Mohon Selalu Buka Halaman Asesmen Mandiri Untuk Memantau Apabila Ada Revisi Dari Asesor. 
-								{/if}
 								<hr/>
 								<ul class="list-group no-margin-bottom"><!-- List Group Style 3-->
 									<li class="list-group-item">

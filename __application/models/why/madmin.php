@@ -133,13 +133,13 @@ class madmin extends SHIPMENT_Model{
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian, E.idx_sertifikasi_id, 
-						E.kdreg_diklat
+						E.kdreg_diklat, B.step_asesmen_mandiri
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_asessmen_mandiri_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					WHERE B.step_asesmen_mandiri = '2' $where
+					WHERE B.step_asesmen_mandiri IN ('2', '3') $where
 				";
 			break;
 			case "tbl_asesmen_header":
@@ -360,7 +360,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN (SELECT * FROM tbl_step_peserta $where_join ) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
-					LEFT JOIN (SELECT * FROM tbl_hasil_akhir $where_join2 ) D ON E.id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir $where_join2 ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
 					$where
 				";
 				//echo $sql;exit;
@@ -386,6 +386,19 @@ class madmin extends SHIPMENT_Model{
 					WHERE A.id = '".$p1."'
 				";
 			break;
+			case "tbl_peserta_tidak_lulus":
+				$sql = "
+					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id, 
+							D.status_penilaian as lulus_tidak, B.kdreg_diklat
+					FROM tbl_data_peserta A 
+					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status = 1 ) B ON A.id = B.tbl_data_peserta_id 
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status = 1) E ON A.id = E.tbl_data_peserta_id 
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id 
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir WHERE status_data = 1  ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id AND E.kdreg_diklat = D.kdreg_diklat
+					WHERE B.step_hasil = '1' AND status_penilaian = 'TL'
+				";
+			break;
+			
 			case "idx_voucher":
 				$sql = "
 					SELECT id, kode_voucher, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit,
@@ -635,29 +648,46 @@ class madmin extends SHIPMENT_Model{
 				$this->db->update('tbl_wawancara_header', $array_update, array('tbl_data_peserta_id'=>$post['forbiddenlove'], 'idx_sertifikasi_id'=>$post['forbiddenshit'], 'kdreg_diklat'=>$post['kdr']) );
 			break;
 			case "savehasil":
+				if($post['hsl_hs'] == "L"){
+					$sts_remedial = 'N';
+					$sdh_remedial = null;
+				}elseif($post['hsl_hs'] == "TL"){
+					$sts_remedial = 'Y';
+					$sdh_remedial = 'N';
+				}
+				
 				$array_insert = array(
 					"tbl_data_peserta_id" => $post['ibdff'],
 					"idx_sertifikasi_id" => $post['idxsrt'],
-					//"nilai" => $post['nilai_hs'],
 					"status_penilaian" => $post['hsl_hs'],
 					"nama_asesor" => $this->auth['real_name'],
 					"tgl_verifikasi" => date('Y-m-d H:i:s'),
 					"status_data" => '1',
 					"kdreg_diklat" => $post['kdr'],
+					"sts_remedial" => $sts_remedial,
+					"sdh_remedial" => $sdh_remedial,
 				);
-				
-				/*
-				if($post['hsl_hs'] == "L"){
-					$this->db->update("tbl_step_peserta", array("step_hasil"=>1), array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt']) );
-				}elseif($post['hsl_hs'] == "TL"){
-					//action kalo gak lulus
-					$this->db->update("tbl_step_peserta", array("status"=>0), array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt']) );
-				}
-				*/
 				
 				$this->db->update("tbl_step_peserta", array("step_hasil"=>1), array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt'], 'kdreg_diklat'=>$post['kdr']) );
 				$this->db->insert('tbl_hasil_akhir', $array_insert);
 			break;
+			case "saveremedial":
+				/*
+				if($post['hsl_hs'] == "L"){
+				}elseif($post['hsl_hs'] == "TL"){
+				}
+				*/
+				
+				$array_remedial = array(
+					'status_penilaian' => $post['hsl_hs'],
+					'memo_remedial' => $post['memo_rem'],
+					'sdh_remedial' => 'Y'
+				);
+				
+				$this->db->update("tbl_hasil_akhir", $array_remedial, array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt'], 'kdreg_diklat'=>$post['kdr']) );
+			break;
+			
+			
 			case "savevoucher":
 				$jml = ($post['jml']-1);
 				for($i = 0; $i <= $jml; $i++){

@@ -537,7 +537,9 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 		break;
 		case "sbt-wkt":
 			var temzon = $('#timernya').html();
-			$.post(host+"sbm-wkt", { 'tmzon':temzon }, function(rsssp){
+			var temzon2 = $('#timernya_sudah').html();
+			
+			$.post(host+"sbm-wkt", { 'tmzon':temzon, 'tmzon2':temzon2 }, function(rsssp){
 				if(rsssp == 1){
 					console.log('Ok');
 				}

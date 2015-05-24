@@ -9,7 +9,14 @@
 	{foreach from=$rws.jawaban item=uhy}
 		<tr>
 			<td>&nbsp;</td>
-			<td><input type='radio' name='idj_{$rws.idnya}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.idnya}', '{$uhy.id_jwb}'); "> {$uhy.jawabannya}</td>
+			<td>
+				<div style='float:left;width:1%;'>
+					<input type='radio' name='idj_{$rws.idnya}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.idnya}', '{$uhy.id_jwb}'); "> 
+				</div>
+				<div style='float:left;width:98%;'>
+					{$uhy.jawabannya}	
+				</div>
+			</td>
 		</tr>
 	{/foreach}
 	<tr>
@@ -17,9 +24,4 @@
 	</tr>
 {/foreach}
 
-<script>
-	setInterval(function(){ 
-		kumpulPoster('sbt-wkt');
-	}, 30000);
-</script>
 {/if}

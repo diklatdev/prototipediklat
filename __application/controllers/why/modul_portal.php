@@ -571,7 +571,24 @@ class modul_portal extends SHIPMENT_Controller{
 				$cek_data = $this->db->get_where('tbl_asessmen_mandiri_header', $array )->row_array();
 				if($cek_data){
 					header("Location: " . $this->host ."assesmen-mandiri");
+					exit;
+				}
+			}else{
+				header("Location: " . $this->host);
 				exit;
+			}
+		}elseif($type == "saveujian"){
+			if($this->auth){
+				$array = array(
+					"tbl_data_peserta_id" => $this->auth['id'],
+					"idx_sertifikasi_id" => $this->auth['idx_sertifikasi_id'],
+					"status_data"=>'1',
+					"kdreg_diklat" => $this->auth['kdreg_diklat']
+				);
+				$cek_data = $this->db->get_where('tbl_ujitest_header', $array )->row_array();
+				if($cek_data){
+					header("Location: " . $this->host ."uji-online-mandiri");
+					exit;
 				}
 			}else{
 				header("Location: " . $this->host);

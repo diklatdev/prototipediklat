@@ -42,6 +42,10 @@ $route['hasil-peserta'] = "why/modul_admin/getdisplay/hasil_akhir/";
 $route['hasil-detail'] = "why/modul_admin/getdisplay/detail_hasil/";
 $route['verifikasi-hasil'] = "why/modul_admin/simpansavedbx/savehasil";
 
+$route['remedial-peserta'] = "why/modul_admin/getdisplay/peserta_tidak_lulus/";
+$route['remedial-detail'] = "why/modul_admin/getdisplay/detail_remedial/";
+$route['verifikasi-remedial'] = "why/modul_admin/simpansavedbx/saveremedial";
+
 $route['cetak-sertifikat'] = "why/modul_admin/getdisplay/print_sertifikat/";
 $route['generate-sertifikat/(:any)/(:any)/(:any)'] = "why/modul_admin/gen_sertifikat/$1/$2/$3";
 

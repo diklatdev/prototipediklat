@@ -32,7 +32,7 @@
 						</center>
 						<br/>
 						<div class="form-actions ">
-							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj_sudah', 'kont_suj_sudah', '{$datawaktu.jam|default:1}', '{$datawaktu.menit|default:0}', '{$datawaktu.detik|default:0}' );">Mulai Ujian</button>
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj_sudah', 'kont_suj_sudah', '{$datawaktu.jam|default:1}', '{$datawaktu.menit|default:59}', '{$datawaktu.detik|default:59}' );">Mulai Ujian</button>
 						</div>
 					</div>
 				</div>
@@ -86,7 +86,14 @@
 															{/if}
 															<tr>
 																<td>&nbsp;</td>
-																<td><input type='radio' {$tanda} name='idj_{$rws.id_soal}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.id_soal}', '{$uhy.id_jwb}'); "> {$uhy.jawab}</td>
+																<td>
+																	<div style='float:left;width:1%;margin-right:10px;'>
+																		<input type='radio' {$tanda} name='idj_{$rws.id_soal}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.id_soal}', '{$uhy.id_jwb}'); "> 
+																	</div>
+																	<div style='float:left;width:98%;'>
+																		{$uhy.jawab}
+																	</div>
+																</td>
 															</tr>
 														{/foreach}
 														<tr>
@@ -115,3 +122,9 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	setInterval(function(){ 
+		kumpulPoster('sbt-wkt');
+	}, 30000);
+</script>

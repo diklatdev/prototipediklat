@@ -322,6 +322,9 @@ function asses(kl){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Isi Hasil Keputusan Ujian!" });
 		return false;
 	}
+	
+	
+	
 	/*
 	if($('#nilai_as').val() == ""){
 		$("#nilai_as").focus(); 

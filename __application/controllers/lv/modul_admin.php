@@ -63,6 +63,8 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data_tk1", $data_tk1);
 				$data_tk2 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk2');
 				$this->smarty->assign("data_tk2", $data_tk2);
+				$data_tk3 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk3');
+				$this->smarty->assign("data_tk3", $data_tk3);
 				
 				$sertifikat = $this->madmin->get_data("idx_persyaratan_registrasi", "result_array");
 				$this->smarty->assign("sertifikat", $sertifikat);
@@ -73,19 +75,51 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "manajemen_uji_mandiri":
 				$id_asn = $this->input->post('id_asn');
-				if ($id_asn){					
-					$content = "modul-admin/manajemen_uji_mandiri/list-uji-mandiri.html";	
-					$data = $this->madmin->get_data("idx_unit_kompetensi","result_array", $id_asn);
-					$this->smarty->assign("data", $data);
+				$id_tk1 = $this->input->post('id_tk1');					
+				$id_tkn = $this->input->post('id_tkn');					
+				if ($id_tk1 == 2){	
+					if ($id_tkn){						
+						$content = "modul-admin/manajemen_uji_mandiri/list-uji-mandiri.html";	
+						$data = $this->madmin->get_data("idx_unit_kompetensi","result_array", $id_tkn);
+						$this->smarty->assign("data", $data);
+					}else{
+						$content = "modul-admin/manajemen_uji_mandiri/add-combo.html";	
+						$data_tk3 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk3',$id_asn,'topo');
+						$this->smarty->assign("data_tk3", $data_tk3);
+					}
 				}else{
-					$content = "modul-admin/manajemen_uji_mandiri/main.html";				
-					$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
-					$this->smarty->assign("data", '');
+					if ($id_asn){	
+						$content = "modul-admin/manajemen_uji_mandiri/list-uji-mandiri.html";	
+						$data = $this->madmin->get_data("idx_unit_kompetensi","result_array", $id_asn);
+						$this->smarty->assign("data", $data);
+					}else{
+						$content = "modul-admin/manajemen_uji_mandiri/main.html";				
+						$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
+						$this->smarty->assign("data", '');
+					}
 				}
 			break;
 			case "form_uji_mandiri":	
 				$content = "modul-admin/manajemen_uji_mandiri/form-add-uji.html";	
 				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );			
+			break;
+			case "edit_uji_man":	
+				$id_uk = $this->input->post('id_row');
+				$data = $this->madmin->get_data("idx_unit_kompetensi","row_array",'', $id_uk);
+				$this->smarty->assign("data", $data);
+				
+				$asn = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn');
+				$this->smarty->assign("asn", $asn);
+				
+				$asn_tk1 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk1');
+				$this->smarty->assign("asn_tk1", $asn_tk1);
+				
+				$data_tk2 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk2');
+				$this->smarty->assign("data_tk2", $data_tk2);
+				
+				$data_tk3 = $this->madmin->get_data("idx_aparatur_sipil_negara","result_array", 'asn_tk3');
+				$this->smarty->assign("data_tk3", $data_tk3);
+				$content = "modul-admin/manajemen_uji_mandiri/edit-uji.html";	
 			break;
 			case "manajemen_instansi":
 				$content = "modul-admin/manajemen_instansi/main.html";
@@ -126,6 +160,16 @@ class modul_admin extends SHIPMENT_Controller{
 				$content = "modul-admin/manajemen_tuk/form-add.html";	
 				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return') );		
 			break;
+			case "edit_tuk":	
+				$content = "modul-admin/manajemen_tuk/form-edit.html";	
+				$data = $this->madmin->get_data("tbl_tuk","row_array",$this->input->post('id_row'));
+				$this->smarty->assign("data", $data);		
+				
+				$prop = $this->madmin->get_data("idx_prov","result_array",'prop');
+				$this->smarty->assign("prop", $prop);
+				$kab = $this->madmin->get_data("idx_prov","result_array",'kab');
+				$this->smarty->assign("kab", $kab);	
+			break;
 			case "add_combo":	
 				$content = "modul-admin/manajemen_aparatur/add-combo.html";	
 				$asn = $this->input->post('id_tk1');
@@ -142,6 +186,11 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 		}
 		$this->smarty->assign('type', $type);
+		$this->smarty->display($content);
+	}
+	
+	function displayCombo($kode="", $content){		
+		
 		$this->smarty->display($content);
 	}
 	

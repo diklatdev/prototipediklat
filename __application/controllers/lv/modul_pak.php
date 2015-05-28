@@ -899,6 +899,38 @@ class modul_pak extends SHIPMENT_Controller{
 		}
 	}
 	
+	function imel(){
+		// Validasi email terlebih dahulu.
+		// Email configuration
+			$config = Array(
+				  'protocol' => 'smtp',
+				  'smtp_host' => 'students.paramadina.ac.id',
+				  'smtp_port' => 25,
+				  'smtp_user' => 'orangbaik@students.paramadina.ac.id', // change it to yours
+				  'smtp_pass' => 'S@l4mb3l@k4ng', // change it to yours
+				  'mailtype' => 'html',
+				  'charset' => 'utf-8',
+				  'wordwrap' => false,
+				  'crlf' => '\r\n',
+				  'newline' => '\r\n'
+			);	
+		
+			$this->load->library('email', $config);
+			$this->email->from('admin@admisission.paramadina.ac.id', "Humas Paramadina");
+			$this->email->to("rahmadsyalevi@gmail.com");
+			$this->email->cc("rahmad.syalevi@paramadina.ac.id");
+			$this->email->subject("Konfirmasi Pendaftaran Mahasiswa Baru Online Paramadina");
+			$this->email->message("Klik tautan berikut untuk melakukan validasi Pendaftaran Online Masuk Universitas Paramadina: http://admission.paramadina.ac.id/registrasi/validasi/");
+				
+			$data['message'] = "Sorry Unable to send email...";	
+			if($this->email->send()){					
+				$data['message'] = "Mail sent...";		
+				echo 1;
+			}else{
+				echo 0;
+			}
+	}
+	
 	function savePakForm($type, $post){
 		$this->load->model('lv/madmin');
 		if($this->auth){

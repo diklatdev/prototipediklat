@@ -181,17 +181,17 @@
 							</a>
 						</li>
 						{/if}
-						{if $printsertifikat eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}cetak-sertifikat');">
-								<i class="fa fa-angle-double-right"></i> Print Sertifikat
-							</a>
-						</li>
-						{/if}
 						{if $remedialpeserta eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}remedial-peserta');">
 								<i class="fa fa-angle-double-right"></i> Remedial Peserta
+							</a>
+						</li>
+						{/if}						
+						{if $printsertifikat eq '1'}
+						<li>
+							<a href="#" onClick="loadUrl('{$host}cetak-sertifikat');">
+								<i class="fa fa-angle-double-right"></i> Print Sertifikat
 							</a>
 						</li>
 						{/if}

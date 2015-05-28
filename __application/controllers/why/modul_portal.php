@@ -17,25 +17,32 @@ class modul_portal extends SHIPMENT_Controller{
 		$modul = "front/";
 		if($this->auth){
 			$data_status_peserta = $this->mportal->get_data("status_peserta", "row_array");
-			$data_peserta_detail = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $this->auth['id']);
-			$data_jadwal = $this->mportal->get_data("dashboard_jadwal", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
-			$now = time(); // or your date as well
-			$your_date = strtotime($data_jadwal['tanggal_wawancara']);
-			$datediff = $now - $your_date;
-			$countdownwaktu =  floor($datediff/(60*60*24));
-			
+			$data_peserta_detail = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $this->auth['id']);			
 			
 			if(!$this->auth['idx_sertifikasi_id']){
 				$data_diklat_terakhir = $this->madmin->get_data("tbl_diklat_terakhir", "row_array", $this->auth['id']);
 				$data_record_diklat = $this->madmin->get_data("tbl_record_diklat", "result_array", $this->auth['id']);
-				
+								
 				$this->smarty->assign('data_diklat_terakhir',$data_diklat_terakhir);
 				$this->smarty->assign('data_record_diklat',$data_record_diklat);
+				
 			}else{
 				$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $this->auth['idx_sertifikasi_id']);
 				$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
 				$folder_sertifikasi = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
 				$data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);
+				
+				$data_jadwal = $this->mportal->get_data("dashboard_jadwal", "row_array", $this->auth['id'], $this->auth['idx_sertifikasi_id'], $this->auth['kdreg_diklat']);				
+				$now = time(); // or your date as well
+				if($data_jadwal){
+					$your_date = strtotime($data_jadwal['tanggal_wawancara']);
+					$datediff = $now - $your_date;
+					$countdownwaktu =  floor($datediff/(60*60*24));
+					
+					$this->smarty->assign('tglujian',$data_jadwal['tgl_beneran']);
+					$this->smarty->assign('countdownwaktu',abs($countdownwaktu));
+				}   
+
 				
 				$this->smarty->assign('data_file_persyaratan',$data_file_persyaratan);
 				$this->smarty->assign('folder_sertifikasi',$folder_sertifikasi);
@@ -44,8 +51,6 @@ class modul_portal extends SHIPMENT_Controller{
 			
 			$this->smarty->assign('sts_psr',$data_status_peserta);
 			$this->smarty->assign('datapeserta',$data_peserta_detail);
-			$this->smarty->assign('tglujian',$data_jadwal['tgl_beneran']);
-			$this->smarty->assign('countdownwaktu',abs($countdownwaktu));
 			$this->smarty->assign('idx_pendidikan_id', $this->fillcombo('idx_pendidikan', 'return', $data_peserta_detail['idx_pendidikan_id'] ) );
 			$this->smarty->assign('idx_programstudi_id', $this->fillcombo('idx_programstudi', 'return', $data_peserta_detail['idx_programstudi_id'] ) );
 			$this->smarty->assign('tahun_lulus', $this->fillcombo('tahun_lahir', 'return', $data_peserta_detail['tahun_lulus'] ) );

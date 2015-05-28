@@ -152,7 +152,11 @@
 							<label class="col-sm-2 control-label">File PAK : </label>
 							<div class="col-sm-6">
 								<span class="form-control" style="border:none !important;">
-									<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_penentuan_angka_kredit/{$folder_sertifikasi}/{$data.kdreg_diklat}/{$data.file_pak}' target='_blank'>Klik Disini Untuk Melihat File PAK</a>
+									{if $data.file_pak|default:''}
+										<a href='{$host}__repository/dokumen_peserta/{$data.no_registrasi}/file_penentuan_angka_kredit/{$folder_sertifikasi}/{$data.kdreg_diklat}/{$data.file_pak}' target='_blank'>Klik Disini Untuk Melihat File PAK</a>
+									{else}
+										-
+									{/if}
 								</span>
 							</div>
 						</div>	

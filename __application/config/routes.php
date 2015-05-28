@@ -47,7 +47,7 @@ $route['remedial-detail'] = "why/modul_admin/getdisplay/detail_remedial/";
 $route['verifikasi-remedial'] = "why/modul_admin/simpansavedbx/saveremedial";
 
 $route['cetak-sertifikat'] = "why/modul_admin/getdisplay/print_sertifikat/";
-$route['generate-sertifikat/(:any)/(:any)/(:any)'] = "why/modul_admin/gen_sertifikat/$1/$2/$3";
+$route['generate-sertifikat/(:any)/(:any)/(:any)/(:any)'] = "why/modul_admin/gen_sertifikat/$1/$2/$3/$4";
 
 $route['manajemen-voucher'] = "why/modul_admin/getdisplay/voucher/";
 $route['tambah-voucher'] = "why/modul_admin/getdisplay/form_voucher/";

@@ -17,7 +17,7 @@
 							{/if}						
 							
 							{if $sts_psr.step_uji_test eq '4'}
-								<marquee><h3>Jadwal Ujian Sertifikasi di TUK Anda : {$tglujian}, Informasi TUK Ujian Anda Ada Dihalaman Penjadwalan. Jangan Lupa & Jangan Telat Hadir.</h3></marquee>
+								<marquee><h3>Jadwal Ujian Sertifikasi di TUK Anda : {$tglujian|default:''}, Informasi TUK Ujian Anda Ada Dihalaman Penjadwalan. Jangan Lupa & Jangan Telat Hadir.</h3></marquee>
 							{/if}
 							{if $sts_psr.step_uji_test eq '3'}
 								<marquee><h3>Ujian Diklat Online Siap Dilaksanakan, Silahkan Datang Ke TUK Untuk Mengikuti Ujian Online</h3></marquee>
@@ -64,7 +64,7 @@
 										<br/>
 										<h5>Saat Ini Anda Terdaftar Sebagai Peserta Sertifikasi - <b>{$sts_psr.nama_aparatur} (Kode Sertifikasi: {$sts_psr.kode_sertifikasi})</b></h5>
 										<br/>
-										<h5>Tanggal Ujian Anda Adalah <b>{$tglujian} / (<font color='red'>{$countdownwaktu} Hari Lagi</font>) </b></h5>
+										<h5>Tanggal Ujian Anda Adalah <b>{$tglujian|default:'-'} / (<font color='red'>{$countdownwaktu|default:'-'} Hari Lagi</font>) </b></h5>
 									{/if}
 									
 									{if $sts_psr.step_registrasi eq '2'}

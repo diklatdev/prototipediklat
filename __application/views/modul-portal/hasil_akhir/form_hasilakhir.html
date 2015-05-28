@@ -111,7 +111,7 @@
 </div>
 {/if}
 
-{if $datahasil.status_penilaian eq 'TL'}
+{if $datahasil.status_penilaian|default:'' eq 'TL'}
 <div class="container">
 	<div class="block-s2">		
 		<div class="row">

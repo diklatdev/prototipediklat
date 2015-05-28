@@ -415,9 +415,9 @@ class modul_admin extends SHIPMENT_Controller{
 		echo $this->madmin->simpansavedatabase($type, $post);
 	}
 	
-	function gen_sertifikat($p1="", $p2="", $p3=""){
+	function gen_sertifikat($p1="", $p2="", $p3="", $p4=""){
+		/*
 		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
-		
 		if(!$cek_data){
 			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
 			$this->db->update('tbl_data_diklat', array('status'=>0, 'penilaian'=>'L'), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
@@ -428,6 +428,7 @@ class modul_admin extends SHIPMENT_Controller{
 			$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
 			$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
 		}
+		*/
 		
 		
 		$array_log = array(
@@ -438,13 +439,19 @@ class modul_admin extends SHIPMENT_Controller{
 		);
 		$this->db->insert('tbl_log_cetak_sertifikat', $array_log);
 		
+
 		//$this->load->helper('barcode_helper');
 		$this->load->library('mlpdf');
 		$this->load->library('ciqrcode');
 		
 		$data_peserta = $this->madmin->get_data('tbl_detail_peserta_cetak', 'row_array', $p1, $p2);
 		$data_sertifikasi = $this->db->get_where('idx_aparatur_sipil_negara', array('id'=>$p2))->row_array();
+		$data_unit_kompetensi = $this->db->get_where('idx_unit_kompetensi', array('idx_aparatur_id'=>$p2) )->result_array();
+		$tanggal_penetapan = $this->db->get_where('tbl_hasil_akhir', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) )->row_array();
+		
 		$this->smarty->assign('data_sertifikasi', $data_sertifikasi);
+		$this->smarty->assign('data_unit_kompetensi', $data_unit_kompetensi);
+		$this->smarty->assign('tanggal_penetapan', $tanggal_penetapan['tgl_verifikasi']);
 		
 		//$barcode_isi = $this->auth['no_registrasi'];
 		//$nama_file_barcode = $this->auth['nip']."-".$this->auth['idx_tujuan_assesmen_id'];
@@ -478,7 +485,7 @@ class modul_admin extends SHIPMENT_Controller{
 		//$spdf->SetHTMLHeader($htmlheader);
 		$spdf->SetHTMLFooter('
 			<div style="font-family:arial; font-size:8px; text-align:center; font-weight:bold;">
-				Sistem Informasi Sertifikasi & Penilaian Kementerian Dalam Negeri
+				&nbsp;
 			</div>
 		');				
 		$spdf->SetProtection(array('print'));				

@@ -338,7 +338,7 @@ class madmin extends SHIPMENT_Model{
 				if($type == 'tbl_peserta_hasil'){
 					$where = " WHERE B.step_hasil = '2' ";
 				}elseif($type == 'tbl_peserta_cetak_sertifikat'){
-					$where = " WHERE B.step_hasil = '1' ";
+					$where = " WHERE B.step_hasil = '1' AND D.siap_cetak = 'Y' ";
 				}
 				
 				if($no_registrasi){
@@ -651,9 +651,11 @@ class madmin extends SHIPMENT_Model{
 				if($post['hsl_hs'] == "L"){
 					$sts_remedial = 'N';
 					$sdh_remedial = null;
+					$siap_cetak = 'Y';
 				}elseif($post['hsl_hs'] == "TL"){
 					$sts_remedial = 'Y';
 					$sdh_remedial = 'N';
+					$siap_cetak = 'N';
 				}
 				
 				$array_insert = array(
@@ -666,22 +668,18 @@ class madmin extends SHIPMENT_Model{
 					"kdreg_diklat" => $post['kdr'],
 					"sts_remedial" => $sts_remedial,
 					"sdh_remedial" => $sdh_remedial,
+					"siap_cetak" => $siap_cetak
 				);
 				
 				$this->db->update("tbl_step_peserta", array("step_hasil"=>1), array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt'], 'kdreg_diklat'=>$post['kdr']) );
 				$this->db->insert('tbl_hasil_akhir', $array_insert);
 			break;
-			case "saveremedial":
-				/*
-				if($post['hsl_hs'] == "L"){
-				}elseif($post['hsl_hs'] == "TL"){
-				}
-				*/
-				
+			case "saveremedial":				
 				$array_remedial = array(
 					'status_penilaian' => $post['hsl_hs'],
 					'memo_remedial' => $post['memo_rem'],
-					'sdh_remedial' => 'Y'
+					'sdh_remedial' => 'Y',
+					"siap_cetak" => "Y"
 				);
 				
 				$this->db->update("tbl_hasil_akhir", $array_remedial, array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt'], 'kdreg_diklat'=>$post['kdr']) );

@@ -150,6 +150,7 @@ $route['manajemen-uji-mandiri'] = "lv/modul_admin/getdisplay/manajemen_uji_mandi
 $route['uji-mandiri-list'] = "lv/modul_admin/getdisplay/manajemen_uji_mandiri/";
 $route['form-uji-mandiri'] = "lv/modul_admin/getdisplay/form_uji_mandiri/";
 $route['submit-uji-man'] = "lv/modul_admin/simpansavedbx/sv_uji_man";
+$route['edit-uji-man'] = "lv/modul_admin/getdisplay/edit_uji_man/";
 
 $route['manajemen-instansi'] = "lv/modul_admin/getdisplay/manajemen_instansi/";
 $route['form-instansi'] = "lv/modul_admin/getdisplay/form_instansi/";
@@ -166,7 +167,9 @@ $route['edit-pangkat'] = "lv/modul_admin/getdisplay/edit_pangkat/";
 
 $route['manajemen-tuk'] = "lv/modul_admin/getdisplay/manajemen_tuk/";
 $route['form-tuk'] = "lv/modul_admin/getdisplay/form_tuk/";
-$route['submit-tuk'] = "lv/modul_admin/simpansavedbx/sv_tuk";
+$route['submit-tuk'] = "lv/modul_admin/simpansavedbx/sv_tuk/sv";
+$route['edit-tuk'] = "lv/modul_admin/getdisplay/edit_tuk/";
+$route['update-tuk'] = "lv/modul_admin/simpansavedbx/sv_tuk/up";
 
 // Levi PAK routes
 $route['pak'] = "lv/modul_pak/view_pak";

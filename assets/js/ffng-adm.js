@@ -303,6 +303,16 @@ function kumpulPost($type, p1, p2, p3){
 						alert(rspp);
 				}			
 			});
+		break;
+		case "up_tuk":			
+			$.post(hostir+"update-tuk", $('#regTuk').serialize(),function (rspp){
+				if(rspp == 1){
+						alert('TUK Berhasil Diperbaharui!');
+						loadUrl(hostir+'manajemen-tuk');
+					}else{
+						alert(rspp);
+				}			
+			});
 		break;		
 	}
 }
@@ -657,6 +667,7 @@ function processCombo(type){
 			$('#fl_s').remove();
 			$('#sert_tam').remove();
 			$(".portlet").hide();
+			$(".topologi").hide();
 		break;
 		case "sb_ap_tk2":
 			$.post(hostir+"chk", { 'id_asn_child_tk1':$('#'+type).val(), 'tuk':'list' }, function(resp){
@@ -672,14 +683,27 @@ function processCombo(type){
 					$('#sert_tam').remove();
 					$('.anuan').append(resp);
 					$(".portlet").hide();
+					$(".topologi").hide();
 				}
 			});
 			$("#sb_jns_nxx").val($('#'+type+" :selected").text());
 		break;
 		case "sb_ap_tk3":
-			$.post(hostir+"uji-mandiri-list", { 'id_asn':$('#'+type).val() }, function(resp){
+			$.post(hostir+"uji-mandiri-list", { 'id_asn':$('#'+type).val(), 'id_tk1':$('#ap_tk_1').val()}, function(resp){
+				if ($('#ap_tk_1').val() == '2'){
+					$(".topologi").show();
+					$(".topologi").html(resp);
+				}else{
+					$(".portlet").show();
+					$(".portlet").html(resp);
+				}
+			});
+		break;	
+		case "ap_tk4":
+			$.post(hostir+"uji-mandiri-list", { 'id_tkn':$('#'+type).val(),'id_tk1':$('#ap_tk_1').val()}, function(resp){				
 				$(".portlet").show();
 				$(".portlet").html(resp);
+				
 			});
 		break;		
 		case "prv":
@@ -834,6 +858,16 @@ function pakinass(type, urlnya){
 
 function loadMan_edit(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 	switch(type){
+		case "uj_man_ed":
+			$.post(urlnya, { 'id_row' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "tuk_ed":
+			$.post(urlnya, { 'id_row' : p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
 		case "us_ed":
 			$.post(urlnya, { 'id_u' : p1 }, function(resp){
 				$("#"+domnya).html(resp);

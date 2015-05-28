@@ -1,0 +1,14 @@
+<br>
+<div class="form-group" style="margin-top:5px">
+	<label class="col-sm-2 control-label">Tipologi : </label>
+	<div class="col-sm-9">
+		<div class="col-sm-5">
+			<select id='ap_tk4' class="form-control" name="ap_tk4"  onChange="processCombo('ap_tk4');">
+				<option>--Pilih--</option>
+			{foreach from=$data_tk3 item=row}
+				<option value="{$row.id}">{$row.nama_aparatur}</option>
+			{/foreach}
+			</select>
+		</div>
+	</div>
+</div>

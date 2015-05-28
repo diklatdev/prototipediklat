@@ -1,19 +1,10 @@
 <div class="row">
-    <div class="col-lg-12">
-        <div class="page-header title" style="">
-            <!-- PAGE TITLE ROW -->
-            <h1>Tambah Unit Kompetensi</h1>
-        </div>
-    </div>
-    <!-- /.col-lg-12 -->
-</div>
-<div class="row">
 	<div class="col-lg-12">
 		<div class="well light">		
 			<form class="form-horizontal" role="form" name="regUji" id="regUji" action="{$host}submit-uji-man" method="post" enctype="multipart/form-data">
 				<div class="form-group">
 					<div class="col-sm-12">
-						<h4>Tambah Uji Mandiri</h4>
+						<h4>Edit Uji Mandiri</h4>
 						<div class="hr-12 hr-double hr-dotted"></div>
 						{assign var=ind value=1}
 						<div id="sertifikasi_1">					
@@ -22,7 +13,9 @@
 								<div class="col-sm-10">
 									<div class="col-sm-5">
 										<select id='ap_tk_1' onChange="processCombo('ap_tk_1');" class="form-control">
-											{$idx_aparatur}
+										{foreach name=loop from=$asn item=row}
+											<option value="{$row.id}" selected>{$row.nama_aparatur}</option>
+										{/foreach}
 										</select>
 									</div>
 								</div>

@@ -30,8 +30,7 @@
 					<table class="table table-bordered table-hover tc-table">
 						<thead>
 							<tr>
-								<th class="col-medium center">Nama Instansi</th>
-								<th class="hidden-xs col-medium center">Propinsi</th>
+								<th class="col-large left">Nama Instansi</th>
 								<th class="col-small center">Action</th>
 							</tr>
 						</thead>
@@ -40,7 +39,6 @@
 								{foreach from=$data item=rows}
 									<tr>
 										<td class="col-medium">{$rows.nama_instansi}</td>
-										<td>{$rows.name}</td>
 										<td class="col-medium center">
 											<div class="btn-group btn-group-xs ">
 												<a href="#" onClick="loadMan_edit('ins_ed','{$host}edit-instansi', 'konten_peserta', '{$rows.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>

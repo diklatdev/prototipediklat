@@ -366,9 +366,9 @@
 						<tr>
 							<th class="col-small center">No.</th>
 							<th class="col-medium center">Lokasi TUK</th>
-							<th class="col-medium center">Tanggal</th>
-							<th class="col-medium center">Jam</th>
-							<th class="col-medium center">Kuota Tersisa</th>
+							<th class="col-small center">Tanggal</th>
+							<th class="col-small center">Jam</th>
+							<th class="col-small center">Kuota Tersisa</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -378,7 +378,7 @@
 								<tr>
 									<td class="col-small center">{$indss}</td>
 									<td>{$ruws.nama_tuk}</td>
-									<td>{$ruws.tanggal_wawancara}</td>
+									<td>{$ruws.tanggal_wawancara|date_format:"%d-%m-%Y"}</td>
 									<td>{$ruws.jam}</td>
 									<td>{$ruws.kuota}</td>
 								</tr>

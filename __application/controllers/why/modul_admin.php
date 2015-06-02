@@ -53,9 +53,20 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign('peserta_ujisimulasi', $peserta_ujisimulasi);		
 				$this->smarty->assign('peserta_wawancara', $peserta_wawancara);		
 			}elseif($this->auth['level_admin'] == 2){
+				$peserta_registrasi = $this->madmin->get_data('tbl_data_peserta_diklat', 'result_array');
+				$peserta_assesmen = $this->madmin->get_data('tbl_peserta_asesmen', 'result_array');
+				$peserta_ujitest = $this->madmin->get_data('tbl_peserta_ujitulis', 'result_array');
+				$peserta_ujisimulasi = $this->madmin->get_data('tbl_peserta_simulasi', 'result_array');
+				$peserta_wawancara = $this->madmin->get_data('tbl_peserta_wawancara', 'result_array');
+				
+				$this->smarty->assign('peserta_registrasi', $peserta_registrasi);		
+				$this->smarty->assign('peserta_assesmen', $peserta_assesmen);		
+				$this->smarty->assign('peserta_ujitest', $peserta_ujitest);		
+				$this->smarty->assign('peserta_ujisimulasi', $peserta_ujisimulasi);		
+				$this->smarty->assign('peserta_wawancara', $peserta_wawancara);		
 				$this->smarty->assign('konten', "dashboard-admin/main-page-asesor");
 			}elseif($this->auth['level_admin'] == 7){
-				$this->smarty->assign('konten', "dashboard-admin/main-page-asesor");
+				$this->smarty->assign('konten', "dashboard-admin/main-page-admintuk");
 			}
 			
 			

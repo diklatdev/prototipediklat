@@ -304,6 +304,29 @@ function sbtdl_reg(){
 }
 
 function sbtdl_reg_bars(){
+	if($('#edFile_pak').val() == 0){
+		$('#edFile_pak').focus();
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File PAK Tidak Boleh Kosong!" });
+		return false;
+	}
+	
+	if($('#kmnt').val() == ""){
+		$("#kmnt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kementerian Harus Diisi!" });
+		return false;
+	}
+	if($('#frms').val() == ""){
+		$("#frms").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Formasi Harus Diisi!" });
+		return false;
+	}
+	if($('#lks').val() == ""){
+		$("#lks").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Lokasi Harus Diisi!" });
+		return false;
+	}
+	
+	
 	if($('#prv').val() == ""){
 		$("#prv").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
@@ -334,6 +357,13 @@ function sbtdl_reg_bars(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Alamat Kantor Harus Diisi!" });
 		return false;
 	}
+	
+	if($('#tku_dxi').val() == ""){
+		$("#tku_dxi").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "TUK Terdekat Diisi!" });
+		return false;
+	}
+	
 	if($('#sb_ap_tk2').val() == ""){
 		$("#sb_ap_tk2").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sub Aparatur Harus Diisi!" });
@@ -363,6 +393,14 @@ function sbtdl_reg_bars(){
 		return false;
 	}
 	
+	$.post(host+'chkdt-kutoax', { 'xtu_id':$('#tku_dxi').val() }, function(resp){
+		if(resp == 0){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+			return false;
+		}
+	});
+
+	
 	$.msg({
 		autoUnblock : false,
 		clickUnblock : false,
@@ -384,6 +422,113 @@ function sbtdl_reg_bars(){
 		},
 	});	
 
+}
+
+function sbtdl_reg_ngulang(){
+	
+	if($('#edFile_pak').val() == 0){
+		$('#edFile_pak').focus();
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File PAK Tidak Boleh Kosong!" });
+		return false;
+	}
+	
+	if($('#kmnt').val() == ""){
+		$("#kmnt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kementerian Harus Diisi!" });
+		return false;
+	}
+	if($('#frms').val() == ""){
+		$("#frms").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Formasi Harus Diisi!" });
+		return false;
+	}
+	if($('#lks').val() == ""){
+		$("#lks").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Lokasi Harus Diisi!" });
+		return false;
+	}
+	
+	
+	if($('#prv').val() == ""){
+		$("#prv").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
+		return false;
+	}
+	if($('#ka').val() == ""){
+		$("#ka").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kabupaten Harus Diisi!" });
+		return false;
+	}
+	if($('#ins').val() == ""){
+		$("#ins").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Instansi Harus Diisi!" });
+		return false;
+	}
+	if($('#ed_pangkat').val() == ""){
+		$("#ed_pangkat").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pangkat Harus Diisi!" });
+		return false;
+	}
+	if($('#ed_jabatan').val() == ""){
+		$("#ed_jabatan").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jabatan Harus Diisi!" });
+		return false;
+	}
+	if($('#ed_alamatKtr').val() == ""){
+		$("#ed_alamatKtr").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Alamat Kantor Harus Diisi!" });
+		return false;
+	}
+	
+	if($('#tku_dxi').val() == ""){
+		$("#tku_dxi").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "TUK Terdekat Diisi!" });
+		return false;
+	}
+	
+	var jml_sert = $('.file-persyaratan-sertifikasi').length;
+	if(jml_sert != 0){
+		var jms = eval((jml_sert-1));
+		for (i = 0; i <= jms; i++) {
+			if($('#fl_'+i).val() == 0){
+				$('#fl_'+i).focus();
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Persyaratan Sertifikasi No. "+(i+1)+" Tidak Boleh Kosong!" });
+				return false;
+			}
+		}
+	}else{
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Persyaratan Sertifikasi Belum Tersedia" });
+		return false;
+	}
+	
+	$.post(host+'chkdt-kutoax', { 'xtu_id':$('#tku_dxi').val() }, function(resp){
+		if(resp == 0){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+			return false;
+		}
+	});
+	
+	$.msg({
+		autoUnblock : false,
+		clickUnblock : false,
+		bgPath : host+"assets/js/plugins/msgplugin/",
+		content: '<p>Anda Yakin Mau Mengulang Diklat Anda Yang Tidak Lulus Sebelumnya ? <br/> (Setelah Mendaftar Anda Akan Diminta Login Kembali Untuk Pembaharuan Cookies).</p>' +
+				'<center>' +
+				'<a id="yes_registrasi_ngulang" class="btn btn-success" onClick="event.preventDefault();">Ya</a>&nbsp;&nbsp;' +
+				'<a id="no_registrasi_ngulang" class="btn btn-primary" onClick="event.preventDefault();">Tidak</a>' +
+				'</center>',
+		afterBlock : function(){
+			var self = this;
+			$( '#yes_registrasi_ngulang' ).bind( 'click', function(){
+				self.unblock();
+				document.regdiklat_ngulang.submit();
+			});
+			$('#no_registrasi_ngulang').bind( 'click', function(){
+				self.unblock();
+			});
+		},
+	});	
+		
 }
 
 function log_psrt(){

@@ -13,8 +13,9 @@
 		<div class="row">
 			<div class="col-lg-12">		
 				
+				<div class="panel-group tc-accordion no-border" id="accordion2"><!-- Accordion style 2-->
 				{if $data|default:''}
-					<div class="panel-group tc-accordion no-border" id="accordion2"><!-- Accordion style 2-->
+					
 						{assign var=ind value=1}
 						{foreach from=$data item=rows}
 						
@@ -37,10 +38,38 @@
 							
 						{assign var=ind value=$ind+1}
 						{/foreach}
-					</div>
 				{/if}
+					<div class="panel panel-default">
+						<div class="panel-heading accordion-active">
+							<a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+								<h5 class="panel-title">
+									Petunjuk Teknis Penggunaan Sistem <span class="pull-right"><i class="fa fa-angle-down bigger-110"></i></span>
+								</h5>
+							</a>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in">
+							<div class="panel-body" >
+								<div id='pdah'></div>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	var myPDF = new PDFObject({
+		url: host+"__repository/dokumenpetunjuk/manual_diklat.pdf",
+		id: "myPDF",
+		height: "600px",
+		pdfOpenParams: {
+			navpanes: 1,
+			statusbar: 0,
+			view: "FitH",
+			pagemode: "none"
+		}
+	}).embed("pdah");
+</script>

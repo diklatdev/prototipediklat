@@ -1,15 +1,6 @@
 <!-- BEGIN PAGE HEADING ROW -->
 <div class="row">
     <div class="col-lg-12">
-        {*
-		<!-- BEGIN BREADCRUMB -->
-        <div class="breadcrumbs">
-            <ul class="breadcrumb">
-                <li class="active"></li>
-            </ul>
-        </div>
-        <!-- END BREADCRUMB -->
-		*}
         <div class="page-header title" style="">
             <!-- PAGE TITLE ROW -->
             <h1>Dashboard</h1>
@@ -22,11 +13,44 @@
 <div class="row">
     <div class="col-lg-12">
 		<div class="row">
-			<div class="col-lg-9 col-sm-12">
+			<div class="col-lg-12 col-sm-12">
+			
+				<div class="row">					
+					<div class="portlet no-border-bottom">
+						<div class="portlet-heading dark">
+							<div class="portlet-title">
+								<h4><i class="fa fa-users"></i>&nbsp;&nbsp; Monitoring Jumlah Peserta Terdaftar Dalam Sistem</h4>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+						<div id="recent" class="panel-collapse collapse in">
+							<div class="portlet-body">
+								<div class='row'>
+									{foreach from=$jmlpeserta item=riws}
+										<div class="col-lg-4 col-sm-4">
+											<a href="#" class="tile-button btn btn-white">
+												<div class="tile-content-wrapper">
+													<i class="fa fa-users text-primary"></i>
+													<div class="tile-content text-primary">
+														{$riws.jml_peserta}
+													</div>
+													<small>
+														{$riws.nama_aparatur}
+													</small>
+												</div>
+											</a>												
+										</div>
+									{/foreach}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>			
+			
 				<div class="portlet no-border-bottom">
 					<div class="portlet-heading dark">
 						<div class="portlet-title">
-							<h4><i class="fa fa-list-ul"></i> Daftar Aktivitas Sistem</h4>
+							<h4><i class="fa fa-cubes"></i>&nbsp;&nbsp; Monitoring Aktivitas Tahapan Sertifikasi Peserta</h4>
 						</div>
 						<div class="portlet-widgets">
 							<a data-toggle="collapse" data-parent="#accordion" href="#recent"><i class="fa fa-chevron-down"></i></a>
@@ -37,102 +61,101 @@
 						<div class="portlet-body no-padding">
 							<div class="tc-tabs no-margin">
 								<ul class="nav nav-tabs tab-small-button no-padding">
-									<li class="active"><a href="#tab14" data-toggle="tab">Registrasi</a>
+									<li class="active">
+										<a href="#tab14" data-toggle="tab">Registrasi</a>
 									</li>
-									<li><a href="#tab15" data-toggle="tab">Assesmen</a>
+									<li>
+										<a href="#tab15" data-toggle="tab">Assesmen</a>
 									</li>
-									<li><a href="#tab16" data-toggle="tab">Uji Tulis</a>
+									<li>
+										<a href="#tab16" data-toggle="tab">Uji Tulis</a>
+									</li>
+									<li>
+										<a href="#tab17" data-toggle="tab">Uji Simulasi</a>
+									</li>
+									<li>
+										<a href="#tab18" data-toggle="tab">Uji Wawancara</a>
 									</li>
 								</ul>
 
 								<div class="tab-content no-padding no-border-left no-border-right no-border-bottom">
 									<div class="tab-pane active" id="tab14">
 										<ul class="lists">
-											<li>
-												<span class="date">17/7/2014 07:43</span>
-												Cron Job: Starting Updating Product Pricing for Current Exchange Rates
-											</li>
-											<li>
-												<span class="date">17/7/2014 05:45</span>
-												Email Sent to <a href="#">Maris Bradley</a>, answered <a href="#">[Ticket ID: 332335]</a>
-											</li>
-											<li>
-												<span class="date">17/7/2014 02:43</span>
-												Module Suspend Successful - Reason: <a href="#">#827101</a>
-											</li>
-											<li>
-												<span class="date">17/7/2014 23:36</span>
-												Cron Job: Starting Performing Automated Fixed Term Service Terminations
-											</li>
-											<li>
-												<span class="date">18/7/2014 07:39</span>
-												Email Sent to <a href="#">Jack Sparrow</a> (Invoice Payment Confirmation).
-											</li>
+											{if $peserta_registrasi}
+												{foreach from=$peserta_registrasi item=reg}
+													<li>
+														{$reg.nama_lengkap} ({$reg.no_registrasi}) | {$reg.nama_aparatur} | TUK : {$reg.tuknya}
+													</li>
+												{/foreach}
+											{else}
+												<li>
+													<center>Tidak Ada Data</center>
+												</li>
+											{/if}
 										</ul>
 									</div>
 
 									<div class="tab-pane" id="tab15">
 										<ul class="lists">
-											<li>
-												<span class="icons"><i class="fa fa-envelope"></i>
-												</span>
-												<a href="#">#808936</a> - Invoice has been paid please active my server
-											</li>
-											<li>
-												<span class="icons"><i class="fa fa-envelope"></i>
-												</span>
-												<a href="#">#857517</a> - New Server's Name Server IPs
-											</li>
-											<li>
-												<span class="icons"><i class="fa fa-envelope"></i>
-												</span>
-												<a href="#">#225310</a> - unsuspended reseller dineshrv all account urgent
-											</li>
-											<li>
-												<span class="icons"><i class="fa fa-envelope"></i>
-												</span>
-												<a href="#">#597608</a> - Mail Not Received
-											</li>
-											<li>
-												<span class="icons"><i class="fa fa-envelope"></i>
-												</span>
-												<a href="#">#597607</a> - Plase update my new mail address
-											</li>
+											{if $peserta_assesmen}
+												{foreach from=$peserta_assesmen item=ass}
+													<li>
+														{$ass.nama_lengkap} ({$ass.no_registrasi}) | {$ass.nama_aparatur} | TUK : {$ass.tuknya}
+													</li>
+												{/foreach}
+											{else}
+												<li>
+													<center>Tidak Ada Data</center>
+												</li>
+											{/if}
 										</ul>
 									</div>
 
 									<div class="tab-pane" id="tab16">
 										<ul class="lists">
-											<li>
-												<span class="date">17/7/2014</span>
-												<span class="icons"><i class="fa fa-user"></i>
-												</span>
-												<a href="#">Elly Martel</a> afiliated by <a href="#">Johan Smith</a>.
-											</li>
-											<li>
-												<span class="date">17/7/2014</span>
-												<span class="icons"><i class="fa fa-user"></i>
-												</span>
-												<a href="#">Jack Sparrow</a> afiliated by <a href="#">Johan Smith</a>.
-											</li>
-											<li>
-												<span class="date">17/7/2014</span>
-												<span class="icons"><i class="fa fa-user"></i>
-												</span>
-												<a href="#">Maris Bradley</a> afiliated by <a href="#">Johan Smith</a>.
-											</li>
-											<li>
-												<span class="date">17/7/2014</span>
-												<span class="icons"><i class="fa fa-user"></i>
-												</span>
-												<a href="#">Roby Roy</a> afiliated by <a href="#">Johan Smith</a>.
-											</li>
-											<li>
-												<span class="date">17/7/2014</span>
-												<span class="icons"><i class="fa fa-user"></i>
-												</span>
-												<a href="#">Rohan Jha</a> afiliated by <a href="#">Johan Smith</a>.
-											</li>
+											{if $peserta_ujitest}
+												{foreach from=$peserta_ujitest item=uji}
+													<li>
+														{$uji.nama_lengkap} ({$uji.no_registrasi}) | {$uji.nama_aparatur} | TUK : {$uji.tuknya}
+													</li>
+												{/foreach}
+											{else}
+												<li>
+													<center>Tidak Ada Data</center>
+												</li>
+											{/if}
+										</ul>
+									</div>
+									
+									<div class="tab-pane" id="tab17">
+										<ul class="lists">
+											{if $peserta_ujisimulasi}
+												{foreach from=$peserta_ujisimulasi item=uji}
+													<li>
+														{$uji.nama_lengkap} ({$uji.no_registrasi}) | {$uji.nama_aparatur} | TUK : {$uji.tuknya}
+													</li>
+												{/foreach}
+											{else}
+												<li>
+													<center>Tidak Ada Data</center>
+												</li>
+											{/if}
+										</ul>
+									</div>
+									
+									<div class="tab-pane" id="tab18">
+										<ul class="lists">
+											{if $peserta_wawancara}
+												{foreach from=$peserta_wawancara item=uji}
+													<li>
+														{$uji.nama_lengkap} ({$uji.no_registrasi}) | {$uji.nama_aparatur} | TUK : {$uji.tuknya}
+													</li>
+												{/foreach}
+											{else}
+												<li>
+													<center>Tidak Ada Data</center>
+												</li>
+											{/if}
 										</ul>
 									</div>
 
@@ -146,33 +169,6 @@
 			</div>
 			<!-- //col-lg-9 -->
 
-			<div class="col-lg-3 col-sm-12">
-
-
-				<!-- Mini Calendar -->
-				<div class="portlet hidden-widgets">
-					<div class="portlet-heading inverse">
-						<div class="portlet-title">
-							<h4><i class="fa fa-calendar"></i> Calendar</h4>
-						</div>
-						<div class="portlet-widgets">
-							<a data-toggle="collapse" data-parent="#accordion" href="#mini-calendar"><i class="fa fa-chevron-down"></i></a>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div id="mini-calendar" class="panel-collapse collapse in">
-						<div class="portlet-body">
-							<div id="minicalendar"></div>
-
-							<div class="space-8"></div>
-
-						</div>
-					</div>
-				</div>
-				<!-- End Mini Calendar -->
-
-			</div>
-			<!-- //col-lg-3 -->
 		</div>
     </div>
 </div>

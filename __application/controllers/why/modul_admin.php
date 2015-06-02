@@ -35,8 +35,30 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign($menu, $access);
 			}
 			
+			if($this->auth['level_admin'] == 99){
+				$monitoring_jml_peserta = $this->madmin->get_data('monitoring_jml_peserta', 'result_array');
+				$peserta_registrasi = $this->madmin->get_data('tbl_data_peserta_diklat', 'result_array');
+				$peserta_assesmen = $this->madmin->get_data('tbl_peserta_asesmen', 'result_array');
+				$peserta_ujitest = $this->madmin->get_data('tbl_peserta_ujitulis', 'result_array');
+				$peserta_ujisimulasi = $this->madmin->get_data('tbl_peserta_simulasi', 'result_array');
+				$peserta_wawancara = $this->madmin->get_data('tbl_peserta_wawancara', 'result_array');
+				
+				//print_r($peserta_registrasi);exit;
+				
+				$this->smarty->assign('konten', "dashboard-admin/main-page");		
+				$this->smarty->assign('jmlpeserta', $monitoring_jml_peserta);		
+				$this->smarty->assign('peserta_registrasi', $peserta_registrasi);		
+				$this->smarty->assign('peserta_assesmen', $peserta_assesmen);		
+				$this->smarty->assign('peserta_ujitest', $peserta_ujitest);		
+				$this->smarty->assign('peserta_ujisimulasi', $peserta_ujisimulasi);		
+				$this->smarty->assign('peserta_wawancara', $peserta_wawancara);		
+			}elseif($this->auth['level_admin'] == 2){
+				$this->smarty->assign('konten', "dashboard-admin/main-page-asesor");
+			}elseif($this->auth['level_admin'] == 7){
+				$this->smarty->assign('konten', "dashboard-admin/main-page-asesor");
+			}
 			
-			$this->smarty->assign('konten', "dashboard-admin/main-page");		
+			
 			$this->smarty->display('index-admin.html');
 		}else {
 			$this->smarty->display('login.html');
@@ -416,26 +438,25 @@ class modul_admin extends SHIPMENT_Controller{
 	}
 	
 	function gen_sertifikat($p1="", $p2="", $p3="", $p4=""){
-		/*
-		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
-		if(!$cek_data){
-			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_data_diklat', array('status'=>0, 'penilaian'=>'L'), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_asessmen_mandiri_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_pembayaran_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_daftar_test', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_ujitest_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-			$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2) );
-		}
-		*/
 		
+		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
+		if(!$cek_data){			
+			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_data_diklat', array('status'=>0, 'penilaian'=>$p3, 'tanggal_hasil'=>date('Y-m-d') ), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_asessmen_mandiri_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_pembayaran_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_daftar_test', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_ujitest_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+		}
 		
 		$array_log = array(
 			"tbl_data_peserta_id" => $p1,
 			"idx_sertifikasi_id" => $p2,
 			"tanggal_cetak" => date('Y-m-d'),
-			"nama_petugas" => $this->auth['username'],
+			"nama_petugas" => $this->auth['real_name'],
+			"kdreg_diklat" => $p4,
 		);
 		$this->db->insert('tbl_log_cetak_sertifikat', $array_log);
 		

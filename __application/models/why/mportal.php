@@ -187,7 +187,7 @@ class mportal extends SHIPMENT_Model{
 			//end data login
 			
 			//ambil data checking & data additional
-			case "":
+			case "checking_kuota":
 				$sql = "
 					SELECT kuota
 					FROM tbl_jadwal_wawancara A
@@ -666,82 +666,272 @@ class mportal extends SHIPMENT_Model{
 				}
 			break;
 			case "registrasi_baru":
-				if(isset($post['sb_ap_tk3'])){
-					$code_sert = $post['sb_ap_tk3'];
-				}else{
-					$code_sert = $post['sb_ap_tk2'];
-				}				
-				$sqlkdsert = "
-					SELECT kode_sertifikasi
-					FROM idx_aparatur_sipil_negara
-					WHERE id = '".$code_sert."'
-				";
-				$querysert = $this->db->query($sqlkdsert)->row_array();
-				
-				$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
-				$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);				
-				
-				$array_step = array(
-					"tbl_data_peserta_id" => $post['idusrx'],
-					"idx_sertifikasi_id" => $code_sert,
-					"step_registrasi" => "2",
-					"step_asesmen_mandiri" => "0",
-					"step_pembayaran" => "0",
-					"step_penjadwalan" => "0",
-					"step_uji_test" => "0",
-					"step_wawancara" => "0",
-					"step_hasil" => "0",
-					"status" => "1"
-				);
-				$this->db->insert("tbl_step_peserta", $array_step);
-				
-				if(!empty($_FILES['edFile_pak']['name'])){
-					$pak_sertifikasi_path = "./repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/";
-					mkdir($pak_sertifikasi_path, 0777);
+				if($this->auth){
+					$ci =& get_instance();
+					$ci->load->model('why/madmin');
+					if(isset($post['sb_ap_tk3'])){
+						$code_sert = $post['sb_ap_tk3'];
+					}else{
+						$code_sert = $post['sb_ap_tk2'];
+					}
 					
-					$file_pak = "file-pak_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
-					$filename_pak =  $this->lib->uploadnong($pak_sertifikasi_path, 'edFile_pak', $file_pak); 
-				}else{
-					$filename_pak = "";
-				}
-				
-				$array_sert = array(
-					"idx_sertifikasi_id" => $code_sert,
-					"tbl_data_peserta_id" => $post['idusrx'],
-					"file_pak" => $filename_pak,
-					"idx_provinsi_instansi_id" => $post['prv'],
-					"idx_kabupaten_instansi_id" => $post['ka'],
-					"idx_instansi_id" => $post['ins'],
-					"idx_pangkat_id" => $post['ed_pangkat'],
-					"jabatan" => $post['ed_jabatan'],
-					"alamat_instansi" => $post['ed_alamatKtr'],
-					"status" => 1,
-					"tahun" => date('Y'),
-					"tanggal_daftar" => date('Y-m-d')
-				);
-				$this->db->insert("tbl_data_diklat", $array_sert);
-				
-				if(isset($post['idprs'])){
-					$count = count($post['idprs']) - 1;
-					$target_path = "./repository/dokumen_peserta/".$post['ktkregspso']."/file_persyaratan/".$folder_sertifikasi."/";
-					mkdir($target_path, 0777);
-					for($i = 0; $i <= $count; $i++){
-						if($_FILES['fl_prsyrt']['name'][$i] != ''){
+					$id_peserta = $post['idusrx'];
+					$no_reg = $post['ktkregspso'];
+
+					$sqlreg = "
+						SELECT kode_reg as reg
+						FROM tbl_data_peserta
+						WHERE id = '".$id_peserta."' 
+					";
+					$queryreg = $this->db->query($sqlreg)->row_array();
+					
+					$number_reg = $queryreg['reg'];
+					//$number_reg = sprintf('%07d', $number_reg);
+									
+					$kdreg_diklat = "DK.".$number_reg.".".$code_sert.".001";
+					
+					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $code_sert);
+					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
+					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);				
+					
+					if(!empty($_FILES['edFile_pak']['name'])){
+						$pak_sertifikasi_path_1 = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/";
+						mkdir($pak_sertifikasi_path_1, 0777);
+						
+						$pak_sertifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/".$kdreg_diklat."/";
+						mkdir($pak_sertifikasi_path, 0777);
+						
+						$file_pak = "file-pak_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
+						$filename_pak =  $this->lib->uploadnong($pak_sertifikasi_path, 'edFile_pak', $file_pak); 
+					}else{
+						$filename_pak = "";
+					}				
+					
+					$sql_asesor = "
+						SELECT id
+						FROM tbl_user_admin
+						WHERE idx_tuk_id = '".$post['tku_dxi']."' AND idx_keahlian = '".$code_sert."'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					
+					$array_step = array(
+						"tbl_data_peserta_id" => $id_peserta,
+						"idx_sertifikasi_id" => $code_sert,
+						"step_registrasi" => "2",
+						"step_asesmen_mandiri" => "0",
+						"step_pembayaran" => "0",
+						"step_penjadwalan" => "0",
+						"step_uji_test" => "0",
+						"step_wawancara" => "0",
+						"step_hasil" => "0",
+						"status" => "1",
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					$this->db->insert("tbl_step_peserta", $array_step);
+					
+					$array_sert = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						"file_pak" => $filename_pak,
+						"idx_kementerian_id" => $post['kmnt'],
+						"idx_formasi_id" => $post['frms'],
+						"idx_lokasi_id" => $post['lks'],
+						"idx_provinsi_instansi_id" => $post['prv'],
+						"idx_kabupaten_instansi_id" => $post['ka'],
+						"idx_instansi_id" => $post['ins'],
+						"idx_pangkat_id" => $post['ed_pangkat'],
+						"jabatan" => $post['ed_jabatan'],
+						"alamat_instansi" => $post['ed_alamatKtr'],
+						"status" => 1,
+						"tahun" => date('Y'),
+						"tanggal_daftar" => date('Y-m-d'),
+						"jml_coba" => $jml_coba,
+						"kdreg_diklat" => $kdreg_diklat,
+						"idx_tuk_id" => $post['tku_dxi'],
+						"idx_asesor_id" => $query_asesor['id']
+					);
+					$this->db->insert("tbl_data_diklat", $array_sert);
+					
+					$sql_datajadwal = "
+						SELECT A.*
+						FROM tbl_jadwal_wawancara A
+						WHERE A.idx_tuk_id = '".$post['tku_dxi']."' AND A.status = 'A'
+					";
+					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					$array_daftar_test = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						'tbl_jadwal_wawancara_id'=> $data_jadwal['id'],
+						'status_data'=> 1,
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					$kurangi_kuota = ($data_jadwal['kuota']-1);
+					$this->db->insert('tbl_daftar_test', $array_daftar_test);
+					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$data_jadwal['id']) );					
+					
+					if(isset($post['idprs'])){
+						$count = count($post['idprs']) - 1;
+						$target_path_1 = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/".$folder_sertifikasi."/";
+						mkdir($target_path_1, 0777);
+						
+						$target_path = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/".$folder_sertifikasi."/".$kdreg_diklat."/";
+						mkdir($target_path, 0777);
+						
+						for($i = 0; $i <= $count; $i++){
+							if($_FILES['fl_prsyrt']['name'][$i] != ''){								
+								$file_p = "file_persyaratan_".$i."(".$post['idprs'][$i].")"; 
+								$filename_p =  $this->lib->uploadmultiplenong($target_path, 'fl_prsyrt', $file_p, $i); 
+							}else{
+								$filename_p = null;
+							}
 							
-							$file_p = "file_persyaratan_".$i."(".$post['idprs'][$i].")"; 
-							$filename_p =  $this->lib->uploadmultiplenong($target_path, 'fl_prsyrt', $file_p, $i); 
-								
 							$array_persyaratan = array(
-								"tbl_data_peserta_id" => $post['idusrx'],
-								"idx_persyaratan_id" => $post['idprs'][$i],
-								"nama_file" => $filename_p,
-								"flag"=>"BV",
-								"idx_sertifikasi_id"=>$code_sert
+									"tbl_data_peserta_id" => $id_peserta,
+									"idx_persyaratan_id" => $post['idprs'][$i],
+									"nama_file" => $filename_p,
+									"flag"=>"BV",
+									"idx_sertifikasi_id"=>$code_sert,
+									"kdreg_diklat" => $kdreg_diklat,
+									"status_penilaian" => "0",
 							);
 							$this->db->insert("tbl_persyaratan_sertifikasi", $array_persyaratan);
+							
+						}
+					}
+					
+				}
+			break;
+			case "registrasi_ngulang":
+				if($this->auth){
+					$ci =& get_instance();
+					$ci->load->model('why/madmin');
+					
+					$id_peserta = $post['idusrx'];
+					$code_sert = $post['idxsr_lm'];
+					$no_reg = $post['ktkregspso'];
+
+					$sqlreg = "
+						SELECT kode_reg as reg
+						FROM tbl_data_peserta
+						WHERE id = '".$id_peserta."' 
+					";
+					$queryreg = $this->db->query($sqlreg)->row_array();
+					
+					$number_reg = $queryreg['reg'];
+					//$number_reg = sprintf('%07d', $number_reg);
+					
+					$jml_coba = ($post['cb_dbc'] + 1);
+					$code_jml_coba = sprintf('%03d', $jml_coba);
+					
+					$kdreg_diklat = "DK.".$number_reg.".".$code_sert.".".$code_jml_coba;
+					
+					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $code_sert);
+					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
+					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
+					
+					if(!empty($_FILES['edFile_pak']['name'])){
+						$pak_sertifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/".$kdreg_diklat."/";
+						mkdir($pak_sertifikasi_path, 0777);
+						
+						$file_pak = "file-pak_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
+						$filename_pak =  $this->lib->uploadnong($pak_sertifikasi_path, 'edFile_pak', $file_pak); 
+					}else{
+						$filename_pak = "";
+					}
+					
+					$sql_asesor = "
+						SELECT id
+						FROM tbl_user_admin
+						WHERE idx_tuk_id = '".$post['tku_dxi']."' AND idx_keahlian = '".$code_sert."'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					
+					$array_step = array(
+						"tbl_data_peserta_id" => $id_peserta,
+						"idx_sertifikasi_id" => $code_sert,
+						"step_registrasi" => "2",
+						"step_asesmen_mandiri" => "0",
+						"step_pembayaran" => "0",
+						"step_penjadwalan" => "0",
+						"step_uji_test" => "0",
+						"step_wawancara" => "0",
+						"step_hasil" => "0",
+						"status" => "1",
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					$this->db->insert("tbl_step_peserta", $array_step);
+					
+					$array_sert = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						"file_pak" => $filename_pak,
+						"idx_kementerian_id" => $post['kmnt'],
+						"idx_formasi_id" => $post['frms'],
+						"idx_lokasi_id" => $post['lks'],
+						"idx_provinsi_instansi_id" => $post['prv'],
+						"idx_kabupaten_instansi_id" => $post['ka'],
+						"idx_instansi_id" => $post['ins'],
+						"idx_pangkat_id" => $post['ed_pangkat'],
+						"jabatan" => $post['ed_jabatan'],
+						"alamat_instansi" => $post['ed_alamatKtr'],
+						"status" => 1,
+						"tahun" => date('Y'),
+						"tanggal_daftar" => date('Y-m-d'),
+						"jml_coba" => $jml_coba,
+						"kdreg_diklat" => $kdreg_diklat,
+						"idx_tuk_id" => $post['tku_dxi'],
+						"idx_asesor_id" => $query_asesor['id']
+					);
+					$this->db->insert("tbl_data_diklat", $array_sert);
+					
+					$sql_datajadwal = "
+						SELECT A.*
+						FROM tbl_jadwal_wawancara A
+						WHERE A.idx_tuk_id = '".$post['tku_dxi']."' AND A.status = 'A'
+					";
+					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					$array_daftar_test = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						'tbl_jadwal_wawancara_id'=> $data_jadwal['id'],
+						'status_data'=> 1,
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					$kurangi_kuota = ($data_jadwal['kuota']-1);
+					$this->db->insert('tbl_daftar_test', $array_daftar_test);
+					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$data_jadwal['id']) );
+					
+					if(isset($post['idprs'])){
+						$count = count($post['idprs']) - 1;
+						
+						$target_path = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/".$folder_sertifikasi."/".$kdreg_diklat."/";
+						mkdir($target_path, 0777);
+						
+						for($i = 0; $i <= $count; $i++){
+							if($_FILES['fl_prsyrt']['name'][$i] != ''){								
+								$file_p = "file_persyaratan_".$i."(".$post['idprs'][$i].")"; //"file-pak_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
+								$filename_p =  $this->lib->uploadmultiplenong($target_path, 'fl_prsyrt', $file_p, $i); 
+							}else{
+								$filename_p = null;
+							}
+							
+							$array_persyaratan = array(
+									"tbl_data_peserta_id" => $id_peserta,
+									"idx_persyaratan_id" => $post['idprs'][$i],
+									"nama_file" => $filename_p,
+									"flag"=>"BV",
+									"idx_sertifikasi_id"=>$code_sert,
+									"kdreg_diklat" => $kdreg_diklat,
+									"status_penilaian" => "0",
+							);
+							$this->db->insert("tbl_persyaratan_sertifikasi", $array_persyaratan);
+							
 						}
 					}
 				}
+				
 			break;
 			case "asesmen":
 				if($this->auth){
@@ -755,10 +945,14 @@ class mportal extends SHIPMENT_Model{
 					$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
 					$folder_sertifikasi = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
 					$target_path2_1 = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_asesmen_mandiri/".$folder_sertifikasi."/";
-					mkdir($target_path2_1, 0777);
+					if(!is_dir($target_path2_1)) {
+						mkdir($target_path2_1, 0777);
+					}
 					
 					$target_path2 = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_asesmen_mandiri/".$folder_sertifikasi."/".$this->auth['kdreg_diklat']."/";
-					mkdir($target_path2, 0777);
+					if(!is_dir($target_path2)) {
+						mkdir($target_path2, 0777);
+					}
 					
 					$countol = count($post['idxkomp'])-1;
 					for($i = 0; $i <= $countol; $i++){

@@ -35,6 +35,16 @@ class madmin extends SHIPMENT_Model{
 			break;
 			// End User Manajemen & ACL
 			
+			case "monitoring_jml_peserta":
+				$sql = "
+					SELECT count(A.id) as jml_peserta, B.nama_aparatur
+					FROM tbl_data_diklat A
+					LEFT JOIN idx_aparatur_sipil_negara B ON A.idx_sertifikasi_id = B.id
+					WHERE A.`status` = '1'
+					GROUP BY A.idx_sertifikasi_id
+				";
+			break;
+			
 			case "tbl_data_peserta":
 			case "tbl_data_peserta_detail":
 				if($type == "tbl_data_peserta"){
@@ -71,22 +81,25 @@ class madmin extends SHIPMENT_Model{
 			case "tbl_diklat_terakhir":
 				$sql = "
 					SELECT B.*, C.name as nama_provinsi, D.name as nama_kabupaten, 
-						E.nama_instansi, F.nama_pangkat
+						E.nama_instansi, F.nama_pangkat, G.nama_aparatur
 					FROM tbl_data_diklat B
 					LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
 					LEFT JOIN idx_area D ON B.idx_kabupaten_instansi_id = D.id
 					LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
 					LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
+					LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id
 					WHERE B.tbl_data_peserta_id = '".$p1."' 
 					ORDER BY id DESC LIMIT 0,1
 				";
 			break;
+			
 			case "tbl_record_diklat":
 				$sql = "
 					SELECT B.*, C.nama_aparatur
 					FROM tbl_data_diklat B
-					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C. id
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
 					WHERE B.tbl_data_peserta_id = '".$p1."' 
+					ORDER BY id ASC
 				";
 			break;
 			case "folder_sertifikasi":
@@ -115,11 +128,12 @@ class madmin extends SHIPMENT_Model{
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat
+						E.kdreg_diklat, D.nama_tuk as tuknya
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
+					LEFT JOIN idx_tuk D ON E.idx_tuk_id = D.id
 					WHERE B.step_registrasi = '2' $where
 				";
 			break;
@@ -133,12 +147,13 @@ class madmin extends SHIPMENT_Model{
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian, E.idx_sertifikasi_id, 
-						E.kdreg_diklat, B.step_asesmen_mandiri
+						E.kdreg_diklat, B.step_asesmen_mandiri, F.nama_tuk as tuknya
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_asessmen_mandiri_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
 					WHERE B.step_asesmen_mandiri IN ('2', '3') $where
 				";
 			break;
@@ -216,12 +231,13 @@ class madmin extends SHIPMENT_Model{
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, 
 						DATE_FORMAT( D.tgl_test,  '%d-%m-%Y' ) AS tanggal_ujian, D.jumlah_salah, D.jumlah_benar,
-						E.idx_sertifikasi_id
+						E.idx_sertifikasi_id, F.nama_tuk as tuknya
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_ujitest_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
 					WHERE B.step_uji_test = '2'
 				";
 			break;
@@ -294,12 +310,13 @@ class madmin extends SHIPMENT_Model{
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat
+						E.kdreg_diklat, F.nama_tuk as tuknya
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_uji_simulasi_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
 					WHERE B.step_uji_simulasi = '2' $where
 				";
 			break;
@@ -322,12 +339,13 @@ class madmin extends SHIPMENT_Model{
 			
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat
+						E.kdreg_diklat, F.nama_tuk as tuknya
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_wawancara_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
 					WHERE B.step_wawancara = '2' $where
 				";
 			break;

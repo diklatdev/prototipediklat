@@ -303,22 +303,27 @@
 												<th class="col-small center">No.</th>
 												<th class="col-medium center">Sertifikasi</th>
 												<th class="col-medium center">Status</th>
+												<th class="col-medium center">Tanggal Penetapan</th>
 											</tr>
 										</thead>
 										<tbody>
 											{if $data_record_diklat}
 												{assign var=ind value=1}
+												{assign var=tombol value=''}
 												{foreach from=$data_record_diklat item=rowsssss}
 													<tr>
 														<td class="col-small center">{$ind}</td>
 														<td>{$rowsssss.nama_aparatur}</td>
 														<td>
 															{if $rowsssss.penilaian eq 'L'}
+																{assign var=tombol value='L'}
 																<font color='green'>LULUS</font>
 															{elseif $rowsssss.penilaian eq 'TL'}
+																{assign var=tombol value='TL'}
 																<font color='red'>TIDAK LULUS</font>
 															{/if}
 														</td>
+														<td>{$rowsssss.tanggal_hasil|date_format:"%d-%m-%Y"}</td>
 													</tr>
 													{assign var=ind value=$ind+1}
 												{/foreach}
@@ -326,7 +331,12 @@
 										</tbody>
 									</table>
 									
-									<a class="btn btn-primary" href="{$host}registrasi-diklat-baru">Daftar Diklat Baru</a>
+									{if $tombol eq 'L'}
+										<a class="btn btn-primary" href="{$host}registrasi-diklat-baru">Daftar Diklat Baru</a>
+									{elseif $tombol eq 'TL'}
+										<a class="btn btn-primary" href="{$host}registrasi-mengulang-diklat">Mengulang Ujian Terakhir</a>
+									{/if}
+									
 								{/if}
 							</div>
 							<div id="tab27" class="tab-pane">

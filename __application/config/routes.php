@@ -116,6 +116,10 @@ $route['logout-peserta'] = "login/logogut";
 $route['registrasi-diklat-baru'] = "why/modul_portal/getdisplay/registrasi_diktlatbaru";
 $route['submit-registrasi-baru'] = "why/modul_portal/simpansavedbs/registrasi_baru";
 
+$route['registrasi-mengulang-diklat'] = "why/modul_portal/getdisplay/registrasi_diktlatngulang/";
+$route['submit-registrasi-ngulang'] = "why/modul_portal/simpansavedbs/registrasi_ngulang/";
+
+
 $route['sbm-komplain-peserta'] = "why/modul_portal/simpansavedbs/save_komplain";
 
 $route['info-kontak'] = 'why/modul_portal/getdisplay/kontaks';

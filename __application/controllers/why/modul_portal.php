@@ -60,6 +60,7 @@ class modul_portal extends SHIPMENT_Controller{
 			$this->load->library('lib');
 			$data_petunjukdokumen = $this->madmin->get_data('tbl_petunjukdokumen', 'result_array', 'limit');
 			$data_berita = $this->madmin->get_data('tbl_berita', 'result_array', 'limit');
+			$data_jadwal = $this->madmin->get_data('tbl_penjadwalan', 'result_array');
 			
 			foreach($data_berita as $k => $v){
 				$data_berita[$k]['judul_berita'] = $this->lib->cutstring($v['judul_berita'], 40);
@@ -67,6 +68,7 @@ class modul_portal extends SHIPMENT_Controller{
 			
 			$this->smarty->assign('petunjuk_dokumen',$data_petunjukdokumen);
 			$this->smarty->assign('berita',$data_berita);
+			$this->smarty->assign('jadwal',$data_jadwal);
 			$this->smarty->assign('konten', "dashboard-portal/container");
 		}
 		
@@ -105,18 +107,56 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('editstatus', "b_r" );
 			break;
 			case "registrasi_diktlatbaru":
-				$this->load->model('madmin');
+				$this->load->model('why/madmin');
 				$konten = "modul-portal/registrasi/form-registrasi-baru";
 				$datadiklat_terakhir = $this->madmin->get_data('tbl_diklat_terakhir', 'row_array', $this->auth['id']);
 				
+				$this->smarty->assign('idx_pendidikan_id', $this->fillcombo('idx_pendidikan', 'return', $this->auth['idx_pendidikan_id']) );
+				$this->smarty->assign('idx_programstudi_id', $this->fillcombo('idx_programstudi', 'return', $this->auth['idx_programstudi_id']) );
+				
 				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return', $datadiklat_terakhir['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kabupaten_instansi_id', $this->fillcombo('ka', 'return', $datadiklat_terakhir['idx_kabupaten_instansi_id'], $datadiklat_terakhir['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kementerian', $this->fillcombo('idx_kementerian', 'return', $datadiklat_terakhir['idx_kementerian_id']) );
+				$this->smarty->assign('idx_formasi', $this->fillcombo('idx_formasi', 'return', $datadiklat_terakhir['idx_formasi_id']) );
+				$this->smarty->assign('idx_lokasi', $this->fillcombo('lokasi', 'return', $datadiklat_terakhir['idx_lokasi_id']) );
+				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
-				$this->smarty->assign('idx_kabupaten_id', $this->fillcombo('ka', 'return', $datadiklat_terakhir['idx_kabupaten_instansi_id'], $datadiklat_terakhir['idx_provinsi_instansi_id']) );
-				$this->smarty->assign('idx_instansi_id', $this->fillcombo('ins', 'return', $datadiklat_terakhir['idx_instansi_id'], $datadiklat_terakhir['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_tuk', $this->fillcombo('idx_tuk', 'return') );
 				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
 				
 				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
 				$this->smarty->assign('jabatan', $datadiklat_terakhir['jabatan']);
+			break;
+			case "registrasi_diktlatngulang":
+				$this->load->model('why/madmin');
+				$konten = "modul-portal/registrasi/form-registrasi-ngulang";
+				$datadiklat_terakhir = $this->madmin->get_data('tbl_diklat_terakhir', 'row_array', $this->auth['id']);
+				$data_persyaratan = $this->db->get_where("idx_persyaratan_registrasi", array('idx_asn_id'=>$datadiklat_terakhir['idx_sertifikasi_id']))->result_array();
+				
+				/*
+				echo "<pre>";
+				print_r($datadiklat_terakhir);exit;
+				//*/
+				
+				$this->smarty->assign('idx_pendidikan_id', $this->fillcombo('idx_pendidikan', 'return', $this->auth['idx_pendidikan_id']) );
+				$this->smarty->assign('idx_programstudi_id', $this->fillcombo('idx_programstudi', 'return', $this->auth['idx_programstudi_id']) );
+				
+				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return', $datadiklat_terakhir['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kabupaten_instansi_id', $this->fillcombo('ka', 'return', $datadiklat_terakhir['idx_kabupaten_instansi_id'], $datadiklat_terakhir['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kementerian', $this->fillcombo('idx_kementerian', 'return', $datadiklat_terakhir['idx_kementerian_id']) );
+				$this->smarty->assign('idx_formasi', $this->fillcombo('idx_formasi', 'return', $datadiklat_terakhir['idx_formasi_id']) );
+				$this->smarty->assign('idx_lokasi', $this->fillcombo('lokasi', 'return', $datadiklat_terakhir['idx_lokasi_id']) );
+				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
+				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
+				$this->smarty->assign('idx_tuk', $this->fillcombo('idx_tuk', 'return') );
+				
+				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
+				$this->smarty->assign('jabatan', $datadiklat_terakhir['jabatan']);
+				$this->smarty->assign('sertifikasi', $datadiklat_terakhir['nama_aparatur']);
+				$this->smarty->assign('id_sertifikasi', $datadiklat_terakhir['idx_sertifikasi_id']);
+				$this->smarty->assign('jml_coba', $datadiklat_terakhir['jml_coba']);
+				
+				$this->smarty->assign('data_persyaratan', $data_persyaratan);
 			break;
 			case "registrasi-berhasil":
 			case "registrasi-gagal":
@@ -441,7 +481,7 @@ class modul_portal extends SHIPMENT_Controller{
 					break;
 					case "checking_kuota":
 						$id_tuk = $this->input->post('xtu_id');
-						$cekdata = $this->mportal->get_data('checking_kuota', 'row_array', $tuk_id);
+						$cekdata = $this->mportal->get_data('checking_kuota', 'row_array', $id_tuk);
 						if(isset($cekdata['kuota'])){
 							echo 1;
 						}else{
@@ -552,7 +592,7 @@ class modul_portal extends SHIPMENT_Controller{
 	
 	function simpansavedbs($type=""){
 		$post = array();
-        foreach($_POST as $k=>$v) $post[$k] = ( $type == 'save_komplain' ? $this->input->post($k) : $this->db->escape_str($this->input->post($k)) );
+        foreach($_POST as $k=>$v) $post[$k] = ( $type == 'save_komplain' || $type == 'registrasi' || $type == 'registrasi_ngulang' ? $this->input->post($k) : $this->db->escape_str($this->input->post($k)) );
 		
 		if(!isset($post)){
 			header("Location: " . $this->host);
@@ -623,6 +663,10 @@ class modul_portal extends SHIPMENT_Controller{
 			}elseif($type == "savedaftarwawancara"){
 				echo $savenya;
 			}elseif($type == "registrasi_baru"){
+				$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
+				$this->session->sess_destroy();
+				header("Location: " . $this->host ."login-peserta");
+			}elseif($type == "registrasi_ngulang"){
 				$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
 				$this->session->sess_destroy();
 				header("Location: " . $this->host ."login-peserta");

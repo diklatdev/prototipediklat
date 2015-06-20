@@ -242,7 +242,12 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "form_penjadwalan":
 				$content = "modul-admin/penjadwalan/form-penjadwalan.html";
-				$this->smarty->assign('cmbtuk', $this->fillcombo('idx_tuk', 'return') );
+				if($p1 == 'edit'){
+					$id = $p2;
+					$data = $this->madmin->get_data("tbl_penjadwalan","row_array",$id);
+					$this->smarty->assign("data", $data);
+				}
+				$this->smarty->assign('cmbtuk', $this->fillcombo('idx_tuk', 'return', ($p1 == 'edit' ? $data['idx_tuk_id'] : "") ) );
 				$this->smarty->assign("editstatus", $p1);
 			break;
 			case "simulasi":
@@ -449,7 +454,7 @@ class modul_admin extends SHIPMENT_Controller{
 	}
 	
 	function gen_sertifikat($p1="", $p2="", $p3="", $p4=""){
-		
+		/*
 		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
 		if(!$cek_data){			
 			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
@@ -461,7 +466,7 @@ class modul_admin extends SHIPMENT_Controller{
 			$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 			$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 		}
-		
+		*/
 		$array_log = array(
 			"tbl_data_peserta_id" => $p1,
 			"idx_sertifikasi_id" => $p2,

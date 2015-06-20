@@ -3,7 +3,7 @@
     <div class="col-lg-12">
         <div class="page-header title" style="">
             <!-- PAGE TITLE ROW -->
-            <h1>Penjadwalan Wawancara Peserta</h1>
+            <h1>Penjadwalan Ujian Sertifikasi</h1>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -50,11 +50,9 @@
 										<td style='text-align:center;'>{$rows.tgl_wawancara}</td>
 										<td style='text-align:center;'>
 											<div class="btn-group btn-group-xs ">
-												<a title='Detail Jadwal' href="#" onClick="loadUrl_adds('uj_dt','{$host}jadwal-detail', 'konten_ujitulis', '{$rows.id}')" class="btn btn-danger"><i class="fa fa-check"></i></a>
 												&nbsp;
-												<a title='Edit Jadwal' href="#" onClick="loadUrl_adds('uj_dt','{$host}edit-data-wawancara', 'konten_ujitulis', '{$rows.id}')" class="btn btn-danger"><i class="fa fa-pencil-square-o"></i></a>
-												&nbsp;
-												<a title='Hapus Jadwal' href="#" onClick="" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+												<a title='Edit Jadwal' href="#" onClick="loadUrl_adds('tm_jd','{$host}edit-data-wawancara/{$rows.id}', 'konten_penjadwalan')" class="btn btn-danger"><i class="fa fa-pencil-square-o"></i></a>
+												<a title='Hapus Jadwal' href="#" onClick="loadUrl_adds('htm_jd','{$host}hapus-data-wawancara', 'konten_penjadwalan', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
 											</div>	
 										</td>
 									</tr>

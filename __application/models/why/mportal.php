@@ -586,7 +586,8 @@ class mportal extends SHIPMENT_Model{
 						"jml_coba" => 1,
 						"kdreg_diklat" => $kdreg_diklat,
 						"idx_tuk_id" => $post['tku_dxi'],
-						"idx_asesor_id" => $query_asesor['id']
+						"idx_asesor_id" => $query_asesor['id'],
+						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt']
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					

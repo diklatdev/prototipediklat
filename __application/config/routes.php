@@ -28,6 +28,8 @@ $route['verifikasi-pembayaran'] = "why/modul_admin/simpansavedbx/ver_konfpembaya
 
 $route['penjadwalan-peserta'] = "why/modul_admin/getdisplay/penjadwalan/";
 $route['tambah-data-wawancara'] = "why/modul_admin/getdisplay/form_penjadwalan/add";
+$route['edit-data-wawancara/(:any)'] = "why/modul_admin/getdisplay/form_penjadwalan/edit/$1";
+$route['hapus-data-wawancara'] = "why/modul_admin/simpansavedbx/deletejadwal";
 $route['submit-penjadwalan'] = "why/modul_admin/simpansavedbx/savejadwal";
 
 $route['ujisimulasi-peserta'] = "why/modul_admin/getdisplay/simulasi/";

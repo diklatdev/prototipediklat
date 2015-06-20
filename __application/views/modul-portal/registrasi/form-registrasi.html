@@ -228,13 +228,29 @@
 											<select id='ka' class="form-control" name="ka">
 											</select>
 										</div>
-										<span class="help-block"><code>*) Harus Diisi</code></span>
+										
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
-										<div class="col-sm-4">															
+										<div class="col-sm-2">															
 											<select id='ed_pangkat' class="form-control" name="ed_pangkat">
 												{$idx_pangkat_id}
+											</select>
+										</div>
+										<label class="col-sm-1 control-label">TMT : </label>
+										<div class="col-sm-1" >															
+											<select id='tgl_tmt' class="form-control selectpicker" name="tgl_tmt">
+												{$tgl_lahir}
+											</select> 
+										</div>
+										<div class="col-sm-2" >															
+											<select id='bln_tmt' class="form-control" name="bln_tmt">
+												{$bulan_lahir}
+											</select>
+										</div>
+										<div class="col-sm-2" >															
+											<select id='thn_tmt' class="form-control" name="thn_tmt">
+												{$tahun_lahir}
 											</select>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>

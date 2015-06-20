@@ -201,12 +201,17 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			case "tbl_penjadwalan":
+				if($p1){
+					$whereform = " AND A.id = '".$p1."' ";
+				}else{
+					$whereform = "";
+				}
 				$sql = "
 					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
 						B.nama_tuk
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
-					WHERE A.status = 'A'
+					WHERE A.status = 'A' $whereform
 				";
 			break;
 			case "tbl_peserta_ujitulis_sekarang":
@@ -562,26 +567,6 @@ class madmin extends SHIPMENT_Model{
 				$this->db->update("tbl_pembayaran_header", $array_pembayaran_header, array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
 				*/
 			break;	
-			case "savejadwal":
-				$cekdata = $this->db->get_where('tbl_jadwal_wawancara', array("idx_tuk_id" => $post['edtuk'],"tanggal_wawancara" => $post['tggw']) )->row_array();
-				if($cekdata){
-					return 2;
-					exit;
-				}
-				
-				$array_save = array(
-					"idx_tuk_id" => $post['edtuk'],
-					"tanggal_wawancara" => $post['tggw'],
-					"jam" => $post['jmg'],
-					"kuota" => $post['ktpp'],
-				);
-				if($post['broedst'] == 'add'){
-					$array_save['status'] = 'A';
-					$this->db->insert('tbl_jadwal_wawancara', $array_save);
-				}elseif($post['broedst'] == 'edit'){
-					
-				}
-			break;	
 			case "ver_ikt_ujol":
 				$this->db->update("tbl_step_peserta", array("step_uji_test"=>3), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
 			break;
@@ -703,7 +688,33 @@ class madmin extends SHIPMENT_Model{
 				$this->db->update("tbl_hasil_akhir", $array_remedial, array('tbl_data_peserta_id'=>$post['ibdff'], 'idx_sertifikasi_id'=>$post['idxsrt'], 'kdreg_diklat'=>$post['kdr']) );
 			break;
 			
-			
+			case "savejadwal":
+				$cekdata = $this->db->get_where('tbl_jadwal_wawancara', array("idx_tuk_id" => $post['edtuk'],"tanggal_wawancara" => $post['tggw'],"status"=>'A') )->row_array();
+				if($cekdata){
+					return 2;
+					exit;
+				}
+				
+				$array_save = array(
+					"idx_tuk_id" => $post['edtuk'],
+					"tanggal_wawancara" => $post['tggw'],
+					"jam" => $post['jmg'],
+					"kuota" => $post['ktpp'],
+				);
+				
+				if($post['broedst'] == 'add'){
+					$array_save['status'] = 'A';
+					$this->db->insert('tbl_jadwal_wawancara', $array_save);
+				}elseif($post['broedst'] == 'edit'){
+					$id = $post['broedid'];
+					$array_save['status'] = $post['sts'];
+					$this->db->update('tbl_jadwal_wawancara', $array_save, array('id'=>$id) );
+				}
+			break;	
+			case "deletejadwal":
+				$id = $post['idx_jd'];
+				$this->db->delete('tbl_jadwal_wawancara', array('id'=>$id) );
+			break;	
 			case "savevoucher":
 				$jml = ($post['jml']-1);
 				for($i = 0; $i <= $jml; $i++){

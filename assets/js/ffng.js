@@ -155,6 +155,22 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tempat Lahir Harus Diisi!" });
 		return false;
 	}
+	if($('#tgl_lahir').val() == ""){
+		$("#tgl_lahir").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tanggal Lahir Harus Diisi!" });
+		return false;
+	}
+	if($('#bln_lahir').val() == ""){
+		$("#bln_lahir").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Bulan Lahir Harus Diisi!" });
+		return false;
+	}
+	if($('#thn_lahir').val() == ""){
+		$("#thn_lahir").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tahun Lahir Harus Diisi!" });
+		return false;
+	}
+	
 	if($('#ed_jnsKel').val() == ""){
 		$("#ed_jnsKel").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenis Kelamin Harus Diisi!" });
@@ -223,11 +239,13 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
 		return false;
 	}
+	/*
 	if($('#ka').val() == ""){
 		$("#ka").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kabupaten Harus Diisi!" });
 		return false;
 	}
+	*/
 	if($('#ins').val() == ""){
 		$("#ins").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Instansi Harus Diisi!" });
@@ -238,6 +256,22 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pangkat Harus Diisi!" });
 		return false;
 	}
+	if($('#tgl_tmt').val() == ""){
+		$("#tgl_tmt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tanggal TMT Pangkat/Golongan Harus Diisi!" });
+		return false;
+	}
+	if($('#bln_tmt').val() == ""){
+		$("#bln_tmt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Bulan TMT Pangkat/Golongan Harus Diisi!" });
+		return false;
+	}
+	if($('#thn_tmt').val() == ""){
+		$("#thn_tmt").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tahun TMT Pangkat/Golongan Harus Diisi!" });
+		return false;
+	}
+	
 	if($('#ed_jabatan').val() == ""){
 		$("#ed_jabatan").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jabatan Harus Diisi!" });

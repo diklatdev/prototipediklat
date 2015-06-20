@@ -98,6 +98,20 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			$.post(urlnya, {  }, function(resp){
 				$("#"+domnya).html(resp);
 			});
+			
+		break;
+		case "htm_jd":
+			var r = confirm("Anda Yakin Menghapus Data ini?");
+			if(r == true){
+				$.post(urlnya, { 'idx_jd':p1 }, function(resp){
+					if(resp == 1){
+						alert('Data Terhapus');
+					}else{
+						alert('Data Gagal Terhapus');
+					}
+					loadUrl(hostir+'penjadwalan-peserta');
+				});
+			}
 		break;
 		case "ww_dt":
 			$.post(urlnya, { 'cdn':p1, 'xdiser':p2, 'kdr':p3 }, function(resp){

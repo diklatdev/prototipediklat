@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header title" style="margin-bottom:5px !important;">
+		
+		<div class="well white" style="margin-bottom:0px !important;">
+			<div class="btn-group btn-group-sm ">
+				<a href="#" onClick="loadUrl_adds('tm-soal','{$host}crud-soal', 'loader-soal');" class="btn btn-danger"><i class="fa fa-plus"></i>Tambah Soal</a>
+			</div>
+		</div>
+	
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th width='5%'>No.</th>
+								<th class="col-medium center">Pertanyaan</th>
+								<th width='15%' style='text-align:center;'>Status</th>
+								<th width='15%' style='text-align:center;'>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{assign var=ind value=1}
+							{foreach from=$data item=rows}
+								<tr>
+									<td>{$ind}</td>
+									<td>{$rows.soal}</td>
+									<td align='center'>
+										{if $rows.status eq '1'}
+											<font color='green'>Aktif</font>
+										{else}
+											<font color='red'>Tidak Aktif</font>
+										{/if}
+									</td>
+									<td align='center'>
+										<div class="btn-group btn-group-xs ">
+											<a href="#" onClick="loadUrl_adds('ed-soal','{$host}crud-soal', 'loader-soal', '{$rows.id}');" class="btn btn-warning"><i class="fa fa-search-plus">Detail</i></a>
+										</div>
+										<div class="btn-group btn-group-xs ">
+											<a href="#" onClick="kumpulPost('del-soal', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-search-plus">Hapus</i></a>
+										</div>
+									</td>
+								</tr>
+								{assign var=ind value=$ind+1}
+							{/foreach}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		</div>
+	</div>
+</div>

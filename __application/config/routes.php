@@ -50,6 +50,7 @@ $route['verifikasi-remedial'] = "why/modul_admin/simpansavedbx/saveremedial";
 
 $route['cetak-sertifikat'] = "why/modul_admin/getdisplay/print_sertifikat/";
 $route['generate-sertifikat/(:any)/(:any)/(:any)/(:any)'] = "why/modul_admin/gen_sertifikat/$1/$2/$3/$4";
+$route['generate-dokumen-ujian/(:any)/(:any)/(:any)/(:any)'] = "why/modul_admin/gen_dokumen/$1/$2/$3/$4";
 
 $route['manajemen-voucher'] = "why/modul_admin/getdisplay/voucher/";
 $route['tambah-voucher'] = "why/modul_admin/getdisplay/form_voucher/";
@@ -65,6 +66,15 @@ $route['submit-petunjukdokumen'] = "why/modul_admin/simpansavedbx/savepetunjukdo
 $route['manajemen-berita'] = "why/modul_admin/getdisplay/berita/";
 $route['form-berita'] = "why/modul_admin/getdisplay/form_berita/";
 $route['submit-berita'] = "why/modul_admin/simpansavedbx/saveberita/";
+
+$route['manajemen-soal'] = "why/modul_admin/getdisplay/manajemen_soal_online/";
+$route['tampil-soal'] = "why/modul_admin/getdisplay/data_soal_online/";
+$route['crud-soal'] = "why/modul_admin/getdisplay/form_soal_online/";
+$route['submit-banksoal'] = "why/modul_admin/simpansavedbx/savebanksoal/";
+$route['hapus-banksoal'] = "why/modul_admin/simpansavedbx/savebanksoal/";
+$route['chk-adm'] = "why/modul_admin/getdisplay/additional/checking_data";
+$route['chk2-adm'] = "why/modul_admin/getdisplay/additional/checking_data_2";
+$route['chk3-adm'] = "why/modul_admin/getdisplay/additional/checking_data_3";
 
 $route['manajemen-faq'] = "why/modul_admin/getdisplay/faq/";
 $route['form-faq'] = "why/modul_admin/getdisplay/form_faq/";

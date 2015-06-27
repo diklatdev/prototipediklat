@@ -1,17 +1,75 @@
 {if $data}
 	{assign var=ind value=1}
+	{assign var=warna value="#fffff"}
 	{foreach from=$data item=rows}
-		<tr>
+		{if $type eq 'tbl_peserta_asesmen'}
+			{if $rows.step_asesmen_mandiri eq '2'}
+				{assign var=warna value="#D6FFD6"}
+			{elseif $rows.step_asesmen_mandiri eq '3'}
+				{assign var=warna value="#F6D7D7"}
+			{/if}
+		{/if}
+	
+		<tr style='background:{$warna};'>
 			<td class="col-small center">{$ind}</td>
 			<td>{$rows.nama_lengkap}</td>
 			<td class="hidden-xs">{$rows.nip}</td>
 			<td class="hidden-xs">{$rows.no_registrasi}</td>
-			<td class="hidden-xs">{$rows.nama_aparatur}</td>
+			<td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
+			<td class="hidden-xs col-small center">{$rows.kdreg_diklat}</td>
 			<td class="col-medium center">
 			{if $type eq 'tbl_peserta_cetak_sertifikat'}
 				<div class="btn-group btn-group-xs ">
 					<a href="{$host}generate-sertifikat/{$rows.id}/{$rows.idx_sertifikasi_id}/{$rows.no_registrasi}" target='_blank' onClick="" class="btn btn-danger"><i class="fa fa-print"> Cetak Sertifikat</i></a>
 				</div>
+			{/if}
+			{if $type eq 'tbl_data_peserta_diklat'}
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="loadUrl_adds('ps_det','{$host}peserta-detail', 'konten_peserta', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+				</div>	
+			{/if}
+			{if $type eq 'tbl_peserta_asesmen'}
+				{if $rows.step_asesmen_mandiri eq '2'}
+					<div class="btn-group btn-group-xs ">
+						<a href="#" onClick="loadUrl_adds('as_dt','{$host}asesmen-detail', 'konten_asesmen', '{$rows.id}', '{$rows.nama_lengkap}', '{$rows.nama_aparatur}', '{$rows.no_registrasi}', '{$rows.idx_sertifikasi_id}', '{$rows.tanggal_ujian}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+					</div>	
+				{elseif $rows.step_asesmen_mandiri eq '3'}
+					In Progress
+				{/if}
+			{/if}
+			{if $type eq 'tbl_peserta_ujitulis_sekarang'}
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="" class="btn btn-inverse"><i class="fa fa-print"> Cetak</i></a>
+					<a href="#" onClick="kumpulPost('ver_uj_ikt', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-check"> Hadir</i></a>
+				</div>	
+			{/if}
+			{if $type eq 'tbl_peserta_simulasi'}
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="loadUrl_adds('uj_sm','{$host}simulasi-detail', 'konten_simulasi', '{$rows.id}', '{$rows.nama_lengkap}', '{$rows.nama_aparatur}', '{$rows.no_registrasi}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+				</div>
+			{/if}
+			{if $type eq 'tbl_peserta_wawancara'}
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="loadUrl_adds('ww_dt','{$host}wawancara-detail', 'konten_wawancara', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+				</div>
+			{/if}
+			{if $type eq 'tbl_peserta_hasil'}
+				<input type='hidden' id='nreg_{$rows.id}' value="{$rows.no_registrasi}">
+				<input type='hidden' id='nmlng_{$rows.id}' value="{$rows.nama_lengkap}">
+				<input type='hidden' id='upin_{$rows.id}' value="{$rows.nip}">
+				<input type='hidden' id='kdr_{$rows.id}' value="{$rows.kdreg_diklat}">
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="loadUrl_adds('hs_dt','{$host}remedial-detail', 'konten_hasil', '{$rows.id}', '{$rows.idx_sertifikasi_id}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+				</div>	
+			{/if}
+			{if $type eq 'tbl_peserta_tidak_lulus'}
+				<input type='hidden' id='nreg_{$rows.id}' value="{$rows.no_registrasi}">
+				<input type='hidden' id='nmlng_{$rows.id}' value="{$rows.nama_lengkap}">
+				<input type='hidden' id='upin_{$rows.id}' value="{$rows.nip}">
+				<input type='hidden' id='kdr_{$rows.id}' value="{$rows.kdreg_diklat}">
+				<div class="btn-group btn-group-xs ">
+					<a href="#" onClick="loadUrl_adds('hs_dt','{$host}remedial-detail', 'konten_hasil', '{$rows.id}', '{$rows.idx_sertifikasi_id}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>
+				</div>	
 			{/if}
 			</td>
 		</tr>

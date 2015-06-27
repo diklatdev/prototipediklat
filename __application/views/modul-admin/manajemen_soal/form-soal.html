@@ -1,0 +1,80 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header title" style="margin-bottom:5px !important;">
+			<div class="well white">		
+				
+				<form class="form-horizontal" role="form" name="dataSoal" id="dataSoal" action="{$host}submit-banksoal" method="post" enctype="multipart/form-data">
+					<input type='hidden' name='idx_sert' value="{$idx_sertifikasi_id}">
+					<input type='hidden' name='idx_sola' value="{$id_soal|default:''}">
+					<input type='hidden' name='editstatus' value="{$editstatus}">
+					<div class="form-group">
+						<div class="col-sm-12">
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Soal </label>
+								<div class="col-sm-8">
+									<textarea class="form-control" id='ed_soal' rows="4" cols="50"  placeholder="" name="ed_soal">{$data_soal.soal|default:''}</textarea>
+								</div>
+							</div>
+							
+							{if $editstatus eq 'add'}
+								{assign var=ind value=1}
+								{for $var=0 to 2}
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pilihan Jawaban {$ind}</label>
+										<div class="col-sm-6">
+											<input type="text" id='ed_jawaban_{$var}' class="form-control" placeholder="" name="ed_jawaban[]">
+											<input type='hidden' class='chk_soal' id='ed_flagbener_{$var}' name='flagbener[]' value='0' />
+										</div>
+										&nbsp;&nbsp;
+										<input type='radio' class='chk_soal' id='ckdong' onChange="kumpulPost('chk-soal', '{$var}');" name='flagjwb[]' value='1'>
+									</div>				
+									{assign var=ind value=$ind+1}									
+								{/for}
+							{elseif $editstatus eq 'edit'}
+								{assign var=ind value=1}
+								{assign var=ind2 value=0}
+								{foreach from=$data_jawaban item=riws}
+									{if $riws.stat_flag_bnr_slh eq '1'}
+										{assign var=checkmate value="checked"}
+									{elseif $riws.stat_flag_bnr_slh eq '0'}
+										{assign var=checkmate value=null}
+									{/if}
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pilihan Jawaban {$ind}</label>
+										<div class="col-sm-6">
+											<input type="text" id='ed_jawaban_{$ind2}' class="form-control" placeholder="" name="ed_jawaban[]" value='{$riws.jawaban}'>
+											<input type='hidden' class='chk_soal' id='ed_flagbener_{$ind2}' name='flagbener[]' value='{$riws.stat_flag_bnr_slh}' />
+											<input type='hidden' name='ixd_jb[]' value='{$riws.id}' />
+										</div>
+										&nbsp;&nbsp;
+										<input type='radio' id='ckdong' onChange="kumpulPost('chk-soal', '{$ind2}');" name='flagjwb[]' {$checkmate}>
+									</div>		
+									{assign var=ind value=$ind+1}
+									{assign var=ind2 value=$ind2+1}
+								{/foreach}
+							{/if}
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Status</label>
+								<div class="col-sm-2">															
+									<select id='cbSts' class="form-control" name="cbSts">
+										<option value='1'>Aktif</option>
+										<option value='0'>Tidak Aktif</option>
+									</select>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</form>
+				
+				<div class="form-actions ">
+					<button id='btnnya' class="btn btn-success" onClick="event.preventDefault();smpn_xoal();">Simpan</button>
+					<button id='btnnya' class="btn btn-danger" onClick="event.preventDefault();loadUrl_adds('km-soal');">Kembali</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

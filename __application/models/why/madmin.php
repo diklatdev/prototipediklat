@@ -9,6 +9,7 @@ class madmin extends SHIPMENT_Model{
 	function get_data($type="", $balikan="", $p1="", $p2="", $p3="", $p4="", $p5="", $p6=""){
 		$where = " WHERE 1=1 ";
 		$join = "";
+		
 		switch($type){
 			// User Manajemen & ACL
 			case "data_login_admin":
@@ -69,7 +70,7 @@ class madmin extends SHIPMENT_Model{
 						LEFT JOIN idx_formasi K ON K.id = B.idx_formasi_id
 					";
 				}
-			
+				
 				$sql = "
 					SELECT $select 
 					FROM tbl_data_peserta A 
@@ -126,6 +127,13 @@ class madmin extends SHIPMENT_Model{
 					$where = "";
 				}
 				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}				
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat, D.nama_tuk as tuknya
@@ -143,6 +151,13 @@ class madmin extends SHIPMENT_Model{
 				}else{
 					$where = "";
 				}
+				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
@@ -186,6 +201,13 @@ class madmin extends SHIPMENT_Model{
 					$where = "";
 				}
 				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tanggal_pembayaran,  '%d-%m-%Y' ) AS tanggal_pembayaran, 
@@ -220,6 +242,13 @@ class madmin extends SHIPMENT_Model{
 				}else{
 					$where = "";
 				}
+				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
@@ -313,6 +342,13 @@ class madmin extends SHIPMENT_Model{
 					$where = "";
 				}
 				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
+				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
 						E.kdreg_diklat, F.nama_tuk as tuknya
@@ -341,6 +377,13 @@ class madmin extends SHIPMENT_Model{
 				}else{
 					$where = "";
 				}
+				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
 			
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
@@ -368,7 +411,7 @@ class madmin extends SHIPMENT_Model{
 					$where_join = " ";
 					$where_join2 = " ";
 					$where .= "
-						AND A.no_registrasi = '".$no_registrasi."'
+						AND A.no_registrasi like '%".$no_registrasi."%'
 					";
 				}else{
 					$where_join = " WHERE status=1 ";
@@ -484,6 +527,14 @@ class madmin extends SHIPMENT_Model{
 					SELECT *
 					FROM tbl_faq
 					WHERE id = '".$p1."'
+				";
+			break;
+			
+			case "idx_bank_soal":
+				$sql = "
+					SELECT *
+					FROM idx_bank_soal
+					WHERE idx_aparatur_negara = '".$p1."'
 				";
 			break;
 						
@@ -789,6 +840,52 @@ class madmin extends SHIPMENT_Model{
 					$this->db->insert('tbl_faq', $post_bnr);
 				}elseif($post['editstatus'] == 'edit'){
 					$this->db->update('tbl_faq', $post_bnr, array('id'=>$id));
+				}
+			break;
+			case "savebanksoal":
+				if($post['editstatus'] != 'delete'){
+					$acak_kode = $this->lib->randomString(8);
+					$array_pertanyaan = array(
+						'idx_aparatur_negara' => $post['idx_sert'],
+						'soal' => $post['ed_soal'],
+						'status' => $post['cbSts'],
+						'kode_unik_soal' => $acak_kode,
+					);
+				}
+				
+				if($post['editstatus'] == 'add'){
+					$insert_soal = $this->db->insert('idx_bank_soal', $array_pertanyaan);
+					if($insert_soal){
+						$get_id = $this->db->get_where('idx_bank_soal', array('kode_unik_soal'=>$acak_kode))->row_array();
+						$jml_pilihan = count($post['ed_jawaban'])-1;
+						$array_batch = array();
+						for($i=0; $i <= $jml_pilihan; $i++){
+							$array_jawaban = array(
+								'idx_bank_soal_id'=> $get_id['id'],
+								'jawaban'=> $post['ed_jawaban'][$i],
+								'stat_flag_bnr_slh'=>  $post['flagbener'][$i],
+							);
+							array_push($array_batch, $array_jawaban);
+						}
+						$this->db->insert_batch('idx_bank_jawaban', $array_batch);
+					}
+				}elseif($post['editstatus'] == 'edit'){
+					$update_soal = $this->db->update('idx_bank_soal', $array_pertanyaan, array('id'=>$post['idx_sola']) );
+					$jml_pilihan = count($post['ed_jawaban'])-1;
+					$array_batch = array();
+					for($i=0; $i <= $jml_pilihan; $i++){
+						$array_jawaban = array(
+							'id' => $post['ixd_jb'][$i],
+							'jawaban'=> $post['ed_jawaban'][$i],
+							'stat_flag_bnr_slh'=>  $post['flagbener'][$i],
+						);
+						array_push($array_batch, $array_jawaban);
+					}
+					$this->db->update_batch('idx_bank_jawaban', $array_batch, 'id');
+				}elseif($post['editstatus'] == 'delete'){
+					$id_soal = $this->input->post('usiid');
+					$this->db->delete('idx_bank_soal', array('id'=>$id_soal) );
+					$this->db->delete('idx_bank_jawaban', array('idx_bank_soal_id'=>$id_soal) );
 				}
 			break;
 		}

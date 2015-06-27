@@ -1,0 +1,48 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="margin-bottom:5px !important;">
+            <!-- PAGE TITLE ROW -->
+            <h1>Manajemen Bank Soal Ujian Online</h1>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header title" style="margin-bottom:5px !important;">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-12">
+						<div id="sertifikasi_1">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Jenis Sertifikasi : </label>
+								<div class="col-sm-10">
+									<div class="col-sm-4">															
+										<select id='apxx_tk_1' onChange="processCmb('apxx_tk_1');" class="form-control" >
+											{$idx_aparatur}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label id='txtsbjn' class="col-sm-2 control-label">Sub Jenis Sertifikasi : </label>
+								<div class="col-sm-10">
+									<div class="col-sm-4">															
+										<select id='sbxx_ap_tk2' onChange="processCmb('sbxx_ap_tk2');" class="form-control" name="sbxx_ap_tk2">
+										</select>
+										<input type='hidden' name='sb_jns_nxx' id='sb_jns_nxx'>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="loader-soal"></div>

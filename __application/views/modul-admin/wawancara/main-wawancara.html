@@ -3,7 +3,7 @@
     <div class="col-lg-12">
         <div class="page-header title" style="">
             <!-- PAGE TITLE ROW -->
-            <h1>Data Peserta Wawancara</h1>
+            <h1>Data Peserta Uji Wawancara Sertifikasi Asesmen</h1>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -14,11 +14,10 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="well white" style="margin-bottom:0px !important;">
-			<label>Filter Data :</label> 
-			<select id='kat_filter' style="width:150px;">
-				<option value="">-- Kategori --</option>
-				<option value="">Tester</option>
-			</select>
+			<label>No. Registrasi :</label> 
+			<span style='padding:10px;'>
+				<input type='text' id='cari_{$type}' onKeyUp="search_data('tbl_peserta_wawancara', 'cari_{$type}', '{$type}');" style='margin-top:3px !importants;'>
+			</span>
 		</div>
 		<div class="portlet"><!-- /Portlet -->
 			<div id="basic" class="panel-collapse collapse in">
@@ -35,7 +34,7 @@
 								<th class="col-small center">.:.</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id='{$type}'>
 							{if $data}
 								{assign var=ind value=1}
 								{foreach from=$data item=rows}

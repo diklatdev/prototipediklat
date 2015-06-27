@@ -194,9 +194,9 @@ class modul_admin extends SHIPMENT_Controller{
 			break;			
 			case "ujitulis_online":
 				$content = "modul-admin/ujitulis_online/main-ujitulis.html";
-				$data = $this->madmin->get_data("tbl_peserta_ujitulis","result_array");
+				//$data = $this->madmin->get_data("tbl_peserta_ujitulis","result_array");
 				$data_peserta_ujitest = $this->madmin->get_data("tbl_peserta_ujitulis_sekarang","result_array");
-				$this->smarty->assign("data", $data);
+				//$this->smarty->assign("data", $data);
 				$this->smarty->assign("data_peserta_ujitest", $data_peserta_ujitest);
 			break;			
 			case "detail_ujitulis":
@@ -415,6 +415,70 @@ class modul_admin extends SHIPMENT_Controller{
 				$content = "modul-admin/konten_faq/form-faq.html";
 				$this->smarty->assign("editstatus", $editstatus);
 			break;
+			
+			case "manajemen_soal_online":
+				$content = "modul-admin/manajemen_soal/main.html";
+				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
+			break;
+			case "data_soal_online":
+				$idx_sertifikasi_id = $this->input->post('id_asn');
+				$content = "modul-admin/manajemen_soal/data-soal.html";
+				$data = $this->madmin->get_data('idx_bank_soal', 'result_array', $idx_sertifikasi_id);
+				$this->smarty->assign('data', $data);
+			break;
+			case "form_soal_online":
+				$editstatus = $this->input->post('editstatus');
+				$idx_sertifikasi_id = $this->input->post('idx_sert');
+				if($editstatus == 'edit'){
+					$id = $this->input->post('idx_sl');
+					$data_soal = $this->db->get_where('idx_bank_soal', array('id'=>$id) )->row_array();
+					$data_jawaban = $this->db->get_where('idx_bank_jawaban', array('idx_bank_soal_id'=>$id) )->result_array();
+					$this->smarty->assign('data_soal', $data_soal);
+					$this->smarty->assign('data_jawaban', $data_jawaban);
+					$this->smarty->assign('id_soal', $id);
+				}
+				$content = "modul-admin/manajemen_soal/form-soal.html";
+				$this->smarty->assign('editstatus', $editstatus);
+				$this->smarty->assign('idx_sertifikasi_id', $idx_sertifikasi_id);
+			break;
+			case "additional":
+				switch($p1){
+					case "checking_data":
+						$id_aparatur = $this->input->post("id_asn_child_tk1");
+						$cek_data = $this->db->get_where('idx_aparatur_sipil_negara', array('id_asn_child_tk1'=>$id_aparatur, 'level'=>'3'))->result_array();
+						if($cek_data){
+							$this->smarty->assign('combo_child_tk2', $this->fillcombo('idx_asn_child_tk2', 'return', "", $id_aparatur));
+							$this->smarty->assign('type', "form_asn_tk2");
+							$this->smarty->display('modul-admin/manajemen_soal/additional-form.html');
+						}else{
+							echo 0;
+						}
+					break;
+					case "checking_data_2":
+						$id_aparatur = $this->input->post('id_asn_child_tk2');
+						$cek_data = $this->db->get_where('idx_aparatur_sipil_negara', array('id_asn_child_tk2'=>$id_aparatur, 'level'=>'4'))->result_array();
+						if($cek_data){
+							$this->smarty->assign('combo_child_tk3', $this->fillcombo('idx_asn_child_tk3', 'return', "", $id_aparatur));
+							$this->smarty->assign('type', "form_asn_tk3");
+							$this->smarty->display('modul-portal/registrasi/additional-form.html');
+						}else{
+							echo 0;
+						}
+					break;
+					case "checking_data_3":
+						$id_aparatur = $this->input->post('id_asn_child_tk3');
+						$cek_data = $this->db->get_where('idx_aparatur_sipil_negara', array('id_asn_child_tk3'=>$id_aparatur, 'level'=>'5'))->result_array();
+						if($cek_data){
+							$this->smarty->assign('combo_child_tk4', $this->fillcombo('idx_asn_child_tk4', 'return', "", $id_aparatur));
+							$this->smarty->assign('type', "form_asn_tk4");
+							$this->smarty->display('modul-portal/registrasi/additional-form.html');
+						}else{
+							echo 0;
+						}
+					break;
+				}
+				exit;
+			break;
 
 		}
 		$this->smarty->assign('type', $type);
@@ -451,6 +515,49 @@ class modul_admin extends SHIPMENT_Controller{
 		//*/
 		
 		echo $this->madmin->simpansavedatabase($type, $post);
+	}
+	
+	function gen_dokumen($type="", $p1="", $p2="", $p3=""){
+		$this->load->library('mlpdf');
+		$pdf = $this->mlpdf->load();
+		$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 10, 20, 10, 2, 'P');
+		$spdf->ignore_invalid_utf8 = true;
+		$spdf->allow_charset_conversion = true;     // which is already true by default
+		$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+		$spdf->SetDisplayMode('fullpage');
+
+		switch($type){
+			case "dokumen_ujian_test":
+				$id_peserta = $p1;
+				$idx_sertifikasi_id = $p2;
+				$kdreg_diklat = $p3;
+				
+				$datapeserta = $this->madmin->get_data('tbl_data_peserta_detail', "row_array", $id_peserta);
+				$data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
+				$data_asesmen_header = $this->madmin->get_data("tbl_asesmen_header", "row_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
+				$data_asesmen = $this->madmin->get_data("tbl_test_assemen", "result_array", $id_peserta, $idx_sertifikasi_id, $kdreg_diklat);
+				
+				$this->smarty->assign('datapeserta', $datapeserta);	
+				$this->smarty->assign('data_file_persyaratan', $data_file_persyaratan);	
+				$this->smarty->assign('data_asesmen_header', $data_asesmen_header);	
+				$this->smarty->assign('data_asesmen', $data_asesmen);	
+				$this->smarty->assign('type', $type);	
+				
+				//$htmlheader = $this->smarty->fetch('modul-admin/cetak_sertifikat/dokumen_header.html');
+				$htmlcontent = $this->smarty->fetch('modul-admin/cetak_sertifikat/dokumen_ujian_pdf.html');
+				
+				$spdf->SetHTMLFooter('
+					<div style="font-family:arial; font-size:10px; text-align:right; font-weight:bold;">
+						Halaman {PAGENO} dari {nbpg}
+					</div>
+				');		
+			break;
+		}
+				
+		$spdf->SetProtection(array('print'));				
+		$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+		//$spdf->Output('repositories/Dokumen_LS/LS_PDF/'.$filename.'.pdf', 'F'); // save to file because we can
+		$spdf->Output('repository/temp_sertifikat/'.$filename.'.pdf', 'I'); // view file
 	}
 	
 	function gen_sertifikat($p1="", $p2="", $p3="", $p4=""){

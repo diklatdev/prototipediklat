@@ -12,11 +12,88 @@ function fillCmb(url, SelID, value, value2, value3, value4){
 
 function processCmb(type){
 	switch(type){
-		case "prv-kb":
-			//fillCmb(hostir+"combo/ka/", 'edpt', "", $('#edpr').val() );
+		case "apxx_tk_1":
+			fillCombo(hostir+"combo/sb_ap_tk2/", 'sbxx_ap_tk2', "", $('#'+type).val() );
+			$('#fl_s').remove();
+			$('#sert_tam').remove();
+			$('#sert_tam_2').remove();
+			$('#sert_tam_3').remove();
+			$('#loader-soal').html('');
+			
+			if( $('#'+type).val() == 2 ){
+				$('#txtsbjn').html('Urusan Pemerintah : ');
+			}else{
+				$('#txtsbjn').html('Sub Jenis Sertifikasi : ');
+			}
+			
+		break;
+		case "sbxx_ap_tk2":
+			$('#loader-soal').html('');
+			$.post(hostir+"chk-adm", { 'id_asn_child_tk1':$('#'+type).val() }, function(resp){
+				if(resp == 0){
+					$('#fl_s').remove();
+					$('#sert_tam').remove();
+					$('#sert_tam_2').remove();
+					$.post(hostir+"tampil-soal", { 'id_asn':$('#'+type).val() }, function(resp){
+						$('#loader-soal').append(resp);
+					});
+				}else{
+					$('#fl_s').remove();
+					$('#sert_tam').remove();
+					$('#sert_tam_2').remove();
+					$('#sertifikasi_1').append(resp);
+					if( $('#apxx_tk_1').val() == 2 ){
+						$('#txtsbjnsrt').html('Tipologi : ');
+					}else{
+						$('#txtsbjnsrt').html('Jenjang Sertifikasi : ');
+					}
+				}
+			});
+			$("#sb_jns_nxx").val($('#'+type).val());
+		break;
+		case "sbxx_ap_tk3":
+			$('#fl_s').remove();
+			$('#sert_tam_2').remove();
+			$('#sert_tam_3').remove();
+			$('#loader-soal').html('');
+			$.post(hostir+"chk2-adm", { 'id_asn_child_tk2':$('#'+type).val() }, function(resp){
+				if(resp == 0){
+					$.post(hostir+"tampil-soal", { 'id_asn':$('#'+type).val() }, function(resp){
+						$('#loader-soal').append(resp);
+					});					
+				}else{
+					//$('#fl_s').remove();
+					$('#sert_tam_2').remove();
+					$('#sert_tam_3').remove();
+					$('#sertifikasi_1').append(resp);
+				}
+			});
+			
+			$("#sb_jns_nxx").val($('#'+type).val());
+		break;
+		case "sbxx_ap_tk4":
+			$('#fl_s').remove();
+			$('#loader-soal').html('');
+			$.post(hostir+"chk3-adm", { 'id_asn_child_tk3':$('#'+type).val() }, function(resp){
+				if(resp == 0){
+					$.post(hostir+"tampil-soal", { 'id_asn':$('#'+type).val() }, function(resp){
+						$('#loader-soal').append(resp);
+					});
+				}else{
+					$('#sert_tam_3').remove();
+					$('#sertifikasi_1').append(resp);
+				}
+			});
+			
+			$("#sb_jns_nxx").val($('#'+type).val());
+		break;
+		case "sbxx_ap_tk5":
+			$("#sb_jns_nxx").val($('#'+type).val());
 		break;
 	}
 }
+
+
 
 function loadUrl(urls,func){	
     //$("#tMain").html("").addClass("loading");
@@ -157,6 +234,26 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			});
 		break;
 		
+		case "tm-soal":
+			idx_ser = $('#sb_jns_nxx').val();
+			$.post(urlnya, { 'editstatus':'add', 'idx_sert':idx_ser }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "ed-soal":
+			idx_ser = $('#sb_jns_nxx').val();
+			$.post(urlnya, { 'editstatus':'edit', 'idx_sert':idx_ser, 'idx_sl':p1 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "km-soal":
+			idx_ser = $('#sb_jns_nxx').val();
+			$('#loader-soal').html('');
+			$.post(hostir+"tampil-soal", { 'id_asn':idx_ser }, function(resp){
+				$('#loader-soal').html(resp);
+			});
+		break;
+		
 		//**************levi		
 		case "add_uji":
 			$.post(urlnya, function(resp){
@@ -167,7 +264,7 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 	return false;
 }
 
-function kumpulPost($type, p1, p2, p3){
+function kumpulPost($type, p1, p2, p3, p4){
 	switch($type){
 		case "ver_r_ox":
 			for (i = 1; i <= p3; i++) {
@@ -230,6 +327,26 @@ function kumpulPost($type, p1, p2, p3){
 				}
 			});	
 		break;		
+		case "del-soal":
+			$.post(hostir+"hapus-banksoal", { 'editstatus':'delete', 'usiid':p1 }, function(rspp){
+				if(rspp == 1){
+					alert('Data Sudah Dihapus');
+					loadUrl_adds('km-soal');
+				}else{
+					alert('Gagal Menghapus Data');
+					//loadUrl_adds('km-soal');
+				}
+			});
+		break;
+		case "chk-soal":
+			$(".chk_soal").each(function () {
+			   $(this).val(0);
+			});
+			$('#ed_flagbener_'+p1).val(1);
+		break;
+		case "cet_uj_dt":
+			window.open(hostir+'generate-dokumen-ujian/dokumen_ujian_test/'+p1+'/'+p2+'/'+p3+'/'+p4);
+		break;
 
 //*******Levi
 		case "sv_syarat":			
@@ -611,9 +728,41 @@ function sb_faq(){
 	
 }
 
+function smpn_xoal(){
+	if($('#ed_soal').val() == ""){
+		$("#ed_soal").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Soal Tidak Boleh Kosong" });
+		return false;
+	}
+	
+	for (i = 0; i <= 2; i++) {
+		if($('#ed_jawaban_'+i).val() == ""){
+			$('#ed_jawaban_'+i).focus();
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pilihan Jawaban No. "+(i+1)+" Tidak Boleh Kosong!" });
+			return false;
+		}
+	}
+	
+	if($('#ckdong:checked').length == 0){
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Flag Jawaban Benar Harus Ditentukan, Check Radio Button di Sebelah Pilihan Jawaban." });
+		return false;
+	}
+	
+	ajxamsterfrm("dataSoal", function(respo){
+		if(respo == 1){
+			alert("Data Tersimpan");
+			loadUrl_adds('km-soal');
+		}else{
+			alert("Gagal Tersimpan");
+			//loadUrl_adds('km-soal');
+		}
+	});	
+	
+}
+
 function search_data(type, p1, p2){
 	$('#'+p2).html('');
-	$.post(hostir+"modul_admin/getdatasearch/"+type, { 'nre':$('#'+p1).val() }, function(rspp){
+	$.post(hostir+"why/modul_admin/getdatasearch/"+type, { 'nre':$('#'+p1).val() }, function(rspp){
 		$('#'+p2).html(rspp);
 	});
 }

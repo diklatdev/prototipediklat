@@ -153,6 +153,14 @@ class mportal extends SHIPMENT_Model{
 					WHERE is_aktif = '1'
 				";
 			break;
+			case "jadwal_ujian_tuk":
+				$sql = "
+					SELECT A.id as kode, concat(B.nama_tuk, ' - ', DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' )) as txt
+					FROM tbl_jadwal_wawancara A
+					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					WHERE A.status = 'A'
+				";
+			break;
 			//end combobox
 			//untuk data login peserta
 			case "data_login":
@@ -191,7 +199,7 @@ class mportal extends SHIPMENT_Model{
 				$sql = "
 					SELECT kuota
 					FROM tbl_jadwal_wawancara A
-					WHERE A.idx_tuk_id = '".$p1."' AND A.kuota <> '0' AND A.status = 'A'
+					WHERE A.id = '".$p1."' AND A.kuota <> '0' AND A.status = 'A'
 				";
 			break;
 			case "dashboard_jadwal":
@@ -333,13 +341,14 @@ class mportal extends SHIPMENT_Model{
 					$where .= " AND A.id = '".$p1."' ";
 				}
 				if($p2){
-					$where .= " AND A.idx_tuk_id = '".$p2."' AND status = 'A' ";
+					$where .= " AND A.id = '".$p2."' AND status = 'A' ";
 				}
 				$sql = "
 					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
-						B.nama_tuk
+						B.nama_tuk, C.nama_aparatur
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
 					WHERE 1=1 $where
 				";
 			break;
@@ -500,7 +509,7 @@ class mportal extends SHIPMENT_Model{
 				$post_bnr['password'] = $this->encrypt->encode($password);
 				$post_bnr['status'] = "BV";
 				
-				//$this->kirimemail("email_registrasi", $post["ed_mailer"], $username, $password);
+				$this->lib->kirimemail("email_registrasi", $post["ed_mailer"], $username, $password);
 				
 				$insert_reg = $this->db->insert("tbl_data_peserta", $post_bnr);
 				if($insert_reg){					
@@ -559,10 +568,17 @@ class mportal extends SHIPMENT_Model{
 						$filename_pak = "";
 					}
 					
+					$sql_datajadwal = "
+						SELECT A.*
+						FROM tbl_jadwal_wawancara A
+						WHERE A.id = '".$post['tku_dxi']."' AND A.status = 'A'
+					";
+					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					
 					$sql_asesor = "
 						SELECT id
 						FROM tbl_user_admin
-						WHERE idx_tuk_id = '".$post['tku_dxi']."' AND idx_keahlian = '".$code_sert."'
+						WHERE idx_tuk_id = '".$data_jadwal['idx_tuk_id']."' AND idx_keahlian = '".$code_sert."'
 						ORDER BY RAND() LIMIT 1
 					";
 					$query_asesor = $this->db->query($sql_asesor)->row_array();
@@ -585,28 +601,22 @@ class mportal extends SHIPMENT_Model{
 						"tanggal_daftar" => date('Y-m-d'),
 						"jml_coba" => 1,
 						"kdreg_diklat" => $kdreg_diklat,
-						"idx_tuk_id" => $post['tku_dxi'],
+						"idx_tuk_id" => $data_jadwal['idx_tuk_id'],
 						"idx_asesor_id" => $query_asesor['id'],
 						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt']
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					
-					$sql_datajadwal = "
-						SELECT A.*
-						FROM tbl_jadwal_wawancara A
-						WHERE A.idx_tuk_id = '".$post['tku_dxi']."' AND A.status = 'A'
-					";
-					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
 					$array_daftar_test = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
-						'tbl_jadwal_wawancara_id'=> $data_jadwal['id'],
+						'tbl_jadwal_wawancara_id'=> $post['tku_dxi'],
 						'status_data'=> 1,
 						"kdreg_diklat" => $kdreg_diklat,
 					);
 					$kurangi_kuota = ($data_jadwal['kuota']-1);
 					$this->db->insert('tbl_daftar_test', $array_daftar_test);
-					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$data_jadwal['id']) );
+					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$post['tku_dxi']) );
 					
 					$serfifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_persyaratan/";
 					mkdir($serfifikasi_path, 0777);

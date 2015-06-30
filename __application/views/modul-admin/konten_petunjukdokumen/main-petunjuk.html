@@ -3,7 +3,7 @@
     <div class="col-lg-12">
         <div class="page-header title" style="">
             <!-- PAGE TITLE ROW -->
-            <h1>Petunjuk Unggah Dokumen Untuk Peserta</h1>
+            <h1>Data Petunjuk Sertifikasi & Dokumen Terkait</h1>
         </div>
     </div>
     <!-- /.col-lg-12 -->
@@ -13,9 +13,6 @@
 <div id="konten_petunjuk">
 <div class="row">
 	<div class="col-lg-12">
-		<div class="page-header no-padding-bottom" style="margin-top:-20px !important;margin-bottom:10px !important;">
-			<h4>Data Petunjuk Dokumen Peserta</h4>
-		</div>		
 		<div class="well white" style="margin-bottom:0px !important;">
 			<div class="btn-group btn-group-sm " style='margin-left:5px;'>
 				<a href="#" onClick="loadUrl_adds('kcppt','{$host}form-petunjukdokumen', 'konten_petunjuk');" class="btn btn-success"><i class="fa fa-plus"></i>Tambah</a>
@@ -28,6 +25,7 @@
 						<thead>
 							<tr>
 								<th class="col-small center">No.</th>
+								<th class="col-medium center">Jenis Dokumen</th>
 								<th class="col-medium center">Nama Sertifikasi</th>
 								<th class="col-small center">File</th>
 								<th class="col-small center">Action</th>
@@ -39,6 +37,13 @@
 								{foreach from=$data item=rows}
 									<tr>
 										<td class="col-small center">{$ind}</td>
+										<td>
+											{if $rows.jenis_dokumen eq 'DPS'}
+												Petunjuk Sertifikasi
+											{elseif $rows.jenis_dokumen eq 'SE'}
+												Surat Edaran
+											{/if}
+										</td>
 										<td>{$rows.nama_sertifikasi}</td>
 										<td><a href='{$host}__repository/dokumenpetunjuk/{$rows.file_petunjuk}' target='_blank'>Lihat File</a></td>
 										<td class="col-medium center">

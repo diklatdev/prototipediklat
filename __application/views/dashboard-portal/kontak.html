@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-				<h1>Kontak Kami <small>Tinggalkan Kritik & Saran Untuk Kami</small></h1>
+				<h1>Kontak Kami <small>Alamat Kantor Pusat & Tempat Uji Kompetensi</small></h1>
 			</div>
 		</div>
 	</div>
@@ -13,42 +13,30 @@
 	<!--CONTENT-->
 		<!--Contact Us from-->
 		<div class="row">
-			<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-				<form role="form" method="POST" action="#">
-					<div class="well light">
-						<div class="row">
-							<div class="form-group col-lg-4">
-								<label id="input1">Nama</label>
-								<input type="text" name="contact_name" class="form-control">
-							</div>
-							<div class="form-group col-lg-4">
-								<label id="input2">Alamat Email</label>
-								<input type="email" name="contact_email" class="form-control">
-							</div>
-							<div class="form-group col-lg-4">
-								<label id="input3">No. Telp/HP</label>
-								<input type="text" name="contact_phone" class="form-control">
-							</div>
-						
-							<div class="clearfix"></div>
+			<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12" >
 				
-							<div class="form-group col-lg-12">
-								<label id="input4">Pesan</label>
-								<textarea name="contact_message" class="form-control" rows="10"></textarea>
-							</div>
-							<div class="form-group col-lg-12">
-								<input type="hidden" name="save" value="contact">
-								<button type="submit" class="btn btn-primary"><i class="fa fa-send"></i>OK</button>
-							</div>
-						</div>
-					</div>
-				</form>	
+				<div class="page-header title">
+					<h3 style='margin-top:10px !important;'>TEMPAT UJI KOMPETENSI</h3>
+				</div>
+				
+				{foreach from=$datatuk item=rows}
+					<h5 style='font-weight:bold !important;'>{$rows.nama_tuk}</h5>					
+					<p>{$rows.alamat_tuk}</p>
+					<p><i class="fa fa-phone"></i> <abbr title="Phone">P</abbr>:  - </p>
+					<p><i class="fa fa-envelope-o"></i> <abbr title="Email">E</abbr>: - </p>
+					<br/>
+				{/foreach}
 			</div>
 			
-			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding-left:20px">
 				<!--address-->
-				<h4>LEMBAGA SERTIFIKASI DAN PELATIHAN</h4>
-				<h4>KEMENTERIAN DALAM NEGERI</h4>
+				<div class="page-header title">
+					<h3 style='margin-top:10px !important;'>KANTOR PUSAT</h3>
+				</div>
+				<b>
+				<h5 style='font-weight:bold !important;'>LEMBAGA SERTIFIKASI PROFESI PEMDA</h5>
+				<h5 style='font-weight:bold !important;'>KEMENTERIAN DALAM NEGERI</h5>
+				</b>
 				
 				<p>Jl. Taman Makam Pahlawan No. 8, Kalibata, Jakarta Selatan, DKI Jakarta</p>
 				<p><i class="fa fa-phone"></i> <abbr title="Phone">P</abbr>:  (021) - 7996521 </p>

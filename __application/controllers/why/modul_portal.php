@@ -103,7 +103,7 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return') );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return') );
 				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
-				$this->smarty->assign('idx_tuk', $this->fillcombo('idx_tuk', 'return') );
+				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
 				$this->smarty->assign('editstatus', "b_r" );
 			break;
 			case "registrasi_diktlatbaru":
@@ -121,7 +121,7 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_lokasi', $this->fillcombo('lokasi', 'return', $datadiklat_terakhir['idx_lokasi_id']) );
 				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
-				$this->smarty->assign('idx_tuk', $this->fillcombo('idx_tuk', 'return') );
+				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
 				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
 				
 				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
@@ -148,7 +148,7 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_lokasi', $this->fillcombo('lokasi', 'return', $datadiklat_terakhir['idx_lokasi_id']) );
 				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
-				$this->smarty->assign('idx_tuk', $this->fillcombo('idx_tuk', 'return') );
+				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
 				
 				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
 				$this->smarty->assign('jabatan', $datadiklat_terakhir['jabatan']);
@@ -463,6 +463,7 @@ class modul_portal extends SHIPMENT_Controller{
 							$balikin = array(
 								"tanggal" => $cekdata['tgl_wawancara'],
 								"kuota" => $cekdata['kuota'],
+								"sertifikasi" => $cekdata['nama_aparatur'],
 							);
 							echo json_encode($balikin);
 						}else{
@@ -494,6 +495,8 @@ class modul_portal extends SHIPMENT_Controller{
 			break;
 			
 			case "kontaks":
+				$datatuk = $this->db->get_where('idx_tuk')->result_array();
+				$this->smarty->assign('datatuk', $datatuk);
 				$konten = "dashboard-portal/kontak";
 			break;
 			case "faqqs":
@@ -757,18 +760,22 @@ class modul_portal extends SHIPMENT_Controller{
 		//echo $this->encrypt->encode("12345");
 		//echo $this->mportal->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
 		
+		$this->load->library('lib');
+		echo $this->lib->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
+		
 		//echo $this->mportal->get_data("data_soal");
 		//$angka = sprintf('%07d', 89);
 		//echo $angka;
-		$folder_sertifikasi = "10-P2UPD";
-		$target_path = "./repository/dokumen_peserta/".$folder_sertifikasi."/";
-		mkdir($target_path, 0777);
+		//$folder_sertifikasi = "10-P2UPD";
+		//$target_path = "./repository/dokumen_peserta/".$folder_sertifikasi."/";
+		//mkdir($target_path, 0777);
 						
 	}
 	
 	function tester2(){
-		echo "<pre>";
-		print_r($this->auth);
+		$this->smarty->assign('username', 'test');
+		$this->smarty->assign('password', 'tust');
+		$this->smarty->display('modul-portal/template_email.html');
 		//$hoster = unserialize(base64_decode($this->session->userdata('d1kl4tkem3nd49r1-p0rt4L')));
 		//echo $this->session->userdata('d1kl4tkem3nd49r1-p0rt4L');
 	}

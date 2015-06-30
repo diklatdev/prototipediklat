@@ -246,6 +246,8 @@ class modul_admin extends SHIPMENT_Controller{
 					$id = $p2;
 					$data = $this->madmin->get_data("tbl_penjadwalan","row_array",$id);
 					$this->smarty->assign("data", $data);
+				}elseif($p1 == 'add'){
+					$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
 				}
 				$this->smarty->assign('cmbtuk', $this->fillcombo('idx_tuk', 'return', ($p1 == 'edit' ? $data['idx_tuk_id'] : "") ) );
 				$this->smarty->assign("editstatus", $p1);
@@ -460,7 +462,7 @@ class modul_admin extends SHIPMENT_Controller{
 						if($cek_data){
 							$this->smarty->assign('combo_child_tk3', $this->fillcombo('idx_asn_child_tk3', 'return', "", $id_aparatur));
 							$this->smarty->assign('type', "form_asn_tk3");
-							$this->smarty->display('modul-portal/registrasi/additional-form.html');
+							$this->smarty->display('modul-admin/manajemen_soal/additional-form.html');
 						}else{
 							echo 0;
 						}
@@ -471,7 +473,7 @@ class modul_admin extends SHIPMENT_Controller{
 						if($cek_data){
 							$this->smarty->assign('combo_child_tk4', $this->fillcombo('idx_asn_child_tk4', 'return', "", $id_aparatur));
 							$this->smarty->assign('type', "form_asn_tk4");
-							$this->smarty->display('modul-portal/registrasi/additional-form.html');
+							$this->smarty->display('modul-admin/manajemen_soal/additional-form.html');
 						}else{
 							echo 0;
 						}

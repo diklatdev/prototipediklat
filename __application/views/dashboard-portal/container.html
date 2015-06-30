@@ -293,12 +293,111 @@
 			</div>
 		</div>
 
-<div class="block-s2">
+<div class="block-s2" style='padding-top:0px !important;'>
 	<div class="container">
 		<div class="row">
 			
-			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-				<h3 style='margin-top:10px !important;'>Berita Terbaru</h3>						
+			<div class="col-lg-12 col-md-8 col-sm-12 col-xs-12" style="padding-left:20px">
+				<div class="page-header title">
+					<h3 style='margin-top:10px !important;'>Jadwal Ujian Sertifikasi</h3>
+				</div>
+				<table class="table table-bordered table-hover tc-table">
+					<thead>
+						<tr>
+							<th class="col-small center">No.</th>
+							<th class="col-medium center">Sertifikasi</th>
+							<th class="col-medium center">Lokasi TUK</th>
+							<th class="col-small center">Tanggal</th>
+							<th class="col-small center">Jam</th>
+							<th class="col-small center">Kuota Tersisa</th>
+						</tr>
+					</thead>
+					<tbody>
+						{if $jadwal}
+							{assign var=indss value=1}
+							{foreach from=$jadwal item=ruws}
+								<tr>
+									<td class="col-small center">{$indss}</td>
+									<td>{$ruws.nama_aparatur}</td>
+									<td>{$ruws.nama_tuk}</td>
+									<td align='center'>{$ruws.tanggal_wawancara|date_format:"%d-%m-%Y"}</td>
+									<td align='center'>{$ruws.jam}</td>
+									<td align='center'>{$ruws.kuota}</td>
+								</tr>
+								{assign var=indss value=$indss+1}
+							{/foreach}
+						{else}
+							<tr>
+								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
+							</tr>
+						{/if}
+					</tbody>
+				</table>			
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<div class="block-s2" style='padding-top:0px !important;'>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right:20px">
+			<div class="page-header title">
+				<h3 style='margin-top:10px !important;'>Petunjuk Unggah Dokumen</h3>
+			</div>
+				<table class="table table-bordered table-hover tc-table">
+					<thead>
+						<tr>
+							<th class="col-small center">No.</th>
+							<th class="col-medium center">Jenis Dokumen</th>
+							<th class="col-medium center">Sertifikasi</th>
+							<th class="col-small center">::</th>
+						</tr>
+					</thead>
+					<tbody>
+						{if $petunjuk_dokumen}
+							{assign var=ind value=1}
+							{foreach from=$petunjuk_dokumen item=rows}
+								<tr>
+									<td class="col-small center">{$ind}</td>
+									<td>
+										{if $rows.jenis_dokumen eq 'DPS'}
+											Petunjuk Sertifikasi
+										{elseif $rows.jenis_dokumen eq 'SE'}
+											Surat Edaran
+										{/if}
+									</td>
+									<td>{$rows.nama_sertifikasi}</td>
+									<td class="col-medium center">
+										<a href='{$host}download-file-petunjuk/{$rows.file_petunjuk}' target='_blank'>Unduh File</a>
+									</td>
+								</tr>
+								{assign var=ind value=$ind+1}
+							{/foreach}
+						{else}
+							<tr>
+								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
+							</tr>
+						{/if}
+					</tbody>
+				</table>
+				<div class="action-buttons">
+					<a href="{$host}petunjuk-dokumen" >Lihat Selanjutnya <i class="fa fa-angle-double-right"></i></a>
+				</div>						
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="block-s2" style='padding-top:0px !important;'>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-4 col-sm-12 col-xs-12" style="padding-right:20px">
+				<div class="page-header title">
+					<h3 style='margin-top:10px !important;'>Berita Terbaru</h3>		
+				</div>
 				{if $berita}
 					<ul class="list-unstyled">
 						{foreach from=$berita item=rowss}
@@ -316,85 +415,17 @@
 					<a href="{$host}berita" >Lihat Selanjutnya <i class="fa fa-angle-double-right"></i></a>
 				</div>
 			</div>
-			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-				<h3 style='margin-top:10px !important;'>Petunjuk Unggah Dokumen</h3>
-				<table class="table table-bordered table-hover tc-table">
-					<thead>
-						<tr>
-							<th class="col-small center">No.</th>
-							<th class="col-medium center">Sertifikasi</th>
-							<th class="col-small center">::</th>
-						</tr>
-					</thead>
-					<tbody>
-						{if $petunjuk_dokumen}
-							{assign var=ind value=1}
-							{foreach from=$petunjuk_dokumen item=rows}
-								<tr>
-									<td class="col-small center">{$ind}</td>
-									<td>{$rows.nama_sertifikasi}</td>
-									<td class="col-medium center">
-										<a href='{$host}download-file-petunjuk/{$rows.file_petunjuk}' target='_blank'>Unduh File</a>
-									</td>
-								</tr>
-								{assign var=ind value=$ind+1}
-							{/foreach}
-						{else}
-							<tr>
-								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
-							</tr>
-						{/if}
-					</tbody>
-				</table>
-				<div class="action-buttons">
-					<a href="{$host}petunjuk-dokumen" >Lihat Selanjutnya <i class="fa fa-angle-double-right"></i></a>
-				</div>				
-			</div>
-			
-			
+			<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="padding-left:20px">
+				<div class="page-header title">
+					<h3 style='margin-top:10px !important;'>Profil LSP PEMDA</h3>
+				</div>
+				<iframe width="600" height="350" src="https://www.youtube.com/embed/flU8A6Cjgk0" frameborder="0" allowfullscreen></iframe>
+			</div>			
 		</div>
 	</div>
 </div>
 
-<div class="block-s2">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-				<h3 style='margin-top:10px !important;'>Jadwal Ujian Sertifikasi</h3>
-				<table class="table table-bordered table-hover tc-table">
-					<thead>
-						<tr>
-							<th class="col-small center">No.</th>
-							<th class="col-medium center">Lokasi TUK</th>
-							<th class="col-small center">Tanggal</th>
-							<th class="col-small center">Jam</th>
-							<th class="col-small center">Kuota Tersisa</th>
-						</tr>
-					</thead>
-					<tbody>
-						{if $jadwal}
-							{assign var=indss value=1}
-							{foreach from=$jadwal item=ruws}
-								<tr>
-									<td class="col-small center">{$indss}</td>
-									<td>{$ruws.nama_tuk}</td>
-									<td>{$ruws.tanggal_wawancara|date_format:"%d-%m-%Y"}</td>
-									<td>{$ruws.jam}</td>
-									<td>{$ruws.kuota}</td>
-								</tr>
-								{assign var=indss value=$indss+1}
-							{/foreach}
-						{else}
-							<tr>
-								<td colspan='3' style='text-align:center;'>:: Tidak Ada Data :;</td>
-							</tr>
-						{/if}
-					</tbody>
-				</table>				
-			</div>
-		</div>
-	</div>
-</div>
+
 
 
 		

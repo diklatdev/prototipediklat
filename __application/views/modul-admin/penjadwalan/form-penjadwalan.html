@@ -6,8 +6,44 @@
 				<input type='hidden' name='broedid' value="{$data.id|default:''}">
 				<div class="form-group">
 					<div class="col-sm-12">
+						
 						<h4>Form Penjadwalan TUK</h4>
 						<div class="hr-12 hr-double hr-dotted"></div>
+						{if $editstatus eq 'add'}
+						<div id="sertifikasi_1">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Jenis Sertifikasi : </label>
+								<div class="col-sm-8">
+									<div class="col-sm-4" style='padding-left:0px !important;'>															
+										<select id='apxx_tk_1' onChange="processCmb('apxx_tk_1');" class="form-control" >
+											{$idx_aparatur}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label id='txtsbjn' class="col-sm-2 control-label">Sub Jenis Sertifikasi : </label>
+								<div class="col-sm-8">
+									<div class="col-sm-4" style='padding-left:0px !important;'>															
+										<select id='sbxx_ap_tk2' onChange="processCmb('sbxx_ap_tk2');" class="form-control" name="sbxx_ap_tk2">
+										</select>
+										<input type='hidden' id='sb_jns_nxx'>
+									</div>
+								</div>
+							</div>
+						</div>			
+						{elseif $editstatus eq 'edit'}
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Jenjang Sertifikasi : </label>
+								<div class="col-sm-8">
+									<div class="col-sm-4" style='padding-left:0px !important;'>															
+										<input disabled type="text" value="{$data.nama_aparatur|default:''}">
+										<input type='hidden' name="sbxx_ap_tk2" value="{$data.idx_sertifikasi_id}">
+									</div>
+								</div>
+							</div>
+						{/if}
+					
 						<div class="form-group">
 							<label class="col-sm-2 control-label">TUK :</label>
 							<div class="col-sm-8">
@@ -65,6 +101,7 @@
 			</form>
 			<div class="form-actions ">
 				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();sbmjdw();">Submit</button>
+				<button class="btn btn-info" onclick="loadUrl('{$host}penjadwalan-peserta');">Cancel</button>
 			</div>			
 			
 		</div>

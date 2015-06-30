@@ -230,9 +230,10 @@ class madmin extends SHIPMENT_Model{
 				}
 				$sql = "
 					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
-						B.nama_tuk
+						B.nama_tuk, C.nama_aparatur
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
 					WHERE A.status = 'A' $whereform
 				";
 			break;
@@ -746,8 +747,19 @@ class madmin extends SHIPMENT_Model{
 					exit;
 				}
 				
+				if(isset($post['sbxx_ap_tk4'])){
+					$kode_sertifikasi = $post['sbxx_ap_tk4'];
+				}else{
+					if(isset($post['sbxx_ap_tk3'])){
+						$kode_sertifikasi = $post['sbxx_ap_tk3'];
+					}else{
+						$kode_sertifikasi = $post['sbxx_ap_tk2'];
+					}
+				}
+				
 				$array_save = array(
 					"idx_tuk_id" => $post['edtuk'],
+					"idx_sertifikasi_id" => $kode_sertifikasi,
 					"tanggal_wawancara" => $post['tggw'],
 					"jam" => $post['jmg'],
 					"kuota" => $post['ktpp'],
@@ -799,6 +811,7 @@ class madmin extends SHIPMENT_Model{
 				$id = $post['ixdx'];
 				
 				$post_bnr['nama_sertifikasi'] = $post['nm_ser'];
+				$post_bnr['jenis_dokumen'] = $post['edjnka'];
 				$post_bnr['kd_acak'] = $kode_acak;
 				
 				if($post['editstatus'] == 'add'){

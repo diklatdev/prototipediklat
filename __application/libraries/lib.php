@@ -111,29 +111,14 @@ class lib {
         );   
 		
 		$ci->load->library('email', $config);
+		$ci->load->library('smarty');
 		$html = "";
 		$subject = "";
 		switch($type){
 			case "email_registrasi":
-				$html = "
-					Informasi akun anda dalam Sistem Informasi Sertifikasi dan Penilaian Kementerian Dalam Negeri <br />
-					Username : ".$p1." <br/>
-					Password : ".$p2." <br/>
-					Silahkan login akun anda ke dalam sistem kami, dan dimohon untuk menjaga kerahasiaan data akun anda ini. <br/>
-					Terima Kasih.
-					<br />
-					<br />
-					<br />
-					<br />
-					<br />
-					<br />
-					Hormat Kami, ".date("d-m-Y")." 
-					<br />
-					<br />
-					<br />
-					<br />
-					Portal Lembaga Sertifikasi & Penilaian Kementerian Dalam Negeri
-				";
+				$ci->smarty->assign('username', $p1);
+				$ci->smarty->assign('password', $p2);
+				$html = $ci->smarty->fetch('modul-portal/template_email.html');
 				$subject = "Registrasi Sistem Informasi Sertifikasi dan Penilaian Kementerian Dalam Negeri";
 			break;
 			case "email_voucher":
@@ -178,7 +163,7 @@ class lib {
 		*/
 		
 		//$ci->email->initialize($config);
-		$ci->email->from("orangbaik@students.paramadina.ac.id");
+		$ci->email->from("lsp@kemendagri.go.id", "LSP PEMDA - KEMENDAGRI");
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);

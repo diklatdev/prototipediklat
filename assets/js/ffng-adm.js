@@ -346,6 +346,7 @@ function kumpulPost($type, p1, p2, p3, p4){
 		break;
 		case "cet_uj_dt":
 			window.open(hostir+'generate-dokumen-ujian/dokumen_ujian_test/'+p1+'/'+p2+'/'+p3+'/'+p4);
+			$('#hdr_'+p1).removeAttr("disabled");
 		break;
 
 //*******Levi
@@ -526,18 +527,38 @@ function pemnya(){
 }
 
 function sbmjdw(){
-	if($('#edpr').val() == ""){
-		$("#edpr").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Provinsi Tidak Boleh Kosong!" });
+
+	if($('#apxx_tk_1').val() == ""){
+		$("#apxx_tk_1").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pilih Jenis Sertifikasi" });
 		return false;
 	}
-	if($('#edpt').val() == ""){
-		$("#edpt").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Kabupaten Tidak Boleh Kosong!" });
+	
+	if($('#sbxx_ap_tk2').val() == ""){
+		$("#sbxx_ap_tk2").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sub Jenis Sertifikasi Harus Diisi!" });
 		return false;
 	}
-	if($('#edtk').val() == ""){
-		$("#edtk").focus(); 
+	
+	if($('#sbxx_ap_tk3').length != 0){
+		if($('#sbxx_ap_tk3').val() == ""){
+			$("#sbxx_ap_tk3").focus(); 
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenjang Sertifikasi Harus Diisi!" });
+			return false;
+		}
+	}
+	
+	if($('#sbxx_ap_tk4').length != 0){
+		if($('#sbxx_ap_tk4').val() == ""){
+			$("#sbxx_ap_tk4").focus(); 
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenjang Sertifikasi Harus Diisi!" });
+			return false;
+		}
+	}
+
+
+	if($('#edtuk').val() == ""){
+		$("#edtuk").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Field TUK Tidak Boleh Kosong!" });
 		return false;
 	}
@@ -652,6 +673,12 @@ function vcfnya(){
 }
 
 function sb_ptjk(){
+	if($('#edjnka').val() == ""){
+		$("#edjnka").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenis Dokumen Tidak Boleh Kosong!" });
+		return false;
+	}
+	
 	if($('#nm_ser').val() == ""){
 		$("#nm_ser").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nama Sertifikasi Tidak Boleh Kosong!" });

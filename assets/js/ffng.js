@@ -23,7 +23,8 @@ function processCombo(type){
 					$('#tku_dxi').val('');
 				}else{
 					var data = $.parseJSON(rsp)
-					$('#res-cku').html('<font color="green">Jadwal Ujian TUK Tanggal '+data.tanggal+' - Masih Tersedia.</font>');
+					$('#pnmpng_asp').val(data.sertifikasi);
+					$('#res-cku').html('<label style="margin-left:-10px;">Sertifikasi '+data.sertifikasi+'</label> <br><font color="green">Jadwal Ujian TUK Tanggal '+data.tanggal+' - Masih Tersedia.</font>');
 				}
 			});
 		break;
@@ -135,6 +136,24 @@ function processCombo(type){
 }
 
 function sbtdl_reg(){
+	var jadual = $('#pnmpng_asp').val();
+	var sertif_nya = $('#sb_jns_sert').val();
+	if(jadual != sertif_nya){
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sertifikasi Tidak Ada Dalam Jadwal Ujian!" });
+		$('#tku_dxi').val('');
+		$('#ap_tk_1').val('');
+		//$('#sb_ap_tk2').val('');
+		
+		$("#sb_ap_tk2 option").remove();
+		$('#res-cku').html('');
+		$('#fl_s').remove();
+		$('#sert_tam').remove();
+		$('#sert_tam_2').remove();
+		$('#sert_tam_3').remove();
+		
+		return false;
+	}
+
 	if($('#ed_namalengkap').val() == ""){
 		$("#ed_namalengkap").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nama Lengkap Harus Diisi!" });

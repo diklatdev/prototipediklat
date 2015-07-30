@@ -1,3 +1,12 @@
+$( document ).ready(function() {
+	//kombo kabupaten when refresh
+	if( $('#prv').val() != "" ){
+		fillCombo(host+"combo/ka/", 'ka', "", $('#prv').val() );
+	}
+	
+});
+
+
 function fillCombo(url, SelID, value, value2, value3, value4){
 	if (value == undefined) value = "";
 	if (value2 == undefined) value2 = "";
@@ -19,13 +28,20 @@ function processCombo(type){
 		case "ck_tku":
 			$.post(host+"ck-tku", { 'xtu_id':$('#tku_dxi').val() }, function(rsp){
 				if(rsp == 0){
-					$('#res-cku').html('<font color="red">Maaf, Jadwal Ujian TUK Tidak Tersedia. Pilih TUK Lain.</font>');
+					$('#res-cku').html('<font color="red">Maaf, Jadwal Ujian Sertifikasi Tidak Tersedia. Pilih TUK Lain.</font>');
 					$('#tku_dxi').val('');
 					$('#sertifikasi_1').html("");
+					$('#res-pak').html("");
 				}else if(rsp == -2){
 					$('#res-cku').html('');
 					$('#tku_dxi').val('');
 					$('#sertifikasi_1').html("");
+					$('#res-pak').html("");
+				}else if(rsp == -3){
+					$('#res-cku').html('<font color="red">Maaf, Jadwal Ujian Sertifikasi Sudah Tidak Berlaku. Pilih TUK Lain.</font>');
+					$('#tku_dxi').val('');
+					$('#sertifikasi_1').html("");
+					$('#res-pak').html("");
 				}else{
 					var data = $.parseJSON(rsp);
 					var nilai_pak = $('#ed_nilaipak').val();
@@ -163,233 +179,24 @@ function processCombo(type){
 	//clr();
 }
 
-function sbtdl_reg(){
-	/*
-	var jadual = $('#pnmpng_asp').val();
-	var sertif_nya = $('#sb_jns_sert').val();
-	if(jadual != sertif_nya){
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sertifikasi Tidak Ada Dalam Jadwal Ujian!" });
-		$('#tku_dxi').val('');
-		$('#ap_tk_1').val('');
-		//$('#sb_ap_tk2').val('');
-		
-		$("#sb_ap_tk2 option").remove();
-		$('#res-cku').html('');
-		$('#fl_s').remove();
-		$('#sert_tam').remove();
-		$('#sert_tam_2').remove();
-		$('#sert_tam_3').remove();
-		
-		return false;
-	}
+function sbtdl_reg(){	
 	
-	
-	if($('#ed_namalengkap').val() == ""){
-		$("#ed_namalengkap").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nama Lengkap Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_nonip').val() == ""){
-		$("#ed_nonip").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "NIP Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_nonik').val() == ""){
-		$("#ed_nonik").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "NIK Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_tmpLahir').val() == ""){
-		$("#ed_tmpLahir").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tempat Lahir Harus Diisi!" });
-		return false;
-	}
-	if($('#tgl_lahir').val() == ""){
-		$("#tgl_lahir").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tanggal Lahir Harus Diisi!" });
-		return false;
-	}
-	if($('#bln_lahir').val() == ""){
-		$("#bln_lahir").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Bulan Lahir Harus Diisi!" });
-		return false;
-	}
-	if($('#thn_lahir').val() == ""){
-		$("#thn_lahir").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tahun Lahir Harus Diisi!" });
-		return false;
-	}
-	
-	if($('#ed_jnsKel').val() == ""){
-		$("#ed_jnsKel").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenis Kelamin Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_bangsa').val() == ""){
-		$("#ed_bangsa").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kebangsaaan Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_alamatRmh').val() == ""){
-		$("#ed_alamatRmh").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Alamat Rumah Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_hempon').val() == ""){
-		$("#ed_hempon").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "No. HP Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_mailer').val() == ""){
-		$("#ed_mailer").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Email Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_pend').val() == ""){
-		$("#ed_pend").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pendidikan Terakhir Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_prodi').val() == ""){
-		$("#ed_prodi").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Program Studi Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_thLulus').val() == ""){
-		$("#ed_thLulus").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tahun Lulus Harus Diisi!" });
-		return false;
-	}
-	if($('#edFile_ijazah').val() == ""){
-		$("#edFile_ijazah").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Ijazah Harus Diisi!" });
-		return false;
-	}
-	
-	if($('#kmnt').val() == ""){
-		$("#kmnt").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kementerian Harus Diisi!" });
-		return false;
-	}
-	if($('#frms').val() == ""){
-		$("#frms").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Formasi Harus Diisi!" });
-		return false;
-	}
-	if($('#lks').val() == ""){
-		$("#lks").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Lokasi Harus Diisi!" });
-		return false;
-	}
-	
-	if($('#prv').val() == ""){
-		$("#prv").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
-		return false;
-	}
-	if($('#ins').val() == ""){
-		$("#ins").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Instansi Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_pangkat').val() == ""){
-		$("#ed_pangkat").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Pangkat Harus Diisi!" });
-		return false;
-	}
-	if($('#tgl_tmt').val() == ""){
-		$("#tgl_tmt").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tanggal TMT Pangkat/Golongan Harus Diisi!" });
-		return false;
-	}
-	if($('#bln_tmt').val() == ""){
-		$("#bln_tmt").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Bulan TMT Pangkat/Golongan Harus Diisi!" });
-		return false;
-	}
-	if($('#thn_tmt').val() == ""){
-		$("#thn_tmt").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Tahun TMT Pangkat/Golongan Harus Diisi!" });
-		return false;
-	}
-	
-	if($('#ed_jabatan').val() == ""){
-		$("#ed_jabatan").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jabatan Harus Diisi!" });
-		return false;
-	}
-	if($('#ed_alamatKtr').val() == ""){
-		$("#ed_alamatKtr").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Alamat Kantor Harus Diisi!" });
-		return false;
-	}
-	
-	/*
-	if($('#sb_ap_tk2').val() == ""){
-		$("#sb_ap_tk2").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sub Aparatur Harus Diisi!" });
-		return false;
-	}
-	
-	if($('#sb_ap_tk3').length != 0){
-		if($('#sb_ap_tk3').val() == ""){
-			$("#sb_ap_tk3").focus(); 
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jenis Sertifikasi Harus Diisi!" });
-			return false;
-		}
-	}
-	
-	
-	if($('#tku_dxi').length != 0){
-		if($('#tku_dxi').val() == ""){
-			$("#tku_dxi").focus(); 
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "TUK Terdekat Harus Diisi!" });
-			return false;
-		}
-	}
-	
-	var jml_sert = $('.file-persyaratan-sertifikasi').length;
-	if(jml_sert != 0){
-		var jms = eval((jml_sert-1));
-		for (i = 0; i <= jms; i++) {
-			if($('#fl_'+i).val() == 0){
-				$('#fl_'+i).focus();
-				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File Sertikasi No. "+(i+1)+" Tidak Boleh Kosong!" });
-				return false;
-			}
-		}
-	}else{
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Persyaratan Sertifikasi Belum Tersedia" });
-		return false;
-	}
-	*/
-	/*
-	$.post(host+'chkdt-regpes', { 'npi':$('#ed_nonip').val() }, function(resp){
-		if(resp == 0){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
-			return false;
-		}
-	});
-	$.post(host+'chkdt-kutoax', { 'xtu_id':$('#tku_dxi').val() }, function(resp){
-		if(resp == 0){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
-			return false;
-		}
-	});
-	*/
 	ajxfm("regdiklat", function(respo){
 		if(respo == 1){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
 			location.href = host+'registrasi-berhasil';
+		}else if(respo == -1){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+		}else if(respo == -2){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+		}else if(respo == -3){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
 		}else{
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
 			location.href = host+'registrasi-gagal';
 		}
 	});
 	
-	//document.regdiklat.submit();
-	//clr();
-	//*/
 }
 
 function sbtdl_reg_bars(){

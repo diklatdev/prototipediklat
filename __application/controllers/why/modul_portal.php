@@ -108,6 +108,7 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return') );
 				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
 				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
+				$this->smarty->assign('idx_lingkup_instansi', $this->fillcombo('lingkup_instansi', 'return') );
 				$this->smarty->assign('editstatus', "b_r" );
 			break;
 			case "registrasi_diktlatbaru":
@@ -466,6 +467,15 @@ class modul_portal extends SHIPMENT_Controller{
 							exit;
 						}
 						
+						$tgl_sekarang = strtotime(date('Y-m-d'));
+						$tgl_ujian = strtotime($cekdata['tanggal_wawancara']);
+						if ($tgl_ujian > $tgl_sekarang) {
+							
+						}else{
+							echo -3;
+							exit;
+						}
+						
 						if($cekdata['kuota'] != 0){
 							$get_min_pak = $this->db->get_where('idx_aparatur_sipil_negara', array('id'=>$cekdata['idx_sertifikasi_id']) )->row_array();
 							
@@ -617,11 +627,30 @@ class modul_portal extends SHIPMENT_Controller{
 		}
 		
 		if($type == "registrasi"){
+			//block check data double
 			$cek_data = $this->db->get_where('tbl_data_peserta', array('nip'=>$post['ed_nonip']) )->row_array();
 			if($cek_data){
-				header("Location: " . $this->host);
+				echo -1;
 				exit;
 			}
+			
+			//block check kuota penjadwalan
+			$cek_data_kuota = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$post['tku_dxi']) )->row_array();
+			if($cek_data_kuota['kuota'] == 0){
+				echo -2;
+				exit;
+			}
+			
+			//block check tanggal jadwal ujian
+			$tgl_sekarang = strtotime(date('Y-m-d'));
+			$tgl_ujian = strtotime($cek_data_kuota['tanggal_wawancara']);
+			if ($tgl_ujian > $tgl_sekarang) {
+				
+			}else{
+				echo -3;
+				exit;
+			}
+			
 		}elseif($type == "asesmen"){
 			if($this->auth){
 				$array = array(
@@ -746,6 +775,12 @@ class modul_portal extends SHIPMENT_Controller{
 			$data = array(
 				'0' => array('kode'=>'P','txt'=>'Pusat'),
 				'1' => array('kode'=>'D','txt'=>'Daerah'),
+			);
+		}elseif($type == 'lingkup_instansi'){
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = array(
+				'0' => array('kode'=>'1','txt'=>'Kota'),
+				'1' => array('kode'=>'2','txt'=>'Kabupaten'),
 			);
 		}else{
 			$optTemp = '<option value=""> -- Pilih -- </option>';

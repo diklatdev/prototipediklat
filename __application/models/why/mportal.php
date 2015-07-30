@@ -72,6 +72,7 @@ class mportal extends SHIPMENT_Model{
 					SELECT id as kode, name as txt
 					FROM idx_area
 					WHERE level = '2' AND idprov = '".$provinsi."'
+					ORDER BY name ASC
 				";
 			break;
 			
@@ -519,7 +520,7 @@ class mportal extends SHIPMENT_Model{
 				$post_bnr['password'] = $this->encrypt->encode($password);
 				$post_bnr['status'] = "BV";
 				
-				$this->lib->kirimemail("email_registrasi", $post["ed_mailer"], $username, $password);
+				//$this->lib->kirimemail("email_registrasi", $post["ed_mailer"], $username, $password);
 				
 				$insert_reg = $this->db->insert("tbl_data_peserta", $post_bnr);
 				if($insert_reg){					
@@ -589,6 +590,7 @@ class mportal extends SHIPMENT_Model{
 						"idx_formasi_id" => $post['frms'],
 						"idx_lokasi_id" => $post['lks'],
 						"idx_provinsi_instansi_id" => $post['prv'],
+						"idx_flag_kab_kota" => $post['ka_ko'],
 						"idx_kabupaten_instansi_id" => $post['ka'],
 						"idx_instansi_id" => $post['ins'],
 						"idx_pangkat_id" => $post['ed_pangkat'],
@@ -649,7 +651,6 @@ class mportal extends SHIPMENT_Model{
 					}
 				}
 				
-				//return 1;
 			break;
 			case "revpersyaratan":
 				if($this->auth){

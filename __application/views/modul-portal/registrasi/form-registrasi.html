@@ -89,10 +89,10 @@
 									<div class="space-4"></div>	
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Alamat : </label>
-										<div class="col-sm-10">
+										<div class="col-sm-8">
 											<textarea id='ed_alamatRmh' class="form-control validatext" rows="4" cols="50"  placeholder="" name="ed_alamatRmh"></textarea>
-											<span class="help-block"><code>*) Harus Diisi</code></span>
 										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>						
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Kode Pos : </label>
@@ -215,12 +215,21 @@
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Kabupaten : </label>
+										<label class="col-sm-2 control-label">Kab/Kota : </label>
 										<div class="col-sm-4">															
 											<select id='ka' class="form-control" name="ka">
 											</select>
 										</div>
-										
+										<span class="help-block"><code>*) Hanya Diisi Apabila Instansi Anda Berada Dalam Lingkup Kabupaten/Kota</code></span>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Lingkup Daerah : </label>
+										<div class="col-sm-4">															
+											<select id='ka_ko' class="form-control" name="ka_ko">
+												{$idx_lingkup_instansi}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Hanya Diisi Apabila Instansi Anda Berada Dalam Lingkup Kabupaten/Kota</code></span>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
@@ -258,10 +267,10 @@
 									<div class="space-4"></div>	
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Alamat : </label>
-										<div class="col-sm-10">
+										<div class="col-sm-8">
 											<textarea class="form-control validatext" id='ed_alamatKtr' rows="4" cols="50"  placeholder="" name="ed_alamatKtr"></textarea>
-											<span class="help-block"><code>*) Harus Diisi</code></span>
 										</div>
+										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>																						
 							<div class="hr-12 hr-double hr-dotted"></div>
 							<h4>Data Permohonan Sertifikasi &nbsp;&nbsp;&nbsp;<small>(Pilih Jadwal Sertifikasi & Upload File Digital Hasil Scan Persyaratan Sertifikasi)</small></h4>

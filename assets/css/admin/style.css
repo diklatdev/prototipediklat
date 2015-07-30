@@ -8962,3 +8962,19 @@ td.legendColorBox>div {
     border-color: #fff;
     color: #fff;
 }
+
+.loading{
+   
+	  /*top: 50%;
+	  left: 50%;
+	  margin-top: 15%;
+	  margin-left: 50%;
+	  height:50px;
+	  width:50px;
+	  z-index:1000;*/
+    
+	margin-top: 27%;
+	background: url('../../images/loading.gif') center center no-repeat!important;
+    min-height:50px;
+	min-width:50px;
+}

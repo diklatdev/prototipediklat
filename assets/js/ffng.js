@@ -21,10 +21,38 @@ function processCombo(type){
 				if(rsp == 0){
 					$('#res-cku').html('<font color="red">Maaf, Jadwal Ujian TUK Tidak Tersedia. Pilih TUK Lain.</font>');
 					$('#tku_dxi').val('');
+					$('#sertifikasi_1').html("");
+				}else if(rsp == -2){
+					$('#res-cku').html('');
+					$('#tku_dxi').val('');
+					$('#sertifikasi_1').html("");
 				}else{
-					var data = $.parseJSON(rsp)
+					var data = $.parseJSON(rsp);
+					var nilai_pak = $('#ed_nilaipak').val();
+					
+					if(data.is_pak == "1"){
+						//$('#ed_nilaipak').addClass('validatext');
+						if(nilai_pak <= data.min_nilai_pak){
+							$('#res-pak').html('<font color="red">Nilai PAK Anda Tidak Memenuhi Syarat, Minimum PAK untuk Sertifikasi '+data.sertifikasi+' adalah '+data.min_nilai_pak+' </font>');
+							$('#ed_nilaipak').val('');
+						}else{
+							$('#res-pak').html('<font color="green">Nilai PAK Anda Memenuhi Syarat</font>');
+						}
+					}else if(data.is_pak == "0"){
+						$('#ed_nilaipak').removeClass('validatextpak');
+					}
+					
 					$('#pnmpng_asp').val(data.sertifikasi);
+					$('#sertis_id').val(data.idx_sertifikasi_id);
 					$('#res-cku').html('<label style="margin-left:-10px;">Sertifikasi '+data.sertifikasi+'</label> <br><font color="green">Jadwal Ujian TUK Tanggal '+data.tanggal+' - Masih Tersedia.</font>');
+					
+					$('#sertifikasi_1').html("");
+					$('#sertifikasi_1').addClass("loading");
+					$.post(host+"reg-file", { 'id_asn':data.idx_sertifikasi_id }, function(respp){
+						$('#sertifikasi_1').html(respp).removeClass("loading");
+					});
+					
+					
 				}
 			});
 		break;
@@ -136,6 +164,7 @@ function processCombo(type){
 }
 
 function sbtdl_reg(){
+	/*
 	var jadual = $('#pnmpng_asp').val();
 	var sertif_nya = $('#sb_jns_sert').val();
 	if(jadual != sertif_nya){
@@ -153,7 +182,8 @@ function sbtdl_reg(){
 		
 		return false;
 	}
-
+	
+	
 	if($('#ed_namalengkap').val() == ""){
 		$("#ed_namalengkap").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Nama Lengkap Harus Diisi!" });
@@ -252,19 +282,11 @@ function sbtdl_reg(){
 		return false;
 	}
 	
-	
 	if($('#prv').val() == ""){
 		$("#prv").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Provinsi Harus Diisi!" });
 		return false;
 	}
-	/*
-	if($('#ka').val() == ""){
-		$("#ka").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kabupaten Harus Diisi!" });
-		return false;
-	}
-	*/
 	if($('#ins').val() == ""){
 		$("#ins").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Instansi Harus Diisi!" });
@@ -301,6 +323,8 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Alamat Kantor Harus Diisi!" });
 		return false;
 	}
+	
+	/*
 	if($('#sb_ap_tk2').val() == ""){
 		$("#sb_ap_tk2").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Sub Aparatur Harus Diisi!" });
@@ -314,6 +338,7 @@ function sbtdl_reg(){
 			return false;
 		}
 	}
+	
 	
 	if($('#tku_dxi').length != 0){
 		if($('#tku_dxi').val() == ""){
@@ -337,7 +362,8 @@ function sbtdl_reg(){
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Persyaratan Sertifikasi Belum Tersedia" });
 		return false;
 	}
-	
+	*/
+	/*
 	$.post(host+'chkdt-regpes', { 'npi':$('#ed_nonip').val() }, function(resp){
 		if(resp == 0){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
@@ -350,10 +376,20 @@ function sbtdl_reg(){
 			return false;
 		}
 	});
+	*/
+	ajxfm("regdiklat", function(respo){
+		if(respo == 1){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
+			location.href = host+'registrasi-berhasil';
+		}else{
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
+			location.href = host+'registrasi-gagal';
+		}
+	});
 	
-	
-	document.regdiklat.submit();
+	//document.regdiklat.submit();
 	//clr();
+	//*/
 }
 
 function sbtdl_reg_bars(){
@@ -813,11 +849,11 @@ function ajxfm(objid, func){
     $('#'+objid).form('submit',{
             url:url,
             onSubmit: function(){
-                    return $(this).form('validate');
+                return $(this).form('validate');
             },
             success:function(data){
-				    if (func == undefined ){
-                     if (data == "1"){
+				if (func == undefined ){
+                    if (data == "1"){
                                               
                     }else{
                         var pesan = data.replace('1','');

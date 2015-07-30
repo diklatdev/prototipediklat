@@ -1,3 +1,26 @@
+function getClientHeight(){
+	var theHeight;
+	if (window.innerHeight)
+		theHeight=window.innerHeight;
+	else if (document.documentElement && document.documentElement.clientHeight) 
+		theHeight=document.documentElement.clientHeight;
+	else if (document.body) 
+		theHeight=document.body.clientHeight;
+	
+	return theHeight;
+}
+function getClientWidth(){
+	var theWidth;
+	if (window.innerWidth) 
+		theWidth=window.innerWidth;
+	else if (document.documentElement && document.documentElement.clientWidth) 
+		theWidth=document.documentElement.clientWidth;
+	else if (document.body) 
+		theWidth=document.body.clientWidth;
+
+	return theWidth;
+}
+
 function fillCmb(url, SelID, value, value2, value3, value4){
 	if (value == undefined) value = "";
 	if (value2 == undefined) value2 = "";
@@ -93,12 +116,149 @@ function processCmb(type){
 	}
 }
 
+function genGrid(modnya, lebarnya, tingginya){
+	if(lebarnya == undefined){
+		lebarnya = getClientWidth-230;
+	}
+	if(tingginya == undefined){
+		tingginya = getClientHeight-300
+	}
+
+	var kolom ={};
+	var frozen ={};
+	var judulnya;
+	var param={};
+	var urlnya;
+	var urlglobal="";
+	var fitnya;
+	var pagesizeboy = 10;
+	
+	switch(modnya){
+		case "data_peserta":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'step_registrasi',title:'Registrasi',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_registrasi == 1){
+							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+						}else if(row.step_registrasi == 2){
+							return "<button href='#'>Preview</button>";
+						}
+					}
+				},
+				{field:'step_asesmen_mandiri',title:'Asesmen Mandiri',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_asesmen_mandiri == 1){
+							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+						}else if(row.step_asesmen_mandiri == 2){
+							return "<button href='#'>Preview</button>";
+						}else if(row.step_asesmen_mandiri == 3){
+							return "Dalam Proses";
+						}else if(row.step_asesmen_mandiri == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}
+					}
+				},
+				{field:'step_uji_test',title:'Uji Test',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_uji_test == 1){
+							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+						}else if(row.step_uji_test == 2){
+							return "<button href='#'>Preview</button>";
+						}else if(row.step_uji_test == 3){
+							return "Dalam Proses";
+						}else if(row.step_uji_test == 4){
+							return "Verifikasi Admin";
+						}else if(row.step_uji_test == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}
+					}
+				},
+				{field:'step_uji_simulasi',title:'Uji Simulasi',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_uji_simulasi == 1){
+							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+						}else if(row.step_uji_simulasi == 2){
+							return "<button href='#'>Preview</button>";
+						}else if(row.step_uji_simulasi == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}
+					}
+				},
+				{field:'step_wawancara',title:'Wawancara',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_wawancara == 1){
+							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+						}else if(row.step_wawancara == 2){
+							return "<button href='#'>Preview</button>";
+						}else if(row.step_wawancara == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}
+					}
+				},
+				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
+			];
+		break;
+		case "file_registrasi":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'tbl_data_peserta_id',title:'Cek File',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#'>Preview Data</button>";
+					}
+				},
+			];
+		break;
+		case "file_asesmen":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'tbl_data_peserta_id',title:'Cek File',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#'>Preview Data</button>";
+					}
+				},
+			];
+		break;
+	}
+	
+	$("#"+modnya).datagrid({
+		title:judulnya,
+        height:tingginya,
+        width:lebarnya,
+		rownumbers:true,
+		iconCls:'database',
+        fit:fitnya,
+        striped:true,
+        pagination:true,
+        remoteSort: false,
+        url: hostir+'datagrid/'+modnya,
+		nowrap: true,
+        singleSelect:true,
+		pageSize:pagesizeboy,
+		pageList:[10,20,30,40,50,75,100,200],
+		queryParams:param,
+		columns:[
+            kolom[modnya]
+        ],
+		toolbar: '#toolbar_'+modnya,
+	});
+
+}
 
 
 function loadUrl(urls,func){	
-    //$("#tMain").html("").addClass("loading");
+    $("#tMain").html("").addClass("loading");
 	$.get(urls,function (html){
-	    $("#tMain").html(html)//.removeClass("loading");
+	    $("#tMain").html(html).removeClass("loading");
     }).done(function(){
        // func;
     });

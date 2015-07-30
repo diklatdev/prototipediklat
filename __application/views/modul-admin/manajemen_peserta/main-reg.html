@@ -31,6 +31,7 @@
 								<th class="hidden-xs col-medium center">No. Registrasi</th>
 								<th class="hidden-xs col-small center">Sertifikasi</th>
 								<th class="hidden-xs col-small center">Kode Diklat</th>
+								<th class="hidden-xs col-small center">Asesor</th>
 								<th class="col-small center">Action</th>
 							</tr>
 						</thead>
@@ -45,6 +46,7 @@
 										<td class="hidden-xs">{$rows.no_registrasi}</td>
 										<td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
 										<td class="hidden-xs col-small center">{$rows.kdreg_diklat}</td>
+										<td class="hidden-xs col-small center">{$rows.nama_asesor}</td>
 										<td class="col-medium center">
 											<div class="btn-group btn-group-xs ">
 												<a href="#" onClick="loadUrl_adds('ps_det','{$host}peserta-detail', 'konten_peserta', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}')" class="btn btn-danger"><i class="fa fa-search-plus"> Lihat Data</i></a>

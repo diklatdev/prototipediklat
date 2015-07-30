@@ -133,12 +133,30 @@
 					</ul>
 			</li>
 			{/if}
-			{if $diklat eq '1'}
+			{if $sertifikasi eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#componentss">
-					<i class="fa fa-list"></i> Diklat<span class="fa arrow"></span>
+					<i class="fa fa-list"></i> Sertifikasi<span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="componentss">
+						<li>
+							<a href="#" onClick="loadUrl('{$host}file-registrasi-peserta');">
+								<i class="fa fa-angle-double-right"></i> File Registrasi
+							</a>
+						</li>
+						<li>
+							<a href="#" onClick="loadUrl('{$host}file-portofolio-peserta');">
+								<i class="fa fa-angle-double-right"></i> File Asesmen Mandiri
+							</a>
+						</li>
+						<li>
+							<a href="#" onClick="loadUrl('{$host}data-peserta-grid');">
+								<i class="fa fa-angle-double-right"></i> Data Peserta
+							</a>
+						</li>
+						
+						{* backup menu
+						
 						{if $registrasipeserta eq '1'}
 						<li>
 							<a href="#" onClick="loadUrl('{$host}manajemen-peserta');">
@@ -202,6 +220,8 @@
 							</a>
 						</li>
 						{/if}
+						
+						*}
 					</ul>
 			</li>
 			{/if}

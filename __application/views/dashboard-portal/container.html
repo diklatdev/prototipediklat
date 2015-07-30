@@ -348,28 +348,31 @@
 			</div>
 				<table class="table table-bordered table-hover tc-table">
 					<thead>
-						<tr>
-							<th class="col-small center">No.</th>
-							<th class="col-medium center">Jenis Dokumen</th>
-							<th class="col-medium center">Sertifikasi</th>
-							<th class="col-small center">::</th>
-						</tr>
-					</thead>
+							<tr>
+								<th width='5%' style='text-align:center'>No.</th>
+								<th width='20%' style='text-align:center'>Tanggal</th>
+								<th class="col-big center" style='text-align:center'>Jenis Dokumen</th>
+								<th width='20%' style='text-align:center'>::</th>
+							</tr>
+						</thead>
 					<tbody>
 						{if $petunjuk_dokumen}
 							{assign var=ind value=1}
 							{foreach from=$petunjuk_dokumen item=rows}
 								<tr>
-									<td class="col-small center">{$ind}</td>
-									<td>
+									<td style='text-align:center'>{$ind}</td>
+									<td style='text-align:center'>
+										{$rows.tgl_terbit}
+									</td>
+									<td class="col-medium">
 										{if $rows.jenis_dokumen eq 'DPS'}
 											Petunjuk Sertifikasi
 										{elseif $rows.jenis_dokumen eq 'SE'}
 											Surat Edaran
-										{/if}
+										{/if} &nbsp;-&nbsp;
+										{$rows.nama_sertifikasi}
 									</td>
-									<td>{$rows.nama_sertifikasi}</td>
-									<td class="col-medium center">
+									<td style='text-align:center'>
 										<a href='{$host}download-file-petunjuk/{$rows.file_petunjuk}' target='_blank'>Unduh File</a>
 									</td>
 								</tr>

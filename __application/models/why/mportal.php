@@ -155,9 +155,10 @@ class mportal extends SHIPMENT_Model{
 			break;
 			case "jadwal_ujian_tuk":
 				$sql = "
-					SELECT A.id as kode, concat(B.nama_tuk, ' - ', DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' )) as txt
+					SELECT A.id as kode, concat(B.nama_tuk, ' - ', C.nama_aparatur, ' (', DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ), ')' ) as txt
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
 					WHERE A.status = 'A'
 				";
 			break;
@@ -207,8 +208,8 @@ class mportal extends SHIPMENT_Model{
 					SELECT B.tanggal_wawancara, DATE_FORMAT( B.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_beneran
 					FROM tbl_daftar_test A
 					LEFT JOIN tbl_jadwal_wawancara B ON A.tbl_jadwal_wawancara_id = B.id
-					WHERE tbl_data_peserta_id = '".$p1."' AND idx_sertifikasi_id = '".$p2."' 
-					AND kdreg_diklat = '".$p3."' AND A.status_data = '1'
+					WHERE A.tbl_data_peserta_id = '".$p1."' AND A.idx_sertifikasi_id = '".$p2."' 
+					AND A.kdreg_diklat = '".$p3."' AND A.status_data = '1'
 				";
 			break;			
 			//end ambil data checking
@@ -278,7 +279,7 @@ class mportal extends SHIPMENT_Model{
 				//$end = 5;//$this->input->post('ed');
 				//LIMIT ".$start.", ".$end."
 				
-				$limit_soal = 5;
+				$limit_soal = 10;
 				$beda_soal = $this->input->post("so");
 				$id_sertifikasi = $this->input->post("ids");
 				
@@ -316,11 +317,14 @@ class mportal extends SHIPMENT_Model{
 					";
 					$query2 = $this->db->query($sql2)->result_array();
 					$idx2 = 0;
+					$chaar = 'A';
 					foreach($query2 as $s => $v){
 						$arraynya[$idx1]['jawaban'][$idx2] = array();
+						$arraynya[$idx1]['jawaban'][$idx2]['pilihan_ganda'] = $chaar;
 						$arraynya[$idx1]['jawaban'][$idx2]['id_jwb'] = $v['id'];
 						$arraynya[$idx1]['jawaban'][$idx2]['jawabannya'] = $v['jawaban'];
 						$idx2++;
+						$chaar = chr(ord($chaar) + 1);
 					}
 					$idx1++;
 				}
@@ -345,7 +349,7 @@ class mportal extends SHIPMENT_Model{
 				}
 				$sql = "
 					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
-						B.nama_tuk, C.nama_aparatur
+						B.nama_tuk, C.nama_aparatur, A.idx_sertifikasi_id
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
 					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
@@ -358,7 +362,7 @@ class mportal extends SHIPMENT_Model{
 						FROM tbl_daftar_test A
 					LEFT JOIN tbl_jadwal_wawancara B ON A.tbl_jadwal_wawancara_id = B.id
 					LEFT JOIN idx_tuk C ON B.idx_tuk_id = C.id
-					WHERE tbl_data_peserta_id = '".$this->auth['id']."' AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
+					WHERE A.tbl_data_peserta_id = '".$this->auth['id']."' AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
 				";
 			break;
 			case "cekdataujian":
@@ -426,15 +430,20 @@ class mportal extends SHIPMENT_Model{
 	
 	function simpansavedatabase($type="", $post="", $p1="", $p2="", $p3=""){
 		$this->load->library('lib');
+		
+		$this->db->trans_strict(TRUE);
 		$this->db->trans_begin();
 		
 		switch($type){
 			case "registrasi":
 				$this->load->library('encrypt');
+				$this->load->library('user_agent');
+				
 				$sqlreg = "
 					SELECT MAX(kode_reg) as reg
 					FROM tbl_data_peserta
 				";
+				
 				$queryreg = $this->db->query($sqlreg)->row_array();
 				if($queryreg['reg'] != null){
 					$number_reg = ($queryreg['reg'] + 1);
@@ -443,6 +452,7 @@ class mportal extends SHIPMENT_Model{
 					$number_reg = "0000001";
 				}
 				
+				/*
 				if(isset($post['sb_ap_tk4'])){
 					$kode_sertifikasi = $post['sb_ap_tk4'];
 				}else{
@@ -452,7 +462,9 @@ class mportal extends SHIPMENT_Model{
 						$kode_sertifikasi = $post['sb_ap_tk2'];
 					}
 				}
+				*/
 				
+				$kode_sertifikasi = $post['sertis_id'];
 				$sqlkdsert = "
 					SELECT kode_sertifikasi
 					FROM idx_aparatur_sipil_negara
@@ -479,7 +491,8 @@ class mportal extends SHIPMENT_Model{
 				$post_bnr['idx_pendidikan_id'] = $post['ed_pend'];
 				$post_bnr['idx_programstudi_id'] = $post['ed_prodi'];
 				$post_bnr['tahun_lulus'] = $post['ed_thLulus'];
-				
+				$post_bnr['browser_registrasi'] = $this->agent->browser();
+	
 				$cek_dir = "__repository/dokumen_peserta/".$no_reg."/";
 				if(!is_dir($cek_dir)) {
 					mkdir($cek_dir, 0777);         
@@ -488,10 +501,8 @@ class mportal extends SHIPMENT_Model{
 				if(!empty($_FILES['edFile_ijazah']['name'])){					
 					$upload_path = "./__repository/dokumen_peserta/".$no_reg."/file_data_diri/";
 					mkdir($upload_path, 0777);
-					
 					$file = "file-ijazah_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
 					$filename =  $this->lib->uploadnong($upload_path, 'edFile_ijazah', $file); //$file.'.'.$extension;
-
 					$post_bnr['file_ijazah'] = $filename;
 				}
 				
@@ -499,12 +510,11 @@ class mportal extends SHIPMENT_Model{
 					$passfoto_path = "./__repository/dokumen_peserta/".$no_reg."/file_data_diri/";
 					$file_passfoto = "file-passfoto_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
 					$filename_passfoto =  $this->lib->uploadnong($passfoto_path, 'edFile_passFoto', $file_passfoto); //$file.'.'.$extension;
-
 					$post_bnr['foto_profil'] = $filename_passfoto;
 				}
 				
 				$username = str_replace(" ", "", $post['ed_nonip']);
-				$password = "12345"; //strtolower($this->randomString(10));
+				$password = strtolower($this->randomString(10));
 				$post_bnr['username'] = $username;
 				$post_bnr['password'] = $this->encrypt->encode($password);
 				$post_bnr['status'] = "BV";
@@ -513,6 +523,8 @@ class mportal extends SHIPMENT_Model{
 				
 				$insert_reg = $this->db->insert("tbl_data_peserta", $post_bnr);
 				if($insert_reg){					
+					
+					/*
 					if(isset($post['sb_ap_tk4'])){
 						$code_sert = $post['sb_ap_tk4'];
 					}else{
@@ -522,19 +534,20 @@ class mportal extends SHIPMENT_Model{
 							$code_sert = $post['sb_ap_tk2'];
 						}
 					}
+					*/
 					
-					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
+					$code_sert = $post['sertis_id'];
+					
+					$n_sert = str_replace(" ", "_", $post['pnmpng_asp']);
 					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
 
 					$sql_id_peserta = "
 						SELECT id
 						FROM tbl_data_peserta
-						WHERE nip = '".str_replace(" ", "", $post['ed_nonip'])."'
+						WHERE username = '".str_replace(" ", "", $post['ed_nonip'])."'
 					";
 					$querynya_peserta = $this->db->query($sql_id_peserta)->row_array();
-					
 					$kdreg_diklat = "DK.".$number_reg.".".$code_sert.".001";
-					
 					$array_step = array(
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
 						"idx_sertifikasi_id" => $code_sert,
@@ -551,23 +564,7 @@ class mportal extends SHIPMENT_Model{
 						
 					);
 					$this->db->insert("tbl_step_peserta", $array_step);
-					
-					$pak_path = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/";
-					mkdir($pak_path, 0777);
-
-					if(!empty($_FILES['edFile_pak']['name'])){
-						$pak_sertifikasi_path_1 = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/";
-						mkdir($pak_sertifikasi_path_1, 0777);
-						
-						$pak_sertifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/".$kdreg_diklat."/";
-						mkdir($pak_sertifikasi_path, 0777);
-						
-						$file_pak = "file-pak_".str_replace(" ", "", $post['ed_nonip'])."_".str_replace(" ", "_", $post['ed_namalengkap']);
-						$filename_pak =  $this->lib->uploadnong($pak_sertifikasi_path, 'edFile_pak', $file_pak); 
-					}else{
-						$filename_pak = "";
-					}
-					
+										
 					$sql_datajadwal = "
 						SELECT A.*
 						FROM tbl_jadwal_wawancara A
@@ -586,7 +583,8 @@ class mportal extends SHIPMENT_Model{
 					$array_sert = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
-						"file_pak" => $filename_pak,
+						//"file_pak" => $filename_pak,
+						"nilai_pak" => $post['ed_nilaipak'],
 						"idx_kementerian_id" => $post['kmnt'],
 						"idx_formasi_id" => $post['frms'],
 						"idx_lokasi_id" => $post['lks'],
@@ -612,6 +610,7 @@ class mportal extends SHIPMENT_Model{
 						"tbl_data_peserta_id" => $querynya_peserta['id'],
 						'tbl_jadwal_wawancara_id'=> $post['tku_dxi'],
 						'status_data'=> 1,
+						"tgl_daftar" => date('Y-m-d'),
 						"kdreg_diklat" => $kdreg_diklat,
 					);
 					$kurangi_kuota = ($data_jadwal['kuota']-1);
@@ -646,8 +645,11 @@ class mportal extends SHIPMENT_Model{
 								$this->db->insert("tbl_persyaratan_sertifikasi", $array_persyaratan);
 							}
 						}
+						
 					}
 				}
+				
+				//return 1;
 			break;
 			case "revpersyaratan":
 				if($this->auth){
@@ -1368,12 +1370,14 @@ class mportal extends SHIPMENT_Model{
 			break;			
 		}
 		
-		if($this->db->trans_status() == false){
-			$this->db->trans_rollback();
-			return "Data not saved";
-		} else{
-			return $this->db->trans_commit();
-		}
+		//if($type != 'registrasi'){
+			if($this->db->trans_status() == false){
+				$this->db->trans_rollback();
+				return "Data not saved";
+			} else{
+				return $this->db->trans_commit();
+			}
+		//}
 	}
 	
 	function randomString($length,$parameter="") {

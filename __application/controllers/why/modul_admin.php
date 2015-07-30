@@ -481,11 +481,21 @@ class modul_admin extends SHIPMENT_Controller{
 				}
 				exit;
 			break;
+			
+			case "datagridview":
+				$content = "modul-admin/data_peserta/main.html";
+				$this->smarty->assign('tipe', $p1);
+			break;
 
 		}
 		$this->smarty->assign('type', $type);
 		$this->smarty->display($content);
 	}
+	
+	function getdatagrid($type){
+		echo $this->madmin->get_data_grid($type);
+	}
+	
 	
 	function getdatasearch($type="", $p1=""){
 		$data = $this->madmin->get_data($type, 'result_array');
@@ -522,7 +532,7 @@ class modul_admin extends SHIPMENT_Controller{
 	function gen_dokumen($type="", $p1="", $p2="", $p3=""){
 		$this->load->library('mlpdf');
 		$pdf = $this->mlpdf->load();
-		$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 10, 20, 10, 2, 'P');
+		$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 40, 20, 10, 2, 'P');
 		$spdf->ignore_invalid_utf8 = true;
 		$spdf->allow_charset_conversion = true;     // which is already true by default
 		$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
@@ -545,9 +555,10 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign('data_asesmen', $data_asesmen);	
 				$this->smarty->assign('type', $type);	
 				
-				//$htmlheader = $this->smarty->fetch('modul-admin/cetak_sertifikat/dokumen_header.html');
+				$htmlheader = $this->smarty->fetch('modul-admin/cetak_sertifikat/dokumen_header.html');
 				$htmlcontent = $this->smarty->fetch('modul-admin/cetak_sertifikat/dokumen_ujian_pdf.html');
 				
+				$spdf->SetHTMLHeader($htmlheader);
 				$spdf->SetHTMLFooter('
 					<div style="font-family:arial; font-size:10px; text-align:right; font-weight:bold;">
 						Halaman {PAGENO} dari {nbpg}

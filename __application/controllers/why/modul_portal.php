@@ -86,6 +86,10 @@ class modul_portal extends SHIPMENT_Controller{
 		*/
 		$modul = "front/";
 		switch($type){
+			case "login-portal":
+				$konten = "modul-portal/registrasi/form-login";
+			break;
+			
 			case "registrasi":
 				$konten = "modul-portal/registrasi/form-registrasi";
 				$this->smarty->assign('tgl_lahir', $this->fillcombo('tanggal', 'return') );
@@ -157,45 +161,6 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('jml_coba', $datadiklat_terakhir['jml_coba']);
 				
 				$this->smarty->assign('data_persyaratan', $data_persyaratan);
-			break;
-			case "registrasi-berhasil":
-			case "registrasi-gagal":
-			case "asesmen-berhasil":
-			case "asesmen-gagal":
-			case "pembayaran-berhasil":
-			case "pembayaran-gagal":
-			case "ujitest-berhasil":
-			case "ujitest-gagal":
-				$konten = "modul-portal/status_submit_semua";
-				$this->smarty->assign('type', $type);
-			break;
-			
-			case "warning-sudah-daftar-test":
-				$konten = "modul-portal/warning";
-				$cekdata = $this->db->get_where('tbl_daftar_test', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], 'status_data'=>'1') )->row_array();
-				$data_jadwal = $this->mportal->get_data("tbl_penjadwalan_peserta", "row_array", $cekdata['tbl_jadwal_wawancara_id']);
-				$this->smarty->assign('data_jadwal', $data_jadwal);
-				$this->smarty->assign('type', $type);
-			break;
-			case "sudah_assesmen":
-			case "tunggu_verifikasi_asesmen":
-			case "belum_boleh_asesmen":
-			case "sudah_uji_online":
-			case "tunggu_verifikasi_ujionline":
-			case "belum_boleh_ujianonline":
-			case "sudah_pembayaran":
-			case "tunggu_verifikasi_pembayaran":
-			case "belum_boleh_pembayaran":
-			case "belum_boleh_penjadwalan":
-			case "tunggu_verifikasi_hasil":
-			case "belum_boleh_hasil":
-			case "tidak_ada_diklat":
-				$konten = "modul-portal/warning";
-				$this->smarty->assign('type', $type);
-			break;
-			
-			case "login-portal":
-				$konten = "modul-portal/registrasi/form-login";
 			break;
 			
 			case "assesmen":
@@ -360,6 +325,43 @@ class modul_portal extends SHIPMENT_Controller{
 				$konten = "modul-portal/kinerja_peserta/form-kinerja";
 			break;
 			
+			// Display Warning
+			case "registrasi-berhasil":
+			case "registrasi-gagal":
+			case "asesmen-berhasil":
+			case "asesmen-gagal":
+			case "pembayaran-berhasil":
+			case "pembayaran-gagal":
+			case "ujitest-berhasil":
+			case "ujitest-gagal":
+				$konten = "modul-portal/status_submit_semua";
+				$this->smarty->assign('type', $type);
+			break;
+			case "warning-sudah-daftar-test":
+				$konten = "modul-portal/warning";
+				$cekdata = $this->db->get_where('tbl_daftar_test', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], 'status_data'=>'1') )->row_array();
+				$data_jadwal = $this->mportal->get_data("tbl_penjadwalan_peserta", "row_array", $cekdata['tbl_jadwal_wawancara_id']);
+				$this->smarty->assign('data_jadwal', $data_jadwal);
+				$this->smarty->assign('type', $type);
+			break;
+			case "sudah_assesmen":
+			case "tunggu_verifikasi_asesmen":
+			case "belum_boleh_asesmen":
+			case "sudah_uji_online":
+			case "tunggu_verifikasi_ujionline":
+			case "belum_boleh_ujianonline":
+			case "sudah_pembayaran":
+			case "tunggu_verifikasi_pembayaran":
+			case "belum_boleh_pembayaran":
+			case "belum_boleh_penjadwalan":
+			case "tunggu_verifikasi_hasil":
+			case "belum_boleh_hasil":
+			case "tidak_ada_diklat":
+				$konten = "modul-portal/warning";
+				$this->smarty->assign('type', $type);
+			break;			
+			// End Display Warning
+			
 			case "additional":
 				switch($p1){
 					case "checking_data":
@@ -454,16 +456,26 @@ class modul_portal extends SHIPMENT_Controller{
 						$id_tuk = $this->input->post('xtu_id');
 						$cekdata = $this->mportal->get_data('tbl_penjadwalan_peserta', 'row_array', "", $id_tuk);
 						
+						if(empty($id_tuk)){
+							echo -2;
+							exit;
+						}
+						
 						if(!isset($cekdata['kuota'])){
 							echo 0;
 							exit;
 						}
 						
 						if($cekdata['kuota'] != 0){
+							$get_min_pak = $this->db->get_where('idx_aparatur_sipil_negara', array('id'=>$cekdata['idx_sertifikasi_id']) )->row_array();
+							
 							$balikin = array(
 								"tanggal" => $cekdata['tgl_wawancara'],
 								"kuota" => $cekdata['kuota'],
 								"sertifikasi" => $cekdata['nama_aparatur'],
+								"idx_sertifikasi_id" => $cekdata['idx_sertifikasi_id'],
+								"min_nilai_pak" => $get_min_pak['minimum_pak'],
+								"is_pak" => $get_min_pak['flag_is_pak'],
 							);
 							echo json_encode($balikin);
 						}else{
@@ -473,7 +485,9 @@ class modul_portal extends SHIPMENT_Controller{
 					break;
 					case "checking_datareg":
 						$nip = $this->input->post('npi');
-						$cekdata = $this->db->get_where('tbl_data_peserta')->row_array();
+						$nip = str_replace(" ", "", $nip);
+						$nip = preg_replace('/[^a-zA-Z0-9_ \-()\/%-&]/s', '', $nip);
+						$cekdata = $this->db->get_where('tbl_data_peserta', array('username'=>$nip) )->row_array();
 						if($cekdata){
 							echo 0;
 						}else{
@@ -656,7 +670,7 @@ class modul_portal extends SHIPMENT_Controller{
 		$savenya =  $this->mportal->simpansavedatabase($type, $post);
 		if($savenya == 1){
 			if($type == "registrasi"){
-				$this->getdisplay("registrasi-berhasil");
+				echo $savenya; //$this->getdisplay("registrasi-berhasil");
 			}elseif($type == "asesmen"){
 				$this->getdisplay("asesmen-berhasil");
 			}elseif($type == "saveujian"){
@@ -678,7 +692,8 @@ class modul_portal extends SHIPMENT_Controller{
 			}
 		}else{
 			if($type == "registrasi"){
-				$this->getdisplay("registrasi-gagal");
+				//$this->getdisplay("registrasi-gagal");
+				echo $savenya;
 			}elseif($type == "asesmen"){
 				$this->getdisplay("asesmen-gagal");
 			}elseif($type == "saveujian"){
@@ -760,8 +775,11 @@ class modul_portal extends SHIPMENT_Controller{
 		//echo $this->encrypt->encode("12345");
 		//echo $this->mportal->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
 		
-		$this->load->library('lib');
-		echo $this->lib->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
+		//$this->load->library('lib');
+		//echo $this->lib->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
+		
+		$this->load->library('user_agent');
+		echo $this->agent->browser();
 		
 		//echo $this->mportal->get_data("data_soal");
 		//$angka = sprintf('%07d', 89);
@@ -778,6 +796,50 @@ class modul_portal extends SHIPMENT_Controller{
 		$this->smarty->display('modul-portal/template_email.html');
 		//$hoster = unserialize(base64_decode($this->session->userdata('d1kl4tkem3nd49r1-p0rt4L')));
 		//echo $this->session->userdata('d1kl4tkem3nd49r1-p0rt4L');
+	}
+	
+	function printdaftar(){
+		$this->load->library('mlpdf');
+		$pdf = $this->mlpdf->load();
+		$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 20, 20, 10, 2, 'P');
+		$spdf->ignore_invalid_utf8 = true;
+		$spdf->allow_charset_conversion = true;     // which is already true by default
+		$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
+		$spdf->SetDisplayMode('fullpage');
+		
+		$data_ujian_kompetensi = "
+			SELECT A.nama_lengkap, G.real_name as nama_asesor
+			FROM tbl_data_peserta A
+			LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
+			LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
+			LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+			WHERE B.step_uji_test = '4' AND E.idx_sertifikasi_id = '13'
+			ORDER BY E.idx_asesor_id ASC
+		";
+		$query_ujian = $this->db->query($data_ujian_kompetensi)->result_array();
+		
+		$data_uji_asesmen = "
+			SELECT A.nama_lengkap, G.real_name as nama_asesor
+			FROM tbl_data_peserta A
+			LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
+			LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
+			LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+			WHERE B.step_asesmen_mandiri = '3' AND E.idx_sertifikasi_id = '13'
+			ORDER BY E.idx_asesor_id ASC
+		";
+		$query_asesmen = $this->db->query($data_uji_asesmen)->result_array();
+		
+		$this->smarty->assign('ujitest', $query_ujian);
+		$this->smarty->assign('ujiasesmen', $query_asesmen);
+		
+		$htmlcontent = $this->smarty->fetch('modul-portal/rekap_peserta.html');
+		
+		$spdf->SetProtection(array('print'));				
+		$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
+		//$spdf->Output('repositories/Dokumen_LS/LS_PDF/'.$filename.'.pdf', 'F'); // save to file because we can
+		$spdf->Output('repository/temp_sertifikat/rekap_peserta.pdf', 'I'); // view file
+		
+		
 	}
 
 }

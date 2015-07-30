@@ -164,6 +164,8 @@ class lib {
 		
 		//$ci->email->initialize($config);
 		$ci->email->from("lsp@kemendagri.go.id", "LSP PEMDA - KEMENDAGRI");
+		$ci->email->cc("triwahyunugros@gmail.com");
+		$ci->email->cc("rahmadsyalevi@gmail.com");		
 		$ci->email->to($email);
 		$ci->email->subject($subject);
 		$ci->email->message($html);
@@ -176,4 +178,34 @@ class lib {
 			return $ci->email->print_debugger();
 	}	
 	//End Class KirimEmail
+	
+	function jsondata($sql, $type){
+		$ci =& get_instance();
+		
+		$page = (integer) (($ci->input->post('page')) ? $ci->input->post('page') : "1");
+		$limit = (integer) (($ci->input->post('rows')) ? $ci->input->post('rows') : "10");
+		$count = $ci->db->query($sql)->num_rows();
+		
+		if( $count >0 ) { $total_pages = ceil($count/$limit); } else { $total_pages = 0; } 
+		if ($page > $total_pages) $page=$total_pages; 
+		$start = $limit*$page - $limit; // do not put $limit*($page - 1)
+		if($start<0) $start=0;
+		 
+		$sql = $sql . " LIMIT $start, $limit";
+					
+		$data = $ci->db->query($sql)->result_array();  
+				
+		if($data){
+		   $responce = new stdClass();
+		   $responce->rows= $data;
+		   $responce->total =$count;
+		   return json_encode($responce);
+		}else{ 
+		   $responce = new stdClass();
+		   $responce->rows = 0;
+		   $responce->total = 0;
+		   return json_encode($responce);
+		} 
+	}
+	
 }

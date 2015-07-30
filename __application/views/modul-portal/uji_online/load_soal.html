@@ -13,7 +13,10 @@
 				<div style='float:left;width:1%;margin-right:10px;'>
 					<input type='radio' name='idj_{$rws.idnya}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.idnya}', '{$uhy.id_jwb}'); "> 
 				</div>
-				<div style='float:left;width:98%;'>
+				<div style='float:left;width:1%;margin-right:10px;'>
+					{$uhy.pilihan_ganda}. 
+				</div>
+				<div style='float:left;width:93%;'>
 					{$uhy.jawabannya}	
 				</div>
 			</td>
@@ -23,5 +26,4 @@
 		<td colspan='2'></td>
 	</tr>
 {/foreach}
-
 {/if}

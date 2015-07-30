@@ -15,7 +15,7 @@
 			<div class="col-lg-12">						
 				<div class="portlet">
 					<div class="well light">
-					<form class="form-horizontal" role="form" name="regdiklat" action="{$host}submit-registrasi" method="post" enctype="multipart/form-data">
+					<form class="form-horizontal" role="form" name="regdiklat" id='regdiklat' action="{$host}submit-registrasi" method="post" enctype="multipart/form-data">
 						<input type='hidden' name="sst" value="{$editstatus}">
 							<div class="form-group">
 								<div class="col-sm-12">
@@ -24,7 +24,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Nama Lengkap : </label>
 										<div class="col-sm-8">
-											<input type="text" id='ed_namalengkap' class="form-control" placeholder="" name="ed_namalengkap">
+											<input id='ed_namalengkap' class="form-control validatext" placeholder="" name="ed_namalengkap" required />
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>		
@@ -32,14 +32,14 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">NIP : </label>
 										<div class="col-sm-6">
-											<input type="text" id='ed_nonip' class="form-control" placeholder="" name="ed_nonip">
+											<input type="text" id='ed_nonip' class="form-control validatext" placeholder="" name="ed_nonip" required />
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">NIK : </label>
 										<div class="col-sm-6">
-											<input type="text" id='ed_nonik' class="form-control" placeholder="" name="ed_nonik">
+											<input type="text" id='ed_nonik' class="form-control validatext" placeholder="" name="ed_nonik">
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
@@ -47,20 +47,20 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Tempat / Tgl. Lahir : </label>
 										<div class="col-sm-2">
-											<input type="text" id='ed_tmpLahir' class="form-control" placeholder="" name="ed_tmpLahir">
+											<input type="text" id='ed_tmpLahir' class="form-control validatext" placeholder="" name="ed_tmpLahir">
 										</div>			
 										<div class="col-sm-1" >															
-											<select id='tgl_lahir' class="form-control selectpicker" name="tgl_lahir">
+											<select id='tgl_lahir' class="form-control validatext" name="tgl_lahir">
 												{$tgl_lahir}
 											</select> 
 										</div>
 										<div class="col-sm-2" >															
-											<select id='bln_lahir' class="form-control" name="bln_lahir">
+											<select id='bln_lahir' class="form-control validatext" name="bln_lahir">
 												{$bulan_lahir}
 											</select>
 										</div>
 										<div class="col-sm-2" >															
-											<select id='thn_lahir' class="form-control" name="thn_lahir">
+											<select id='thn_lahir' class="form-control validatext" name="thn_lahir">
 												{$tahun_lahir}
 											</select>
 										</div>
@@ -70,7 +70,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Jenis Kelamin : </label>
 										<div class="col-sm-2">															
-											<select id='ed_jnsKel' class="form-control" name="ed_jnsKel">
+											<select id='ed_jnsKel' class="form-control validatext" name="ed_jnsKel">
 												{$jenis_kelamin}
 											</select>
 										</div>
@@ -80,7 +80,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Kebangsaaan : </label>
 										<div class="col-sm-3">															
-											<select id='ed_bangsa' class="form-control" name="ed_bangsa">
+											<select id='ed_bangsa' class="form-control validatext" name="ed_bangsa">
 												{$kebangsaan}
 											</select>
 										</div>
@@ -90,7 +90,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Alamat : </label>
 										<div class="col-sm-10">
-											<textarea id='ed_alamatRmh' class="form-control" rows="4" cols="50"  placeholder="" name="ed_alamatRmh"></textarea>
+											<textarea id='ed_alamatRmh' class="form-control validatext" rows="4" cols="50"  placeholder="" name="ed_alamatRmh"></textarea>
 											<span class="help-block"><code>*) Harus Diisi</code></span>
 										</div>
 									</div>						
@@ -106,21 +106,21 @@
 											<input type="text" id='ed_tlpRmh' class="form-control" placeholder="Telepon Rumah : (021 xxxxxx)" name="ed_tlpRmh">
 										</div>
 										<div class="col-sm-4">
-											<input type="text" id='ed_hempon' class="form-control" placeholder="No HP : (08xx xxxx xxxx)" name="ed_hempon">
+											<input type="text" id='ed_hempon' class="form-control validatext" placeholder="No HP : (08xx xxxx xxxx)" name="ed_hempon">
 											<span class="help-block"><code>*) Harus Diisi</code></span>
 										</div>
 									</div>					
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Email : </label>
 										<div class="col-sm-4">
-											<input type="email" id='ed_mailer' class="form-control" placeholder="" name="ed_mailer">
+											<input type="email" id='ed_mailer' class="form-control validatextemail" placeholder="" name="ed_mailer">
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pass Foto : </label>
 										<div class="col-sm-6">
-											<input class="col-sm-6" id='edFile_passFoto' onChange="chf('edFile_passFoto', 2);" type="file" name='edFile_passFoto' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<input class="col-sm-6 validatext" id='edFile_passFoto' onChange="chf('edFile_passFoto', 2);" type="file" name='edFile_passFoto' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
 											<span class="help-block"><code>format file harus .jpg, ukuran file maksimal 500 KB</code> <span id='edFile_passFoto_sts'></span> </span>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
@@ -132,7 +132,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pendidikan Terakhir : </label>
 										<div class="col-sm-3">															
-											<select id='ed_pend' class="form-control" name="ed_pend">
+											<select id='ed_pend' class="form-control validatext" name="ed_pend">
 												{$idx_pendidikan_id}
 											</select>
 										</div>
@@ -142,7 +142,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Program Studi: </label>
 										<div class="col-sm-6">															
-											<select id='ed_prodi' class="form-control" name="ed_prodi">
+											<select id='ed_prodi' class="form-control validatext" name="ed_prodi">
 												{$idx_programstudi_id}
 											</select>
 										</div>
@@ -151,7 +151,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Tahun Lulus : </label>
 										<div class="col-sm-2" >															
-											<select id='ed_thLulus' class="form-control" name="ed_thLulus">
+											<select id='ed_thLulus' class="form-control validatext" name="ed_thLulus">
 												{$tahun_lahir}
 											</select>
 										</div>
@@ -160,7 +160,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Upload Ijazah : </label>
 										<div class="col-sm-6">
-											<input class="col-sm-6" id='edFile_ijazah' onChange="chf('edFile_ijazah', '1');" type="file" name='edFile_ijazah' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+											<input class="col-sm-6 validatext" id='edFile_ijazah' onChange="chf('edFile_ijazah', '1');" type="file" name='edFile_ijazah' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
 											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='edFile_ijazah_sts'></span> </span>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
@@ -170,17 +170,9 @@
 							<h4>Data Pekerjaan Sekarang </h4>
 							<div class="hr-12 hr-double hr-dotted"></div>																
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Penentuan Angka Kredit (PAK) : </label>
-										<div class="col-sm-6">															
-											<input class="col-sm-6" id='edFile_pak' onChange="chf('edFile_pak', '1');" type="file" name='edFile_pak' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
-											<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='edFile_pak_sts'></span> </span>
-										</div>
-										<span class="help-block"><code>*) Harus Diisi Kecuali Pengajuan Inpassing</code></span>
-									</div>
-									<div class="form-group">
 										<label class="col-sm-2 control-label">Kementerian : </label>
 										<div class="col-sm-4">															
-											<select id="kmnt" class="form-control" name="kmnt">
+											<select id="kmnt" class="form-control validatext" name="kmnt">
 												{$idx_kementerian}
 											</select>
 										</div>
@@ -189,16 +181,16 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Formasi : </label>
 										<div class="col-sm-4">															
-											<select id="frms" class="form-control" name="frms">
+											<select id="frms" class="form-control validatext" name="frms">
 												{$idx_formasi}
 											</select>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Lokasi : </label>
+										<label class="col-sm-2 control-label ">Lokasi : </label>
 										<div class="col-sm-4">															
-											<select id="lks" class="form-control" name="lks">
+											<select id="lks" class="form-control validatext" name="lks">
 												{$idx_lokasi}
 											</select>
 										</div>
@@ -207,7 +199,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
 										<div class="col-sm-4">															
-											<select class="form-control" name="ins">
+											<select class="form-control validatext" name="ins">
 												{$idx_instansi}
 											</select>
 										</div>
@@ -216,7 +208,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Provinsi : </label>
 										<div class="col-sm-4">															
-											<select id='prv' onChange="processCombo('prv');" class="form-control" name="prv">
+											<select id='prv' onChange="processCombo('prv');" class="form-control validatext" name="prv">
 												{$idx_provinsi_instansi_id}
 											</select>
 										</div>
@@ -233,23 +225,23 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
 										<div class="col-sm-2">															
-											<select id='ed_pangkat' class="form-control" name="ed_pangkat">
+											<select id='ed_pangkat' class="form-control validatext" name="ed_pangkat">
 												{$idx_pangkat_id}
 											</select>
 										</div>
 										<label class="col-sm-1 control-label">TMT : </label>
 										<div class="col-sm-1" >															
-											<select id='tgl_tmt' class="form-control selectpicker" name="tgl_tmt">
+											<select id='tgl_tmt' class="form-control validatext" name="tgl_tmt">
 												{$tgl_lahir}
 											</select> 
 										</div>
 										<div class="col-sm-2" >															
-											<select id='bln_tmt' class="form-control" name="bln_tmt">
+											<select id='bln_tmt' class="form-control validatext" name="bln_tmt">
 												{$bulan_lahir}
 											</select>
 										</div>
 										<div class="col-sm-2" >															
-											<select id='thn_tmt' class="form-control" name="thn_tmt">
+											<select id='thn_tmt' class="form-control validatext" name="thn_tmt">
 												{$tahun_lahir}
 											</select>
 										</div>
@@ -259,7 +251,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Jabatan : </label>
 										<div class="col-sm-6">
-											<input type="text" id='ed_jabatan' class="form-control" placeholder="" name="ed_jabatan">
+											<input type="text" id='ed_jabatan' class="form-control validatext" placeholder="" name="ed_jabatan">
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>																	
@@ -267,58 +259,67 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Alamat : </label>
 										<div class="col-sm-10">
-											<textarea class="form-control" id='ed_alamatKtr' rows="4" cols="50"  placeholder="" name="ed_alamatKtr"></textarea>
+											<textarea class="form-control validatext" id='ed_alamatKtr' rows="4" cols="50"  placeholder="" name="ed_alamatKtr"></textarea>
 											<span class="help-block"><code>*) Harus Diisi</code></span>
 										</div>
 									</div>																						
 							<div class="hr-12 hr-double hr-dotted"></div>
-							<h4>Data Permohonan Sertifikasi &nbsp;&nbsp;&nbsp;<small>(Harap Mengisi Permohonan Sertifikasi Dengan Benar & Sesuai Dengan Jenjang Anda)</small></h4>
+							<h4>Data Permohonan Sertifikasi &nbsp;&nbsp;&nbsp;<small>(Pilih Jadwal Sertifikasi & Upload File Digital Hasil Scan Persyaratan Sertifikasi)</small></h4>
 							<div class="hr-12 hr-double hr-dotted"></div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">Nilai PAK Terakhir : </label>
+									<div class="col-sm-10">															
+										<div class="col-sm-2">	
+											<input type="text" id='ed_nilaipak' class="form-control validatextpak" placeholder="" name="ed_nilaipak">
+										</div>
+										<span class="help-block"><code>*) Harus Diisi Kecuali Pengajuan Inpassing</code></span>
+										
+										&nbsp;&nbsp;
+										<span id='res-pak'></span>
+										
+									</div>
+									
+								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label">Jadwal Ujian : </label>
 									<div class="col-sm-10">
 										<div class="col-sm-4">															
-											<select id='tku_dxi' onChange="processCombo('ck_tku')"; name='tku_dxi' class="form-control" >
+											<select id='tku_dxi' onChange="processCombo('ck_tku')"; name='tku_dxi' class="form-control validatext" >
 												{$idx_tuk}
 											</select>
-											<input type='hidden' id='pnmpng_asp'>
+											<input type='hidden' id='pnmpng_asp' name='pnmpng_asp'>
+											<input type='hidden' id='sertis_id' name='sertis_id'>
 										</div>
 										&nbsp;&nbsp;
 										<span id='res-cku'></span>
 									</div>
 								</div>
-								<div id="sertifikasi_1">
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Jenis Sertifikasi : </label>
-										<div class="col-sm-10">
-											<div class="col-sm-4">															
-												<select id='ap_tk_1' onChange="processCombo('ap_tk_1');" class="form-control" >
-													{$idx_aparatur}
-												</select>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label id='txtsbjn' class="col-sm-2 control-label">Sub Jenis Sertifikasi : </label>
-										<div class="col-sm-10">
-											<div class="col-sm-4">															
-												<select id='sb_ap_tk2' onChange="processCombo('sb_ap_tk2');" class="form-control" name="sb_ap_tk2">
-												</select>
-												<input type='hidden' name='sb_jns_nxx' id='sb_jns_nxx'>
-												<input type='hidden' name='sb_jns_sert' id='sb_jns_sert'>
-											</div>
-										</div>
-									</div>
-									
-								</div>
+								<div id="sertifikasi_1"></div>
 							</div>															
 						</div>
 					</form>
 					<div class="form-actions ">
-						<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();sbtdl_reg();">Submit</button>
+						<button id='btnnya' class="btn btn-primary" onClick="sbtdl_reg();">Submit</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+	$('.validatext').validatebox({
+		required: true,
+		missingMessage : "Inputan Ini Harus Diisi !"
+	});
+	$('.validatextpak').validatebox({
+		required: true,
+		missingMessage : "Inputan Ini Harus Diisi, Kecuali Pengajuan Inpassing"
+	});
+	$('.validatextemail').validatebox({
+		required: true,
+		validType:'email',
+		missingMessage : "Inputan Ini Harus Diisi !",
+		invalidMessage : "Masukkan Alamat Email Dengan Benar !"
+	});
+</script>

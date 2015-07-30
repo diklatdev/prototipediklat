@@ -25,8 +25,8 @@
 						<thead>
 							<tr>
 								<th class="col-small center">No.</th>
+								<th class="col-small center">Tanggal</th>
 								<th class="col-medium center">Jenis Dokumen</th>
-								<th class="col-medium center">Nama Sertifikasi</th>
 								<th class="col-small center">File</th>
 								<th class="col-small center">Action</th>
 							</tr>
@@ -37,16 +37,19 @@
 								{foreach from=$data item=rows}
 									<tr>
 										<td class="col-small center">{$ind}</td>
-										<td>
+										<td class="col-small center">
+											{$rows.tgl_terbit}
+										</td>
+										<td class="col-medium">
 											{if $rows.jenis_dokumen eq 'DPS'}
 												Petunjuk Sertifikasi
 											{elseif $rows.jenis_dokumen eq 'SE'}
 												Surat Edaran
-											{/if}
+											{/if} &nbsp;-&nbsp;
+											{$rows.nama_sertifikasi}
 										</td>
-										<td>{$rows.nama_sertifikasi}</td>
-										<td><a href='{$host}__repository/dokumenpetunjuk/{$rows.file_petunjuk}' target='_blank'>Lihat File</a></td>
-										<td class="col-medium center">
+										<td class="col-small center"><a href='{$host}__repository/dokumenpetunjuk/{$rows.file_petunjuk}' target='_blank'>Lihat File</a></td>
+										<td class="col-small center">
 											<a href='#' onClick="loadUrl_adds('edt_kcppt', '{$host}form-petunjukdokumen', 'konten_petunjuk', '{$rows.id}');">Edit</a> |
 											<a href='#' onClick="">Hapus</a>
 										</td>

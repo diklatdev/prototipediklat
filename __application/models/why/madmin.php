@@ -46,80 +46,7 @@ class madmin extends SHIPMENT_Model{
 				";
 			break;
 			
-			case "tbl_data_peserta":
-			case "tbl_data_peserta_detail":
-				if($type == "tbl_data_peserta"){
-					$select = " A.id, A.no_registrasi, A.nama_lengkap, A.nip, A.status ";
-				}elseif($type == "tbl_data_peserta_detail"){
-					$select = " 
-						A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
-						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat,  
-						J.nama_kementerian, K.nama_formasi, B.idx_lokasi_id
-					";
-					$where .= " AND A.id = '".$p1."' ";
-					$join .= "
-						LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status='1') B ON A.id = B.tbl_data_peserta_id
-						LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
-						LEFT JOIN idx_area D ON B.idx_kabupaten_instansi_id = D.id
-						LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
-						LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
-						LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id 
-						LEFT JOIN idx_pendidikan H ON A.idx_pendidikan_id = H.id 
-						LEFT JOIN idx_programstudi I ON A.idx_programstudi_id = I.id 
-						LEFT JOIN idx_kementerian J ON J.id = B.idx_kementerian_id
-						LEFT JOIN idx_formasi K ON K.id = B.idx_formasi_id
-					";
-				}
-				
-				$sql = "
-					SELECT $select 
-					FROM tbl_data_peserta A 
-					$join
-					$where
-				";
-				//echo $sql;exit;
-			break;
-			case "tbl_diklat_terakhir":
-				$sql = "
-					SELECT B.*, C.name as nama_provinsi, D.name as nama_kabupaten, 
-						E.nama_instansi, F.nama_pangkat, G.nama_aparatur
-					FROM tbl_data_diklat B
-					LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
-					LEFT JOIN idx_area D ON B.idx_kabupaten_instansi_id = D.id
-					LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
-					LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
-					LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id
-					WHERE B.tbl_data_peserta_id = '".$p1."' 
-					ORDER BY id DESC LIMIT 0,1
-				";
-			break;
-			
-			case "tbl_record_diklat":
-				$sql = "
-					SELECT B.*, C.nama_aparatur
-					FROM tbl_data_diklat B
-					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
-					WHERE B.tbl_data_peserta_id = '".$p1."' 
-					ORDER BY id ASC
-				";
-			break;
-			case "folder_sertifikasi":
-				$sql = "
-					SELECT nama_aparatur, kode_sertifikasi
-					FROM idx_aparatur_sipil_negara
-					WHERE id = '".$p1."'
-				";
-			break;
-			case "tbl_persyaratan":
-				$sql = "
-					SELECT A.*, B.nama_persyaratan
-					FROM tbl_persyaratan_sertifikasi A
-					LEFT JOIN idx_persyaratan_registrasi B ON A.idx_persyaratan_id = B.id
-					WHERE A.tbl_data_peserta_id = '".$p1."' 
-					AND idx_sertifikasi_id = '".$p2."' 
-					AND kdreg_diklat = '".$p3."'
-				";
-			break;
+			//TRANSAKSI PESERTA
 			case "tbl_data_peserta_diklat":
 				if($this->auth['level_admin'] == 2){
 					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
@@ -136,12 +63,13 @@ class madmin extends SHIPMENT_Model{
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat, D.nama_tuk as tuknya
+						E.kdreg_diklat, D.nama_tuk as tuknya, F.real_name as nama_asesor
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN idx_tuk D ON E.idx_tuk_id = D.id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS F ON F.id = E.idx_asesor_id
 					WHERE B.step_registrasi = '2' $where
 				";
 			break;
@@ -162,38 +90,17 @@ class madmin extends SHIPMENT_Model{
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur,
 						DATE_FORMAT( D.tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian, E.idx_sertifikasi_id, 
-						E.kdreg_diklat, B.step_asesmen_mandiri, F.nama_tuk as tuknya
+						E.kdreg_diklat, B.step_asesmen_mandiri, F.nama_tuk as tuknya, G.real_name as nama_asesor
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_asessmen_mandiri_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
 					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
 					WHERE B.step_asesmen_mandiri IN ('2', '3') $where
 				";
-			break;
-			case "tbl_asesmen_header":
-				$sql = "
-					SELECT status, nama_asesor,
-						DATE_FORMAT( tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian,
-						DATE_FORMAT( tgl_verifikasi,  '%d-%m-%Y' ) AS tanggal_verifikasi
-					FROM tbl_asessmen_mandiri_header
-					WHERE tbl_data_peserta_id = '".$p1."'
-					AND idx_sertifikasi_id = '".$p2."' 
-					AND kdreg_diklat = '".$p3."' 
-					AND status_data = '1'
-				";
-			break;
-			case "tbl_test_assemen":
-				$sql = "
-					SELECT A.*, B.kode_unit, B.judul_unit
-					FROM tbl_asessmen_mandiri A
-					LEFT JOIN idx_unit_kompetensi B ON A.idx_unit_kompetensi_id = B.id
-					WHERE A.tbl_data_peserta_id = '".$p1."'
-					AND idx_sertifikasi_id = '".$p2."' 
-					AND kdreg_diklat = '".$p3."'
-				";
-			break;
+			break;			
 			case "tbl_peserta_pembayaran":
 				if($this->auth['level_admin'] == 5){
 					$where = " AND D.idx_bendahara_id = '".$this->auth['id']."' ";
@@ -222,21 +129,6 @@ class madmin extends SHIPMENT_Model{
 					WHERE B.step_pembayaran = '2' $where
 				";
 			break;
-			case "tbl_penjadwalan":
-				if($p1){
-					$whereform = " AND A.id = '".$p1."' ";
-				}else{
-					$whereform = "";
-				}
-				$sql = "
-					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
-						B.nama_tuk, C.nama_aparatur
-					FROM tbl_jadwal_wawancara A
-					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
-					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
-					WHERE A.status = 'A' $whereform
-				";
-			break;
 			case "tbl_peserta_ujitulis_sekarang":
 				if($this->auth['level_admin'] == 7){
 					$where = " AND E.idx_tuk_id = '".$this->auth['idx_tuk_id']."' ";
@@ -253,12 +145,13 @@ class madmin extends SHIPMENT_Model{
 				
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat
+						E.kdreg_diklat, G.real_name as nama_asesor
 					FROM tbl_data_peserta A
 					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
 					LEFT JOIN (SELECT * FROM tbl_daftar_test WHERE status_data=1) F ON A.id = F.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
 					WHERE B.step_uji_test = '4' $where
 				";
 			break;			
@@ -276,6 +169,183 @@ class madmin extends SHIPMENT_Model{
 					WHERE B.step_uji_test = '2'
 				";
 			break;
+			case "tbl_peserta_simulasi":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
+				
+				$sql = "
+					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
+						E.kdreg_diklat, F.nama_tuk as tuknya, G.real_name as nama_asesor
+					FROM tbl_data_peserta A
+					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
+					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
+					LEFT JOIN (SELECT * FROM tbl_uji_simulasi_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+					WHERE B.step_uji_simulasi = '2' $where
+				";
+			break;
+			case "tbl_peserta_wawancara":
+				if($this->auth['level_admin'] == 2){
+					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
+				}else{
+					$where = "";
+				}
+				
+				$no_registrasi = $this->input->post('nre');				
+				if($no_registrasi){
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}	
+			
+				$sql = "
+					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
+						E.kdreg_diklat, F.nama_tuk as tuknya, G.real_name as nama_asesor
+					FROM tbl_data_peserta A
+					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
+					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
+					LEFT JOIN (SELECT * FROM tbl_wawancara_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
+					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+					WHERE B.step_wawancara = '2' $where
+				";
+			break;
+			case "tbl_peserta_hasil":
+			case "tbl_peserta_cetak_sertifikat":
+				$no_registrasi = $this->input->post('nre');
+				
+				if($type == 'tbl_peserta_hasil'){
+					$where = " WHERE B.step_hasil = '2' ";
+				}elseif($type == 'tbl_peserta_cetak_sertifikat'){
+					$where = " WHERE B.step_hasil = '1' AND D.siap_cetak = 'Y' ";
+				}
+				
+				if($no_registrasi){
+					$where_join = " ";
+					$where_join2 = " ";
+					$where .= "
+						AND A.no_registrasi like '%".$no_registrasi."%'
+					";
+				}else{
+					$where_join = " WHERE status=1 ";
+					$where_join2 = " WHERE status_data=1 ";
+				}
+				
+				
+				$sql = "
+					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id,
+						D.status_penilaian as lulus_tidak, B.kdreg_diklat, G.real_name as nama_asesor
+					FROM tbl_data_peserta A
+					LEFT JOIN (SELECT * FROM tbl_step_peserta $where_join ) B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir $where_join2 ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+					$where
+				";
+				//echo $sql;exit;
+			break;
+			case "tbl_peserta_tidak_lulus":
+				$sql = "
+					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id, 
+							D.status_penilaian as lulus_tidak, B.kdreg_diklat
+					FROM tbl_data_peserta A 
+					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status = 1 ) B ON A.id = B.tbl_data_peserta_id 
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status = 1) E ON A.id = E.tbl_data_peserta_id 
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id 
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir WHERE status_data = 1  ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id AND E.kdreg_diklat = D.kdreg_diklat
+					WHERE B.step_hasil = '1' AND status_penilaian = 'TL'
+				";
+			break;
+			//END
+			
+			//REGISTRASI Peserta
+			case "tbl_data_peserta":
+			case "tbl_data_peserta_detail":
+				if($type == "tbl_data_peserta"){
+					$select = " A.id, A.no_registrasi, A.nama_lengkap, A.nip, A.status ";
+				}elseif($type == "tbl_data_peserta_detail"){
+					$select = " 
+						A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
+						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat,  
+						J.nama_kementerian, K.nama_formasi, B.idx_lokasi_id, L.nama_tuk, M.real_name as nama_asesor
+					";
+					$where .= " AND A.id = '".$p1."' ";
+					$join .= "
+						LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status='1') B ON A.id = B.tbl_data_peserta_id
+						LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
+						LEFT JOIN idx_area D ON B.idx_kabupaten_instansi_id = D.id
+						LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
+						LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
+						LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id 
+						LEFT JOIN idx_pendidikan H ON A.idx_pendidikan_id = H.id 
+						LEFT JOIN idx_programstudi I ON A.idx_programstudi_id = I.id 
+						LEFT JOIN idx_kementerian J ON J.id = B.idx_kementerian_id
+						LEFT JOIN idx_formasi K ON K.id = B.idx_formasi_id
+						LEFT JOIN idx_tuk L ON L.id = B.idx_tuk_id
+						LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS M ON M.id = B.idx_asesor_id
+					";
+				}
+				
+				$sql = "
+					SELECT $select 
+					FROM tbl_data_peserta A 
+					$join
+					$where
+				";
+				//echo $sql;exit;
+			break;
+			case "tbl_persyaratan":
+				$sql = "
+					SELECT A.*, B.nama_persyaratan
+					FROM tbl_persyaratan_sertifikasi A
+					LEFT JOIN idx_persyaratan_registrasi B ON A.idx_persyaratan_id = B.id
+					WHERE A.tbl_data_peserta_id = '".$p1."' 
+					AND idx_sertifikasi_id = '".$p2."' 
+					AND kdreg_diklat = '".$p3."'
+				";
+			break;			
+			//END Registrasi
+			
+			//Asesmen Mandiri
+			case "tbl_asesmen_header":
+				$sql = "
+					SELECT status, nama_asesor,
+						DATE_FORMAT( tgl_ujian,  '%d-%m-%Y' ) AS tanggal_ujian,
+						DATE_FORMAT( tgl_verifikasi,  '%d-%m-%Y' ) AS tanggal_verifikasi
+					FROM tbl_asessmen_mandiri_header
+					WHERE tbl_data_peserta_id = '".$p1."'
+					AND idx_sertifikasi_id = '".$p2."' 
+					AND kdreg_diklat = '".$p3."' 
+					AND status_data = '1'
+				";
+			break;
+			case "tbl_test_assemen":
+				$sql = "
+					SELECT A.*, B.kode_unit, B.judul_unit
+					FROM tbl_asessmen_mandiri A
+					LEFT JOIN idx_unit_kompetensi B ON A.idx_unit_kompetensi_id = B.id
+					WHERE A.tbl_data_peserta_id = '".$p1."'
+					AND idx_sertifikasi_id = '".$p2."' 
+					AND kdreg_diklat = '".$p3."'
+				";
+			break;
+			//End Asesmen
+			
+			//Uji Tertulis Online
 			case "tbl_uji_header":
 				$sql = "
 					SELECT jumlah_salah, jumlah_benar, total_skor, status, nama_asesor, 
@@ -323,9 +393,17 @@ class madmin extends SHIPMENT_Model{
 					AND kdreg_diklat = '".$p3."' 
 					$limits
 				";
-				
 			break;
+			case "idx_bank_soal":
+				$sql = "
+					SELECT *
+					FROM idx_bank_soal
+					WHERE idx_aparatur_negara = '".$p1."'
+				";
+			break;			
+			//End Uji Tertulis Online
 			
+			//Uji Simulasi
 			case "tbl_uji_simulasi_header":
 				$sql = "
 					SELECT *, DATE_FORMAT( tanggal_verifikasi,  '%d-%m-%Y' ) AS tgl_verifikasi
@@ -335,34 +413,9 @@ class madmin extends SHIPMENT_Model{
 					AND kdreg_diklat = '".$p3."'
 				";
 			break;
+			//End Uji Simulasi
 			
-			case "tbl_peserta_simulasi":
-				if($this->auth['level_admin'] == 2){
-					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
-				}else{
-					$where = "";
-				}
-				
-				$no_registrasi = $this->input->post('nre');				
-				if($no_registrasi){
-					$where .= "
-						AND A.no_registrasi like '%".$no_registrasi."%'
-					";
-				}	
-				
-				$sql = "
-					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat, F.nama_tuk as tuknya
-					FROM tbl_data_peserta A
-					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
-					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
-					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
-					LEFT JOIN (SELECT * FROM tbl_uji_simulasi_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
-					WHERE B.step_uji_simulasi = '2' $where
-				";
-			break;
-			
+			//Uji Wawancara
 			case "tbl_wawancara_header":
 				$sql = "
 					SELECT nilai, status, nama_asesor, memo, komplain,
@@ -372,66 +425,9 @@ class madmin extends SHIPMENT_Model{
 					AND idx_sertifikasi_id = '".$p2."'
 				";
 			break;
-			case "tbl_peserta_wawancara":
-				if($this->auth['level_admin'] == 2){
-					$where = " AND E.idx_asesor_id = '".$this->auth['id']."' ";
-				}else{
-					$where = "";
-				}
-				
-				$no_registrasi = $this->input->post('nre');				
-				if($no_registrasi){
-					$where .= "
-						AND A.no_registrasi like '%".$no_registrasi."%'
-					";
-				}	
+			//End Uji Wawancara
 			
-				$sql = "
-					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, E.idx_sertifikasi_id,
-						E.kdreg_diklat, F.nama_tuk as tuknya
-					FROM tbl_data_peserta A
-					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status=1) B ON A.id = B.tbl_data_peserta_id
-					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
-					LEFT JOIN idx_aparatur_sipil_negara C ON E.idx_sertifikasi_id = C.id
-					LEFT JOIN (SELECT * FROM tbl_wawancara_header WHERE status_data=1) D ON A.id = D.tbl_data_peserta_id
-					LEFT JOIN idx_tuk F ON E.idx_tuk_id = F.id
-					WHERE B.step_wawancara = '2' $where
-				";
-			break;
-			case "tbl_peserta_hasil":
-			case "tbl_peserta_cetak_sertifikat":
-				$no_registrasi = $this->input->post('nre');
-				
-				if($type == 'tbl_peserta_hasil'){
-					$where = " WHERE B.step_hasil = '2' ";
-				}elseif($type == 'tbl_peserta_cetak_sertifikat'){
-					$where = " WHERE B.step_hasil = '1' AND D.siap_cetak = 'Y' ";
-				}
-				
-				if($no_registrasi){
-					$where_join = " ";
-					$where_join2 = " ";
-					$where .= "
-						AND A.no_registrasi like '%".$no_registrasi."%'
-					";
-				}else{
-					$where_join = " WHERE status=1 ";
-					$where_join2 = " WHERE status_data=1 ";
-				}
-				
-				
-				$sql = "
-					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id,
-						D.status_penilaian as lulus_tidak, B.kdreg_diklat
-					FROM tbl_data_peserta A
-					LEFT JOIN (SELECT * FROM tbl_step_peserta $where_join ) B ON A.id = B.tbl_data_peserta_id
-					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status=1) E ON A.id = E.tbl_data_peserta_id
-					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
-					LEFT JOIN (SELECT * FROM tbl_hasil_akhir $where_join2 ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
-					$where
-				";
-				//echo $sql;exit;
-			break;
+			//Cetak Sertifikat
 			case "tbl_detail_peserta_cetak":
 				$sql = "
 					SELECT 	A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
@@ -453,19 +449,64 @@ class madmin extends SHIPMENT_Model{
 					WHERE A.id = '".$p1."'
 				";
 			break;
-			case "tbl_peserta_tidak_lulus":
+			//End Cetak
+			
+			
+			//Record Diklat
+			case "tbl_diklat_terakhir":
 				$sql = "
-					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id, 
-							D.status_penilaian as lulus_tidak, B.kdreg_diklat
-					FROM tbl_data_peserta A 
-					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status = 1 ) B ON A.id = B.tbl_data_peserta_id 
-					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status = 1) E ON A.id = E.tbl_data_peserta_id 
-					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id 
-					LEFT JOIN (SELECT * FROM tbl_hasil_akhir WHERE status_data = 1  ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id AND E.kdreg_diklat = D.kdreg_diklat
-					WHERE B.step_hasil = '1' AND status_penilaian = 'TL'
+					SELECT B.*, C.name as nama_provinsi, D.name as nama_kabupaten, 
+						E.nama_instansi, F.nama_pangkat, G.nama_aparatur
+					FROM tbl_data_diklat B
+					LEFT JOIN (SELECT idprov, name FROM idx_area WHERE level='1') AS C ON B.idx_provinsi_instansi_id = C.idprov
+					LEFT JOIN idx_area D ON B.idx_kabupaten_instansi_id = D.id
+					LEFT JOIN idx_instansi E ON B.idx_instansi_id = E.id
+					LEFT JOIN idx_pangkat F ON B.idx_pangkat_id = F.id
+					LEFT JOIN idx_aparatur_sipil_negara G ON B.idx_sertifikasi_id = G.id
+					WHERE B.tbl_data_peserta_id = '".$p1."' 
+					ORDER BY id DESC LIMIT 0,1
 				";
 			break;
+			case "tbl_record_diklat":
+				$sql = "
+					SELECT B.*, C.nama_aparatur
+					FROM tbl_data_diklat B
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
+					WHERE B.tbl_data_peserta_id = '".$p1."' 
+					ORDER BY id ASC
+				";
+			break;
+			//End Record
 			
+			//File Folder
+			case "folder_sertifikasi":
+				$sql = "
+					SELECT nama_aparatur, kode_sertifikasi
+					FROM idx_aparatur_sipil_negara
+					WHERE id = '".$p1."'
+				";
+			break;
+			//End File Folder
+			
+			//Jadwal Ujian
+			case "tbl_penjadwalan":
+				if($p1){
+					$whereform = " AND A.id = '".$p1."' ";
+				}else{
+					$whereform = "";
+				}
+				$sql = "
+					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
+						B.nama_tuk, C.nama_aparatur
+					FROM tbl_jadwal_wawancara A
+					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
+					WHERE A.status = 'A' $whereform
+				";
+			break;
+			//End Jadwal Ujian
+			
+			//Master Data				
 			case "idx_voucher":
 				$sql = "
 					SELECT id, kode_voucher, DATE_FORMAT( tgl_terbit,  '%d-%m-%Y' ) AS tanggal_terbit,
@@ -474,7 +515,6 @@ class madmin extends SHIPMENT_Model{
 					WHERE 1=1 AND status_data = '1'
 				";
 			break;
-			
 			case "tbl_petunjukdokumen":
 				if($p1 == 'limit'){
 					$limit = " ORDER BY RAND() LIMIT 5 ";
@@ -483,7 +523,7 @@ class madmin extends SHIPMENT_Model{
 				}
 				
 				$sql = "
-					SELECT *
+					SELECT *,  DATE_FORMAT( tanggal_terbit,  '%d-%m-%Y' ) AS tgl_terbit
 					FROM tbl_petunjukdokumen
 					$where
 					$limit
@@ -530,15 +570,7 @@ class madmin extends SHIPMENT_Model{
 					WHERE id = '".$p1."'
 				";
 			break;
-			
-			case "idx_bank_soal":
-				$sql = "
-					SELECT *
-					FROM idx_bank_soal
-					WHERE idx_aparatur_negara = '".$p1."'
-				";
-			break;
-						
+			//End Master Data						
 		}
 		
 		if($balikan == "result_array"){
@@ -547,6 +579,34 @@ class madmin extends SHIPMENT_Model{
 			return $this->db->query($sql)->row_array();
 		}
 		
+	}
+	
+	function get_data_grid($type="", $p1="", $p2=""){
+		$this->load->library('lib');
+		$where = "";
+		switch($type){
+			case 'data_peserta':
+				$sql = "
+					SELECT A.nama_lengkap, D.real_name as nama_asesor,
+						C.step_registrasi, C.step_asesmen_mandiri, C.step_uji_test, C.step_uji_simulasi, C.step_wawancara, 
+						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id
+					FROM tbl_data_peserta A
+					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS D ON D.id = B.idx_asesor_id
+				";
+			break;
+			case 'file_registrasi' :
+			case 'file_asesmen' :
+				$sql = "
+					SELECT A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat
+					FROM tbl_data_peserta A
+					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
+				";
+			break;
+		}
+		
+		return $this->lib->jsondata($sql, $type);
 	}
 	
 	function simpansavedatabase($type="", $post="", $p1="", $p2="", $p3=""){
@@ -812,6 +872,7 @@ class madmin extends SHIPMENT_Model{
 				
 				$post_bnr['nama_sertifikasi'] = $post['nm_ser'];
 				$post_bnr['jenis_dokumen'] = $post['edjnka'];
+				$post_bnr['tanggal_terbit'] = $post['tggl_ptn'];
 				$post_bnr['kd_acak'] = $kode_acak;
 				
 				if($post['editstatus'] == 'add'){

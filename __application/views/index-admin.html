@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="{$host}assets/font-awesome/css/font-awesome.min.css">
 
     <!-- PAGE LEVEL PLUGINS STYLES -->
+    <link href="{$host}assets/css/plugins/select2/select2.css" rel="stylesheet">
+    <link href="{$host}assets/css/plugins/select2/select2.custom.min.css" rel="stylesheet">
+    <link href="{$host}assets/css/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
     <link href="{$host}assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
     <link href="{$host}assets/css/plugins/morris/morris.css" rel="stylesheet">
     <link rel="stylesheet" href="{$host}assets/css/plugins/bootstrap-datepicker/datepicker.css">
@@ -45,13 +48,15 @@
     <script src="{$host}assets/js/jquery.form.js"></script>	
     <script src="{$host}assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="{$host}assets/js/plugins/pace/pace.min.js"></script>
-	<script src="{$host}assets/js/plugins/msgplugin/jquery.center.min.js"></script>
-	<script src="{$host}assets/js/plugins/msgplugin/jquery.msg.js"></script>	
+    <script src="{$host}assets/js/plugins/msgplugin/jquery.center.min.js"></script>
+    <script src="{$host}assets/js/plugins/msgplugin/jquery.msg.js"></script>	
 
     <!-- PAGE LEVEL PLUGINS JS -->
     <script src="{$host}assets/js/plugins/jqueryui/jquery-ui-1.10.4.custom.min.js"></script>
     <script src="{$host}assets/js/plugins/daterangepicker/daterangepicker.js"></script>
     <script src="{$host}assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+    
+    
 
     <script src="{$host}assets/js/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="{$host}assets/js/plugins/datatables/datatables.js"></script>
@@ -64,9 +69,11 @@
 	<script type="text/javascript" src="{$host}assets/js/plugins/tinymce/tiny_mce.js"></script>
 	<!-- Spinner -->
     <script src="{$host}assets/js/plugins/spinner/spin.js"></script>
-	<script src="{$host}assets/js/plugins/spinner/spin.min.js"></script>
+    <script src="{$host}assets/js/plugins/spinner/spin.min.js"></script>
 	
 	<script src="{$host}assets/js/plugins/easyui/jquery.easyui.min.js"></script>
+        
+	<script src="{$host}assets/js/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
 
     <!-- Themes Core Scripts -->
     <script src="{$host}assets/js/main.js"></script>
@@ -76,6 +83,17 @@
     <script src="{$host}assets/js/plugins/slimscroll/jquery.slimscroll.init.js"></script>
     <!-- <script src="{$host}assets/js/home-page.init.js"></script> -->
     <script src="{$host}assets/js/plugins/datatables/datatables.init.js"></script>
+    
+    
+    <script src="{$host}assets/js/plugins/easypiechart/jquery.easypiechart.min.js"></script>
+    <script src="{$host}assets/js/plugins/easypiechart/excanvas.compiled.js"></script>	
+    
+    
+    <script src="{$host}assets/js/plugins/jquery-sparkline/jquery.sparkline.init.js"></script>
+    <script src="{$host}assets/js/plugins/easypiechart/jquery.easypiechart.init.js"></script>
+<!--    
+    <script src="{$host}assets/js/plugins/select2/select2.min.js"></script> -->
+    <script src="{$host}assets/js/plugins/bootstrap-select/bootstrap-select.min.js"></script>
 	
 </head>
 
@@ -124,7 +142,9 @@
 
     <script type="text/javascript">
     $('#minicalendar').datepicker();
-    </script>
+    
+    //Bootstrap Select enable
+    
 </body>
 
 </html>

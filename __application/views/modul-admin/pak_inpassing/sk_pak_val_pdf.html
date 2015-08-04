@@ -11,89 +11,80 @@
 </div> 
 
 <div id='content'>
-	<!-- <table width="100%" style="margin-bottom:10px; font-family:arial; font-size:12px;">
-		  <tr>
-			<td width="50%" align='left'>
-					Instansi : {$pak_val.instansi}
-			</td>
-			<td width="50%" align='right'>
-					Masa Penilaian : {$pak_val.masa_penilaian}
-			</td>
-		  </tr>
-	</table> -->
-	<table cellspacing="0" cellpadding="5"  width="100%" border='1' style="margin-bottom:10px; font-family:arial; font-size:12px;border-collapse: collapse;">
+	<table cellspacing="0" cellpadding="5" width="100%"  border='1' style="margin-bottom:10px; font-family:arial; font-size:12px;border-collapse: collapse;">
 		<tr>
-			<td align="left" width="1%"  style="border: 1px solid black;"> <h4>I</h4> </td>
+			<td align="left" width="3%"> <h4>I</h4> </td>
 			<td align='left' colspan="5" cellspacing="0"><h4>KETERANGAN PERORANGAN</h4></td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td align="left" width="14%" >Nama </td>
-			<td  align="left" width="85%" colspan="4">{$data.nama_lengkap}</td>
+			<td align="left" width="3%" rowspan='8'></td>
+			<td align="left" width="30%" >Nama </td>
+			<td  align="left" width="50%" colspan="4">{$data.nama_lengkap}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="25%" >NIP </td>
-			<td  width="75%" colspan="4" >{$data.nip}</td>
+			<td class="left" width="" >NIP </td>
+			<td  width="" colspan="4" >{$data.nip}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="25%" >Pangkat/Golongan Ruang TMT </td>
-			<td  width="75%" colspan="4" >{$data.nama_pangkat}</td>
+			<td class="left" width="30%" >Pangkat/Golongan Ruang TMT </td>
+			<td  width="" colspan="4" >{$data.nama_pangkat}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="24%" >Tempat & Tanggal Lahir </td>
-			<td  width="75%" colspan="4" >{$data.tempat_lahir} / {$data.tgl_lahir}</td>
+			<td class="left" width="30%" >Tempat & Tanggal Lahir </td>
+			<td  width="" colspan="4" >{$data.tempat_lahir} / {$data.tgl_lahir}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="24%" >Jenis Kelamin </td>
-			<td  width="75%" colspan="4" >{$data.sex}</td>
+			<td class="left" width="30%" >Jenis Kelamin </td>
+			<td  width="" colspan="4" >{$data.sex}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="24%" >Pendidikan </td>
-			<td  width="75%" colspan="4" >{$data.nama_pendidikan}</td>
+			<td class="left" width="30%" >Pendidikan </td>
+			<td  width="" colspan="4" >{$data.nama_pendidikan}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="24%" >Masa Kepangkatan Diajukan </td>
-			<td  width="75%" colspan="4" >{$pak_val.masa_kerja}</td>
+			<td class="left" width="30%" >Masa Kepangkatan Diajukan </td>
+			<td  width="" colspan="4" >{$pak_val.masa_kerja}</td>
 		</tr>
 		<tr>
-			<td align="left" width="1%" ></td>
-			<td class="left" width="24%" >Masa Kepangkatan Diterima </td>
-			<td  width="75%" colspan="4" >{$pak_val.masa_kerja_diterima}</td>
+			<td class="left" width="30%" >Masa Kepangkatan Diterima </td>
+			<td  width="" colspan="4" >{$pak_val.masa_kerja_diterima}</td>
 		</tr>
 	</table>
 	<table cellspacing="0" cellpadding="5"  border="1" width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;border-collapse: collapse;">
 		<tr>
 			<td align="left" width="1%"> <h4>II</h4> </td>
-			<td align='left' colspan="5"><h4>PENETAPAN ANGKA KREDIT</h4></td>
-			<td align='left' width="5%">Diajukan</td>
-			<td align='left' width="8%">Diterima</td>
+			<td align='left' width="85%" colspan="5"><h4>PENETAPAN ANGKA KREDIT</h4></td>
+			<td align='left' width="10%">Diajukan</td>
+			<td align='left' width="10%">Diterima</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%">1.</td>
-			<td align='left' colspan="4">UNSUR UTAMA</td>
-			<td align='left' width="5%"></td>
-			<td align='left' width="8%"></td>
+			<td width="1%" rowspan='12'></td>
+			<td width="0.5%" >1.</td>
+			<td width="" align='left' colspan="4">UNSUR UTAMA</td>
+			<td align='left' width="10%"></td>
+			<td align='left' width="10%"></td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td width="1%">A. </td>
-			<td align='left' width="85%"  colspan="3">Pendidikan</td>
-			<td align='left' width="5%">{$pak_val.angka_unsur_pendidikan}</td>
-			<td align='left' width="8%">{$pak_val.angka_unsur_pendidikan}</td>
+			<td width="" rowspan='7'></td>
+			<td width="" colspan="4">a. Pendidikan</td>
+			<td align='left' width=""></td>
+			<td align='left' width=""></td>
 		</tr>		
 		<tr>
+			<td align='left' width=""  colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. Pendidikan formal</td>
+			<td align='left' width="">{$pak_val.angka_unsur_pendidikan}</td>
+			<td align='left' width="">{$pak_val.angka_unsur_pendidikan}</td>
+		</tr>	
+		<tr>
+			<td align='left' width=""  colspan="4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. Pendidikan dan pelatihan</td>
+			<td align='left' width=""></td>
+			<td align='left' width=""></td>
+		</tr>
+		<!-- <tr>
 			<td></td>
 			<td></td>
 			<td></td>
-			<td align='left' width="85%"  colspan="3">																											
+			<td align='left' width="8"  colspan="3">																											
 				<table cellspacing="0" cellpadding="5"  border="1" style="margin-bottom:10px; font-family:arial; font-size:11px;border-collapse: collapse;">
 					<tr>
 						<td>
@@ -116,77 +107,55 @@
 			</td>
 			<td width="1%"></td>
 			<td width="1%"></td>
-		</tr>
+		</tr> -->
 		
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td width="1%">B. </td>
-			<td align='left' width="85%"  colspan="3">Penegakan Peraturan Daerah</td>
-			<td align='left' width="5%">{(($pak_val.total_angka_diajukan-25)*0.8)*0.45}</td>
-			<td align='left' width="8%">{$pak_val.poin_a}</td>
+			<td align='left' width=""  colspan="4">b. Penegakan Peraturan Daerah</td>
+			<td align='left' width="">{(($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.45}</td>
+			<td align='left' width="">{$pak_val.poin_a}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td width="1%">C. </td>
-			<td align='left' width="85%"  colspan="3">Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</td>
-			<td align='left' width="5%">{(($pak_val.total_angka_diajukan-25)*0.8)*0.45}</td>
-			<td align='left' width="8%">{$pak_val.poin_b}</td>
+			<td align='left' width=""  colspan="4">c. Penyelenggaraan Ketertiban Umum dan Ketenteraman Masyarakat</td>
+			<td align='left' width="">{(($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.45}</td>
+			<td align='left' width="">{$pak_val.poin_b}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td width="1%">D. </td>
-			<td align='left' width="85%"  colspan="3">Pengembangan Profesi</td>
-			<td align='left' width="5%">{(($pak_val.total_angka_diajukan-25)*0.8)*0.1}</td>
-			<td align='left' width="8%">{$pak_val.poin_c}</td>
+			<td align='left' width=""  colspan="4">d. Pengembangan Profesi</td>
+			<td align='left' width="">{(($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.1}</td>
+			<td align='left' width="">{$pak_val.poin_c}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td align='left' width="85%"  colspan="4">Jumlah Unsur Utama</td>
-			<td align='left' width="5%">
-			{((($pak_val.total_angka_diajukan-25)*0.8)*0.45)+((($pak_val.total_angka_diajukan-25)*0.8)*0.45)+((($pak_val.total_angka_diajukan-25)*0.8)*0.1)}
+			<td align='left' width=""  colspan="4">Jumlah Unsur Utama</td>
+			<td align='left' width="">
+			{($pak_val.angka_unsur_pendidikan)+((($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.45)+((($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.45)+((($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.8)*0.1)}
 			</td>
-			<td align='left' width="8%">{$pak_val.angka_unsur_utama}</td>
+			<td align='left' width="">{$pak_val.angka_unsur_pendidikan+$pak_val.angka_unsur_utama}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%">2.</td>
+			<td width="">2.</td>
 			<td align='left' colspan="4">UNSUR PENUNJANG</td>
-			<td align='left' width="5%"></td>
-			<td align='left' width="8%"></td>
+			<td align='left' width=""></td>
+			<td align='left' width=""></td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td align='left' width="80%"  colspan="4">Penunjang Tugas Polisi Pamong Praja  </td>
-			<td align='left' width="5%">{($pak_val.total_angka_diajukan-25)*0.2}</td>
-			<td align='left' width="8%">{$pak_val.angka_unsur_penunjang}</td>
+			<td width="" rowspan='2'></td>
+			<td align='left' width=""  colspan="4">Penunjang Tugas Polisi Pamong Praja  </td>
+			<td align='left' width="">{($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.2}</td>
+			<td align='left' width="">{$pak_val.angka_unsur_penunjang}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td width="1%"></td>
-			<td align='left' width="80%"  colspan="4">Jumlah Unsur Penunjang</td>
-			<td align='left' width="5%">{($pak_val.total_angka_diajukan-25)*0.2}</td>
-			<td align='left' width="8%">{$pak_val.angka_unsur_penunjang}</td>
+			<td align='left' width=""  colspan="4">Jumlah Unsur Penunjang</td>
+			<td align='left' width="">{($pak_val.total_angka_diajukan-$pak_val.angka_unsur_pendidikan)*0.2}</td>
+			<td align='left' width="">{$pak_val.angka_unsur_penunjang}</td>
 		</tr>
 		<tr>
-			<td width="1%"></td>
-			<td align='left' width="80%"  colspan="8" cellspacing="0" cellpadding="10">
-				
-			</td>
+			<td align='left' width=""  colspan="5">JUMLAH UNSUR UTAMA DAN UNSUR PENUNJANG</td>
+			<td align='left' width="">{$pak_val.total_angka_diajukan}</td>
+			<td align='left' width="">{$pak_val.total_angka_diterima}</td>
 		</tr>
-		<tr>
-			<td width="1%"></td>
-			<td align='left' width="80%"  colspan="5">JUMLAH UNSUR UTAMA DAN UNSUR PENUNJANG</td>
-			<td align='left' width="5%">{$pak_val.total_angka_diajukan}</td>
-			<td align='left' width="8%">{$pak_val.total_angka_diterima}</td>
-		</tr>
-		<tr><td width="1%">III</td>
-			<td align='left' width="80%"  colspan="8" cellspacing="0" cellpadding="10">
-				DAPAT DIPERTIMBANGKAN UNTUK DINAIKKAN DALAM JABATAN {$jabatan} / PANGKAT {$data.nama_pangkat} / TMT ........
+		<tr><td width="">III</td>
+			<td align='left' width=""  colspan="7" cellspacing="0" cellpadding="10">
+				DAPAT DIPERTIMBANGKAN UNTUK DISESUAIKAN/DIINPASSING DALAM JABATAN FUNGSIONAL POLISI PAMONG PRAJA {$jabatan} / PANGKAT {$data.nama_pangkat} / TMT ........
 			</td>
 		</tr>
 	</table>	

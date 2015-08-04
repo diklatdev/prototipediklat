@@ -83,11 +83,6 @@ $route['submit-faq'] = "why/modul_admin/simpansavedbx/savefaq/";
 $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
 $route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 
-$route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_peserta";
-$route['file-registrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/file_registrasi";
-$route['file-portofolio-peserta'] = "why/modul_admin/getdisplay/datagridview/file_asesmen";
-$route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";
-
 //Modul Portal
 $route['combo/(:any)'] = "why/modul_portal/fillcombo/$1/echo";
 
@@ -148,10 +143,6 @@ $route['berita_detail/(:any)'] = 'why/modul_portal/getdisplay/konten_berita_deta
 $route['petunjuk-dokumen'] = 'why/modul_portal/getdisplay/konten_petunjuk_dokumen';
 $route['download-file-petunjuk/(:any)'] = 'why/modul_portal/getdisplay/download_petunjuk_dokumen/$1';
 
-//Warning Display
-$route['registrasi-berhasil'] = 'why/modul_portal/getdisplay/registrasi-berhasil';
-$route['registrasi-gagal'] = 'why/modul_portal/getdisplay/registrasi-gagal';
-//End Warning Display
 
 //////////////////////////*** LV
 //Modul Admin
@@ -162,6 +153,12 @@ $route['form-admin'] = "lv/modul_admin/getdisplay/form_admin/";
 $route['submit-admin'] = "lv/modul_admin/simpansavedbx/sv_admin";
 $route['edit-admin'] = "lv/modul_admin/getdisplay/form_edit_admin";
 $route['update-admin'] = "lv/modul_admin/simpansavedbx/up_admin";
+$route['delete-admin'] = "lv/modul_admin/simpansavedbx/del_admin";
+
+
+$route['manajemen-user'] = "lv/modul_admin/getdisplay/manajemen_peserta/";
+$route['peserta-chg'] = "lv/modul_admin/getdisplay/change_peserta/";
+$route['update-peser'] = "lv/modul_admin/simpansavedbx/up_peserta";
 
 $route['manajemen-aparatur'] = "lv/modul_admin/getdisplay/manajemen_aparatur/";
 $route['form-aparatur'] = "lv/modul_admin/getdisplay/form_aparatur/";
@@ -220,6 +217,22 @@ $route['peripikasi-pak'] = "lv/modul_pak/savedatatodb/peripikasi_pak";
 
 $route['add-combo'] = "lv/modul_admin/getdisplay/add_combo";
 
+
+$route['manajemen-pejabat'] = "lv/modul_admin/getdisplay/manajemen_pejabat/";
+$route['form-pejabat'] = "lv/modul_admin/getdisplay/form_pejabat/";
+$route['submit-pejabat'] = "lv/modul_admin/simpansavedbx/sv_pejabat/sv";
+$route['edit-pejabat'] = "lv/modul_admin/getdisplay/form_edit_pejabat";
+$route['update-pejabat'] = "lv/modul_admin/simpansavedbx/sv_pejabat/up";
+$route['delete-pejabat'] = "lv/modul_admin/simpansavedbx/sv_pejabat/del";
+
+$route['lap-absen'] = "lv/modul_admin/getdisplay/tile_absen";
+$route['tuk_absensi'] = "lv/modul_admin/getdisplay/tile_absen/jadwal";
+$route['progress-sertifikasi'] = "lv/modul_admin/getdisplay/progress_sertifikasi";
+$route['tuk_progress'] = "lv/modul_admin/getdisplay/progress_sertifikasi/progress";
+$route['hasil-akhir'] = "lv/modul_admin/getdisplay/hasil_akhir";
+$route['hasil_akhir_data'] = "lv/modul_admin/getdisplay/hasil_akhir/data";
+$route['biodata'] = "lv/modul_admin/getdisplay/biodata";
+$route['biodata_peserta'] = "lv/modul_admin/getdisplay/biodata/peserta";
 
 
 $route['404_override'] = '';

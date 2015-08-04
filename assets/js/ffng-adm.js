@@ -420,6 +420,11 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				$("#"+domnya).html(resp);
 			});
 		break;
+		case "pst_chg":
+			$.post(urlnya, { 'id_u' : p1 , 'idx_s' : p2, 'kdr' : p3 }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
 	}
 	return false;
 }
@@ -605,7 +610,27 @@ function kumpulPost($type, p1, p2, p3, p4){
 						alert(rspp);
 				}			
 			});
-		break;		
+		break;	
+		case "sv_pejabat":			
+			$.post(hostir+"submit-pejabat", $('#regPejabat').serialize(),function (rspp){
+				if(rspp == 1){
+						alert('Pejabat Berhasil Ditambahkan!');
+						loadUrl(hostir+'manajemen-pejabat');
+					}else{
+						alert(rspp);
+				}			
+			});
+		break;	
+		case "up_pejabat":			
+			$.post(hostir+"update-pejabat", $('#regPejabat').serialize(),function (rspp){
+				if(rspp == 1){
+						alert('Pejabat Berhasil Diperbaharui!');
+						loadUrl(hostir+'manajemen-pejabat');
+					}else{
+						alert(rspp);
+				}			
+			});
+		break;	
 	}
 }
 
@@ -956,46 +981,66 @@ function search_data(type, p1, p2){
 
 //****************LEVI
 function sv_admin($type, urlnya){
-	if($('#nip').val() == ""){
-		$("#nip").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "NIP Harus Diisi!" });
-		return false;
+	switch(type){
+		case 'up':
+			if($('#nip').val() == ""){
+				$("#nip").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "NIP Harus Diisi!" });
+				return false;
+			}
+			if($('#username').val() == ""){
+				$("#username").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Username Harus Diisi!" });
+				return false;
+			}
+			if($('#pass').val() == ""){
+				$("#pass").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Harus Diisi!" });
+				return false;
+			}
+			if($('#repass').val() == ""){
+				$("#repass").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Konfirmasi Password Anda!" });
+				return false;
+			}
+			if($('#email').val() == ""){
+				$("#email").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Email Harus Diisi!" });
+				return false;
+			}
+			if($('#pass').val() != $('#repass').val()){
+				$("#repass").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Tidak Sama!" });
+				return false;
+			}
+			// document.regAdmin.submit();
+			
+			$.post( urlnya, $( "#regAdmin" ).serialize(), function(resp){
+				if (resp == 1){					
+					alert('Data Admin User Tersimpan!.');
+					loadUrl(hostir+'manajemen-admin');
+				}else{
+					alert(resp);
+				}
+			});
+		break;
+		case 'up_us':
+			if($('#newpass').val() == ""){
+				$("#newpass").focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Baru Harus Diisi!" });
+				return false;
+			}
+			
+			$.post( urlnya, $( "#upPesert" ).serialize(), function(resp){
+				if (resp == 1){					
+					alert('Data Admin User Tersimpan!.');
+					loadUrl(hostir+'manajemen-user');
+				}else{
+					alert(resp);
+				}
+			});
+		break;
 	}
-	if($('#username').val() == ""){
-		$("#username").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Username Harus Diisi!" });
-		return false;
-	}
-	if($('#pass').val() == ""){
-		$("#pass").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Harus Diisi!" });
-		return false;
-	}
-	if($('#repass').val() == ""){
-		$("#repass").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Konfirmasi Password Anda!" });
-		return false;
-	}
-	if($('#email').val() == ""){
-		$("#email").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Email Harus Diisi!" });
-		return false;
-	}
-	if($('#pass').val() != $('#repass').val()){
-		$("#repass").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Password Tidak Sama!" });
-		return false;
-	}
-	// document.regAdmin.submit();
-	
-	$.post( urlnya, $( "#regAdmin" ).serialize(), function(resp){
-		if (resp == 1){					
-			alert('Data Admin User Tersimpan!.');
-			loadUrl(hostir+'manajemen-admin');
-		}else{
-			alert(resp);
-		}
-	});
 }
 
 function fillCombo(url, SelID, value, value2, value3, value4){
@@ -1175,6 +1220,35 @@ function tampil_view(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				window.open(urlnya, p1, p2);
 			// });
 		break;
+		case "absensi_tuk":
+			var val = $('#select_tuk').val();
+			id_jadwal = val.substr(val.indexOf("_") + 1, val.indexOf(".")-1);
+			id_sertifikat = val.substr(val.indexOf(",") + 1);
+			id_tuk = val.substr(val.indexOf(".") + 1);
+			id_tuk = id_tuk.substr(0, id_tuk.indexOf(','));
+			
+			$.post(urlnya, { 'id_tuk' : val, 'tuk': $('#select_tuk  option:selected').text() }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "progress_tuk":
+			var val = $('#select_tuk').val();			
+			$.post(urlnya, { 'id_jadwal' : val, 'tuk': $('#select_tuk  option:selected').text()}, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "hasil_akhir":
+			var val = $('#select_tuk').val();			
+			$.post(urlnya, { 'id_jadwal' : val, 'tuk': $('#select_tuk  option:selected').text()}, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "biodata_peserta":
+			var val = $('#select_tuk').val();			
+			$.post(urlnya, { 'id_jadwal' : val, 'tuk': $('#select_tuk  option:selected').text()}, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
 	}
 }
 
@@ -1202,6 +1276,36 @@ function pakinass(type, urlnya){
 					alert(resp);
 				}
 			});
+		break;
+	}
+}
+
+
+function tampo_data(type, urlnya, p1, p2, p3, p4, p5, p6, p7){
+	switch(type){
+		case "ureng":
+			if (confirm('Apakah Anda Yakin akan menghapus Data User?')) {
+				$.post(urlnya, { 'kode' : p1 }, function(resp){
+					if (resp == 1){					
+						alert('Data Admin Berahasil Dihapus!.');
+						loadUrl(hostir+'manajemen-admin');
+					}else{
+						alert(resp);
+					}
+				});	
+			}
+		break;
+		case "pejabat":
+			if (confirm('Apakah Anda Yakin akan menghapus Data Pejabat?')) {
+				$.post(urlnya, { 'kode' : p1 }, function(resp){
+					if (resp == 1){					
+						alert('Data Pejabat Berahasil Dihapus!.');
+						loadUrl(hostir+'manajemen-pejabat');
+					}else{
+						alert(resp);
+					}
+				});	
+			}
 		break;
 	}
 }
@@ -1235,6 +1339,11 @@ function loadMan_edit(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 		break;
 		case "ap_tk_1":
 			$.post(urlnya, { 'id_tk1' : $('#ap_tk_1').val() }, function(resp){
+				$("#"+domnya).html(resp);
+			});
+		break;
+		case "pej_ed":
+			$.post(urlnya, { 'id_row' : p1 }, function(resp){
 				$("#"+domnya).html(resp);
 			});
 		break;

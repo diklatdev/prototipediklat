@@ -180,8 +180,9 @@ function processCombo(type){
 }
 
 function sbtdl_reg(){	
-	
+	$.blockUI({ message: '<h5>..Validasi Inputan..</h5>' });
 	ajxfm("regdiklat", function(respo){
+		$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
 		if(respo == 1){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
 			location.href = host+'registrasi-berhasil';
@@ -195,7 +196,11 @@ function sbtdl_reg(){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
 			location.href = host+'registrasi-gagal';
 		}
+		//
+		$.unblockUI();
 	});
+	setTimeout(function () { $.unblockUI(); }, 1000);
+	
 	
 }
 
@@ -459,6 +464,7 @@ function log_psrt(){
 }
 
 function regass(kl){
+	
 	var jm = eval((kl-1));
 	for (i = 0; i <= jm; i++) {
 		if($('#st_kmp_'+i+':checked').length == 0){
@@ -468,7 +474,17 @@ function regass(kl){
 		}
 	}
 	
-	document.asdik.submit();
+	//document.asdik.submit();
+	
+	ajxfm("asdik", function(respo){
+		if(respo == 1){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Berhasil Tersimpan Dalam Sistem." });
+			//location.href = host+'asesmen-berhasil';
+		}else{
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Gagal Tersimpan Dalam Sistem" });
+			//location.href = host+'asesmen-gagal';
+		}
+	});
 }
 
 function kumpulPoster(type, domnya, p1, p2, p3){
@@ -476,10 +492,13 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 		case "div-stuj":
 			$('#kont_suj').css({'display':'none'});
 			$('#kont_uj_heading').css({'display':'inline'});
-			$.post(host+"minta-soal", { 'st':0, 'ed':5, 'ids':p1}, function(tp){
+			$('#tb-so').addClass('loading');
+			$.post(host+"minta-soal", { /*'st':0, 'ed':5,*/ 'ids':p1 }, function(tp){
 				pars = $.parseJSON(tp);
-				$("#pss_v").val(5);
-				$('#tb-so').append(pars.pg);
+				//$("#pss_v").val(5);
+				$('#tb-so').removeClass('loading');
+				$('#tb-so').html(pars.pg);
+				$('#sbm').css({'display':'inline'});
 			});
 			
 			$("#timernya").countdowntimer({
@@ -498,6 +517,7 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 		case "div-stuj_sudah":
 			$('#kont_suj_sudah').css({'display':'none'});
 			$('#kont_uj_heading_sudah').css({'display':'inline'});
+			$('#sbm').css({'display':'inline'});
 			$("#timernya_sudah").countdowntimer({
 				hours : p1,
 				minutes : p2,
@@ -656,7 +676,7 @@ function ajxfm(objid, func){
     $('#'+objid).form('submit',{
             url:url,
             onSubmit: function(){
-                return $(this).form('validate');
+				return $(this).form('validate');
             },
             success:function(data){
 				if (func == undefined ){
@@ -671,7 +691,6 @@ function ajxfm(objid, func){
                 }
             },
             error:function(data){
-                
             }
     });
 }
@@ -697,7 +716,10 @@ function sbst(){
 				$.post(host+"soal-sisa", {'so':uhynya}, function(tp){
 					if(tp == 1){
 						document.ujdik.submit();
+					}else{
+						location.href = host+'gagal-submit-soal';
 					}
+					self.unblock();
 				});
 			});
 			$('#no').bind( 'click', function(){
@@ -708,11 +730,15 @@ function sbst(){
 }
 
 function sbmtmUp(){
+	sbst();
+	
+	/*
 	$.post(host+"soal-sisa", { }, function(tp){
 		if(tp == 1){
 			document.ujdik.submit();
 		}
 	});
+	*/
 }
 
 function sbtdl_kpm(){
@@ -812,6 +838,11 @@ function chf(dom, tpy){
 		var pesannya = "File Harus Ber-extension .jpg / .JPG / .jpeg / .JPEG !";
 		var mx = 0.50;
 		var pesannya2 = "File Harus Berukuran Maximal 500 KB !";
+	}else if(tpy == 3){
+		var arr = ["jpg", "JPG", "jpeg", "JPEG"];
+		var pesannya = "File Harus Ber-extension .jpg / .JPG / .jpeg / .JPEG !";
+		var mx = 2;
+		var pesannya2 = "File Harus Berukuran Maximal 2 MB !";
 	}
 		
 	if( $.inArray(filextension, arr) == -1 ){

@@ -33,7 +33,7 @@ function fillCmb(url, SelID, value, value2, value3, value4){
 	});
 }
 
-function processCmb(type){
+function processCmb(type,p1){
 	switch(type){
 		case "apxx_tk_1":
 			fillCombo(hostir+"combo/sb_ap_tk2/", 'sbxx_ap_tk2', "", $('#'+type).val() );
@@ -143,18 +143,18 @@ function genGrid(modnya, lebarnya, tingginya){
 				{field:'step_registrasi',title:'Registrasi',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.step_registrasi == 1){
-							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+							return "<button href='#' onClick='previewData(\"registrasi\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\");' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_registrasi == 2){
-							return "<button href='#'>Preview</button>";
+							return "<button href='#' onClick='previewData(\"registrasi\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\");' >Lihat Data</button>";
 						}
 					}
 				},
 				{field:'step_asesmen_mandiri',title:'Asesmen Mandiri',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.step_asesmen_mandiri == 1){
-							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
+							return "<button href='#' onClick='previewData(\"assmandiri\", \""+row.tbl_data_peserta_id+"\", \""+row.nama_lengkap+"\", \""+row.nama_aparatur+"\", \""+row.no_registrasi+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\");' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_asesmen_mandiri == 2){
-							return "<button href='#'>Preview</button>";
+							return "<button href='#' onClick='previewData(\"assmandiri\", \""+row.tbl_data_peserta_id+"\", \""+row.nama_lengkap+"\", \""+row.nama_aparatur+"\", \""+row.no_registrasi+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\");' >Lihat Data</button>";
 						}else if(row.step_asesmen_mandiri == 3){
 							return "Dalam Proses";
 						}else if(row.step_asesmen_mandiri == 0){
@@ -167,11 +167,11 @@ function genGrid(modnya, lebarnya, tingginya){
 						if(row.step_uji_test == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_uji_test == 2){
-							return "<button href='#'>Preview</button>";
+							return "<button href='#'>Lihat Data</button>";
 						}else if(row.step_uji_test == 3){
 							return "Dalam Proses";
 						}else if(row.step_uji_test == 4){
-							return "Verifikasi Admin";
+							return "<button href='#' onClick='kumpulPost(\"ijin_tpa\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_simulasi+"\" );'>Ijinkan Ujian</button>";
 						}else if(row.step_uji_test == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
@@ -182,7 +182,11 @@ function genGrid(modnya, lebarnya, tingginya){
 						if(row.step_uji_simulasi == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_uji_simulasi == 2){
-							return "<button href='#'>Preview</button>";
+							return "<button href='#'>Lihat Data</button>";
+						}else if(row.step_uji_simulasi == 3){
+							return "Dalam Proses";
+						}else if(row.step_uji_simulasi == 4){
+							return "<button href='#' onClick='kumpulPost(\"ijin_sim\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_test+"\");'>Ijinkan Ujian</button>";
 						}else if(row.step_uji_simulasi == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
@@ -193,7 +197,7 @@ function genGrid(modnya, lebarnya, tingginya){
 						if(row.step_wawancara == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_wawancara == 2){
-							return "<button href='#'>Preview</button>";
+							return "<button href='#'>Lihat Data</button>";
 						}else if(row.step_wawancara == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
@@ -215,15 +219,24 @@ function genGrid(modnya, lebarnya, tingginya){
 				},
 			];
 		break;
-		case "file_asesmen":
+		case "akun_peserta":
 			judulnya = "";
 			fitnya = true;
 			pagesizeboy = 50;
 			kolom[modnya] = [	
-				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
-				{field:'tbl_data_peserta_id',title:'Cek File',width:150, halign:'center',align:'center',
+				{field:'nama_lengkap',title:'Nama Peserta',width:300, halign:'center',align:'left'},
+				{field:'kdreg_diklat',title:'Status Sertifikasi',width:250, halign:'center',align:'left',
 					formatter: function(value,row,index){
-						return "<button href='#'>Preview Data</button>";
+						if(row.kdreg_diklat != null){
+							return "<font color='green'>Sedang Dalam Sertifikasi</font>";
+						}else{
+							return "<font color='red'>Tidak Dalam Sertifikasi</font>";
+						}
+					}
+				},
+				{field:'idnya_data_peserta',title:'Akun',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Lihat Akun</button>";
 					}
 				},
 			];
@@ -252,6 +265,25 @@ function genGrid(modnya, lebarnya, tingginya){
 		toolbar: '#toolbar_'+modnya,
 	});
 
+}
+
+function previewData(type, p1, p2, p3, p4, p5, p6, p7){
+	switch(type){
+		case "registrasi":
+			$('#txtheader').html("<h1>Validasi Data Registrasi Peserta Sertifikasi</h1>");
+			loadUrl_adds('ps_det', hostir+'peserta-detail', 'konten_grid', p1, p2, p3);
+		break;
+		case "lhkps":
+			$("#konten_grid").html("").addClass("loading");
+			$.post(hostir+'psswd', { 'idpsrtxx' : p1 }, function(resp){
+				$("#konten_grid").html(resp).removeClass("loading");
+			});
+		break;
+		case "assmandiri":
+			$('#txtheader').html("<h1>Asesmen Mandiri Peserta</h1>");
+			loadUrl_adds('as_dt', hostir+'asesmen-detail', 'konten_grid', p1, p2, p3, p4, p5, p6 );
+		break;
+	}
 }
 
 
@@ -290,15 +322,16 @@ function ajxamsterfrm(objid, func){
 }
 
 function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
+	$("#"+domnya).html("").addClass("loading");
 	switch(type){
 		case "ps_det":
 			$.post(urlnya, { 'id_u' : p1 , 'idx_s' : p2, 'kdr' : p3 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "as_dt":
-			$.post(urlnya, { 'id_uny' : p1, 'nm_l':p2, 'ap_n':p3, 'rg':p4, 'id_sert':p5, 'tu':p6, 'kdr':p7 }, function(resp){
-				$("#"+domnya).html(resp);
+			$.post(urlnya, { 'id_uny' : p1, 'nm_l':p2, 'ap_n':p3, 'rg':p4, 'id_sert':p5, 'kdr':p6 }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "kpo_dt":
@@ -397,20 +430,32 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 		case "tm-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'add', 'idx_sert':idx_ser }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "ed-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'edit', 'idx_sert':idx_ser, 'idx_sl':p1 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
+			});
+		break;
+		case "tm-soal-sm":
+			idx_ser = $('#sb_jns_nxx').val();
+			$.post(urlnya, { 'editstatus':'add', 'idx_sert':idx_ser }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");;
+			});
+		break;
+		case "ed-soal-sm":
+			idx_ser = $('#sb_jns_nxx').val();
+			$.post(urlnya, { 'editstatus':'edit', 'idx_sert':idx_ser, 'idx_sm':p1 }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "km-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$('#loader-soal').html('');
-			$.post(hostir+"tampil-soal", { 'id_asn':idx_ser }, function(resp){
-				$('#loader-soal').html(resp);
+			$.post(hostir+"tampil-soal", { 'id_asn':idx_ser, 'ty':urlnya }, function(resp){
+				$('#loader-soal').html(resp).removeClass("loading");;
 			});
 		break;
 		
@@ -443,8 +488,9 @@ function kumpulPost($type, p1, p2, p3, p4){
 			
 			$.post(hostir+"verifikasi-registrasi", { 'st_v':'OK', 'idus':p1, 'idxus':p2 }, function(rspp){
 				if(rspp == 1){
-					alert('Registrasi Diklat Peserta Diterima.');
-					loadUrl(hostir+'manajemen-peserta');
+					//alert('Registrasi Diklat Peserta Diterima.');
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Registrasi Peserta Sukses, Data Tersimpan"});
+					loadUrl(hostir+'data-peserta-grid');
 				}else{
 					alert(rspp);
 				}
@@ -473,14 +519,6 @@ function kumpulPost($type, p1, p2, p3, p4){
 			
 		break;
 		case "ver_uj_ikt":
-			$.post(hostir+"verifikasi-ujitulis-iktujian", { 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
-				if(rspp == 1){
-					alert('Peserta Dipersilahkan Mengikuti Ujian!');
-					loadUrl(hostir+'ujitulis-peserta');
-				}else{
-					alert(rspp);
-				}
-			});
 		break;		
 		case "krmvcf":
 			ajxamsterfrm("vcf_kr_act", function(respo){
@@ -496,7 +534,18 @@ function kumpulPost($type, p1, p2, p3, p4){
 			$.post(hostir+"hapus-banksoal", { 'editstatus':'delete', 'usiid':p1 }, function(rspp){
 				if(rspp == 1){
 					alert('Data Sudah Dihapus');
-					loadUrl_adds('km-soal');
+					loadUrl_adds('km-soal', 'tpa');
+				}else{
+					alert('Gagal Menghapus Data');
+					//loadUrl_adds('km-soal');
+				}
+			});
+		break;
+		case "del-soal-sm":
+			$.post(hostir+"hapus-banksoal-sm", { 'editstatus':'delete', 'usiid':p1 }, function(rspp){
+				if(rspp == 1){
+					alert('Data Sudah Dihapus');
+					loadUrl_adds('km-soal', 'ts');
 				}else{
 					alert('Gagal Menghapus Data');
 					//loadUrl_adds('km-soal');
@@ -513,6 +562,43 @@ function kumpulPost($type, p1, p2, p3, p4){
 			window.open(hostir+'generate-dokumen-ujian/dokumen_ujian_test/'+p1+'/'+p2+'/'+p3+'/'+p4);
 			$('#hdr_'+p1).removeAttr("disabled");
 		break;
+		
+		case "ijin_tpa":
+			if(p4 == 3){
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Simulasi, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				return false;
+			}else{
+		
+				$.post(hostir+"verifikasi-ujitulis-iktujian", { 'typ':'tpa', 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
+					if(rspp == 1){
+						//alert('Peserta Dipersilahkan Mengikuti Ujian!');
+						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Potensi Akademik." });
+						loadUrl(hostir+'data-peserta-grid');
+					}else{
+						alert(rspp);
+					}
+				});		
+				
+			}
+		break;
+		case "ijin_sim":
+			if(p4 == 3){
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Uji Online, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				return false;
+			}else{
+				$.post(hostir+"verifikasi-ujitulis-iktujian", { 'typ':'sim', 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
+					if(rspp == 1){
+						//alert('Peserta Dipersilahkan Mengikuti Ujian!');
+						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Simulasi Online." });
+						loadUrl(hostir+'data-peserta-grid');
+					}else{
+						alert(rspp);
+					}
+				});
+			}
+		break;
+		
+		
 
 //*******Levi
 		case "sv_syarat":			
@@ -962,14 +1048,34 @@ function smpn_xoal(){
 	
 	ajxamsterfrm("dataSoal", function(respo){
 		if(respo == 1){
-			alert("Data Tersimpan");
-			loadUrl_adds('km-soal');
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan" });
+			loadUrl_adds('km-soal', 'tpa');
 		}else{
-			alert("Gagal Tersimpan");
+			//alert("Gagal Tersimpan");
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan" });
 			//loadUrl_adds('km-soal');
 		}
 	});	
 	
+}
+
+function smpn_xoal_sm(){
+	if($('#ed_soal').val() == ""){
+		$("#ed_soal").focus(); 
+		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Soal Tidak Boleh Kosong" });
+		return false;
+	}
+	
+	ajxamsterfrm("dataSoal_sm", function(respo){
+		if(respo == 1){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan" });
+			loadUrl_adds('km-soal', 'ts');
+		}else{
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan" });
+			//alert("Gagal Tersimpan");
+			//loadUrl_adds('km-soal');
+		}
+	});	
 }
 
 function search_data(type, p1, p2){

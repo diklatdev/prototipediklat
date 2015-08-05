@@ -105,20 +105,25 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("data", $data);
 			break;
 			case "detail_asesmen":
-				$userid = $this->input->post("id_uny");
-				$namalengkap = $this->input->post("nm_l");
-				$namaaparatur = $this->input->post("ap_n");
-				$noreg = $this->input->post("rg");
-				$id_sertifikasi = $this->input->post("id_sert");
+				/*
 				$tanggal_ujian = $this->input->post("tu");
-				$koderegdiklat = $this->input->post("kdr");
-				
-				$content = "modul-admin/asesmen_mandiri/form-det-assesmen.html";
-				$data_kompetensi_user = $this->madmin->get_data("tbl_test_assemen", "result_array", $userid, $id_sertifikasi, $koderegdiklat);
 				
 				$query_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $id_sertifikasi);
 				$n_sert = str_replace(" ", "_", $query_sertifikasi['nama_aparatur']);
 				$folder_sertifikasi = $query_sertifikasi['kode_sertifikasi']."-".strtolower($n_sert);
+				$this->smarty->assign("folder_sertifikasi", $folder_sertifikasi);
+				*/
+				
+				$userid = $this->input->post("id_uny");
+				$id_sertifikasi = $this->input->post("id_sert");
+				$koderegdiklat = $this->input->post("kdr");
+				$namaaparatur = $this->input->post("ap_n");
+				$noreg = $this->input->post("rg");
+				$namalengkap = $this->input->post("nm_l");
+				
+				$content = "modul-admin/asesmen_mandiri/form-det-assesmen.html";
+				$data_header = $this->madmin->get_data("tbl_asesmen_header", "row_array", $userid, $id_sertifikasi, $koderegdiklat);
+				$data_kompetensi_user = $this->madmin->get_data("tbl_test_assemen", "result_array", $userid, $id_sertifikasi, $koderegdiklat);
 				
 				$kompeten = 0;
 				$tidak_kompeten = 0;
@@ -140,12 +145,14 @@ class modul_admin extends SHIPMENT_Controller{
 				
 				$this->smarty->assign("userid", $userid);
 				$this->smarty->assign("nama_lengkap", $namalengkap);
-				$this->smarty->assign("sertifikasi", $namaaparatur);
-				$this->smarty->assign("no_reg", $noreg);
-				$this->smarty->assign("folder_sertifikasi", $folder_sertifikasi);
 				$this->smarty->assign("id_sertifikasi", $id_sertifikasi);
-				$this->smarty->assign("tanggal_ujian", $tanggal_ujian);
-				$this->smarty->assign("koderegdiklat", $koderegdiklat);
+				$this->smarty->assign("sertifikasi", $namaaparatur);
+				$this->smarty->assign("koderegdiklat", $koderegdiklat);				
+				
+				$this->smarty->assign("no_reg", $noreg);
+				$this->smarty->assign("tanggal_ujian", $data_header['tanggal_ujian'] );
+				$this->smarty->assign("status_ujian", $data_header['status'] );
+				
 				$this->smarty->assign("kompeten", $kompeten);
 				$this->smarty->assign("tidak_kompeten", $tidak_kompeten);
 				$this->smarty->assign("persentase_rekomendasi", number_format($persentase_rekomendasi,1));
@@ -424,12 +431,27 @@ class modul_admin extends SHIPMENT_Controller{
 			break;
 			case "data_soal_online":
 				$idx_sertifikasi_id = $this->input->post('id_asn');
+				$type_konten = $this->input->post('ty');
+				
+				if(!$type_konten){
+					$this->smarty->assign('tab_tpa', 'active');
+				}else{
+					if($type_konten == "tpa"){
+						$this->smarty->assign('tab_tpa', 'active');
+					}elseif($type_konten == "ts"){
+						$this->smarty->assign('tab_ts', 'active');
+					}
+				}
+				
 				$content = "modul-admin/manajemen_soal/data-soal.html";
 				$data = $this->madmin->get_data('idx_bank_soal', 'result_array', $idx_sertifikasi_id);
+				$data_simulasi = $this->madmin->get_data('idx_bank_soal_simulasi', 'result_array', $idx_sertifikasi_id);
 				$this->smarty->assign('data', $data);
+				$this->smarty->assign('data_simulasi', $data_simulasi);
 			break;
 			case "form_soal_online":
 				$editstatus = $this->input->post('editstatus');
+				//$aktif_tab = $this->input->post('aktiftab');
 				$idx_sertifikasi_id = $this->input->post('idx_sert');
 				if($editstatus == 'edit'){
 					$id = $this->input->post('idx_sl');
@@ -440,6 +462,19 @@ class modul_admin extends SHIPMENT_Controller{
 					$this->smarty->assign('id_soal', $id);
 				}
 				$content = "modul-admin/manajemen_soal/form-soal.html";
+				$this->smarty->assign('editstatus', $editstatus);
+				$this->smarty->assign('idx_sertifikasi_id', $idx_sertifikasi_id);
+			break;
+			case "form_soal_simulasi":
+				$editstatus = $this->input->post('editstatus');
+				$idx_sertifikasi_id = $this->input->post('idx_sert');
+				if($editstatus == 'edit'){
+					$id = $this->input->post('idx_sm');
+					$data_soal = $this->db->get_where('idx_bank_soal_simulasi', array('id'=>$id) )->row_array();
+					$this->smarty->assign('data_soal', $data_soal);
+					$this->smarty->assign('id_soal', $id);
+				}
+				$content = "modul-admin/manajemen_soal/form-soal-simulasi.html";
 				$this->smarty->assign('editstatus', $editstatus);
 				$this->smarty->assign('idx_sertifikasi_id', $idx_sertifikasi_id);
 			break;
@@ -485,6 +520,14 @@ class modul_admin extends SHIPMENT_Controller{
 			case "datagridview":
 				$content = "modul-admin/data_peserta/main.html";
 				$this->smarty->assign('tipe', $p1);
+			break;
+			case "lihat_password":
+				$this->load->library('encrypt');
+				$idnya = $this->input->post("idpsrtxx");
+				$data_peserta = $this->madmin->get_data('tbl_data_peserta_detail', "row_array", $idnya);
+				$content = "modul-admin/data_peserta/lihat-password.html";
+				$data_peserta['pass_aseli'] = $this->encrypt->decode($data_peserta['password']); 
+				$this->smarty->assign("data", $data_peserta);
 			break;
 
 		}

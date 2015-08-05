@@ -273,11 +273,18 @@ class modul_portal extends SHIPMENT_Controller{
 				
 				$cekdataujian = $this->mportal->get_data('cekdataujian', 'result_array');
 				if($cekdataujian){
-					$datasoal = $this->mportal->get_data('soal_sudah', '', $cekdataujian);
-					$datawaktu = $this->db->get_where('tbl_ujitest_waktu', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id']) )->row_array();
 					
+					$datasoal = $this->mportal->get_data('soal_sudah', '', $cekdataujian);
+					$array_soalsudah = array();
+					foreach($cekdataujian as $k => $v){
+						array_push($array_soalsudah, $v['idx_bank_soal_id']);
+					}
+					$datasoal_belum = $this->mportal->get_data('soal_belum', '', $array_soalsudah);
+					
+					$datawaktu = $this->db->get_where('tbl_ujitest_waktu', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id']) )->row_array();
 					$konten = "modul-portal/uji_online/form_ujionline_sudah";
 					$this->smarty->assign("datasoal", $datasoal);
+					$this->smarty->assign("datasoal_belum", $datasoal_belum);
 					$this->smarty->assign("jmlsoal", count($datasoal));
 					$this->smarty->assign("datawaktu", $datawaktu);
 				}else{
@@ -335,6 +342,7 @@ class modul_portal extends SHIPMENT_Controller{
 			case "pembayaran-gagal":
 			case "ujitest-berhasil":
 			case "ujitest-gagal":
+			case "submit-soal-sisa-gagal":
 				$konten = "modul-portal/status_submit_semua";
 				$this->smarty->assign('type', $type);
 			break;
@@ -431,17 +439,19 @@ class modul_portal extends SHIPMENT_Controller{
 						}
 					break;
 					case "load_soal":
+						/*
 						$start = $this->input->post('st');
 						$end = $this->input->post('ed');
+						*/
 						
 						$data_soal = $this->mportal->get_data("data_soal", "result_array");
 						$this->smarty->assign('data_soal', $data_soal);
-						$this->smarty->assign('penomoran', $start);
+						$this->smarty->assign('penomoran', 0);
 						$page = $this->smarty->fetch("modul-portal/uji_online/load_soal.html");
 						
 						$array_encode = array(
-							"st" => $start,
-							"ed" => $end,
+							//"st" => $start,
+							//"ed" => $end,
 							"pg"	=> $page,
 						);
 						echo json_encode($array_encode);
@@ -653,6 +663,7 @@ class modul_portal extends SHIPMENT_Controller{
 			
 		}elseif($type == "asesmen"){
 			if($this->auth){
+				//Checking Data Double
 				$array = array(
 					"tbl_data_peserta_id" => $this->auth['id'],
 					"idx_sertifikasi_id" => $this->auth['idx_sertifikasi_id'],
@@ -661,7 +672,7 @@ class modul_portal extends SHIPMENT_Controller{
 				);
 				$cek_data = $this->db->get_where('tbl_asessmen_mandiri_header', $array )->row_array();
 				if($cek_data){
-					header("Location: " . $this->host ."assesmen-mandiri");
+					echo 0; //header("Location: " . $this->host ."assesmen-mandiri");
 					exit;
 				}
 			}else{
@@ -701,7 +712,8 @@ class modul_portal extends SHIPMENT_Controller{
 			if($type == "registrasi"){
 				echo $savenya; //$this->getdisplay("registrasi-berhasil");
 			}elseif($type == "asesmen"){
-				$this->getdisplay("asesmen-berhasil");
+				//$this->getdisplay("asesmen-berhasil");
+				echo $savenya;
 			}elseif($type == "saveujian"){
 				$this->getdisplay("ujitest-berhasil");
 			}elseif($type == "savepembayaran"){
@@ -724,7 +736,8 @@ class modul_portal extends SHIPMENT_Controller{
 				//$this->getdisplay("registrasi-gagal");
 				echo $savenya;
 			}elseif($type == "asesmen"){
-				$this->getdisplay("asesmen-gagal");
+				//$this->getdisplay("asesmen-gagal");
+				echo $savenya;
 			}elseif($type == "saveujian"){
 				$this->getdisplay("ujitest-gagal");
 			}elseif($type == "savepembayaran"){

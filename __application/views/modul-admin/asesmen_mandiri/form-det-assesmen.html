@@ -42,7 +42,7 @@
 						<th width='1%'>No.</th>
 						<th width='5%' style="text-align:center !important;">Kode Unit</th>
 						<th width='30%' style="text-align:center !important;">Judul Unit</th>
-						<th width='10%' style="text-align:center !important;">Dokumen</th>
+						{* <th width='10%' style="text-align:center !important;">Bukti Pendukung</th> *}
 						<th width='10%' style="text-align:center !important;">Penilaian Diri</th>
 						<th width='10%' style="text-align:center !important;">Rekomendasi</th>
 					</tr>
@@ -56,11 +56,14 @@
 							<td >{$ind}</td>
 							<td >{$rows.kode_unit}</td>
 							<td >{$rows.judul_unit}</td>
+							{*
 							{if $rows.file_pendukung}
 								<td ><a target='_blank' href="{$host}__repository/dokumen_peserta/{$no_reg}/file_asesmen_mandiri/{$folder_sertifikasi}/{$koderegdiklat}/{$rows.file_pendukung|default:'-'}">Preview File</a></td>
 							{else}
 								<td > - </td>	
 							{/if}
+							<td>{$rows.bukti_pendukung}</td>
+							*}
 							<td>
 								{if $rows.penilaian eq 'K'}
 									<font color='green'>Kompeten</font>
@@ -69,21 +72,29 @@
 								{/if}
 							</td>							
 							<td >
+								{assign var=checkmate1 value=""}
+								{assign var=checkmate2 value=""}
 								{if $rows.status_ver eq '1'}
-									{assign var=checkmate value="checked"}
+									{assign var=checkmate1 value="checked"}
 								{elseif $rows.status_ver eq '0'}
-									{assign var=checkmate value=null}
-								{elseif $rows.status_ver eq '-1'}
-									{assign var=checkmate value=null}
+									{assign var=checkmate2 value="checked"}
 								{/if}
+								
 								<div class="tcbs">
-									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" {$checkmate}>
+									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="1" {$checkmate1}>
 									Terpenuhi
 								</div>
 								<div class="tcbs">
-									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="0" >
+									<input type="radio" name="rek_{$rows.id}" id="rek_{$ceked}" value="0" {$checkmate2}>
 									Tidak Terpenuhi
 								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td style="text-align:center !important;"><b>Bukti Pendukung</b></td>
+							<td colspan='4' >
+								{$rows.bukti_pendukung}
 							</td>
 						</tr>
 						<tr>
@@ -97,7 +108,7 @@
 							</td>
 							<td style="text-align:right !important;"><b>Memo Untuk Peserta</b></td>
 							<td colspan='3' >
-								<textarea id="maxL-3" class="form-control" rows="1" maxlength="225" name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
+								<textarea id="maxL-3" style="background:#E0FFC9;" class="form-control" rows="1" maxlength="225" name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
 							</td>
 						</tr>
 						{assign var=ind value=$ind+1}
@@ -119,10 +130,18 @@
 						<label>Keputusan Asesmen</label>
 					</td>
 					<td width='30%'>
-						<select name="hsl_as" id="hsl_as">
+						<select name="hsl_as" style="background:#E0FFC9;" id="hsl_as">
+							{assign var=lulus value=""}
+							{assign var=gak_lulus value=""}
+							{if $status_ujian eq 'L'}
+								{assign var=lulus value="selected"}
+							{elseif $status_ujian  eq 'TL'}
+								{assign var=gak_lulus value="selected"}
+							{/if}
+							
 							<option value=''>-- Pilih --</option>
-							<option value='L'>Memenuhi Syarat</option>
-							<option value='TL'>Belum Memenuhi Syarat</option>
+							<option value='L' {$lulus} >Memenuhi Syarat</option>
+							<option value='TL' {$gak_lulus} >Belum Memenuhi Syarat</option>
 						</select>
 					</td>
 				</tr>

@@ -31,10 +31,10 @@
 		{if $type eq "asesmen-berhasil"}
 		<div class="row">
 			<div class="col-lg-12">
-				<h4>Asesmen Berhasil</h4>
+				<h4>Asesmen Mandiri Berhasil</h4>
 				<div class="well light">
 					<center>
-						Anda Sudah Melakukan Uji Asesmen Mandiri, <br/>
+						Anda Sudah Melakukan Asesmen Mandiri, <br/>
 						Admin Sistem Akan Segera Memverifikasi Berkas Anda. <br/>
 						Silahkan Tunggu Notifikasi Untuk Melangkah Ke Langkah Selanjutnya. <br/>
 						Terima Kasih.
@@ -46,10 +46,10 @@
 		{if $type eq "asesmen-gagal"}
 		<div class="row">
 			<div class="col-lg-12">
-				<h4>Asesmen Gagal</h4>
+				<h4>Asesmen Mandiri Gagal</h4>
 				<div class="well light">
 					<center>
-						Maaf Uji Asesmen Mandiri Gagal Dikarenakan Gangguan Sistem. <br/>
+						Maaf Asesmen Mandiri Gagal Dikarenakan Gangguan Sistem. <br/>
 						Silahkan Coba Beberapa Saat Lagi. <br/>
 						Terima Kasih.
 					</center>
@@ -89,10 +89,10 @@
 		{if $type eq "ujitest-berhasil"}
 		<div class="row">
 			<div class="col-lg-12">
-				<h4>Ujian Test Online Berhasil</h4>
+				<h4>Ujian Test Potensi Akademik Berhasil</h4>
 				<div class="well light">
 					<center>
-						Anda Sudah Melakukan Ujian Test Online, <br/>
+						Anda Sudah Melakukan Test Potensi Akademik, <br/>
 						Admin Sistem Akan Segera Memverifikasi Berkas Anda. <br/>
 						Silahkan Tunggu Notifikasi Untuk Melangkah Ke Langkah Selanjutnya. <br/>
 						Terima Kasih.
@@ -104,16 +104,30 @@
 		{if $type eq "ujitest-gagal"}
 		<div class="row">
 			<div class="col-lg-12">
-				<h4>Konfirmasi Gagal</h4>
+				<h4>Kegagalan Sistem</h4>
 				<div class="well light">
 					<center>
-						Maaf Ujian Test Online Gagal Dikarenakan Gangguan Sistem. <br/>
+						Maaf Test Potensi Akademik Anda Gagal Dikarenakan Gangguan Sistem. <br/>
 						Silahkan Coba Beberapa Saat Lagi. <br/>
 						Terima Kasih.
 					</center>
 				</div>
 			</div>
 		</div>
+		{/if}
+		{if $type eq "submit-soal-sisa-gagal"}
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Konfirmasi Gagal</h4>
+				<div class="well light">
+					<center>
+						Terjadi Kesalahan Sistem, <br/>
+						Silahkan Anda Masuk Kembali Ke Dalam Halaman "Test Potensi Akademik", <br/>
+						Untuk Melakukan Submit Ujian.
+					</center>
+				</div>
+			</div>
+		</div>		
 		{/if}
 		
 		

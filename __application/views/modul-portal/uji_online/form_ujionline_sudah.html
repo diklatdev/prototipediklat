@@ -69,8 +69,9 @@
 													<th>Soal Pertanyaan</th>
 												</tr>
 											</thead>
-											<tbody id='tb-so'>
+											<tbody>
 												{if $datasoal}
+												
 													{assign var=no value=0}
 													{foreach from=$datasoal item=rws}
 														{assign var=no value=$no+1}
@@ -90,7 +91,10 @@
 																	<div style='float:left;width:1%;margin-right:10px;'>
 																		<input type='radio' {$tanda} name='idj_{$rws.id_soal}' value='{$uhy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rws.id_soal}', '{$uhy.id_jwb}'); "> 
 																	</div>
-																	<div style='float:left;width:98%;'>
+																	<div style='float:left;width:1%;margin-right:10px;'>
+																		{$uhy.pilihan_ganda}. 
+																	</div>
+																	<div style='float:left;width:93%;'>
 																		{$uhy.jawab}
 																	</div>
 																</td>
@@ -100,17 +104,53 @@
 															<td colspan='2'></td>
 														</tr>
 													{/foreach}
+													
+												{/if}
+												{if $datasoal_belum}
+												
+													{assign var=nox value={$jmlsoal}}
+													{foreach from=$datasoal_belum item=rwss}
+														{assign var=nox value=$nox+1}
+														<tr>
+															<td width='5%'><input type='hidden' name="idrws[]" class='cks' value='{$rwss.idnya}'>{$nox}</td>
+															<td width='95%'>{$rwss.soalnya}</td>
+														</tr>
+														{foreach from=$rwss.jawaban item=uhyy}
+															<tr>
+																<td>&nbsp;</td>
+																<td>
+																	<div style='float:left;width:1%;margin-right:10px;'>
+																		<input type='radio' name='idj_{$rwss.idnya}' value='{$uhyy.id_jwb}' onChange="kumpulPoster('sbt-uj-satuan', 'tst', '{$rwss.idnya}', '{$uhyy.id_jwb}'); "> 
+																	</div>
+																	<div style='float:left;width:1%;margin-right:10px;'>
+																		{$uhyy.pilihan_ganda}. 
+																	</div>
+																	<div style='float:left;width:93%;'>
+																		{$uhyy.jawabannya}	
+																	</div>
+																</td>
+															</tr>
+														{/foreach}
+														<tr>
+															<td colspan='2'></td>
+														</tr>
+													{/foreach}
+												
+												
 												{/if}
 											</tbody>
 										</table>
 										
+										{*
 										<div id='jrn' class="form-actions">
 											<button id='nxt' class="btn btn-success" onClick="event.preventDefault();kumpulPoster('ld-so', 'kont_suj_sudah', '{$auth.idx_sertifikasi_id}');">Soal Selanjutnya</button>
 										</div>
+										*}
 										
 									</div>
 								</div>
 							</form>
+							
 							<div id='sbm' class="form-actions"  style='display:none'>
 								<button id='sbmn' class="btn btn-primary" onClick="event.preventDefault();sbst();">Submit Ujian</button>
 							</div>

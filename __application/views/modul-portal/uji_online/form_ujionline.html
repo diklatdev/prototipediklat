@@ -89,26 +89,12 @@
 						<input type='hidden' id='so_ar' name='so_ar'>
 						<div class="form-group">
 							<div class="col-sm-12">
-								
-								<table class="table table-bordered table-hover tc-table">
-									<thead>
-										<tr>
-											<th>No.</th>
-											<th>Soal Pertanyaan</th>
-										</tr>
-									</thead>
-									<tbody id='tb-so'>
-									</tbody>
-								</table>
-								
-								<div id='jrn' class="form-actions">
-									<button id='nxt' class="btn btn-success" onClick="event.preventDefault();kumpulPoster('ld-so', 'kont_suj', '{$auth.idx_sertifikasi_id}');">Soal Selanjutnya</button>
-								</div>
-								
+								<div id='tb-so'></div>
 							</div>
 						</div>
 					</form>
-					<div id='sbm' class="form-actions"  style='display:none'>
+					
+					<div id='sbm' class="form-actions" style='display:none;'>
 						<button id='sbmn' class="btn btn-primary" onClick="event.preventDefault();sbst();">Submit Ujian</button>
 					</div>
 

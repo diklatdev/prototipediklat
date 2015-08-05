@@ -2,7 +2,9 @@
 	<div class="col-lg-12">
 		<div class="page-header title" style="margin-bottom:5px !important;">
 			<div class="well white">		
-				
+				<h4>Form Soal Test Potensi Akademik</h4>
+				<hr/>
+				<br>
 				<form class="form-horizontal" role="form" name="dataSoal" id="dataSoal" action="{$host}submit-banksoal" method="post" enctype="multipart/form-data">
 					<input type='hidden' name='idx_sert' value="{$idx_sertifikasi_id}">
 					<input type='hidden' name='idx_sola' value="{$id_soal|default:''}">
@@ -71,7 +73,7 @@
 				
 				<div class="form-actions ">
 					<button id='btnnya' class="btn btn-success" onClick="event.preventDefault();smpn_xoal();">Simpan</button>
-					<button id='btnnya' class="btn btn-danger" onClick="event.preventDefault();loadUrl_adds('km-soal');">Kembali</button>
+					<button id='btnnya' class="btn btn-danger" onClick="event.preventDefault();loadUrl_adds('km-soal', 'tpa');">Kembali</button>
 				</div>
 				
 			</div>

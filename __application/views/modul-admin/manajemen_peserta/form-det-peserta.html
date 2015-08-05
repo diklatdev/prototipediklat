@@ -236,7 +236,46 @@
 													<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
 												</div>	
 											</td>
+											
+											<td class="col-small">
+												<span id='sts_{$rows.id}'>
+												{if $rows.status_penilaian eq '0'}
+													<div class="tcb">
+														<input type="radio" style="background:#E0FFC9;" name="kep_{$rows.id}" id="kep_{$rows.id}" value="1" >
+														Terpenuhi
+													</div>
+													<div class="tcb">
+														<input type="radio" style="background:#E0FFC9;" name="kep_{$rows.id}" id="kep_{$rows.id}" value="0" >
+														Tidak Terpenuhi
+													</div>
+												{else}
+													<font color='green'>Terpenuhi</font>
+												{/if}
+												</span>
+												<input type='hidden' id='sts_nilai_{$ind}' value='{$rows.status_penilaian}'>
+											</td>
+											
+										</tr>		
+										<tr>
+											<td>&nbsp;</td>
+											<td><b>Memo Untuk Peserta</b></td>
+											<td colspan='2'>
+												{if $rows.status_penilaian eq '0'}
+													<textarea cols='30' rows='1' style="background:#E0FFC9;" name='memo_{$rows.id}' id='memo_{$rows.id}'>{$rows.memo}</textarea>
+												{else}
+													{$rows.memo}
+												{/if}
+												<span id='memo_{$rows.id}'></span>
+											</td>
+											<td>
+												{if $rows.status_penilaian eq '0'}
+													<button id='btn_{$rows.id}' class="btn btn-success" onClick="event.preventDefault();kumpulPost('ver_dokper', '{$rows.id}', '{$ind}' );">Submit</button>
+												{else}
+													-
+												{/if}	
+											</td>
 										</tr>									
+										
 										{assign var=ind value=$ind+1}
 									{/foreach}
 									</tbody>
@@ -247,6 +286,12 @@
 				</div>
 			</form>
 			
+			<div class="form-actions ">				
+				<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}', '{$data.idx_sertifikasi_id}', '{$ind}' );">Verifikasi Data Ini</button>
+				<button id='btnnya_balik' class="btn btn-inverse" onClick="loadUrl('{$host}data-peserta-grid');">Kembali</button>
+			</div>
+			
+			{*
 			<div class="form-actions ">
 				{if $data.status eq "BV"}
 					<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}' );">Verifikasi Data Ini</button>
@@ -256,7 +301,7 @@
 					<button id='btnnya' class="btn btn-danger" onClick="">Aktifkan User</button>
 				{/if}
 			</div>
-
+			*}
 		</div>
 	</div>
 </div>

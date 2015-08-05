@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="page-header title" style="margin-bottom:5px !important;">
+			<div class="well white">		
+				<h4>Form Soal Test Simulasi</h4>
+				<hr/>
+				<br>
+				<form class="form-horizontal" role="form" name="dataSoal_sm" id="dataSoal_sm" action="{$host}submit-banksoal-sm" method="post" enctype="multipart/form-data">
+					<input type='hidden' name='idx_sert' value="{$idx_sertifikasi_id}">
+					<input type='hidden' name='idx_sola' value="{$id_soal|default:''}">
+					<input type='hidden' name='editstatus' value="{$editstatus}">
+					<div class="form-group">
+						<div class="col-sm-12">
+							
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Soal </label>
+								<div class="col-sm-8">
+									<textarea class="form-control" id='ed_soal' rows="4" cols="50"  placeholder="" name="ed_soal">{$data_soal.soal|default:''}</textarea>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Status</label>
+						<div class="col-sm-2">															
+							<select id='cbSts' class="form-control" name="cbSts">
+								<option value='1'>Aktif</option>
+								<option value='0'>Tidak Aktif</option>
+							</select>
+						</div>
+					</div>
+				</form>
+				
+				<div class="form-actions ">
+					<button id='btnnya' class="btn btn-success" onClick="event.preventDefault();smpn_xoal_sm();">Simpan</button>
+					<button id='btnnya' class="btn btn-danger" onClick="event.preventDefault();loadUrl_adds('km-soal', 'ts');">Kembali</button>
+				</div>				
+			
+			</div>
+		</div>
+	</div>
+</div>

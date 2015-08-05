@@ -2,50 +2,103 @@
 	<div class="col-lg-12">
 		<div class="page-header title" style="margin-bottom:5px !important;">
 		
-		<div class="well white" style="margin-bottom:0px !important;">
-			<div class="btn-group btn-group-sm ">
-				<a href="#" onClick="loadUrl_adds('tm-soal','{$host}crud-soal', 'loader-soal');" class="btn btn-danger"><i class="fa fa-plus"></i>Tambah Soal</a>
-			</div>
-		</div>
-	
-		<div class="portlet"><!-- /Portlet -->
-			<div id="basic" class="panel-collapse collapse in">
-				<div class="portlet-body no-padding">
-					<table class="table table-bordered table-hover tc-table">
-						<thead>
-							<tr>
-								<th width='5%'>No.</th>
-								<th class="col-medium center">Pertanyaan</th>
-								<th width='15%' style='text-align:center;'>Status</th>
-								<th width='15%' style='text-align:center;'>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{assign var=ind value=1}
-							{foreach from=$data item=rows}
+		<div class="well light">
+			<div class="tc-tabs no-margin"><!-- Nav tabs style 10-->
+				<ul class="nav nav-tabs tab-small-button">
+					<li class="{$tab_tpa|default:''}"><a data-toggle="tab" href="#tabtpa"><i class="fa fa-home"></i> Test Potensi Akademik</a></li>
+					<li class="{$tab_ts|default:''}"><a data-toggle="tab" href="#tabts"><i class="fa fa-user"></i> Test Simulasi</a></li>
+				</ul>
+				
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div id="tabtpa" class="tab-pane {$tab_tpa|default:''}">
+						<div class="well white" style="margin-bottom:0px !important;">
+						<div class="btn-group btn-group-sm ">
+							<a href="#" onClick="loadUrl_adds('tm-soal','{$host}crud-soal', 'loader-soal');" class="btn btn-danger"><i class="fa fa-plus"></i>Tambah Soal</a>
+						</div>
+						</div>
+						
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
 								<tr>
-									<td>{$ind}</td>
-									<td>{$rows.soal}</td>
-									<td align='center'>
-										{if $rows.status eq '1'}
-											<font color='green'>Aktif</font>
-										{else}
-											<font color='red'>Tidak Aktif</font>
-										{/if}
-									</td>
-									<td align='center'>
-										<div class="btn-group btn-group-xs ">
-											<a href="#" onClick="loadUrl_adds('ed-soal','{$host}crud-soal', 'loader-soal', '{$rows.id}');" class="btn btn-warning"><i class="fa fa-search-plus">Detail</i></a>
-										</div>
-										<div class="btn-group btn-group-xs ">
-											<a href="#" onClick="kumpulPost('del-soal', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-search-plus">Hapus</i></a>
-										</div>
-									</td>
+									<th width='5%'>No.</th>
+									<th class="col-medium center">Pertanyaan</th>
+									<th width='15%' style='text-align:center;'>Status</th>
+									<th width='15%' style='text-align:center;'>Action</th>
 								</tr>
-								{assign var=ind value=$ind+1}
-							{/foreach}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{assign var=ind value=1}
+								{foreach from=$data item=rows}
+									<tr>
+										<td>{$ind}</td>
+										<td>{$rows.soal}</td>
+										<td align='center'>
+											{if $rows.status eq '1'}
+												<font color='green'>Aktif</font>
+											{else}
+												<font color='red'>Tidak Aktif</font>
+											{/if}
+										</td>
+										<td align='center'>
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="loadUrl_adds('ed-soal','{$host}crud-soal', 'loader-soal', '{$rows.id}');" class="btn btn-warning"><i class="fa fa-search-plus">Detail</i></a>
+											</div>
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="kumpulPost('del-soal', '{$rows.id}');" class="btn btn-danger"><i class="fa fa-search-plus">Hapus</i></a>
+											</div>
+										</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+								{/foreach}
+							</tbody>
+						</table>
+							
+					</div>
+					<div id="tabts" class="tab-pane {$tab_ts|default:''}">
+						<div class="well white" style="margin-bottom:0px !important;">
+							<div class="btn-group btn-group-sm ">
+								<a href="#" onClick="loadUrl_adds('tm-soal-sm','{$host}crud-soal-sm', 'loader-soal');" class="btn btn-danger"><i class="fa fa-plus"></i>Tambah Soal</a>
+							</div>
+						</div>
+						
+						<table class="table table-bordered table-hover tc-table">
+							<thead>
+								<tr>
+									<th width='5%'>No.</th>
+									<th class="col-medium center">Pertanyaan</th>
+									<th width='15%' style='text-align:center;'>Status</th>
+									<th width='15%' style='text-align:center;'>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{assign var=indxx value=1}
+								{foreach from=$data_simulasi item=rowss}
+									<tr>
+										<td>{$indxx}</td>
+										<td>{$rowss.soal}</td>
+										<td align='center'>
+											{if $rowss.status eq '1'}
+												<font color='green'>Aktif</font>
+											{else}
+												<font color='red'>Tidak Aktif</font>
+											{/if}
+										</td>
+										<td align='center'>
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="loadUrl_adds('ed-soal-sm','{$host}crud-soal-sm', 'loader-soal', '{$rowss.id}');" class="btn btn-warning"><i class="fa fa-search-plus">Detail</i></a>
+											</div>
+											<div class="btn-group btn-group-xs ">
+												<a href="#" onClick="kumpulPost('del-soal-sm', '{$rowss.id}');" class="btn btn-danger"><i class="fa fa-search-plus">Hapus</i></a>
+											</div>
+										</td>
+									</tr>
+									{assign var=indxx value=$indxx+1}
+								{/foreach}
+							</tbody>
+						</table>
+						
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,3 +1,11 @@
+<table class="table table-bordered table-hover tc-table">
+	<thead>
+		<tr>
+			<th>No.</th>
+			<th>Soal Pertanyaan</th>
+		</tr>
+	</thead>
+	<tbody>
 {if $data_soal}
 {assign var=no value=$penomoran}
 {foreach from=$data_soal item=rws}
@@ -27,3 +35,6 @@
 	</tr>
 {/foreach}
 {/if}
+	</tbody>
+</table>
+									

@@ -16,7 +16,7 @@
 				<div class="portlet">
 					<div class="well light">
 						
-						<form class="form-horizontal" role="form" name="asdik" action="{$host}submit-asesmen" method="post" enctype="multipart/form-data">
+						<form class="form-horizontal" role="form" name="asdik" id="asdik" action="{$host}submit-asesmen" method="post" enctype="multipart/form-data">
 							<div class="form-group">
 							<div class="col-sm-12">
 								<table class="table table-bordered table-hover tc-table">
@@ -56,8 +56,11 @@
 													<table id='flpd_{$rows.id}'>
 														<tr>
 															<td>
+																{*
 																<input type="file" id="fl_pdk_{$rows.id}" name="fl_pdk[]" onChange="chf('fl_pdk_{$rows.id}', 1);" class="" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
-																<span class="help-block"><code>Extension file .jpg / .pdf, ukuran file maksimal 5 MB</code> </span>
+																*}
+																<textarea id='bkt_pndk' class="form-control validatext" rows="4" cols="50"  placeholder="" name="bkt_pndk[]"></textarea>
+																<span class="help-block"><code>Tuliskan Bukti Pendukung Yang Anda Miliki untuk Unit Kompetensi ini dan Harap Dibawa pada saat Wawancara Dengan Asesor</code> </span>
 															</td>
 														</tr>
 													</table>

@@ -83,6 +83,13 @@ $route['submit-faq'] = "why/modul_admin/simpansavedbx/savefaq/";
 $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
 $route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 
+$route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_peserta";
+$route['file-registrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/file_registrasi";
+$route['akun-peserta'] = "why/modul_admin/getdisplay/datagridview/akun_peserta";
+$route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
+$route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";
+
+
 //Modul Portal
 $route['combo/(:any)'] = "why/modul_portal/fillcombo/$1/echo";
 
@@ -142,6 +149,14 @@ $route['berita_detail/(:any)'] = 'why/modul_portal/getdisplay/konten_berita_deta
 
 $route['petunjuk-dokumen'] = 'why/modul_portal/getdisplay/konten_petunjuk_dokumen';
 $route['download-file-petunjuk/(:any)'] = 'why/modul_portal/getdisplay/download_petunjuk_dokumen/$1';
+
+$route['registrasi-berhasil'] = 'why/modul_portal/getdisplay/registrasi-berhasil';
+$route['registrasi-gagal'] = 'why/modul_portal/getdisplay/registrasi-gagal';
+
+$route['asesmen-berhasil'] = 'why/modul_portal/getdisplay/asesmen-berhasil';
+$route['asesmen-gagal'] = 'why/modul_portal/getdisplay/asesmen-gagal';
+
+$route['gagal-submit-soal'] = 'why/modul_portal/getdisplay/submit-soal-sisa-gagal';
 
 
 //////////////////////////*** LV

@@ -143,72 +143,24 @@
 			{if $diklat eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#componentss">
-					<i class="fa fa-list"></i> Diklat<span class="fa arrow"></span>
+					<i class="fa fa-list"></i> Sertifikasi<span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="componentss">
-						{if $registrasipeserta eq '1'}
 						<li>
-							<a href="#" onClick="loadUrl('{$host}manajemen-peserta');">
-								<i class="fa fa-angle-double-right"></i> Registrasi Peserta
+							<a href="#" onClick="loadUrl('{$host}file-registrasi-peserta');">
+								<i class="fa fa-angle-double-right"></i> File Registrasi
 							</a>
 						</li>
-						{/if}
-						{if $asesmenmandiri eq '1'}
 						<li>
-							<a href="#" onClick="loadUrl('{$host}asesmen-peserta');">
-								<i class="fa fa-angle-double-right"></i> Asesmen Mandiri
+							<a href="#" onClick="loadUrl('{$host}akun-peserta');">
+								<i class="fa fa-angle-double-right"></i> Manajemen Peserta
 							</a>
 						</li>
-						{/if}
-						{if $pembayaran eq '1'}
 						<li>
-							<a href="#" onClick="loadUrl('{$host}pembayaran-peserta');">
-								<i class="fa fa-angle-double-right"></i> Pembayaran
-							</a>
-						</li>			
-						{/if}
-						{if $ujitulis eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}ujitulis-peserta');">
-								<i class="fa fa-angle-double-right"></i> Uji Tulis
+							<a href="#" onClick="loadUrl('{$host}data-peserta-grid');">
+								<i class="fa fa-angle-double-right"></i> Peserta Sertifikasi
 							</a>
 						</li>
-						{/if}
-						{if $ujisimulasi eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}ujisimulasi-peserta');">
-								<i class="fa fa-angle-double-right"></i> Uji Simulasi
-							</a>
-						</li>
-						{/if}
-						{if $wawancara eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}wawancara-peserta');">
-								<i class="fa fa-angle-double-right"></i> Wawancara
-							</a>
-						</li>
-						{/if}
-						{if $hasilakhir eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}hasil-peserta');">
-								<i class="fa fa-angle-double-right"></i> Hasil Akhir
-							</a>
-						</li>
-						{/if}
-						{if $remedialpeserta eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}remedial-peserta');">
-								<i class="fa fa-angle-double-right"></i> Remedial Peserta
-							</a>
-						</li>
-						{/if}						
-						{if $printsertifikat eq '1'}
-						<li>
-							<a href="#" onClick="loadUrl('{$host}cetak-sertifikat');">
-								<i class="fa fa-angle-double-right"></i> Print Sertifikat
-							</a>
-						</li>
-						{/if}
 					</ul>
 			</li>
 			{/if}

@@ -401,6 +401,13 @@ class madmin extends SHIPMENT_Model{
 					WHERE idx_aparatur_negara = '".$p1."'
 				";
 			break;			
+			case "idx_bank_soal_simulasi":
+				$sql = "
+					SELECT *
+					FROM idx_bank_soal_simulasi
+					WHERE idx_sertifikasi_id = '".$p1."'
+				";
+			break;			
 			//End Uji Tertulis Online
 			
 			//Uji Simulasi
@@ -585,21 +592,23 @@ class madmin extends SHIPMENT_Model{
 		$this->load->library('lib');
 		$where = "";
 		switch($type){
-			case 'data_peserta':
+			case 'data_peserta':				
 				$sql = "
-					SELECT A.nama_lengkap, D.real_name as nama_asesor,
+					SELECT A.nama_lengkap, A.no_registrasi, D.real_name as nama_asesor,
 						C.step_registrasi, C.step_asesmen_mandiri, C.step_uji_test, C.step_uji_simulasi, C.step_wawancara, 
-						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id
+						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id,
+						E.nama_aparatur
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
-					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS D ON D.id = B.idx_asesor_id
+					LEFT JOIN ( SELECT * FROM tbl_user_admin WHERE level_admin = '2' ) AS D ON D.id = B.idx_asesor_id
+					LEFT JOIN idx_aparatur_sipil_negara E ON B.idx_sertifikasi_id = E.id
 				";
 			break;
 			case 'file_registrasi' :
-			case 'file_asesmen' :
+			case 'akun_peserta' :
 				$sql = "
-					SELECT A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat
+					SELECT A.id as idnya_data_peserta, A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
 				";
@@ -632,29 +641,13 @@ class madmin extends SHIPMENT_Model{
 					$this->db->update("tbl_asessmen_mandiri", array("status_ver"=>$post['rek_'.$id_kmp], "memo"=>$post['memo_'.$id_kmp]), array('id'=>$id_kmp));
 				}
 				
-				if($post['hsl_as'] == "L"){
-					
-					/* Blok Program Untuk Insert Pembayaran Peserta
-					$this->load->library('lib');
-					$kode_unik = $this->lib->randomString('5');
-					$kode_unik = "KDP-".$kode_unik;
+				if($post['hsl_as'] == "L"){					
 					$status = "L";
-					$array_pembayaran = array(
-						"tbl_data_peserta_id"=>$post['usid'],
-						"idx_sertifikasi_id"=>$post['sertid'],
-						"kode_pembayaran"=>$kode_unik,
-						"status_data"=>1,
-						"kdreg_diklat"=>$post['kdr']
-					);
-					$this->db->insert('tbl_pembayaran_header', $array_pembayaran);
-					*/
-					
-					$status = "L";
-					$this->db->update("tbl_step_peserta", array("step_asesmen_mandiri"=>1,"step_uji_test"=>4), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 				}elseif($post['hsl_as'] == "TL"){
-					$status = "BV";
+					$status = "TL";
 				}
 				
+				$this->db->update("tbl_step_peserta", array( "step_asesmen_mandiri"=>1, "step_uji_test"=>4, "step_uji_simulasi"=>4 ), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 				$array_asesmen_header = array(
 					'status'=>$status, 
 					'nama_asesor'=>$this->auth['real_name'], 
@@ -680,7 +673,11 @@ class madmin extends SHIPMENT_Model{
 				*/
 			break;	
 			case "ver_ikt_ujol":
-				$this->db->update("tbl_step_peserta", array("step_uji_test"=>3), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
+				if($post['typ'] == 'tpa'){
+					$this->db->update("tbl_step_peserta", array("step_uji_test"=>3), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
+				}elseif($post['typ'] == 'sim'){
+					$this->db->update("tbl_step_peserta", array("step_uji_simulasi"=>3), array('tbl_data_peserta_id'=>$post['usiid'], 'idx_sertifikasi_id'=>$post['sertaidd'], "kdreg_diklat"=>$post['kdr']) );
+				}
 			break;
 			case "ver_ujol":
 				/* Blok Program Ujian Online Old
@@ -960,6 +957,24 @@ class madmin extends SHIPMENT_Model{
 					$id_soal = $this->input->post('usiid');
 					$this->db->delete('idx_bank_soal', array('id'=>$id_soal) );
 					$this->db->delete('idx_bank_jawaban', array('idx_bank_soal_id'=>$id_soal) );
+				}
+			break;
+			case "savebanksoal_simulasi":
+				if($post['editstatus'] != 'delete'){
+					$array_pertanyaan = array(
+						'idx_sertifikasi_id' => $post['idx_sert'],
+						'soal' => $post['ed_soal'],
+						'status' => $post['cbSts'],
+					);
+				}
+				
+				if($post['editstatus'] == 'add'){
+					$this->db->insert('idx_bank_soal_simulasi', $array_pertanyaan);
+				}elseif($post['editstatus'] == 'edit'){
+					$this->db->update('idx_bank_soal_simulasi', $array_pertanyaan, array('id'=>$post['idx_sola']) );
+				}elseif($post['editstatus'] == 'delete'){
+					$id_soal = $this->input->post('usiid');
+					$this->db->delete('idx_bank_soal_simulasi', array('id'=>$id_soal) );
 				}
 			break;
 		}

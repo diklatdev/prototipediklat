@@ -279,18 +279,19 @@ class mportal extends SHIPMENT_Model{
 				//$start = 0;//$this->input->post('st');
 				//$end = 5;//$this->input->post('ed');
 				//LIMIT ".$start.", ".$end."
-				
+				/*
 				$limit_soal = 10;
 				$beda_soal = $this->input->post("so");
+				*/
 				$id_sertifikasi = $this->input->post("ids");
-				
+				/*
 				if($beda_soal){
 					$join_soal = join("','",$beda_soal);
 					$where .= "
 						AND A.id NOT IN ('".$join_soal."') 
 					";
 				}
-				
+				*/
 				$sql = "
 					SELECT A.*
 					FROM idx_bank_soal A
@@ -299,11 +300,12 @@ class mportal extends SHIPMENT_Model{
 					AND A.status = '1'
 					$where
 					ORDER BY RAND()
-					LIMIT ".$limit_soal."
+					LIMIT 50
 				";
 				$query1 = $this->db->query($sql)->result_array();
 				$arraynya = array();
 				$idx1 = 0;
+				
 				foreach($query1 as $k => $p){
 					$arraynya[$idx1] = array();
 					$arraynya[$idx1]['idnya'] =  $p['id'];
@@ -340,6 +342,110 @@ class mportal extends SHIPMENT_Model{
 				//*/
 				
 			break;
+			case "soal_sudah":
+				$array = array();
+				$idx = 1;
+				foreach($p1 as $k => $v){
+					$array[$idx] = array();
+					$array[$idx]['id_soal'] = $v['idx_bank_soal_id'];
+					$array[$idx]['id_jawaban'] = $v['idx_bank_jawaban_id'];
+					$array[$idx]['soalnya'] = $v['soal'];
+					$array[$idx]['jawaban'] = array();
+					
+					$sqljwb = "
+						SELECT *
+						FROM idx_bank_jawaban
+						WHERE idx_bank_soal_id = '".$v['idx_bank_soal_id']."'
+					";
+					$queryjwb = $this->db->query($sqljwb)->result_array();
+					$idxjwb = 1;
+					$chaar = 'A';
+					foreach($queryjwb as $s => $l){
+						$array[$idx]['jawaban'][$idxjwb] = array();
+						$array[$idx]['jawaban'][$idxjwb]['id_jwb'] = $l['id'];
+						$array[$idx]['jawaban'][$idxjwb]['pilihan_ganda'] = $chaar;
+						$array[$idx]['jawaban'][$idxjwb]['jawab'] = $l['jawaban'];
+						if($v['idx_bank_jawaban_id'] ==  $l['id']){
+							$array[$idx]['jawaban'][$idxjwb]['selected'] = 1;
+						}else{
+							$array[$idx]['jawaban'][$idxjwb]['selected'] = 0;
+						}
+						$idxjwb++;
+						$chaar = chr(ord($chaar) + 1);
+					}
+					
+					$idx++;
+				}
+				
+				return $array;
+				exit;
+				
+				/*
+				echo "<pre>";
+				print_r($array);
+				exit;
+				//*/
+				
+			break;			
+			case "soal_belum":
+				$count_soal = count($p1);
+				$limitnya = (50 - $count_soal);
+				$join_soal = join("','",$p1);
+				$where .= "
+					AND A.id NOT IN ('".$join_soal."') 
+				";
+				$sql = "
+					SELECT A.*
+					FROM idx_bank_soal A
+					WHERE 1=1
+					AND A.idx_aparatur_negara = '".$this->auth['idx_sertifikasi_id']."' 
+					AND A.status = '1'
+					$where
+					ORDER BY RAND()
+					LIMIT ".$limitnya." 
+				";
+				$query1 = $this->db->query($sql)->result_array();
+				$arraynya = array();
+				$idx1 = 0;
+				foreach($query1 as $k => $p){
+					$arraynya[$idx1] = array();
+					$arraynya[$idx1]['idnya'] =  $p['id'];
+					$arraynya[$idx1]['soalnya'] =  $p['soal'];
+					$arraynya[$idx1]['jawaban'] =  array();
+					
+					$sql2 = "
+						SELECT *
+						FROM idx_bank_jawaban
+						WHERE idx_bank_soal_id = '".$p['id']."'
+						ORDER BY RAND()
+					";
+					$query2 = $this->db->query($sql2)->result_array();
+					$idx2 = 0;
+					$chaar = 'A';
+					foreach($query2 as $s => $v){
+						$arraynya[$idx1]['jawaban'][$idx2] = array();
+						$arraynya[$idx1]['jawaban'][$idx2]['pilihan_ganda'] = $chaar;
+						$arraynya[$idx1]['jawaban'][$idx2]['id_jwb'] = $v['id'];
+						$arraynya[$idx1]['jawaban'][$idx2]['jawabannya'] = $v['jawaban'];
+						$idx2++;
+						$chaar = chr(ord($chaar) + 1);
+					}
+					$idx1++;
+				}
+				
+				return $arraynya;
+				exit;
+				
+			break;			
+			case "cekdataujian":
+				$sql = "	
+					SELECT A.*, B.soal
+					FROM tbl_ujitest_temp A
+					LEFT JOIN idx_bank_soal B ON A.idx_bank_soal_id = B.id
+					WHERE A.tbl_data_peserta_id = '".$this->auth['id']."' AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
+				";
+			break;
+			
 			
 			case "tbl_penjadwalan_peserta":
 				if($p1){
@@ -366,56 +472,6 @@ class mportal extends SHIPMENT_Model{
 					WHERE A.tbl_data_peserta_id = '".$this->auth['id']."' AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
 				";
 			break;
-			case "cekdataujian":
-				$sql = "	
-					SELECT A.*, B.soal
-					FROM tbl_ujitest_temp A
-					LEFT JOIN idx_bank_soal B ON A.idx_bank_soal_id = B.id
-					WHERE A.tbl_data_peserta_id = '".$this->auth['id']."' AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
-				";
-			break;
-			case "soal_sudah":
-				$array = array();
-				$idx = 1;
-				foreach($p1 as $k => $v){
-					$array[$idx] = array();
-					$array[$idx]['id_soal'] = $v['idx_bank_soal_id'];
-					$array[$idx]['id_jawaban'] = $v['idx_bank_jawaban_id'];
-					$array[$idx]['soalnya'] = $v['soal'];
-					$array[$idx]['jawaban'] = array();
-					
-					$sqljwb = "
-						SELECT *
-						FROM idx_bank_jawaban
-						WHERE idx_bank_soal_id = '".$v['idx_bank_soal_id']."'
-					";
-					$queryjwb = $this->db->query($sqljwb)->result_array();
-					$idxjwb = 1;
-					foreach($queryjwb as $s => $l){
-						$array[$idx]['jawaban'][$idxjwb] = array();
-						$array[$idx]['jawaban'][$idxjwb]['id_jwb'] = $l['id'];
-						$array[$idx]['jawaban'][$idxjwb]['jawab'] = $l['jawaban'];
-						if($v['idx_bank_jawaban_id'] ==  $l['id']){
-							$array[$idx]['jawaban'][$idxjwb]['selected'] = 1;
-						}else{
-							$array[$idx]['jawaban'][$idxjwb]['selected'] = 0;
-						}
-						$idxjwb++;
-					}
-					
-					$idx++;
-				}
-				
-				return $array;
-				exit;
-				
-				/*
-				echo "<pre>";
-				print_r($array);
-				exit;
-				//*/
-				
-			break;
 		
 			//end
 		}
@@ -430,6 +486,10 @@ class mportal extends SHIPMENT_Model{
 	}
 	
 	function simpansavedatabase($type="", $post="", $p1="", $p2="", $p3=""){
+		ini_set('upload_max_filesize', '50M');
+		ini_set('post_max_size', '100M');
+		ini_set('memory_limit', '128M');
+		
 		$this->load->library('lib');
 		
 		$this->db->trans_strict(TRUE);
@@ -950,6 +1010,8 @@ class mportal extends SHIPMENT_Model{
 			case "asesmen":
 				if($this->auth){
 					$this->load->model('why/madmin');
+					
+					/*
 					$target_path = "./__repository/dokumen_peserta/".$this->auth['no_registrasi']."/file_asesmen_mandiri/";
 					if(!is_dir($target_path)) {
 						mkdir($target_path, 0777);
@@ -967,16 +1029,19 @@ class mportal extends SHIPMENT_Model{
 					if(!is_dir($target_path2)) {
 						mkdir($target_path2, 0777);
 					}
+					*/
 					
 					$countol = count($post['idxkomp'])-1;
 					for($i = 0; $i <= $countol; $i++){
 						$id_kmp = $post['idxkomp'][$i];
+						/*
 						if($_FILES['fl_pdk']['name'][$i] != ''){			
 							$file_a = "file_kompetensi_".$i."(".$post['idxkomp'][$i].")"; 
 							$filename_a =  $this->lib->uploadmultiplenong($target_path2, 'fl_pdk', $file_a, $i); 
 						}else{
 							$filename_a = null;
 						}
+						*/
 						
 						$arayinserting = array(
 							"idx_unit_kompetensi_id" => $post['idxkomp'][$i],
@@ -984,7 +1049,8 @@ class mportal extends SHIPMENT_Model{
 							"idx_sertifikasi_id" => $this->auth['idx_sertifikasi_id'],
 							"penilaian" => $post['st_kmp_'.$id_kmp],
 							"status_ver" => -1,
-							"file_pendukung"=> $filename_a,
+							//"file_pendukung"=> $filename_a,
+							"bukti_pendukung" => $post['bkt_pndk'][$i],
 							"kdreg_diklat" => $this->auth['kdreg_diklat']
 						);
 						$this->db->insert("tbl_asessmen_mandiri", $arayinserting);
@@ -1125,50 +1191,6 @@ class mportal extends SHIPMENT_Model{
 			break;
 			case "saveujian":
 				if($this->auth){
-					/*
-					$countjawaban = count($post['idrws'])-1;
-					$jwb_bnr = 0;
-					$jwb_slh = 0;
-					for($i = 0; $i <= $countjawaban; $i++){
-						$id_soal = $post['idrws'][$i];
-						if(isset($post['idj_'.$id_soal])){
-							$sqlcekjwbn = "
-								SELECT stat_flag_bnr_slh
-								FROM idx_bank_jawaban
-								WHERE id = '".$post['idj_'.$id_soal]."'
-							";
-							$querycekjwbn = $this->db->query($sqlcekjwbn)->row_array();
-							if($querycekjwbn['stat_flag_bnr_slh'] == 0){
-								$st_jawaban = "S";
-								$jwb_slh++;
-							}elseif($querycekjwbn['stat_flag_bnr_slh'] == 1){
-								$st_jawaban = "B";
-								$jwb_bnr++;
-							}
-							$jawabannya = $post['idj_'.$id_soal];
-						}else{
-							$jwb_slh++;
-							$jawabannya = null;
-						}
-						
-						 $array_ujitest = array(
-							"tbl_data_peserta_id"=>$this->auth['id'],
-							"idx_sertifikasi_id"=>$this->auth['idx_sertifikasi_id'],
-							"idx_bank_soal_id"=>$post['idrws'][$i],
-							"idx_bank_jawaban_id"=>$jawabannya,
-							"status"=>$st_jawaban,
-						 );
-						 $this->db->insert("tbl_ujitest", $array_ujitest);
-					}
-					
-					$total_skor = ($jwb_bnr/$countjawaban) * 100;
-					if($total_skor > 60){
-						$penilaian = 'L';
-					}else{
-						$penilaian = 'TL';
-					}
-					*///ALGORITMA LAEN DAN BERUBAH.
-					//$join_soal = join("','",$beda_soal);
 					
 					$sqljwbbnr = "
 						SELECT status
@@ -1224,7 +1246,14 @@ class mportal extends SHIPMENT_Model{
 						"kdreg_diklat" => $this->auth['kdreg_diklat']
 					);
 					$this->db->insert("tbl_ujitest_header", $array_ujitestheader);
-					$this->db->update("tbl_step_peserta", array("step_uji_test"=>1, "step_uji_simulasi"=>2), array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
+					
+					$cek_ujian_simulasi = $this->db->get_where( "tbl_step_peserta",  array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat'])  )->row_array();
+					if($cek_ujian_simulasi['step_uji_simulasi'] == 1 ){
+						$this->db->update("tbl_step_peserta", array("step_uji_test"=>1, "step_wawancara"=>2), array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
+					}else{
+						$this->db->update("tbl_step_peserta", array("step_uji_test"=>1), array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
+					}
+					
 				}
 			break;
 			case "savesoalsisa":

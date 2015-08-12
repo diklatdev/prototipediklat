@@ -479,10 +479,10 @@ function regass(kl){
 	ajxfm("asdik", function(respo){
 		if(respo == 1){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Berhasil Tersimpan Dalam Sistem." });
-			//location.href = host+'asesmen-berhasil';
+			location.href = host+'asesmen-berhasil';
 		}else{
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Gagal Tersimpan Dalam Sistem" });
-			//location.href = host+'asesmen-gagal';
+			location.href = host+'asesmen-gagal';
 		}
 	});
 }
@@ -550,6 +550,48 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 				}
 			});
 		break;
+		case "div-stuj-sim":
+			$('#kont_sim').css({'display':'none'});
+			$('#kont_sim_heading').css({'display':'inline'});
+			
+			$("#timernya_sim").countdowntimer({
+				hours : 1,
+				size : "sm",
+				borderColor : "#D15050",
+                backgroundColor : "#373737",
+                fontColor : "#FFFFFF",
+				timeUp : sbmtmUpSim
+			});
+			
+			return false
+		break;
+		case "div-stuj-sim_sudah":
+			$('#kont_sim_sudah').css({'display':'none'});
+			$('#kont_sim_heading_sudah').css({'display':'inline'});
+			
+			$("#timernya_sudah_sim").countdowntimer({
+				hours : p1,
+				minutes : p2,
+				seconds : p3,
+				size : "sm",
+				borderColor : "#D15050",
+                backgroundColor : "#373737",
+                fontColor : "#FFFFFF",
+				timeUp : sbmtmUpSim
+			});
+			return false
+		break;
+		case "sbm-sim":
+			var jjww = tinyMCE.get('jwb_ny_'+p1).getContent();
+			$.post(host+"sbm-sim", { 'idxpr':p2, 'jwxdi':jjww }, function(rsssp){
+				//$('#'+domnya).html(rsssp);
+				if(rsssp == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jawaban No. "+p1+" Tersimpan" });
+				}else{
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Kesalahan Teknis" });
+				}
+			});
+		break;
 		case "dfwa":
 			$.post(host+"daftar-jadwal", { 'iddf':p1 }, function(rsssp){
 				$('#'+domnya).html(rsssp);
@@ -606,6 +648,16 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 				}
 			});
 		break;
+		case "sbt-wkt-sim":
+			var temzon = $('#timernya_sim').html();
+			var temzon2 = $('#timernya_sudah_sim').html();
+			
+			$.post(host+"sbm-wkt-sim", { 'tmzon':temzon, 'tmzon2':temzon2 }, function(rsssp){
+				if(rsssp == 1){
+					console.log('Ok');
+				}
+			});
+		break;
 		case "sbt-rev-pers":
 			if($('#file_'+p1).val() == ""){
 				$("#file_"+p1).focus(); 
@@ -625,9 +677,9 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 			});	
 		break;
 		case "sbt-rev-ases":
-			if($('#file_'+p1).val() == ""){
-				$("#file_"+p1).focus(); 
-				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File No. "+p2+" Harus Diisi!" });
+			if($('#bkt_pndk_'+p1).val() == ""){
+				$("#bkt_pndk_"+p1).focus(); 
+				$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Bukti Pendukung No. "+p2+" Harus Diisi!" });
 				return false;
 			}
 			if($('#st_kmp_'+p1+':checked').length == 0){
@@ -640,13 +692,13 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 				if(respo == 1){
 					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan, Silahkan Tunggu Verifikasi Dokumen Oleh Asesor." });
 					$('#st_kmp_'+p1).prop('checked', false);
-					$('#file_'+p1).val("");
+					$('#bkt_pndk_'+p1).val("");
 					location.reload();
 				}else{
 					//alert(respo);
 					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Silahkan Coba Lagi Beberapa Saat." });
 					$('#st_kmp_'+p1).prop('checked', false);
-					$('#file_'+p1).val("");
+					$('#bkt_pndk_'+p1).val("");
 					location.reload();
 				}
 			});	
@@ -730,15 +782,57 @@ function sbst(){
 }
 
 function sbmtmUp(){
-	sbst();
-	
-	/*
 	$.post(host+"soal-sisa", { }, function(tp){
 		if(tp == 1){
 			document.ujdik.submit();
 		}
 	});
-	*/
+}
+
+function sbst_sim(){	
+	$.msg({
+		autoUnblock : false,
+		clickUnblock : false,
+		bgPath : host+"assets/js/plugins/msgplugin/",
+		content: '<p>Anda Yakin Sudah Menyelesaikan Test Simulasi ?</p>' +
+				'<center>' +
+				'<a id="yes" class="btn btn-success" onClick="event.preventDefault();">Ya</a>&nbsp;&nbsp;' +
+				'<a id="no" class="btn btn-primary" onClick="event.preventDefault();">Tidak</a>' +
+				'</center>',
+		afterBlock : function(){
+			var self = this;
+			$( '#yes' ).bind( 'click', function(){
+				ajxfm("ujsim", function(respo){
+					$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
+					if(respo == 1){
+						$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Sukses Tersimpan Dalam Sistem" });
+						location.href = host+'test-simulasi-berhasil';
+					}else{
+						$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Gagal Tersimpan Dalam Sistem" });
+						//location.href = host+'test-simulasi-gagal';
+					}
+					$.unblockUI();
+				});
+			});
+			$('#no').bind( 'click', function(){
+				self.unblock();
+			});
+		},
+	});
+}
+
+function sbmtmUpSim(){
+	ajxfm("ujsim", function(respo){
+		$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
+		if(respo == 1){
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Sukses Tersimpan Dalam Sistem" });
+			location.href = host+'test-simulasi-berhasil';
+		}else{
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Gagal Tersimpan Dalam Sistem" });
+			location.href = host+'test-simulasi-gagal';
+		}
+		$.unblockUI();
+	});
 }
 
 function sbtdl_kpm(){

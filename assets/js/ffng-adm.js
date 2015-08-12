@@ -140,6 +140,7 @@ function genGrid(modnya, lebarnya, tingginya){
 			pagesizeboy = 50;
 			kolom[modnya] = [	
 				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
 				{field:'step_registrasi',title:'Registrasi',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.step_registrasi == 1){
@@ -162,7 +163,7 @@ function genGrid(modnya, lebarnya, tingginya){
 						}
 					}
 				},
-				{field:'step_uji_test',title:'Uji Test',width:150, halign:'center',align:'center',
+				{field:'step_uji_test',title:'Test Potensi Akademik',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.step_uji_test == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
@@ -171,22 +172,24 @@ function genGrid(modnya, lebarnya, tingginya){
 						}else if(row.step_uji_test == 3){
 							return "Dalam Proses";
 						}else if(row.step_uji_test == 4){
-							return "<button href='#' onClick='kumpulPost(\"ijin_tpa\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_simulasi+"\" );'>Ijinkan Ujian</button>";
+							//return "<button href='#' onClick='kumpulPost(\"ijin_tpa\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_simulasi+"\" );'>Ijinkan Ujian</button>";
+							return "Verifikasi Administrasi";
 						}else if(row.step_uji_test == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
 					}
 				},
-				{field:'step_uji_simulasi',title:'Uji Simulasi',width:150, halign:'center',align:'center',
+				{field:'step_uji_simulasi',title:'Test Simulasi',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.step_uji_simulasi == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_uji_simulasi == 2){
-							return "<button href='#'>Lihat Data</button>";
+							return "<button href='#' onClick='previewData(\"tsim\", \""+row.tbl_data_peserta_id+"\", \""+row.nama_lengkap+"\", \""+row.nama_aparatur+"\", \""+row.no_registrasi+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\" );'>Lihat Data</button>";
 						}else if(row.step_uji_simulasi == 3){
 							return "Dalam Proses";
 						}else if(row.step_uji_simulasi == 4){
-							return "<button href='#' onClick='kumpulPost(\"ijin_sim\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_test+"\");'>Ijinkan Ujian</button>";
+							//return "<button href='#' onClick='kumpulPost(\"ijin_sim\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_test+"\");'>Ijinkan Ujian</button>";
+							return "Verifikasi Administrasi";
 						}else if(row.step_uji_simulasi == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
@@ -197,7 +200,7 @@ function genGrid(modnya, lebarnya, tingginya){
 						if(row.step_wawancara == 1){
 							return "<button href='#' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /></button>";
 						}else if(row.step_wawancara == 2){
-							return "<button href='#'>Lihat Data</button>";
+							return "<button href='#' onClick='previewData(\"wawa\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\" );'>Lihat Data</button>";
 						}else if(row.step_wawancara == 0){
 							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
 						}
@@ -206,39 +209,75 @@ function genGrid(modnya, lebarnya, tingginya){
 				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
 			];
 		break;
-		case "file_registrasi":
-			judulnya = "";
-			fitnya = true;
-			pagesizeboy = 50;
-			kolom[modnya] = [	
-				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
-				{field:'tbl_data_peserta_id',title:'Cek File',width:150, halign:'center',align:'center',
-					formatter: function(value,row,index){
-						return "<button href='#'>Preview Data</button>";
-					}
-				},
-			];
-		break;
-		case "akun_peserta":
+		case "administrasi_peserta":
 			judulnya = "";
 			fitnya = true;
 			pagesizeboy = 50;
 			kolom[modnya] = [	
 				{field:'nama_lengkap',title:'Nama Peserta',width:300, halign:'center',align:'left'},
-				{field:'kdreg_diklat',title:'Status Sertifikasi',width:250, halign:'center',align:'left',
+				{field:'is_hadir',title:'Kehadiran Peserta',width:220, halign:'center',align:'center',
 					formatter: function(value,row,index){
-						if(row.kdreg_diklat != null){
-							return "<font color='green'>Sedang Dalam Sertifikasi</font>";
-						}else{
-							return "<font color='red'>Tidak Dalam Sertifikasi</font>";
+						if(row.is_hadir == 0){
+							var button = "";
+							button += "<button href='#' onClick='previewData(\"dd\", \""+row.idnya_data_peserta+"\");' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /> Hadir</button>";
+							button += "&nbsp;&nbsp;/&nbsp;&nbsp;";
+							button += "<button href='#' onClick='previewData(\"dd\", \""+row.idnya_data_peserta+"\");' ><img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' /> Tidak Hadir</button>";
+							return button;
+						}else if(row.is_hadir == 1){
+							return "<font color='green'>Peserta Hadir</font>";
+						}else if(row.is_hadir == 2){
+							return "<font color='red'>Peserta Tidak Hadir</font>";
 						}
 					}
 				},
-				{field:'idnya_data_peserta',title:'Akun',width:150, halign:'center',align:'center',
+				{field:'step_uji_test',title:'Uji Online',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
-						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Lihat Akun</button>";
+						if(row.step_uji_test == 4){
+							return "<button href='#' onClick='kumpulPost(\"ijin_tpa\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_simulasi+"\" );'>Ijinkan Ujian</button>";
+						}else if(row.step_uji_test == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}else{
+							return "<img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' />";
+						}
+					
 					}
 				},
+				{field:'uji_uji_simulasi',title:'Uji Simulasi',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						if(row.step_uji_simulasi == 4){
+							return "<button href='#' onClick='kumpulPost(\"ijin_sim\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.kdreg_diklat+"\", \""+row.step_uji_test+"\");'>Ijinkan Ujian</button>";
+						}else if(row.step_uji_simulasi == 0){
+							return "<img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' />";
+						}else{
+							return "<img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' />";
+						}
+					}
+				},				
+				{field:'idnya_data_peserta',title:'Username/Password',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Lihat Data</button>";
+					}
+				},
+				{field:'id',title:'Ubah Data',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Ubah Data</button>";
+					}
+				},
+			];
+		break;
+		case "hasil_akhir":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
+				{field:'tbl_data_peserta_id',title:'Cek Data',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#' onClick='previewData(\"hsl\", \""+row.tbl_data_peserta_id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.no_registrasi+"\", \""+row.nama_lengkap+"\", \""+row.nip+"\", \""+row.kdreg_diklat+"\"  );'>Lihat Data</button>";
+					}
+				},
+				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
 			];
 		break;
 	}
@@ -283,6 +322,15 @@ function previewData(type, p1, p2, p3, p4, p5, p6, p7){
 			$('#txtheader').html("<h1>Asesmen Mandiri Peserta</h1>");
 			loadUrl_adds('as_dt', hostir+'asesmen-detail', 'konten_grid', p1, p2, p3, p4, p5, p6 );
 		break;
+		case "tsim":
+			loadUrl_adds('uj_sm', hostir+'simulasi-detail', 'konten_grid', p1, p2, p3, p4, p5, p6 );
+		break
+		case "wawa":
+			loadUrl_adds('ww_dt', hostir+'wawancara-detail', 'konten_grid', p1, p2, p3);
+		break
+		case "hsl":
+			loadUrl_adds('hs_dt', hostir+'hasil-detail', 'konten_grid', p1, p2, p3, p4, p5, p6);
+		break
 	}
 }
 
@@ -385,7 +433,7 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 		break;
 		case "ww_dt":
 			$.post(urlnya, { 'cdn':p1, 'xdiser':p2, 'kdr':p3 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "hs_dt":
@@ -393,69 +441,73 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			var nmlng = $('#nmlng_'+p1).val();
 			var pin = $('#upin_'+p1).val();
 			var kdr = $('#kdr_'+p1).val();
-			$.post(urlnya, { 'cdn':p1, 'dxisert':p2, 'nreg':nreg, 'nmlng':nmlng, 'ipin':pin, 'kdr':kdr }, function(resp){
-				$("#"+domnya).html(resp);
+			
+			$.post(urlnya, { 'cdn':p1, 'dxisert':p2, 'nreg':p3, 'nmlng':p4, 'ipin':p5, 'kdr':p6 }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
+			
+			
+
 		break;
 		case "uj_sm":
 			$.post(urlnya, { 'cdn':p1, 'nmlng':p2, 'nmapart':p3, 'nreg':p4, 'dxisert':p5, 'kdr':p6 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "vcf":
 			$.post(urlnya, { }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "vcf-krm":
 			$.post(urlnya, { 'idvcf':p1 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "kcppt":
 		case "fqa":
 		case "brt":
 			$.post(urlnya, { 'editstatus':'add' }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		case "edt_kcppt":
 		case "edt_brt":
 		case "edt_fqa":
 			$.post(urlnya, { 'editstatus':'edit', 'isdx':p1 }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");;
 			});
 		break;
 		
 		case "tm-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'add', 'idx_sert':idx_ser }, function(resp){
-				$("#"+domnya).html(resp).removeClass("loading");;
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "ed-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'edit', 'idx_sert':idx_ser, 'idx_sl':p1 }, function(resp){
-				$("#"+domnya).html(resp).removeClass("loading");;
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "tm-soal-sm":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'add', 'idx_sert':idx_ser }, function(resp){
-				$("#"+domnya).html(resp).removeClass("loading");;
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "ed-soal-sm":
 			idx_ser = $('#sb_jns_nxx').val();
 			$.post(urlnya, { 'editstatus':'edit', 'idx_sert':idx_ser, 'idx_sm':p1 }, function(resp){
-				$("#"+domnya).html(resp).removeClass("loading");;
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "km-soal":
 			idx_ser = $('#sb_jns_nxx').val();
 			$('#loader-soal').html('');
 			$.post(hostir+"tampil-soal", { 'id_asn':idx_ser, 'ty':urlnya }, function(resp){
-				$('#loader-soal').html(resp).removeClass("loading");;
+				$('#loader-soal').html(resp).removeClass("loading");
 			});
 		break;
 		
@@ -492,7 +544,8 @@ function kumpulPost($type, p1, p2, p3, p4){
 					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Registrasi Peserta Sukses, Data Tersimpan"});
 					loadUrl(hostir+'data-peserta-grid');
 				}else{
-					alert(rspp);
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server!"});
+					//alert(rspp);
 				}
 			});
 		break;
@@ -748,10 +801,13 @@ function asses(kl){
 	
 	ajxamsterfrm("detass", function(respo){
 		if(respo == 1){
-			alert("Data Tersimpan");
-			loadUrl(hostir+'asesmen-peserta');
+			//alert("Data Tersimpan");
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan"});
+			loadUrl(hostir+'data-peserta-grid');
 		}else{
-			alert(respo);
+			//alert(respo);
+			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server"});
+			loadUrl(hostir+'data-peserta-grid');
 		}
 	});
 }
@@ -771,7 +827,7 @@ function ujnya(){
 	ajxamsterfrm("detuj", function(respo){
 		if(respo == 1){
 			alert("Data Tersimpan");
-			loadUrl(hostir+'ujitulis-peserta');
+			loadUrl(hostir+'data-peserta-grid');
 		}else{
 			alert(respo);
 		}
@@ -872,7 +928,7 @@ function smls(){
 	ajxamsterfrm("detujsm", function(respo){
 		if(respo == 1){
 			alert("Data Tersimpan");
-			loadUrl(hostir+'ujisimulasi-peserta');
+			loadUrl(hostir+'data-peserta-grid');
 		}else{
 			alert(respo);
 		}
@@ -894,7 +950,7 @@ function wawanya(){
 	ajxamsterfrm("dewac", function(respo){
 		if(respo == 1){
 			alert("Data Tersimpan");
-			loadUrl(hostir+'wawancara-peserta');
+			loadUrl(hostir+'data-peserta-grid');
 		}else{
 			alert(respo);
 		}

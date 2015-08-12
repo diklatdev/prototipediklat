@@ -140,25 +140,25 @@
 					</ul>
 			</li>
 			{/if}
-			{if $diklat eq '1'}
+			{if $sertifikasi eq '1'}
 			<li class="panel">
 				<a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#componentss">
 					<i class="fa fa-list"></i> Sertifikasi<span class="fa arrow"></span>
 				</a>
 					<ul class="collapse nav " id="componentss">
 						<li>
-							<a href="#" onClick="loadUrl('{$host}file-registrasi-peserta');">
-								<i class="fa fa-angle-double-right"></i> File Registrasi
-							</a>
-						</li>
-						<li>
-							<a href="#" onClick="loadUrl('{$host}akun-peserta');">
-								<i class="fa fa-angle-double-right"></i> Manajemen Peserta
+							<a href="#" onClick="loadUrl('{$host}administrasi-peserta');">
+								<i class="fa fa-angle-double-right"></i> Administrasi Peserta
 							</a>
 						</li>
 						<li>
 							<a href="#" onClick="loadUrl('{$host}data-peserta-grid');">
 								<i class="fa fa-angle-double-right"></i> Peserta Sertifikasi
+							</a>
+						</li>
+						<li>
+							<a href="#" onClick="loadUrl('{$host}hasil-peserta-grid');">
+								<i class="fa fa-angle-double-right"></i> Hasil Sertifikasi
 							</a>
 						</li>
 					</ul>

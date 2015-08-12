@@ -446,6 +446,51 @@ class mportal extends SHIPMENT_Model{
 				";
 			break;
 			
+			case "idx_bank_soal_simulasi":
+				$sql = "
+					SELECT *
+					FROM idx_bank_soal_simulasi
+					WHERE status = '1'
+					AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+				";
+			break;
+			case "cekdataujian_simulasi":
+				$sql = "	
+					SELECT A.*, B.soal
+					FROM tbl_uji_simulasi_temp A
+					LEFT JOIN idx_bank_soal_simulasi B ON A.idx_bank_soal_simulasi_id = B.id
+					WHERE A.tbl_data_peserta_id = '".$this->auth['id']."' AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
+				";
+			break;
+			case "soal_simulasi_belum":
+				$join_soal = join("','",$p1);
+				$where .= "
+					AND A.id NOT IN ('".$join_soal."') 
+				";
+				$sql = "
+					SELECT A.*
+					FROM idx_bank_soal_simulasi A
+					WHERE 1=1
+					AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+					AND A.status = '1'
+					$where
+				";
+				$query1 = $this->db->query($sql)->result_array();
+				
+				$arraynya = array();
+				$idx1 = 0;
+				foreach($query1 as $k => $p){
+					$arraynya[$idx1] = array();
+					$arraynya[$idx1]['id'] =  $p['id'];
+					$arraynya[$idx1]['soal'] =  $p['soal'];					
+					$idx1++;
+				}
+				
+				return $arraynya;
+				exit;
+				
+			break;			
+			
 			
 			case "tbl_penjadwalan_peserta":
 				if($p1){
@@ -1079,7 +1124,19 @@ class mportal extends SHIPMENT_Model{
 					$kdreg_diklat = $this->auth['kdreg_diklat'];
 					$nm_aparatur = $this->auth['nama_aparatur'];
 					$idx_sertifikasi_id = $this->auth['idx_sertifikasi_id'];
+					$id_asesmen = $post['idtbl'];
+					$memo_asli = $post['me'];//str_replace(' (Revisi Upload Dokumen, Tunggu Verifikasi Asesor)', '', $post['me']);
 					
+					$array_update = array(
+						'penilaian' => $post['st_kmp_'.$id_asesmen],
+						'bukti_pendukung' => $post['bkt_pndk'],
+						'status_ver' => -1,
+						'memo' => $memo_asli." (Revisi Asesmen Portofolio Dokumen, Tunggu Verifikasi Asesor)",
+					);
+					
+					$this->db->update('tbl_asessmen_mandiri', $array_update, array('id'=>$post['idtbl']) );
+					
+					/*
 					$n_sert = str_replace(" ", "_", $nm_aparatur);
 					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $idx_sertifikasi_id);
 					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
@@ -1107,6 +1164,7 @@ class mportal extends SHIPMENT_Model{
 						
 						$this->db->update('tbl_asessmen_mandiri', $array_update, array('id'=>$post['idtbl']) );
 					}
+					*/
 				}
 			break;
 			case "savepembayaran":
@@ -1383,6 +1441,128 @@ class mportal extends SHIPMENT_Model{
 					}else{
 						$this->db->update('tbl_ujitest_waktu', $array_waktu, array('tbl_data_peserta_id' => $this->auth['id'], 'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
 					}
+				}
+			break;
+			case "savesimulasisatuan":
+				if($this->auth){
+					$array_ujisimulasi_temporary = array(
+						"tbl_data_peserta_id"=>$this->auth['id'],
+						"idx_sertifikasi_id"=>$this->auth['idx_sertifikasi_id'],
+						"idx_bank_soal_simulasi_id"=>$post['idxpr'],
+						"jawaban"=>$post['jwxdi'],
+						"kdreg_diklat" => $this->auth['kdreg_diklat']
+					);
+					$sqlcekdata = "
+						SELECT *
+						FROM tbl_uji_simulasi_temp 
+						WHERE tbl_data_peserta_id = '".$this->auth['id']."'
+							AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+							AND kdreg_diklat = '".$this->auth['kdreg_diklat']."' 
+							AND idx_bank_soal_simulasi_id = '".$post['idxpr']."'
+					";
+					$querycekdata = $this->db->query($sqlcekdata)->row_array();
+					if($querycekdata){
+						$this->db->update("tbl_uji_simulasi_temp", $array_ujisimulasi_temporary, array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat'], 'idx_bank_soal_simulasi_id'=>$post['idxpr']) );
+					}else{
+						$this->db->insert("tbl_uji_simulasi_temp", $array_ujisimulasi_temporary);
+					}
+				}
+			break;
+			case "saveujianwaktusimulasi":
+				if($this->auth){
+					$cekdata = "
+						SELECT tbl_data_peserta_id, idx_sertifikasi_id
+						FROM tbl_uji_simulasi_waktu
+						WHERE tbl_data_peserta_id = '".$this->auth['id']."' AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+						AND kdreg_diklat = '".$this->auth['kdreg_diklat']."'
+					";
+					$querycekdata = $this->db->query($cekdata)->row_array();
+					if(isset($post['tmzon'])){
+						$timezone = $post['tmzon'];
+					}else{
+						$timezone = $post['tmzon2'];
+					}
+					
+					$waktunya = trim($timezone);
+					$waktunya = explode(":",$waktunya);
+					
+					$array_waktu = array(
+						'tbl_data_peserta_id' => $this->auth['id'],
+						'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'],
+						'jam' => $waktunya[0],
+						'menit' => $waktunya[1],
+						'detik' => $waktunya[2],
+						"kdreg_diklat" => $this->auth['kdreg_diklat']
+					);
+					
+					if(!$querycekdata){
+						$this->db->insert('tbl_uji_simulasi_waktu', $array_waktu);
+					}else{
+						$this->db->update('tbl_uji_simulasi_waktu', $array_waktu, array('tbl_data_peserta_id' => $this->auth['id'], 'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
+					}
+				}
+			break;
+			case "savetestsimulasi":
+				if($this->auth){
+					$sqljwbbnr = "
+						SELECT *
+						FROM tbl_uji_simulasi_temp
+						WHERE tbl_data_peserta_id = '".$this->auth['id']."'
+						AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."'
+						AND kdreg_diklat = '".$this->auth['kdreg_diklat']."'
+					";
+					$queryjwbbnr = $this->db->query($sqljwbbnr)->result_array();
+									
+					$array = array();
+					foreach($queryjwbbnr as $k => $v){
+						array_push($array, $v['idx_bank_soal_simulasi_id']);
+					}
+					
+					$join_soal = join("','",$array);
+					$sqlnya = "
+						SELECT A.*
+						FROM idx_bank_soal_simulasi A
+						WHERE 1=1
+						AND A.idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+						AND A.status = '1'
+						AND A.id NOT IN ('".$join_soal."') 
+					";
+					$querynya = $this->db->query($sqlnya)->result_array();
+					if($querynya){
+						foreach($querynya as $s=>$t){
+							$array_insert = array(
+								'tbl_data_peserta_id' => $this->auth['id'],
+								'idx_sertifikasi_id' => $this->auth['idx_sertifikasi_id'] ,
+								'idx_bank_soal_simulasi_id' => $t['id'],
+								'jawaban' => null,
+								'kdreg_diklat' => $this->auth['kdreg_diklat'],
+							);
+							$this->db->insert('tbl_uji_simulasi_temp', $array_insert);
+						}
+					}
+					
+					$sqlcopydata = "
+						INSERT INTO tbl_uji_simulasi (tbl_data_peserta_id, idx_sertifikasi_id, idx_bank_soal_simulasi_id, jawaban, kdreg_diklat)
+						SELECT tbl_data_peserta_id, idx_sertifikasi_id, idx_bank_soal_simulasi_id, jawaban, kdreg_diklat
+						FROM tbl_uji_simulasi_temp
+						WHERE tbl_data_peserta_id = '".$this->auth['id']."' 
+						AND idx_sertifikasi_id = '".$this->auth['idx_sertifikasi_id']."' 
+						AND kdreg_diklat = '".$this->auth['kdreg_diklat']."'
+					";
+					$querycopydata = $this->db->query($sqlcopydata);
+					if($querycopydata){
+						$this->db->delete('tbl_uji_simulasi_temp', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
+					}
+					
+					$array_ujitestheader = array(
+						"tbl_data_peserta_id"=>$this->auth['id'],
+						"idx_sertifikasi_id"=>$this->auth['idx_sertifikasi_id'],
+						"status_data" => 1,
+						"kdreg_diklat" => $this->auth['kdreg_diklat']
+					);
+					$this->db->insert("tbl_uji_simulasi_header", $array_ujitestheader);
+					
+					$this->db->update("tbl_step_peserta", array("step_uji_simulasi"=>2), array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id'], "kdreg_diklat" => $this->auth['kdreg_diklat']) );
 				}
 			break;
 			case "save_komplain":

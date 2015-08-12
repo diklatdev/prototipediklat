@@ -19,6 +19,34 @@
 	</div>
 	
 	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<table class="table table-bordered table-hover tc-table">
+				<thead>
+					<tr>
+						<th width='1%'>No.</th>
+						<th width='80%' style="text-align:center !important;">Pertanyaan</th>
+					</tr>
+				</thead>
+					{assign var=ind value=1}
+					{foreach from=$data_simulasi item=riws}
+						<tr>
+							<td>{$ind}</td>
+							<td><b>{$riws.soal}</b></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>
+								<b>Jawaban Peserta : </b><br/><br/>
+								{$riws.jawaban|default:'Tidak Ada Jawaban'}
+							</td>
+						</tr>
+					{assign var=ind value=$ind+1}
+					{/foreach}				
+			</table>
+		</div>
+	</div>
+	
+	<div class="col-lg-12">
 		<div class="well white">
 			<form class="form-horizontal" role="form" id="detujsm" action="{$host}verifikasi-ujisimulasi" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="usid" value="{$userid}">

@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<div id="kont_suj_sudah" style='display:inline;'>
+<div id="kont_sim_sudah" style='display:inline;'>
 	<div class="container">
 		<div class="block-s2">
 			<div class="row">
@@ -27,12 +27,14 @@
 					<div class="well light">
 						<center>
 							<h2>
-								ANDA SUDAH IKUT UJI ONLINE
+								ANDA SUDAH IKUT TEST POTENSI AKADEMIK
+								<br/>
+								TEKAN TOMBOL "Mulai Ujian" DIBAWAH INI UNTUK MEMULAI UJIAN KEMBALI
 							</h2>
 						</center>
 						<br/>
 						<div class="form-actions ">
-							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj_sudah', 'kont_suj_sudah', '{$datawaktu.jam|default:0}', '{$datawaktu.menit|default:59}', '{$datawaktu.detik|default:59}' );">Mulai Ujian</button>
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj_sudah', 'kont_sim_sudah', '{$datawaktu.jam|default:0}', '{$datawaktu.menit|default:59}', '{$datawaktu.detik|default:59}' );">Mulai Ujian</button>
 						</div>
 					</div>
 				</div>
@@ -41,7 +43,7 @@
 	</div>	
 </div>
 
-<div id='kont_uj_heading_sudah' style='display:none;'>
+<div id='kont_sim_heading_sudah' style='display:none;'>
 	<div class="right-tab">
 		<center>
 		Waktu Anda <br />

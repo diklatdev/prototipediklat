@@ -21,7 +21,6 @@
 									<th width='1%'>No.</th>
 									<th width='5%' style="text-align:center !important;">Kode Unit</th>
 									<th width='30%' style="text-align:center !important;">Judul Unit</th>
-									<th width='10%' style="text-align:center !important;">Dokumen</th>
 									<th width='10%' style="text-align:center !important;">Penilaian Diri</th>
 									<th width='10%' style="text-align:center !important;">Rekomendasi</th>
 								</tr>
@@ -42,11 +41,6 @@
 										<td >{$ind}</td>
 										<td >{$rows.kode_unit}</td>
 										<td >{$rows.judul_unit}</td>
-										{if $rows.file_pendukung}
-											<td ><a target='_blank' href="{$host}__repository/dokumen_peserta/{$auth.no_registrasi}/file_asesmen_mandiri/{$folder_sertifikasi}/{$auth.kdreg_diklat}/{$rows.file_pendukung}">Preview File</a></td>
-										{else}
-											<td > - </td>	
-										{/if}
 										<td>
 											{if $rows.penilaian eq 'K'}
 												<font color='green'>Kompeten</font>
@@ -66,11 +60,21 @@
 									</tr>
 									<tr style='background:{$warna};'>
 										<td>&nbsp;</td>
+										<td style="text-align:right !important;"><b>Bukti Pendukung</b></td>
+										<td >
+											{$rows.bukti_pendukung}
+										</td>
+										<td colspan='2'>
+											
+										</td>
+									</tr>
+									<tr style='background:{$warna};'>
+										<td>&nbsp;</td>
 										<td style="text-align:right !important;"><b>Memo Dari Asesor</b></td>
 										<td >
 											{$rows.memo}
 										</td>
-										<td colspan='3'>
+										<td colspan='2'>
 											{if $rows.status_ver eq '1'}
 												&nbsp;
 											{elseif $rows.status_ver eq '0'}
@@ -85,7 +89,10 @@
 														<input type="radio" name="st_kmp_{$rows.id}" id="st_kmp_{$rows.id}" value="K"> Kompeten
 														<input type="radio" name="st_kmp_{$rows.id}" id="st_kmp_{$rows.id}" value="BK" > Belum Kompeten
 														<br/>
+														{*
 														<input type="file" id='file_{$rows.id}' name="fl_pdk" class="col-sm-3" style='padding:2px;width:250px;border:1px solid #E5E5E5;background:#fff'>
+														*}
+														<textarea id='bkt_pndk_{$rows.id}' class="form-control validatext" rows="4" cols="50"  placeholder="" name="bkt_pndk"></textarea>
 													</form>	
 													<button id='btn_{$rows.id}' class="btn btn-success" style='float:left;' onClick="event.preventDefault();kumpulPoster('sbt-rev-ases', '', '{$rows.id}', '{$ind}');">Submit</button>
 												</div>

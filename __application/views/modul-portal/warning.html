@@ -102,7 +102,7 @@
 				<h4>Test Potensi Akademik Sudah Dilakukan</h4>
 				<div class="well light">
 					<center>
-						Anda Sudah Melakukan Ujian Diklat Online. <br/>
+						Anda Sudah Melakukan Test Potensi Akademik. <br/>
 						Anda berhak mengikuti ujian-ujian berikutnya. <br/>
 						Nilai Hasil Ujian akan dipublikasikan pada saat step Hasil Akhir. <br/>
 						Terima Kasih.
@@ -238,6 +238,49 @@
 					<center>
 						Anda tidak terdaftar dalam diklat sistem kami. <br/>
 						Silahkan persiapkan berbagai dokumen dan materi untuk mendaftar diklat selanjutnya. <br>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}		
+		{if $type eq 'sudah_uji_simulasi'}		
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Test Simulasi Sudah Dilakukan</h4>
+				<div class="well light">
+					<center>
+						Anda Sudah Melakukan Test Simulasi. <br/>
+						Anda berhak mengikuti Tahapan berikutnya. <br/>
+						Nilai Hasil Ujian Sertifikasi akan dipublikasikan pada saat step Hasil Akhir. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}		
+		{if $type eq 'tunggu_verifikasi_simulasi'}		
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Verifikasi Test Simulasi</h4>
+				<div class="well light">
+					<center>
+						Saat ini anda sudah melaksanakan Test Simulasi. <br/>
+						Dimohon untuk menunggu verifikasi yang dilakukan oleh tim asesor kami. <br/>
+						Hasil ujian akan diumumkan melalui Portal Diklat ini. <br/>
+						Terima Kasih.
+					</center>
+				</div>
+			</div>
+		</div>
+		{/if}		
+		{if $type eq 'belum_boleh_simulasi'}		
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>Belum Boleh Test Simulasi</h4>
+				<div class="well light">
+					<center>
+						Anda belum diperbolehkan untuk mengikuti Test Simulasi. <br/>
 						Terima Kasih.
 					</center>
 				</div>

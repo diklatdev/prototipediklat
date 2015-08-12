@@ -84,8 +84,8 @@ $route['cari-data/(:any)'] = "why/modul_admin/getdatasearch/$1";
 $route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 
 $route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_peserta";
-$route['file-registrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/file_registrasi";
-$route['akun-peserta'] = "why/modul_admin/getdisplay/datagridview/akun_peserta";
+$route['hasil-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/hasil_akhir";
+$route['administrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/administrasi_peserta";
 $route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
 $route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";
 
@@ -115,6 +115,11 @@ $route['sbm-wkt'] = "why/modul_portal/simpansavedbs/saveujianwaktu";
 $route['soal-sisa'] = "why/modul_portal/simpansavedbs/savesoalsisa";
 $route['submit-ujian'] = "why/modul_portal/simpansavedbs/saveujian";
 
+$route['test-simulasi'] = "why/modul_portal/getdisplay/test_simulasi";
+$route['sbm-sim'] = "why/modul_portal/simpansavedbs/savesimulasisatuan";
+$route['sbm-wkt-sim'] = "why/modul_portal/simpansavedbs/saveujianwaktusimulasi";
+$route['submit-test-simulasi'] = "why/modul_portal/simpansavedbs/savetestsimulasi";
+
 $route['konfirmasi-pembayaran'] = "why/modul_portal/getdisplay/pembayaran";
 $route['submit-konfirmasi-pembayaran'] = "why/modul_portal/simpansavedbs/savepembayaran";
 
@@ -122,7 +127,7 @@ $route['penjadwalan-wawancara'] = "why/modul_portal/getdisplay/penjadwalan";
 $route['daftar-jadwal'] = "why/modul_portal/getdisplay/additional/registrasi_wawancara";
 $route['daftar-sekarang'] = "why/modul_portal/simpansavedbs/savedaftarwawancara";
 
-$route['hasil-akhir'] = "why/modul_portal/getdisplay/hasil";
+$route['hasil-akhir-peserta'] = "why/modul_portal/getdisplay/hasil";
 $route['kinerja'] = "why/modul_portal/getdisplay/kinerja_peserta";
 
 $route['cetak-kartu-ujian'] = "why/modul_portal/generate_kartu_ujian";
@@ -155,6 +160,9 @@ $route['registrasi-gagal'] = 'why/modul_portal/getdisplay/registrasi-gagal';
 
 $route['asesmen-berhasil'] = 'why/modul_portal/getdisplay/asesmen-berhasil';
 $route['asesmen-gagal'] = 'why/modul_portal/getdisplay/asesmen-gagal';
+
+$route['test-simulasi-berhasil'] = 'why/modul_portal/getdisplay/test-simulasi-berhasil';
+$route['test-simulasi-gagal'] = 'why/modul_portal/getdisplay/test-simulasi-gagal';
 
 $route['gagal-submit-soal'] = 'why/modul_portal/getdisplay/submit-soal-sisa-gagal';
 

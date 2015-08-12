@@ -272,6 +272,7 @@ class modul_admin extends SHIPMENT_Controller{
 				$namaaparatur = $this->input->post("nmapart");
 				$kdreg_diklat = $this->input->post("kdr");
 				
+				$data_simulasi = $this->madmin->get_data("tbl_uji_simulasi","result_array", $userid, $idx_sertifikasi_id, $kdreg_diklat);
 				$content = "modul-admin/uji_simulasi/form-ujisimulasi.html";
 				$this->smarty->assign("userid", $userid);
 				$this->smarty->assign("noreg", $noreg);
@@ -279,6 +280,7 @@ class modul_admin extends SHIPMENT_Controller{
 				$this->smarty->assign("idx_sertifikasi_id", $idx_sertifikasi_id);
 				$this->smarty->assign("namaaparatur", $namaaparatur);
 				$this->smarty->assign("kdreg_diklat", $kdreg_diklat);
+				$this->smarty->assign("data_simulasi", $data_simulasi);
 			break;
 			case "wawancara":
 				$content = "modul-admin/wawancara/main-wawancara.html";
@@ -519,6 +521,15 @@ class modul_admin extends SHIPMENT_Controller{
 			
 			case "datagridview":
 				$content = "modul-admin/data_peserta/main.html";
+				
+				if($p1 == 'data_peserta'){
+					$this->smarty->assign('breadcumb', "Data Peserta Sertifikasi");
+				}elseif($p1 == 'administrasi_peserta'){
+					$this->smarty->assign('breadcumb', "Administrasi Peserta");
+				}elseif($p1 == 'hasil_akhir'){
+					$this->smarty->assign('breadcumb', "Data Hasil Akhir Sertifikasi");
+				}
+				
 				$this->smarty->assign('tipe', $p1);
 			break;
 			case "lihat_password":

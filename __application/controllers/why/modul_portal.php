@@ -273,7 +273,6 @@ class modul_portal extends SHIPMENT_Controller{
 				
 				$cekdataujian = $this->mportal->get_data('cekdataujian', 'result_array');
 				if($cekdataujian){
-					
 					$datasoal = $this->mportal->get_data('soal_sudah', '', $cekdataujian);
 					$array_soalsudah = array();
 					foreach($cekdataujian as $k => $v){
@@ -292,6 +291,47 @@ class modul_portal extends SHIPMENT_Controller{
 				}
 				
 				$this->smarty->assign("sts_ut", $data_status_ujitest);
+			break;
+			
+			case "test_simulasi" :
+				if(!$this->auth['idx_sertifikasi_id']){
+					$this->getdisplay('tidak_ada_diklat');
+					exit;
+				}
+				$data_status_ujitest = $this->mportal->get_data("status_peserta", "row_array");
+				if($data_status_ujitest['step_uji_simulasi'] == '1'){
+					$this->getdisplay('sudah_uji_simulasi');
+					exit;
+				}elseif($data_status_ujitest['step_uji_simulasi'] == '2'){
+					$this->getdisplay('tunggu_verifikasi_simulasi');
+					exit;
+				}elseif($data_status_ujitest['step_uji_simulasi'] == '0' || $data_status_ujitest['step_uji_simulasi'] == '4'){
+					$this->getdisplay('belum_boleh_simulasi');
+					exit;					
+				}
+				
+				$cekdataujian_simulasi = $this->mportal->get_data('cekdataujian_simulasi', 'result_array');
+				if($cekdataujian_simulasi){
+					$konten = "modul-portal/uji_simulasi/form_uji_simulasi_sudah";
+					$array_soalsudah = array();
+					foreach($cekdataujian_simulasi as $k => $v){
+						array_push($array_soalsudah, $v['idx_bank_soal_simulasi_id']);
+					}
+					
+					$datasoal_belum = $this->mportal->get_data('soal_simulasi_belum', '', $array_soalsudah);
+					$datawaktu = $this->db->get_where('tbl_uji_simulasi_waktu', array('tbl_data_peserta_id'=>$this->auth['id'], 'idx_sertifikasi_id'=>$this->auth['idx_sertifikasi_id']) )->row_array();
+					
+					
+					$this->smarty->assign("soal_sudah", $cekdataujian_simulasi);
+					$this->smarty->assign("soal_belum", $datasoal_belum);
+					$this->smarty->assign("datawaktu", $datawaktu);
+					$this->smarty->assign("jml", count($cekdataujian_simulasi));
+				}else{
+					$data_soal = $this->mportal->get_data("idx_bank_soal_simulasi", "result_array");
+					$konten = "modul-portal/uji_simulasi/form_uji_simulasi";
+					
+					$this->smarty->assign("data_soal", $data_soal);
+				}
 			break;
 						
 			case "hasil":
@@ -342,6 +382,8 @@ class modul_portal extends SHIPMENT_Controller{
 			case "pembayaran-gagal":
 			case "ujitest-berhasil":
 			case "ujitest-gagal":
+			case "test-simulasi-berhasil":
+			case "test-simulasi-gagal":
 			case "submit-soal-sisa-gagal":
 				$konten = "modul-portal/status_submit_semua";
 				$this->smarty->assign('type', $type);
@@ -359,6 +401,9 @@ class modul_portal extends SHIPMENT_Controller{
 			case "sudah_uji_online":
 			case "tunggu_verifikasi_ujionline":
 			case "belum_boleh_ujianonline":
+			case "sudah_uji_simulasi":
+			case "tunggu_verifikasi_simulasi":
+			case "belum_boleh_simulasi":
 			case "sudah_pembayaran":
 			case "tunggu_verifikasi_pembayaran":
 			case "belum_boleh_pembayaran":
@@ -629,7 +674,7 @@ class modul_portal extends SHIPMENT_Controller{
 	
 	function simpansavedbs($type=""){
 		$post = array();
-        foreach($_POST as $k=>$v) $post[$k] = ( $type == 'save_komplain' || $type == 'registrasi' || $type == 'registrasi_ngulang' ? $this->input->post($k) : $this->db->escape_str($this->input->post($k)) );
+        foreach($_POST as $k=>$v) $post[$k] = ( $type == 'save_komplain' || $type == 'registrasi' || $type == 'savesimulasisatuan' || $type == 'registrasi_ngulang' ? $this->input->post($k) : $this->db->escape_str($this->input->post($k)) );
 		
 		if(!isset($post)){
 			header("Location: " . $this->host);

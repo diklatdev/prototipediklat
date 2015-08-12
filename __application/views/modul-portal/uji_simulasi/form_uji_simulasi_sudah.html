@@ -19,56 +19,40 @@
 	</div>
 </div>
 
-<div id="kont_sim" style='display:inline;'>
+<div id="kont_sim_sudah" style='display:inline;'>
 	<div class="container">
 		<div class="block-s2">
 			<div class="row">
 				<div class="col-lg-12">
-					<h4>Tata Cara Test Simulasi</h4>
 					<div class="well light">
-						<ul>
-							<li>
-								Peserta harus sudah lulus tahap asesmen mandiri yang sudah terverifikasi oleh admin/asesor.
-							</li>
-							<li>
-								Disarankan peserta untuk belajar materi terlebih dahulu, 
-								untuk memudahkan peserta dalam menjawab pertanyaan yang diberikan melalui sistem ini.
-							</li>
-							<li>
-								Ujian ini berbentuk pertanyaan essay, anda diharuskan menjawab dengan menjabarkan studi kasus yang diberikana pada tiap soalnya.
-							</li>
-							<li>
-								Durasi ujian ini selama 1 jam atau 60 menit.
-							</li>
-							<li>
-								Peserta dilarang menggunakan joki untuk mengerjakan Test Simulasi ini,
-								apabila peserta terbukti menggunakan joki maka peserta langsung dinyatakan gagal 
-								dalam Sistem Serfikasi & Penilaian ini.
-							</li>
-							<li>
-								Untuk kenyamanan dalam melakukan ujian,
-								disarankan untuk peserta menggunakan koneksi internet yang baik, cepat dan tidak terputus-putus.
-							</li>
-							<li>
-								Ujian ini bersifat absolute, yang mana admin/asesor berhak menentukan peserta lulus atau tidak.
-							</li>
-						</ul>
-					</div>
-					<div class="form-actions ">
-						<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj-sim', 'kont_sim');">Mulai Ujian</button>
+						<center>
+							<h2>
+								ANDA SUDAH IKUT TEST SIMULASI
+								<br/>
+								<br/>
+								TEKAN TOMBOL "Mulai Ujian" DIBAWAH INI 
+								<br />
+								<br />
+								UNTUK MEMULAI UJIAN KEMBALI
+							</h2>
+						</center>
+						<br/>
+						<div class="form-actions ">
+							<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('div-stuj-sim_sudah', 'kont_sim_sudah', '{$datawaktu.jam|default:0}', '{$datawaktu.menit|default:59}', '{$datawaktu.detik|default:59}' );">Mulai Ujian</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div>	
 </div>
 
 
-<div id='kont_sim_heading' style='display:none;'>
+<div id='kont_sim_heading_sudah' style='display:none;'>
 <div class="right-tab">
 	<center>
 	Waktu Anda <br />
-	<span id="timernya_sim"><span>
+	<span id="timernya_sudah_sim"><span>
 	</center>
 </div>
 <div class="container ">
@@ -90,9 +74,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								{if $data_soal}
+								{if $soal_sudah}
 									{assign var=no value=1}
-									{foreach from=$data_soal item=rows}
+									{foreach from=$soal_sudah item=rows}
 										<tr>
 											<td>{$no}</td>
 											<td>{$rows.soal}</td>
@@ -100,12 +84,30 @@
 										<tr>
 											<td>&nbsp;</td>
 											<td>
-												<textarea class="form-control" id='jwb_ny_{$no}' rows="4" cols="60"  placeholder="" ></textarea>
+												<textarea class="form-control" id='jwb_ny_{$no}' rows="4" cols="60"  placeholder="" >{$rows.jawaban}</textarea>
 												<br/>
 												<button id='s' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('sbm-sim', '', '{$no}', '{$rows.id}' )">Simpan</button>
 											</td>
 										</tr>
 										{assign var=no value=$no+1}
+									{/foreach}
+								{/if}
+								{if $soal_belum}
+									{assign var=nos value=$no}
+									{foreach from=$soal_belum item=rowss}
+										<tr>
+											<td>{$nos}</td>
+											<td>{$rowss.soal}</td>
+										</tr>
+										<tr>
+											<td>&nbsp;</td>
+											<td>
+												<textarea class="form-control" id='jwb_ny_{$nos}' rows="4" cols="60"  placeholder="" ></textarea>
+												<br/>
+												<button id='s' class="btn btn-primary" onClick="event.preventDefault();kumpulPoster('sbm-sim', '', '{$nos}', '{$rowss.id}' )">Simpan</button>
+											</td>
+										</tr>
+										{assign var=nos value=$nos+1}
 									{/foreach}
 								{/if}
 							</tbody>

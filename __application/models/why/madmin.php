@@ -420,6 +420,17 @@ class madmin extends SHIPMENT_Model{
 					AND kdreg_diklat = '".$p3."'
 				";
 			break;
+			case "tbl_uji_simulasi":
+				$sql = "
+					SELECT A.*, B.soal
+					FROM tbl_uji_simulasi A
+					LEFT JOIN idx_bank_soal_simulasi B ON A.idx_bank_soal_simulasi_id = B.id
+					WHERE A.tbl_data_peserta_id = '".$p1."' 
+					AND A.idx_sertifikasi_id = '".$p2."' 
+					AND A.kdreg_diklat = '".$p3."'
+					ORDER BY A.idx_bank_soal_simulasi_id ASC
+				";
+			break;
 			//End Uji Simulasi
 			
 			//Uji Wawancara
@@ -603,14 +614,29 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
 					LEFT JOIN ( SELECT * FROM tbl_user_admin WHERE level_admin = '2' ) AS D ON D.id = B.idx_asesor_id
 					LEFT JOIN idx_aparatur_sipil_negara E ON B.idx_sertifikasi_id = E.id
+					WHERE C.step_hasil = '0'
 				";
 			break;
-			case 'file_registrasi' :
-			case 'akun_peserta' :
+			case 'administrasi_peserta' :
 				$sql = "
-					SELECT A.id as idnya_data_peserta, A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat
+					SELECT A.id as idnya_data_peserta, A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat,
+						B.is_hadir, C.step_uji_test, C.step_uji_simulasi
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
+				";
+			break;
+			case "hasil_akhir":
+				$sql = "
+					SELECT A.nama_lengkap, A.no_registrasi, A.nip, D.real_name as nama_asesor,
+						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id,
+						E.nama_aparatur
+					FROM tbl_data_peserta A
+					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
+					LEFT JOIN ( SELECT * FROM tbl_user_admin WHERE level_admin = '2' ) AS D ON D.id = B.idx_asesor_id
+					LEFT JOIN idx_aparatur_sipil_negara E ON B.idx_sertifikasi_id = E.id
+					WHERE C.step_hasil = '2' OR C.step_hasil = '1'
 				";
 			break;
 		}
@@ -643,11 +669,12 @@ class madmin extends SHIPMENT_Model{
 				
 				if($post['hsl_as'] == "L"){					
 					$status = "L";
+					$this->db->update("tbl_step_peserta", array( "step_asesmen_mandiri"=>1, "step_uji_test"=>4, "step_uji_simulasi"=>4 ), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
 				}elseif($post['hsl_as'] == "TL"){
 					$status = "TL";
 				}
 				
-				$this->db->update("tbl_step_peserta", array( "step_asesmen_mandiri"=>1, "step_uji_test"=>4, "step_uji_simulasi"=>4 ), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat"=>$post['kdr']) );
+				
 				$array_asesmen_header = array(
 					'status'=>$status, 
 					'nama_asesor'=>$this->auth['real_name'], 
@@ -707,14 +734,10 @@ class madmin extends SHIPMENT_Model{
 			break;
 			case "savesimulasi":
 				$array_header = array(
-					"tbl_data_peserta_id" => $post['usid'],
-					"idx_sertifikasi_id" => $post['sertid'],
 					"total_skor" => $post['nl_ujsm'],
 					"status_penilaian" => $post['hsl_ujsm'],
 					"nama_asesor" => $this->auth['real_name'],
 					"tanggal_verifikasi" => date('Y-m-d H:i:s'),
-					"status_data" => "1",
-					"kdreg_diklat" => $post['kdr'],
 				);
 				$array_wawancara_header = array(
 					'tbl_data_peserta_id' => $post['usid'],
@@ -733,7 +756,7 @@ class madmin extends SHIPMENT_Model{
 				*/
 				
 				$this->db->update("tbl_step_peserta", array("step_uji_simulasi"=>1,"step_wawancara"=>2), array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat" => $post['kdr']) );
-				$this->db->insert("tbl_uji_simulasi_header", $array_header);
+				$this->db->update("tbl_uji_simulasi_header", $array_header, array('tbl_data_peserta_id'=>$post['usid'], 'idx_sertifikasi_id'=>$post['sertid'], "kdreg_diklat" => $post['kdr']));
 				$this->db->insert("tbl_wawancara_header", $array_wawancara_header);
 			break;
 			case "savewawancara":

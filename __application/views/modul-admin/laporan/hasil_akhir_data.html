@@ -1,0 +1,59 @@
+<div class="row">    
+    <div class="col-lg-12">
+		<div class="portlet  portlet-basic">
+			<div class="portlet-heading">
+				<div class="portlet-title ">
+					<h4>PESERTA SERTIFIKASI TUK - {$tuk} </h4>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-lg-12 col-sm-12">
+
+			<div id="recent" class="panel-collapse collapse in">
+				<div class="portlet-body">
+					<div class='row'>
+						{foreach name=loop from=$data item=row}
+                                                <div class="portlet">
+                                                    <div class="portlet-heading inverse">
+                                                            <div class="portlet-title">
+                                                                    <h4>{$row.jum_peserta} Peserta {$row.nama_aparatur}</h4>
+                                                            </div>
+                                                            <div class="portlet-widgets">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#jq-spark"><i class="fa fa-chevron-down"></i></a>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="jq-spark" class="panel-collapse collapse in">
+                                                            <div class="portlet-body">
+                                                                    <div class="row">
+                                                                            <div class="col-sm-4 col-xs-6 text-center ">
+                                                                                    <div class="easy-pie-chart">
+                                                                                        <span class="number"><h4>{$row.jum_peserta} Peserta yang Mendaftar</h4></span>
+                                                                                            <!--<a href="#" class="title"></a>-->
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-4 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart"  id="easyPieChart-bounce" data-percent="80">
+                                                                                        <span class="number"><h4>{$row.step_sertifikat} Peserta Kompeten</h4></span>
+                                                                                            <a href="{if $p1 eq 'thing'}{$host}lv/modul_admin/hasil_akhir_pdf/{$row.id_jadwal}{else}#{/if}" class="title btn"
+                                                                                               {if $p1 eq 'thing'}target="_blank"{else}onclick="alert('Pilih TUK Dahulu!')"{/if}>PRINT LAPORAN</a>																
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-4 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart"  id="easyPieChart-bounce" data-percent="80">
+                                                                                        <span class="number"><h4>{$row.jum_peserta - $row.step_sertifikat} Peserta Belum Kompoten</h4></span>
+                                                                                            <!--<a href="#" class="title"></a>-->																
+                                                                                    </div>
+                                                                            </div>
+                                                                    </div>										
+                                                            </div>
+                                                    </div>
+                                                </div>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

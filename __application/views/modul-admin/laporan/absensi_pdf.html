@@ -1,0 +1,110 @@
+<html>
+<head>
+<title>Daftar Hadir Peserta</title>
+<style>
+{literal}
+body {font-family: sans-serif;
+    font-size: 10pt;
+}
+p {    margin: 0pt;
+	font-family: sans-serif;
+    font-size: 10pt;
+}
+td { vertical-align: top; }
+.items td {
+    border-left: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+table thead td { background-color: #FCFCFC;
+    text-align: center;
+    border: 0.1mm solid #000000;
+}
+table tbody td { background-color: #FFFFFF;
+    text-align: left;
+    border: 0.1mm solid #000000;
+}
+.items td.blanktotal {
+    background-color: #FFFFFF;
+    border: 0.1mm solid #000000;
+    border-top: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+.items td.totals {
+    text-align: right;
+    border: 0.1mm solid #000000;
+}
+{/literal}
+</style>
+</head>
+<body>
+
+<div id='header'>
+	<table width="100%" >
+		<tr>
+			<td align='center'>
+				<h5>DAFTAR HADIR PESERTA</h5>
+				<h5>UJI KOMPETENSI {$prof_tuk.sertifikasi}</h5>
+			</td>
+		</tr>
+	</table>
+</div> 
+<br>
+<div id='content'>
+	<b style="font-size:11px;font-family:Roboto;">TANGGAL : {$prof_tuk.tanggal_wawancara}</b><br>
+	<b style="font-size:11px;font-family:Roboto;">TUK : {$prof_tuk.tuk}</b>
+	<br>
+	<br>
+	<table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse;" cellpadding="8">
+		<thead>
+			<tr>
+				<td align="left" width="5%">NO. </td>
+				<td align='left' width="35%">Nama / NIP</td>
+				<td align='left' width="25%">Jabatan</td>
+				<td align='left' width="30%">Instansi</td>
+				<td align='left' width="15%">Tanda Tangan</td>
+			</tr>
+		</thead>
+		<tbody>
+			{assign var=ind value=1}
+			{foreach name=loop from=$data item=row}
+			<tr>
+				<td align="left">{$ind}.</td>
+				<td align="left">{$row.nama_lengkap}<br>NIP. {$row.nip}</td>
+				<td align="left">{$row.jabatan|upper}</td>
+				<td align="left">{$row.nama_instansi} {if $row.kabupaten}Kab/Kota {/if}{$row.kabupaten}{if $row.kabupaten},{/if} {$row.provinsi}</td>
+				<td align="left"></td>
+			</tr>
+			{assign var=ind value=$ind+1}
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+<br>
+<br>
+<br>
+<table width="100%">
+    <tr>
+        <td width="50%" align='center'><h5>Manajer Sertifikasi,</h5></td>
+        <td width="50%" align='center'><h5>Petugas Administrasi,</h5></td>
+    </tr>
+    <br><br><br><br><br>
+    <tr>
+        <td width="50%" align='center'>(___________________________)</td>
+        <td width="50%" align='center'>(___________________________)</td>
+    </tr>
+</table>
+<br><br>
+<table width="100%">    
+    <tr>
+        <td align='center'>
+                <h5>Mengetahui:</h5>
+                <h5>Kepala LSP- Pemda/LSP Pemda Cabang</h5>
+        </td>
+    </tr>
+    <br><br><br><br><br>
+    <tr>
+        <td align='center'>(___________________________)</td>
+    </tr>
+</table>
+</body>
+</html>

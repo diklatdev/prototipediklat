@@ -1,0 +1,76 @@
+<div class="row">    
+    <div class="col-lg-12">
+		<div class="portlet  portlet-basic">
+			<div class="portlet-heading">
+				<div class="portlet-title ">
+					<h4>PESERTA SERTIFIKASI TUK - {$tuk} </h4>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-lg-12 col-sm-12">
+
+			<div id="recent" class="panel-collapse collapse in">
+				<div class="portlet-body">
+					<div class='row'>
+						{foreach name=loop from=$data item=row}
+                                                <div class="portlet">
+                                                    <div class="portlet-heading inverse">
+                                                            <div class="portlet-title">
+                                                                    <h4>{$row.jum_peserta} Peserta {$row.nama_aparatur}</h4>
+                                                            </div>
+                                                            <div class="portlet-widgets">
+                                                                    <a data-toggle="collapse" data-parent="#accordion" href="#jq-spark"><i class="fa fa-chevron-down"></i></a>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+                                                    </div>
+                                                    <div id="jq-spark" class="panel-collapse collapse in">
+                                                            <div class="portlet-body">
+                                                                    <div class="row">
+                                                                            <div class="col-sm-2 col-xs-6 text-center ">
+                                                                                    <div class="easy-pie-chart">
+                                                                                            <span class="number">{$row.step_reg} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">REGISTRASI</a>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-2 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart">
+                                                                                            <span class="number">{$row.step_assesment} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">ASSESSMENT MANDIRI</a>
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-2 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart" id="easyPieChart-visit" data-percent="76">
+                                                                                            <span class="number">{$row.step_uji_online} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">UJI ONLINE</a>
+                                                                                    </div>									
+                                                                            </div>
+                                                                            <div class="col-sm-2 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart"  id="easyPieChart-bounce" data-percent="80">
+                                                                                            <span class="number">{$row.step_simulasi} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">SIMULASI</a>																
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-2 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart"  id="easyPieChart-bounce" data-percent="80">
+                                                                                            <span class="number">{$row.step_wawancara} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">WAWANCARA</a>																
+                                                                                    </div>
+                                                                            </div>
+                                                                            <div class="col-sm-2 col-xs-6 text-center">
+                                                                                    <div class="easy-pie-chart"  id="easyPieChart-bounce" data-percent="80">
+                                                                                            <span class="number">{$row.step_sertifikat} Peserta berhasil</span>
+                                                                                            <a href="#" class="title">SERTIFIKAT</a>																
+                                                                                    </div>
+                                                                            </div>
+                                                                    </div>										
+                                                            </div>
+                                                    </div>
+                                                </div>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

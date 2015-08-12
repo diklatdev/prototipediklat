@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>Daftar Hadir Peserta</title>
+<style>
+{literal}
+body {font-family: sans-serif;
+    font-size: 10pt;
+}
+p {    margin: 0pt;
+	font-family: sans-serif;
+    font-size: 10pt;
+}
+td { vertical-align: top; }
+.items td {
+    border-left: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+table thead td { background-color: #FCFCFC;
+    text-align: center;
+    border: 0.1mm solid #000000;
+}
+table tbody td { background-color: #FFFFFF;
+    text-align: left;
+    border: 0.1mm solid #000000;
+}
+.items td.blanktotal {
+    background-color: #FFFFFF;
+    border: 0.1mm solid #000000;
+    border-top: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+.items td.totals {
+    text-align: right;
+    border: 0.1mm solid #000000;
+}
+{/literal}
+</style>
+</head>
+<body>
+
+<div id='header'>
+    <table width="100%" >
+            <tr>
+                    <td align='center'>
+                            <h4>DATA PESERTA</h4> 
+                            <h4>UJI KOMPETENSI {$detail.nama_aparatur}</h4>
+                    </td>
+            </tr>
+    </table>
+    <br><br>
+    <table width="100%">
+        <tr><td width="35%">Nama </td> <td width="1%">:</td><td> {$detail.nama_lengkap}</td></tr>
+        <tr><td width="35%">NIP </td> <td width="1%">:</td><td> {$detail.nip}</td></tr>
+        <tr><td width="35%">Pangkat / Golongan </td> <td width="1%">:</td><td> {$detail.nama_pangkat}</td></tr>
+        <tr><td width="35%">Tempat / Tanggal Lahir </td> <td width="1%">:</td><td> {$detail.tempat_lahir} / {$detail.tanggal_lahir|date_format:"%d-%m-%Y"}</td></tr>
+        <tr><td width="35%">Agama</td> <td width="1%">:</td><td></td></tr>
+        <tr><td width="35%">Jenis Kelamin</td> <td width="1%">:</td><td> {if $detail.jenis_kelamin eq 'L'}Laki-Laki{else}Perempuan{/if}</td></tr>
+        <tr><td width="35%">Jabatan </td> <td width="1%">:</td><td> {$detail.jabatan|lower|capitalize}</td></tr>
+        <tr><td width="35%">Nama dan Alamat Kantor</td> <td width="1%">:</td><td> {$detail.nama_instansi} Kab/Kota {$detail.nama_kabupaten|lower|capitalize}, {$detail.alamat_instansi|lower|capitalize}</td></tr>
+        <tr><td width="35%">Telepon / Fax Kantor </td> <td width="1%">:</td><td> </td></tr>
+        <tr><td width="35%">Alamat Rumah </td><td width="1%">:</td><td>{$detail.alamat_rumah|lower|capitalize}</td></tr>
+        <tr><td width="35%">Telepon Rumah/HP </td> <td width="1%">:</td><td> {$detail.no_telepon} / {$detail.no_handphone}</td></tr>
+    </table>
+</div> 
+<br>
+</body>
+</html>

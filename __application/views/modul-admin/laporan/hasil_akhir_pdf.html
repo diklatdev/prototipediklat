@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Daftar Hadir Peserta</title>
+<style>
+{literal}
+body {font-family: sans-serif;
+    font-size: 10pt;
+}
+p {    margin: 0pt;
+	font-family: sans-serif;
+    font-size: 10pt;
+}
+td { vertical-align: top; }
+.items td {
+    border-left: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+table thead td { background-color: #FCFCFC;
+    text-align: center;
+    border: 0.1mm solid #000000;
+}
+table tbody td { background-color: #FFFFFF;
+    text-align: left;
+    border: 0.1mm solid #000000;
+}
+.items td.blanktotal {
+    background-color: #FFFFFF;
+    border: 0.1mm solid #000000;
+    border-top: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+.items td.totals {
+    text-align: right;
+    border: 0.1mm solid #000000;
+}
+{/literal}
+</style>
+</head>
+<body>
+
+<div id='header'>
+	<table width="100%" >
+		<tr>
+			<td align='center'>
+				<h5>LAMPIRAN SURAT KEPUTUSAN MENTERI DALAM NEGERI</h5>
+				<h5>NOMOR :</h5>
+                                <h5>TANGGAL :</h5>
+                                <h5>DAFTAR PEJABAT PENGAWAS PEMERINTAHAN</h5>
+                                <h5>YANG DINYATAKAN LULUS UJI KOMPETENSI</h5>
+                                {assign var=var_p2upd value=" "|explode:$prof_tuk.sertifikasi}   
+                                <h5>PENGAWAS PEMERINTAHAN {$var_p2upd[1]|upper}</h5>
+			</td>
+		</tr>
+	</table>
+</div> 
+<br>
+<div id='content'>
+	<table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse;" cellpadding="8">
+		<thead>
+			<tr>
+				<td align="left" width="5%">NO. </td>
+				<td align='left' width="25%">Nama / NIP</td>
+				<td align='left' width="25%">Tempat / Tanggal Lahir</td>
+				<td align='left' width="25%">Jabatan</td>
+				<td align='left' width="25%">Instansi</td>
+				<td align='left' width="15%">Keterangan</td>
+			</tr>
+		</thead>
+		<tbody>
+			{assign var=ind value=1}
+			{foreach name=loop from=$data item=row}
+			<tr>
+				<td align="left">{$ind}.</td>
+				<td align="left">{$row.nama_lengkap}<br>NIP. {$row.nip}</td>
+				<td align="left">{$row.tempat_lahir} / {$row.tanggal_lahir}</td>
+				<td align="left">{$row.jabatan|upper}</td>
+				<td align="left">{$row.nama_instansi} {if $row.kabupaten}Kab/Kota {/if}{$row.kabupaten}{if $row.kabupaten},{/if} {$row.provinsi}</td>
+				<td align="left"></td>
+			</tr>
+			{assign var=ind value=$ind+1}
+			{/foreach}
+		</tbody>
+	</table>
+</div>
+<br>
+<br>
+<br>
+<table width="100%">
+    <tr>
+        <td width="50%" align='right'><h5></h5></td>
+        <td width="50%" align='center'><h5>Jakarta,............</h5></td>
+    </tr>
+    <tr>
+        <td width="50%" align='right'><h5></h5></td>
+        <td width="50%" align='center'><h5>KEPALA BADAN</h5></td>
+    </tr>
+    <tr>
+        <td width="50%" align='right'><h5></h5></td>
+        <td width="50%" align='center'><h5>PENGEMBANGAN SUMBER DAYA MANUSIA</h5></td>
+    </tr>
+    <tr>
+        <td width="50%" align='right'><h5></h5></td>
+        <td width="50%" align='center'><h5>KEMENTERIAN DALAM NEGERI,</h5></td>
+    </tr>
+    <br><br><br><br><br>
+    <tr>
+        <td width="50%" align='right'><h5></h5></td>
+        <td width="50%" align='center'>{$pejabat.nama_pejabat}</td>
+    </tr>
+</table>
+<br><br>
+</body>
+</html>

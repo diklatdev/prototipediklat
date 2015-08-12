@@ -1,0 +1,46 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well white" style="margin-bottom:0px !important;">
+			<label>Daftar Peserta di TUK {$tuk}</label> 
+		</div>
+		<div class="portlet"><!-- /Portlet -->
+			<div id="basic" class="panel-collapse collapse in">
+				<div class="portlet-body no-padding">
+					<table class="table table-bordered table-hover tc-table">
+						<thead>
+							<tr>
+								<th class="col-small center">No.</th>
+								<th class="col-medium ">Nama Peserta</th>
+								<th class="hidden-xs col-medium ">NIP</th>
+								<th class="hidden-xs col-medium ">No. Registrasi</th>
+								<th class="hidden-xs col-small center">Sertifikasi</th>
+								<th class="col-small center">Action</th>
+							</tr>
+						</thead>
+						<tbody id='{$type}'>
+							{if $data}
+								{assign var=ind value=1}
+								{foreach from=$data item=rows}
+									<tr>
+										<td class="col-small center">{$ind}</td>
+										<td>{$rows.nama_lengkap}</td>
+										<td class="hidden-xs">{$rows.nip}</td>
+										<td class="hidden-xs">{$rows.no_registrasi}</td>
+										<td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
+										<td class="col-medium center">
+                                                                                    <div class="btn-group btn-group-xs ">
+                                                                                        <a href="{$host}lv/modul_admin/biodata_pdf/{$rows.id}"  class="btn btn-info" target="_blank"><i class="fa fa-search-plus"> Cetak Biodata</i></a>
+                                                                                    </div>	
+										</td>
+									</tr>
+									{assign var=ind value=$ind+1}
+								{/foreach}
+							{/if}
+						</tbody>
+					</table>												
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

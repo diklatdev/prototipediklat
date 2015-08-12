@@ -1,0 +1,30 @@
+<!-- BEGIN PAGE HEADING ROW -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header title" style="">
+            <!-- PAGE TITLE ROW -->
+            <h1>Laporan Biodata Peserta</h1>
+        </div>
+        <div class="col-lg-12">
+            <select class="form-control" onchange="tampil_view('biodata_peserta', '{$host}biodata_peserta', 'laporan')" id="select_tuk">
+                    <option value="">Pilih Lokasi TUK</option>
+                    {foreach from=$jadwal item=row}
+                    <option value="{$row.kode}">{$row.txt} - {if $row.status eq 'A'}Berlangsung{else}Selesai{/if}</option>
+                    {/foreach}
+            </select>
+			<!-- <span class="help-block">Example block-level help text here.</span> -->
+            <div class="space-4"></div>
+
+
+            <div class="" id ="laporan">
+                <!--{include file='modul-admin/laporan/absensi_tuk.html'}-->
+            </div>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+    <div class="clearfix"></div>
+    <!-- /.row -->
+    <!-- END PAGE HEADING ROW -->
+</div>
+
+

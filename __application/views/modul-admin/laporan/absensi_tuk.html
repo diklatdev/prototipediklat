@@ -1,0 +1,37 @@
+<div class="col-lg-12">
+	<div class="row">
+		<div class="portlet  portlet-basic">
+			<div class="portlet-heading">
+				<div class="portlet-title ">
+					<h4>PESERTA SERTIFIKASI TUK - {$tuk} </h4>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="col-lg-12 col-sm-12">
+
+			<div id="recent" class="panel-collapse collapse in">
+				<div class="portlet-body">
+					<div class='row'>
+						{foreach name=loop from=$data item=row}
+							<div class="col-lg-3 col-sm-3">
+								<a href="{if $p1 eq 'thing'}{$host}lv/modul_admin/absensi_pdf/{$row.idx_tuk_id}/{$row.idx_sertifikasi}/{$row.id_jadwal}{else}#{/if}" 
+									class="tile-button btn btn-white" {if $p1 eq 'thing'}target="_blank"{else}onclick="alert('Pilih TUK Dahulu!')"{/if}>
+									<div class="tile-content-wrapper">
+										<i class="fa fa-file-pdf-o text-info"></i>
+										<div class="tile-content text-inverse">
+											{$row.jum_peserta} Peserta
+										</div>
+										<small>
+											{$row.nama_aparatur}
+										</small>
+									</div>
+								</a>												
+							</div>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -89,6 +89,9 @@ $route['administrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/admini
 $route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
 $route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";
 
+$route['send-mail-akun'] = "why/modul_admin/kirimakun";
+$route['absensi-peserta'] = "why/modul_admin/simpansavedbx/absensi/";
+
 
 //Modul Portal
 $route['combo/(:any)'] = "why/modul_portal/fillcombo/$1/echo";

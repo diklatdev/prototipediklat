@@ -524,12 +524,16 @@ class modul_admin extends SHIPMENT_Controller{
 				
 				if($p1 == 'data_peserta'){
 					$this->smarty->assign('breadcumb', "Data Peserta Sertifikasi");
+					$this->smarty->assign('tinggi', "80px");
 				}elseif($p1 == 'administrasi_peserta'){
 					$this->smarty->assign('breadcumb', "Administrasi Peserta");
+					$this->smarty->assign('tinggi', "80px");
 				}elseif($p1 == 'hasil_akhir'){
 					$this->smarty->assign('breadcumb', "Data Hasil Akhir Sertifikasi");
+					$this->smarty->assign('tinggi', "80px");
 				}
 				
+				$this->smarty->assign('jadwal', $this->fillcombo('jadwal_ujian_tuk', 'return') );
 				$this->smarty->assign('tipe', $p1);
 			break;
 			case "lihat_password":
@@ -724,6 +728,15 @@ class modul_admin extends SHIPMENT_Controller{
 			echo $kirimemail;
 		}
 		
+	}
+	
+	function kirimakun(){
+		$this->load->library('lib');
+		
+		$email = $this->input->post('em');
+		$username = $this->input->post('us');
+		$password = $this->input->post('ps');
+		echo $this->lib->kirimemail("email_registrasi", $email, $username, $password);
 	}
 	
 	function generate_voucher(){

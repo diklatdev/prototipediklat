@@ -602,28 +602,61 @@ class madmin extends SHIPMENT_Model{
 	function get_data_grid($type="", $p1="", $p2=""){
 		$this->load->library('lib');
 		$where = "";
+		
+		//Filter Jadwal
+		$filter_jadwal = $this->input->post('idxjd');
+		$nama_peserta = $this->input->post('nmpsr');
+		if($filter_jadwal){
+			$where .= "
+				AND F.tbl_jadwal_wawancara_id = '".$filter_jadwal."' 
+			";
+			$order = "ORDER BY A.nama_lengkap ASC ";
+		}else{
+			$order = "ORDER BY F.tbl_jadwal_wawancara_id DESC ";
+		}
+		
+		if($nama_peserta){
+			$where .= "
+				AND A.nama_lengkap LIKE '%".$nama_peserta."%' 
+			";
+		}
+		//End Filter Jadwal
+		
 		switch($type){
-			case 'data_peserta':				
+			case 'data_peserta':	
+				if($this->auth['level_admin'] == 2){
+					$where .= " AND B.idx_asesor_id = '".$this->auth['id']."' ";
+				}
+								
 				$sql = "
 					SELECT A.nama_lengkap, A.no_registrasi, D.real_name as nama_asesor,
 						C.step_registrasi, C.step_asesmen_mandiri, C.step_uji_test, C.step_uji_simulasi, C.step_wawancara, 
-						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id,
-						E.nama_aparatur
+						B.kdreg_diklat, B.idx_sertifikasi_id, B.tbl_data_peserta_id, DATE_FORMAT( G.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara,
+						E.nama_aparatur, H.nama_tuk
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
 					LEFT JOIN ( SELECT * FROM tbl_user_admin WHERE level_admin = '2' ) AS D ON D.id = B.idx_asesor_id
 					LEFT JOIN idx_aparatur_sipil_negara E ON B.idx_sertifikasi_id = E.id
-					WHERE C.step_hasil = '0'
+					LEFT JOIN ( SELECT * FROM tbl_daftar_test WHERE  status_data = '1' ) AS F ON B.tbl_data_peserta_id = F.tbl_data_peserta_id AND B.idx_sertifikasi_id = F.idx_sertifikasi_id
+					LEFT JOIN tbl_jadwal_wawancara G ON F.tbl_jadwal_wawancara_id = G.id
+					LEFT JOIN idx_tuk H ON B.idx_tuk_id = H.id
+					WHERE C.step_hasil = '0' $where 
+					$order
 				";
 			break;
 			case 'administrasi_peserta' :
 				$sql = "
 					SELECT A.id as idnya_data_peserta, A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat,
-						B.is_hadir, C.step_uji_test, C.step_uji_simulasi
+						B.is_hadir, C.step_uji_test, C.step_uji_simulasi, A.no_handphone, A.email
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
 					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
+					LEFT JOIN ( SELECT * FROM tbl_daftar_test WHERE  status_data = '1' ) AS F ON B.tbl_data_peserta_id = F.tbl_data_peserta_id AND B.idx_sertifikasi_id = F.idx_sertifikasi_id
+					LEFT JOIN tbl_jadwal_wawancara G ON F.tbl_jadwal_wawancara_id = G.id
+					LEFT JOIN idx_tuk H ON B.idx_tuk_id = H.id
+					WHERE 1=1 $where 
+					$order
 				";
 			break;
 			case "hasil_akhir":
@@ -636,11 +669,17 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
 					LEFT JOIN ( SELECT * FROM tbl_user_admin WHERE level_admin = '2' ) AS D ON D.id = B.idx_asesor_id
 					LEFT JOIN idx_aparatur_sipil_negara E ON B.idx_sertifikasi_id = E.id
-					WHERE C.step_hasil = '2' OR C.step_hasil = '1'
+					LEFT JOIN ( SELECT * FROM tbl_daftar_test WHERE  status_data = '1' ) AS F ON B.tbl_data_peserta_id = F.tbl_data_peserta_id AND B.idx_sertifikasi_id = F.idx_sertifikasi_id
+					LEFT JOIN tbl_jadwal_wawancara G ON F.tbl_jadwal_wawancara_id = G.id
+					LEFT JOIN idx_tuk H ON B.idx_tuk_id = H.id
+					WHERE (C.step_hasil = '2' OR C.step_hasil = '1')
+					$where 
+					$order
 				";
 			break;
 		}
 		
+		//echo $sql;exit;
 		return $this->lib->jsondata($sql, $type);
 	}
 	
@@ -999,6 +1038,19 @@ class madmin extends SHIPMENT_Model{
 					$id_soal = $this->input->post('usiid');
 					$this->db->delete('idx_bank_soal_simulasi', array('id'=>$id_soal) );
 				}
+			break;
+			case "absensi":
+				$tbl_data_peserta_id = $post['idsw'];
+				$idx_sertifikasi_id = $post['idxw'];
+				$parameter = $post['prm'];
+				
+				if($parameter == 'hdr'){
+					$absensi = 1;
+				}elseif($parameter == 'tdkhdr'){
+					$absensi = 2;
+				}
+				
+				$this->db->update('tbl_data_diklat', array('is_hadir'=>$absensi), array('tbl_data_peserta_id'=>$tbl_data_peserta_id, 'idx_sertifikasi_id'=>$idx_sertifikasi_id) );
 			break;
 		}
 		

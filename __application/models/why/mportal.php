@@ -570,7 +570,16 @@ class mportal extends SHIPMENT_Model{
 				}
 				*/
 				
-				$kode_sertifikasi = $post['sertis_id'];
+				//$kode_sertifikasi = $post['sertis_id'];
+				$sqlgtjdwl = "
+					SELECT idx_sertifikasi_id
+					FROM tbl_jadwal_wawancara
+					WHERE id = '".$post['tku_dxi']."'
+				";
+				$querygtjdwl = $this->db->query($sqlgtjdwl)->row_array();
+				
+				$kode_sertifikasi = $querygtjdwl['idx_sertifikasi_id'];
+				
 				$sqlkdsert = "
 					SELECT kode_sertifikasi
 					FROM idx_aparatur_sipil_negara
@@ -642,7 +651,7 @@ class mportal extends SHIPMENT_Model{
 					}
 					*/
 					
-					$code_sert = $post['sertis_id'];
+					$code_sert = $querygtjdwl['idx_sertifikasi_id'];
 					
 					$n_sert = str_replace(" ", "_", $post['pnmpng_asp']);
 					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
@@ -708,7 +717,8 @@ class mportal extends SHIPMENT_Model{
 						"kdreg_diklat" => $kdreg_diklat,
 						"idx_tuk_id" => $data_jadwal['idx_tuk_id'],
 						"idx_asesor_id" => $query_asesor['id'],
-						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt']
+						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
+						"is_hadir" => 0
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					

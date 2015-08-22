@@ -12,13 +12,24 @@
 <div id="div_{$tipe_grid}" style="width:101.3%">
 	<div id='{$tipe_grid}'></div>
 	<div id='toolbar_{$tipe_grid}' style='padding:3px;height:{$tinggi}'>
-		{if $tipe_grid eq 'data_peserta' || $tipe_grid eq 'file_asesmen'}
-			<span>Nama Peserta : </span> <input type='text' id='nreg' style='width:150px;padding:3px !important;margin-top:3px;' /> 
-			<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="">
+		{if $tipe_grid eq 'data_peserta' || $tipe_grid eq 'administrasi_peserta' || $tipe_grid eq 'hasil_akhir'}
+			<label style='width:120px !important;'>Nama Peserta </label> : <input type='text' id='nmpsr' style='width:240px;padding:3px !important;margin-top:3px;' /> 
+			<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="kumpulPost('fltrdt', '{$tipe_grid}');">
 				<span class="l-btn-left l-btn-icon-left">
 					<span class="l-btn-text">Cari Data</span><span class="l-btn-icon icon-search">&nbsp;</span>
 				</span>
 			</a>
+			&nbsp;&nbsp;
+			<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="refresh" onClick="">
+				<span class="l-btn-left l-btn-icon-left">
+					<span class="l-btn-text">Refresh All Data</span><span class="l-btn-icon icon-reload">&nbsp;</span>
+				</span>
+			</a>
+			<br/>
+			<label style='width:120px;'>Filter Jadwal Ujian</label> :
+			<select id='jdwl'>
+				{$jadwal}
+			</select>
 		{/if}
 	</div>
 </div>
@@ -26,4 +37,14 @@
 <script>
 	$('#div_{$tipe_grid}').css('height',(getClientHeight()-230));
 	genGrid('{$tipe_grid}');
+	
+	$('#jdwl').on('change', function(){
+		$("#{$tipe_grid}").datagrid('reload', { 'idxjd':$(this).val() } );
+	});
+	
+	$('#refresh').bind('click', function(){
+		$('#nmpsr').val('');
+		$('#jdwl').val('');
+		$("#{$tipe_grid}").datagrid('reload', { 'idxjd':'', 'nmpsr':'' } );
+	});
 </script>

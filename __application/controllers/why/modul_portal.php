@@ -706,6 +706,11 @@ class modul_portal extends SHIPMENT_Controller{
 				exit;
 			}
 			
+			if(!isset($post['tku_dxi'])){
+				echo -4;
+				exit;
+			}
+			
 		}elseif($type == "asesmen"){
 			if($this->auth){
 				//Checking Data Double

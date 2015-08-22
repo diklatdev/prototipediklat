@@ -207,6 +207,8 @@ function genGrid(modnya, lebarnya, tingginya){
 					}
 				},
 				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
+				{field:'tgl_wawancara',title:'Tanggal Ujian',width:150, halign:'center',align:'center'},
+				{field:'nama_tuk',title:'TUK  Ujian',width:150, halign:'center',align:'center'},
 			];
 		break;
 		case "administrasi_peserta":
@@ -219,9 +221,9 @@ function genGrid(modnya, lebarnya, tingginya){
 					formatter: function(value,row,index){
 						if(row.is_hadir == 0){
 							var button = "";
-							button += "<button href='#' onClick='previewData(\"dd\", \""+row.idnya_data_peserta+"\");' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /> Hadir</button>";
+							button += "<button href='#' onClick='kumpulPost(\"hdr\", \""+row.idnya_data_peserta+"\", \""+row.idx_sertifikasi_id+"\");' ><img src='"+hostir+"assets/images/ok.png' width='16px' height='16px' /> Hadir</button>";
 							button += "&nbsp;&nbsp;/&nbsp;&nbsp;";
-							button += "<button href='#' onClick='previewData(\"dd\", \""+row.idnya_data_peserta+"\");' ><img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' /> Tidak Hadir</button>";
+							button += "<button href='#' onClick='kumpulPost(\"tdkhdr\", \""+row.idnya_data_peserta+"\", \""+row.idx_sertifikasi_id+"\");' ><img src='"+hostir+"assets/images/cancel.png' width='16px' height='16px' /> Tidak Hadir</button>";
 							return button;
 						}else if(row.is_hadir == 1){
 							return "<font color='green'>Peserta Hadir</font>";
@@ -263,6 +265,9 @@ function genGrid(modnya, lebarnya, tingginya){
 						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Ubah Data</button>";
 					}
 				},
+				{field:'no_handphone',title:'No. Handphone',width:150, halign:'center',align:'left'},
+				{field:'email',title:'Email',width:350, halign:'center',align:'left'},
+				
 			];
 		break;
 		case "hasil_akhir":
@@ -396,7 +401,7 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			var kdr_pm = $('#kdr').val();
 			
 			$.post(urlnya, { 'id_uny':p1, 'nr':nreg, 'nm_l':nmlng, 'np':pin, 'ap_n':nmsert, 'tgp':tgpem, 'tgk':tgkon, 'flpm':fl_pm, 'idxsert':p2, 'mtdpm':mtd_pm, 'kdppm':kdp_pm, 'kdvpm':kdv_pm, 'kdrpm':kdr_pm,   }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;		
 		case "uj_dt":
@@ -409,12 +414,12 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			var jms = $('#jms').val();
 			var jmb = $('#jmb').val();
 			$.post(urlnya, { 'id_uny':p1, 'nr':nreg, 'nm_l':nmlng, 'np':pin, 'ap_n':nmsert, 'ap_dx':idxsert, 'tgu':tguj, 'js':jms, 'jb':jmb }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 		break;
 		case "tm_jd":
 			$.post(urlnya, {  }, function(resp){
-				$("#"+domnya).html(resp);
+				$("#"+domnya).html(resp).removeClass("loading");
 			});
 			
 		break;
@@ -649,6 +654,44 @@ function kumpulPost($type, p1, p2, p3, p4){
 					}
 				});
 			}
+		break;
+		case "fltrdt":
+			$("#"+p1).datagrid('reload', { 'nmpsr':$('#nmpsr').val() } );
+		break;
+		case "sndem":
+			$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
+			 $.post(hostir+'send-mail-akun', { 'em':p1, 'us':p2, 'ps':p3 }, function(pst){
+				if(pst == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Email Terkirim" });
+				}else{
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Email Gagal Terkirim" });
+				}
+				$.unblockUI();
+			 });
+		break;
+		case "hdr":
+			$.blockUI({ message: '<h5>..Harap Tunggu</h5>' });
+			 $.post(hostir+'absensi-peserta', { 'idsw':p1, 'idxw':p2, 'prm':'hdr' }, function(pst){
+				if(pst == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan" });
+				}else{
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal" });
+				}
+				$.unblockUI();
+				$('#administrasi_peserta').datagrid('reload');
+			 });
+		break;
+		case "tdkhdr":
+			$.blockUI({ message: '<h5>..Harap Tunggu</h5>' });
+			 $.post(hostir+'absensi-peserta', { 'idsw':p1, 'idxw':p2, 'prm':'tdkhdr' }, function(pst){
+				if(pst == 1){
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan" });
+				}else{
+					$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal" });
+				}
+				$.unblockUI();
+				$('#administrasi_peserta').datagrid('reload');
+			 });
 		break;
 		
 		

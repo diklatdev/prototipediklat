@@ -194,7 +194,7 @@ function sbtdl_reg(){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
 		}else{
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
-			location.href = host+'registrasi-gagal';
+			//location.href = host+'registrasi-gagal';
 		}
 		//
 		$.unblockUI();
@@ -928,12 +928,12 @@ function chf(dom, tpy){
 		var mx = 5;
 		var pesannya2 = "File Harus Berukuran Maximal 5 MB !";
 	}else if(tpy == 2){
-		var arr = ["jpg", "JPG", "jpeg", "JPEG"];
+		var arr = ["pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG"];
 		var pesannya = "File Harus Ber-extension .jpg / .JPG / .jpeg / .JPEG !";
 		var mx = 0.50;
 		var pesannya2 = "File Harus Berukuran Maximal 500 KB !";
 	}else if(tpy == 3){
-		var arr = ["jpg", "JPG", "jpeg", "JPEG"];
+		var arr = ["pdf", "PDF", "jpg", "JPG", "jpeg", "JPEG"];
 		var pesannya = "File Harus Ber-extension .jpg / .JPG / .jpeg / .JPEG !";
 		var mx = 2;
 		var pesannya2 = "File Harus Berukuran Maximal 2 MB !";

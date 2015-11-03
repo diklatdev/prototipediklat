@@ -194,7 +194,7 @@ function sbtdl_reg(){
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
 		}else{
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
-			//location.href = host+'registrasi-gagal';
+			location.href = host+'registrasi-gagal';
 		}
 		//
 		$.unblockUI();
@@ -515,8 +515,8 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 			return false;
 		break;
 		case "div-stuj_sudah":
-			$('#kont_suj_sudah').css({'display':'none'});
-			$('#kont_uj_heading_sudah').css({'display':'inline'});
+			$('#kont_sim_sudah').css({'display':'none'});
+			$('#kont_sim_heading_sudah').css({'display':'inline'});
 			$('#sbm').css({'display':'inline'});
 			$("#timernya_sudah").countdowntimer({
 				hours : p1,

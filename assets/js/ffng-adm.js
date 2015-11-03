@@ -285,6 +285,32 @@ function genGrid(modnya, lebarnya, tingginya){
 				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
 			];
 		break;
+		case "cetak_sertifikat":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
+				{field:'tbl_data_peserta_id',title:'::',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<a style='color:#000 !important;' href='"+hostir+"generate-sertifikat/"+row.id+"/"+row.idx_sertifikasi_id+"/"+row.lulus_tidak+"/"+row.kdreg_diklat+"/"+row.no_registrasi+"' target='_blank' ><button>Cetak</button></a>";
+					}
+				},
+				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
+				{field:'is_cetak_sertifikat',title:'Status Cetak',width:200, halign:'center',align:'left',
+					formatter: function(value,row,index){
+						if(row.is_cetak_sertifikat == 0){
+							return "<font color='blue'>Belum Pernah Cetak</font>";
+						}else if(row.is_cetak_sertifikat == 1){
+							return "<font color='green'>Sudah Pernah Cetak</font>";
+						}else{
+							return "-";
+						}
+					}
+				},
+			];
+		break;
 	}
 	
 	$("#"+modnya).datagrid({
@@ -629,9 +655,8 @@ function kumpulPost($type, p1, p2, p3, p4){
 		
 				$.post(hostir+"verifikasi-ujitulis-iktujian", { 'typ':'tpa', 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
 					if(rspp == 1){
-						//alert('Peserta Dipersilahkan Mengikuti Ujian!');
 						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Potensi Akademik." });
-						loadUrl(hostir+'data-peserta-grid');
+						$('#administrasi_peserta').datagrid('reload');
 					}else{
 						alert(rspp);
 					}
@@ -648,7 +673,7 @@ function kumpulPost($type, p1, p2, p3, p4){
 					if(rspp == 1){
 						//alert('Peserta Dipersilahkan Mengikuti Ujian!');
 						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Simulasi Online." });
-						loadUrl(hostir+'data-peserta-grid');
+						$('#administrasi_peserta').datagrid('reload');
 					}else{
 						alert(rspp);
 					}
@@ -1017,7 +1042,7 @@ function hsnya(){
 	ajxamsterfrm("dehs", function(respo){
 		if(respo == 1){
 			alert("Data Tersimpan");
-			loadUrl(hostir+'hasil-peserta');
+			loadUrl(hostir+'hasil-peserta-grid');
 		}else{
 			alert(respo);
 		}
@@ -1159,8 +1184,9 @@ function smpn_xoal(){
 }
 
 function smpn_xoal_sm(){
-	if($('#ed_soal').val() == ""){
-		$("#ed_soal").focus(); 
+	var content = tinyMCE.get('ed_soal').getContent();
+	if(content == ""){
+		//$("#ed_soal").focus(); 
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Soal Tidak Boleh Kosong" });
 		return false;
 	}

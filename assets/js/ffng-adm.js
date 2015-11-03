@@ -311,6 +311,38 @@ function genGrid(modnya, lebarnya, tingginya){
 				},
 			];
 		break;
+		case "penjadwalan":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			kolom[modnya] = [	
+				{field:'nama_aparatur',title:'Sertifikasi',width:250, halign:'center',align:'left'},
+				{field:'nama_tuk',title:'TUK',width:250, halign:'center',align:'left'},
+				{field:'kuota',title:'Kuota',width:100, halign:'center',align:'right'},
+				{field:'tgl_sertifikasi',title:'Tanggal Sertifikasi',width:200, halign:'center',align:'center'},
+				{field:'status',title:'Status Cetak',width:150, halign:'center',align:'left',
+					formatter: function(value,row,index){
+						if(row.status == 'A'){
+							return "<font color='green'>Aktif</font>";
+						}else if(row.status == 'TA'){
+							return "<font color='red'>Tidak Aktif</font>";
+						}else{
+							return "-";
+						}
+					}
+				},
+				{field:'id',title:'Action',width:200, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						var button = "";
+						button += "<button href='#' onClick='loadUrl_adds(\"etm_jd\", \""+hostir+"edit-data-wawancara\", \"konten_grid\", \""+row.id+"\");' > Edit</button>";
+						button += "&nbsp;&nbsp;/&nbsp;&nbsp;";
+						button += "<button href='#' onClick='loadUrl_adds(\"htm_jd\", \""+hostir+"hapus-data-wawancara\", \"konten_grid\", \""+row.id+"\");' > Hapus</button>";
+						
+						return button;
+					}
+				},
+			];
+		break;
 	}
 	
 	$("#"+modnya).datagrid({
@@ -401,7 +433,10 @@ function ajxamsterfrm(objid, func){
 }
 
 function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
-	$("#"+domnya).html("").addClass("loading");
+	if(type != "htm_jd"){
+		$("#"+domnya).html("").addClass("loading");
+	}	
+	
 	switch(type){
 		case "ps_det":
 			$.post(urlnya, { 'id_u' : p1 , 'idx_s' : p2, 'kdr' : p3 }, function(resp){
@@ -447,7 +482,11 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 			$.post(urlnya, {  }, function(resp){
 				$("#"+domnya).html(resp).removeClass("loading");
 			});
-			
+		break;
+		case "etm_jd":
+			$.post(urlnya, { 'id':p1 }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");
+			});
 		break;
 		case "htm_jd":
 			var r = confirm("Anda Yakin Menghapus Data ini?");
@@ -455,10 +494,13 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 				$.post(urlnya, { 'idx_jd':p1 }, function(resp){
 					if(resp == 1){
 						alert('Data Terhapus');
+					}else if(resp == 2){
+						alert('Data Jadwal Tidak Bisa Dihapus, Karena Ada Peserta Yang Terdaftar Dalam Jadwal Ini!');
 					}else{
 						alert('Data Gagal Terhapus');
 					}
-					loadUrl(hostir+'penjadwalan-peserta');
+					//loadUrl(hostir+'penjadwalan-grid');
+					$("#penjadwalan").datagrid('reload');
 				});
 			}
 		break;
@@ -975,7 +1017,7 @@ function sbmjdw(){
 		}else if(respo == 2){
 			alert("Data Sudah Ada Dalam Sistem! Ubah TUK / Tanggal Pelaksanaan.");
 		}else{
-			alert(respo);
+			$('#warning-data').html(respo);
 		}
 	});
 

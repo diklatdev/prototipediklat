@@ -184,16 +184,23 @@ function sbtdl_reg(){
 	ajxfm("regdiklat", function(respo){
 		$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
 		if(respo == 1){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
+			alert('Data Sukses Tersimpan Dalam Sistem');
 			location.href = host+'registrasi-berhasil';
 		}else if(respo == -1){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+			alert('Data Anda Sudah Terdaftar Dalam Sistem Kami.');
 		}else if(respo == -2){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+			alert('Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain.');
 		}else if(respo == -3){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
+			alert('Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain');
+		}else if(respo == -4){
+			alert('Jadwal Ujian Tidak Boleh Kosong');
 		}else{
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Gagal Tersimpan Dalam Sistem" });			
+			alert('Data Gagal Tersimpan Dalam Sistem');
 			location.href = host+'registrasi-gagal';
 		}
 		//

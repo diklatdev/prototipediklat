@@ -405,7 +405,7 @@
 					<ul class="list-unstyled">
 						{foreach from=$berita item=rowss}
 							<li>
-								<h5 style='margin-bottom:0px !important;'><a href="#">{$rowss.judul_berita}</a></h5>
+								<h5 style='margin-bottom:0px !important;'><a href='{$host}berita_detail/{$rowss.id}/{$smarty.now|date_format:"%m"}/{$smarty.now|date_format:"%Y"}'>{$rowss.judul_berita}</a></h5>
 								<p><small>{$rowss.tanggal_terbit}, Oleh {$rowss.diposting_oleh}</small></p>
 							</li>
 						{/foreach}

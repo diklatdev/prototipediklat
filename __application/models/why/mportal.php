@@ -155,12 +155,15 @@ class mportal extends SHIPMENT_Model{
 				";
 			break;
 			case "jadwal_ujian_tuk":
-				$sql = "
+				if($p1 != 'cetak_sertifikat'){
+				    $where .= " WHERE A.status = 'A' ";
+				}
+                $sql = "
 					SELECT A.id as kode, concat(B.nama_tuk, ' - ', C.nama_aparatur, ' (', DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ), ')' ) as txt
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
 					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
-					WHERE A.status = 'A'
+					$where
 				";
 			break;
 			//end combobox
@@ -718,7 +721,8 @@ class mportal extends SHIPMENT_Model{
 						"idx_tuk_id" => $data_jadwal['idx_tuk_id'],
 						"idx_asesor_id" => $query_asesor['id'],
 						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
-						"is_hadir" => 0
+						"is_hadir" => 0,
+						"is_cetak_sertifikat" => 0,
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					

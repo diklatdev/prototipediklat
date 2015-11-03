@@ -30,22 +30,22 @@
 					<table class="table table-bordered table-hover tc-table">
 						<thead>
 							<tr>
-								<th class="col-small center">Nama Admin</th>
+								<th class="col-small">NAMA ADMIN</th>
 								<th class="hidden-xs col-medium center">NIP</th>
-								<th class="hidden-xs col-medium center">Username</th>
-								<th class="col-medium center">Level</th>
-								<th class="hidden-xs col-small center">Status</th>
-								<th class="col-small center">Action</th>
+								<th class="hidden-xs col-medium center">USERNAME</th>
+								<th class="col-medium center">LEVEL</th>
+								<th class="hidden-xs col-small center">STATUS</th>
+								<th class="col-small center">ACTION</th>
 							</tr>
 						</thead>
 						<tbody>
 							{if $data}
 								{foreach from=$data item=rows}
 									<tr>
-										<td class="col-small center">{$rows.real_name}</td>
+										<td class="col-small">{$rows.real_name}</td>
 										<td>{$rows.nip_user}</td>
 										<td class="hidden-xs">{$rows.username}</td>
-										<td class="hidden-xs">{if $rows.level_admin eq '55'}Assesor{else}Administrator{/if}</td>
+										<td class="hidden-xs">{$rows.nama_level}</td>
 										<td class="hidden-xs col-small center">
 											{if $rows.aktif eq '1'}
 												<span class="label label-paid arrowed-in-right arrowed-in">User Active</span>
@@ -56,7 +56,7 @@
 										<td class="col-medium center">
 											<div class="btn-group btn-group-xs ">
 												<a href="#" onClick="loadMan_edit('us_ed','{$host}edit-admin', 'konten_peserta', '{$rows.id}')" class="btn btn-inverse"><i class="fa fa-pencil icon-only"></i></a>
-												<a href="#" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
+												<a href="#" onClick="tampo_data('ureng','{$host}delete-admin', '{$rows.id}')" class="btn btn-danger"><i class="fa fa-times icon-only"></i></a>
 											</div>	
 										</td>
 									</tr>

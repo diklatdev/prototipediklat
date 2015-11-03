@@ -38,8 +38,8 @@
 								<tr>
 									<th></th>
 									<th class="left" width="1%"><h5>3.</h5></th>
-									<th class="left" width="20%"><h5>Pangkat/Golongan Ruang TMT </h5></th>
-									<th  width="60%" ><h5>{$data.nama_pangkat}</h5></th>
+									<th class="left" width="20%"><h5>Pangkat / Golongan Ruang / TMT </h5></th>
+									<th  width="60%" ><h5>{$data.nama_pangkat} / {if $data.tgl_tmt_pangkat eq ''}........{else}{$data.tgl_tmt_pangkat}{/if}</h5></th>
 								</tr>
 								<tr>
 									<th></th>
@@ -215,8 +215,12 @@
 											<div class="form-group">
 												<label class="col-sm-2 control-label">Masa Penilaian : </label>
 												<div class="col-sm-8">
-													<div class="col-sm-6" style='padding-left:0px !important;'>
+													<div class="col-sm-5" style='padding-left:0px !important;'>
 														<input type='input' name='masa_nilai' class="form-control" placeholder="DD-MM-YYYY" value="{$pak_temp.masa_penilaian}" required>
+													</div>
+													<div class="col-sm-1" style='padding-left:0px !important;text-align:center;'>s.d</div>
+													<div class="col-sm-6" style='padding-left:0px !important;'>
+														<input type='input' name='masa_nilai_ak' class="form-control" placeholder="DD-MM-YYYY" value="{$pak_temp.masa_penilaian_sd}" required>
 													</div>
 													<span class="help-block"><code>*) Harus Diisi</code></span>
 												</div>
@@ -246,6 +250,19 @@
 													</div>
 													<div class="col-sm-3" style='padding-left:0px !important;'>
 														<input type='input' name='inisial_daerah' class="form-control" placeholder="Inisial Daerah" title="DKI Jakarta, (JKT)" required>
+													</div>
+													<span class="help-block"><code>*) Harus Diisi</code></span>
+												</div>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6">																	
+											<div class="form-group">
+												<label class="col-sm-2 control-label">Pejabat Penetapan PAK : </label>
+												<div class="col-sm-8">
+													<div class="col-sm-6" style='padding-left:0px !important;'>
+														<input type='input' name='pejabat_pak' class="form-control" value="{$pak_temp.pejabat_pak}" required>
 													</div>
 													<span class="help-block"><code>*) Harus Diisi</code></span>
 												</div>

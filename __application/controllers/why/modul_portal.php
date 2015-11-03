@@ -527,8 +527,8 @@ class modul_portal extends SHIPMENT_Controller{
 						if ($tgl_ujian > $tgl_sekarang) {
 							
 						}else{
-							echo -3;
-							exit;
+							//echo -3;
+							//exit;
 						}
 						
 						if($cekdata['kuota'] != 0){
@@ -702,8 +702,8 @@ class modul_portal extends SHIPMENT_Controller{
 			if ($tgl_ujian > $tgl_sekarang) {
 				
 			}else{
-				echo -3;
-				exit;
+				//echo -3;
+				/////exit;
 			}
 			
 			if(!isset($post['tku_dxi'])){
@@ -873,11 +873,11 @@ class modul_portal extends SHIPMENT_Controller{
 		//echo $this->encrypt->encode("12345");
 		//echo $this->mportal->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
 		
-		//$this->load->library('lib');
-		//echo $this->lib->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
+		$this->load->library('lib');
+		echo $this->lib->kirimemail("email_registrasi", "triwahyunugroho11@gmail.com", "usernya", "passnya");
 		
-		$this->load->library('user_agent');
-		echo $this->agent->browser();
+		//$this->load->library('user_agent');
+		//echo $this->agent->browser();
 		
 		//echo $this->mportal->get_data("data_soal");
 		//$angka = sprintf('%07d', 89);

@@ -1,7 +1,43 @@
-
+<html>
+<head>
+<title>Verifikasi PAK</title>
+<style>
+{literal}
+body {font-family: sans-serif;
+    font-size: 10pt;
+}
+p {    margin: 0pt;
+}
+td { vertical-align: top; }
+.items td {
+    border-left: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+table thead td { background-color: #FCFCFC;
+    text-align: center;
+    border: 0.1mm solid #000000;
+}
+table tbody td { background-color: #FFFFFF;
+    text-align: left;
+    border: 0.1mm solid #000000;
+}
+.items td.blanktotal {
+    background-color: #FFFFFF;
+    border: 0.1mm solid #000000;
+    border-top: 0.1mm solid #000000;
+    border-right: 0.1mm solid #000000;
+}
+.items td.totals {
+    text-align: right;
+    border: 0.1mm solid #000000;
+}
+{/literal}
+</style>
+</head>
+<body>
 
 <div id='header'>
-	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:12px;">
+	<table width="100%" >
 		<tr>
 			<td align='center'>
 				<h5>FORMULIR VERIFIKASI DAFTAR USULAN PENETAPAN ANGKA KREDIT</h5>
@@ -9,16 +45,19 @@
 		</tr>
 	</table>
 </div> 
-
+<br>
 <div id='content'>
-	<table cellspacing="0" cellpadding="5" width="100%"  border='1' style="margin-bottom:10px; font-family:arial; font-size:12px;border-collapse: collapse;">
+	<table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse;" cellpadding="8">
+	<thead>
 		<tr>
-			<td align="left" width="3%"> <h4>I</h4> </td>
-			<td align='left' colspan="5" cellspacing="0"><h4>KETERANGAN PERORANGAN</h4></td>
+			<td  align="left" width="3%"> I </td>
+			<td align='left' colspan="5" cellspacing="0">KETERANGAN PERORANGAN</td>
 		</tr>
+	</thead>
+	<tbody>
 		<tr>
 			<td align="left" width="3%" rowspan='8'></td>
-			<td align="left" width="30%" >Nama </td>
+			<td align="left" width="30%" nowrap="nowrap" >Nama </td>
 			<td  align="left" width="50%" colspan="4">{$data.nama_lengkap}</td>
 		</tr>
 		<tr>
@@ -26,8 +65,8 @@
 			<td  width="" colspan="4" >{$data.nip}</td>
 		</tr>
 		<tr>
-			<td class="left" width="30%" >Pangkat/Golongan Ruang TMT </td>
-			<td  width="" colspan="4" >{$data.nama_pangkat}</td>
+			<td class="left" width="30%" >Pangkat / Golongan Ruang / TMT </td>
+			<td  width="" colspan="4" >{$data.nama_pangkat} / {if $data.tgl_tmt_pangkat eq ''}........{else}{$data.tgl_tmt_pangkat}{/if}</td>
 		</tr>
 		<tr>
 			<td class="left" width="30%" >Tempat & Tanggal Lahir </td>
@@ -49,18 +88,23 @@
 			<td class="left" width="30%" >Masa Kepangkatan Diterima </td>
 			<td  width="" colspan="4" >{$pak_val.masa_kerja_diterima}</td>
 		</tr>
+	</tbody>
 	</table>
-	<table cellspacing="0" cellpadding="5"  border="1" width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;border-collapse: collapse;">
+	<br>
+	<table class="items" width="100%" style="font-size: 9pt; border-collapse: collapse;" cellpadding="8">
+	<thead>
 		<tr>
-			<td align="left" width="1%"> <h4>II</h4> </td>
-			<td align='left' width="85%" colspan="5"><h4>PENETAPAN ANGKA KREDIT</h4></td>
-			<td align='left' width="10%">Diajukan</td>
-			<td align='left' width="10%">Diterima</td>
+			<td align="left" width="1%" nowrap="nowrap"> II </td>
+			<td align='left' width="" colspan="5">PENETAPAN ANGKA KREDIT</td>
+			<td align='left' width="10%">DIAJUKAN</td>
+			<td align='left' width="10%">DITERIMA</td>
 		</tr>
+	</thead>
+	<tbody>
 		<tr>
 			<td width="1%" rowspan='12'></td>
-			<td width="0.5%" >1.</td>
-			<td width="" align='left' colspan="4">UNSUR UTAMA</td>
+			<td width="1%" >1.</td>
+			<td width="90%" align='left' colspan="4">UNSUR UTAMA</td>
 			<td align='left' width="10%"></td>
 			<td align='left' width="10%"></td>
 		</tr>
@@ -153,14 +197,16 @@
 			<td align='left' width="">{$pak_val.total_angka_diajukan}</td>
 			<td align='left' width="">{$pak_val.total_angka_diterima}</td>
 		</tr>
-		<tr><td width="">III</td>
+		<!-- <tr><td width="">III</td>
 			<td align='left' width=""  colspan="7" cellspacing="0" cellpadding="10">
 				DAPAT DIPERTIMBANGKAN UNTUK DISESUAIKAN/DIINPASSING DALAM JABATAN FUNGSIONAL POLISI PAMONG PRAJA {$jabatan} / PANGKAT {$data.nama_pangkat} / TMT ........
 			</td>
-		</tr>
+		</tr> -->
+	</tbody>
 	</table>	
 	<br><br>
-	<table width="100%" style="margin-bottom:10px; font-family:arial; font-size:11px;">
+	<br>
+	<table class="item" width="100%" style="margin-bottom:10px; font-family:sans-serif;; font-size:9pt;">
 		  <tr>
 			<td align='left' width="70%">
 			</td>
@@ -263,3 +309,5 @@
 		</tr>
 	</table> -->
 </div>
+</body>
+</html>

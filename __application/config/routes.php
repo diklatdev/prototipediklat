@@ -70,8 +70,13 @@ $route['submit-berita'] = "why/modul_admin/simpansavedbx/saveberita/";
 $route['manajemen-soal'] = "why/modul_admin/getdisplay/manajemen_soal_online/";
 $route['tampil-soal'] = "why/modul_admin/getdisplay/data_soal_online/";
 $route['crud-soal'] = "why/modul_admin/getdisplay/form_soal_online/";
+$route['crud-soal-sm'] = "why/modul_admin/getdisplay/form_soal_simulasi/";
 $route['submit-banksoal'] = "why/modul_admin/simpansavedbx/savebanksoal/";
 $route['hapus-banksoal'] = "why/modul_admin/simpansavedbx/savebanksoal/";
+$route['crud-soal-sm'] = "why/modul_admin/getdisplay/form_soal_simulasi/";
+$route['submit-banksoal-sm'] = "why/modul_admin/simpansavedbx/savebanksoal_simulasi/";
+$route['hapus-banksoal-sm'] = "why/modul_admin/simpansavedbx/savebanksoal_simulasi/";
+
 $route['chk-adm'] = "why/modul_admin/getdisplay/additional/checking_data";
 $route['chk2-adm'] = "why/modul_admin/getdisplay/additional/checking_data_2";
 $route['chk3-adm'] = "why/modul_admin/getdisplay/additional/checking_data_3";
@@ -85,6 +90,7 @@ $route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 
 $route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_peserta";
 $route['hasil-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/hasil_akhir";
+$route['cetak-sertifikat-grid'] = "why/modul_admin/getdisplay/datagridview/cetak_sertifikat";
 $route['administrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/administrasi_peserta";
 $route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
 $route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";

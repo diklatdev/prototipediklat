@@ -416,6 +416,8 @@ class modul_pak extends SHIPMENT_Controller{
 			
 			$masa_nilai = $_POST['masa_nilai'];
 			$masa_nilai = date("Y-m-d", strtotime($masa_nilai));
+			$masa_nilai_sd = $_POST['masa_nilai_ak'];
+			$masa_nilai_sd = date("Y-m-d", strtotime($masa_nilai_sd));
 			
 			$tmt = $_POST['tmt'];
 			$tmt = date("Y-m-d", strtotime($tmt));
@@ -454,10 +456,12 @@ class modul_pak extends SHIPMENT_Controller{
 							"keputusan" => $_POST['keputusan'],
 							"instansi" => $_POST['instansi'],
 							"masa_penilaian" => $masa_nilai,
+							"masa_penilaian_sd" => $masa_nilai_sd,
 							"tmt" => $tmt,
 							"status" => 2,
 							"nomor_sk_keputusan"=>$no_sk_keputusan,
 							"pejabat_berwenang" => $_POST['pejabat'],
+							"pejabat_pak" => $_POST['pejabat_pak'],
 							"ditetapkan_di" => $_POST['ditetapkan_di']
 						);
 						
@@ -709,6 +713,8 @@ class modul_pak extends SHIPMENT_Controller{
 			$pdf = $this->mlpdf->load();
 			$spdf = new mPDF('', 'A4', 0, '', 12.7, 12.7, 5, 20, 5, 2, 'P');
 			$spdf->ignore_invalid_utf8 = true;
+			$spdf->useOnlyCoreFonts = true;
+			$spdf->SetProtection(array('print'));
 			// bukan sulap bukan sihir sim salabim jadi apa prok prok prok
 			$spdf->allow_charset_conversion = true;     // which is already true by default
 			$spdf->charset_in = 'iso-8859-2';  // set content encoding to iso
@@ -718,8 +724,7 @@ class modul_pak extends SHIPMENT_Controller{
 				<div style="font-family:arial; font-size:8px; text-align:center; font-weight:bold;">
 					Sistem Informasi Sertifikasi & Penilaian Kementerian Dalam Negeri
 				</div>
-			');				
-			$spdf->SetProtection(array('print'));				
+			');								
 			$spdf->WriteHTML($htmlcontent); // write the HTML into the PDF
 			//$spdf->Output('repositories/Dokumen_LS/LS_PDF/'.$filename.'.pdf', 'F'); // save to file because we can
 			$spdf->Output('__repository/temp_sertifikat/'.$filename.'.pdf', 'I'); // view file

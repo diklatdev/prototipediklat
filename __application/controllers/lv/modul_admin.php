@@ -229,11 +229,11 @@ class modul_admin extends SHIPMENT_Controller{
 					$content = "modul-admin/laporan/absensi.html";
 				}
 			break;
-                        case "progress_sertifikasi":
+            case "progress_sertifikasi":
 				$tuk = 'SELURUH Lokasi TUK Yang Sedang Berlangsung Sertifikasi';
 				$id_admin = $this->auth['id'];
 				$level_admin = $this->auth['level_admin'];
-                                if ($p1 == 'progress'){					
+                if ($p1 == 'progress'){					
 					$id_jadwal = $this->input->post('id_jadwal');
 					$tuk = $this->input->post('tuk');					
 					

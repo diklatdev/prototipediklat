@@ -74,7 +74,7 @@
 			</td>
 		</tr>		
 	</table>
-	<table width="70%" style="margin-left:160px !important;margin-bottom:10px; font-family:arial;">	
+	<table width="70%" style="margin-left:160px !important;margin-bottom:0px; font-family:arial;">	
 		<tr>
 			<td width="40%" align='left' style='font-size:14px;'>
 				NAMA
@@ -127,7 +127,18 @@
 				:
 			</td>
 			<td width="50%" style='font-size:14px;'>
-				{$data_peserta.nama_instansi|upper}
+				{$data_peserta.nama_instansi|upper} 
+				
+				{if $data_peserta.idx_lokasi_id eq 'P'}
+					PROVINSI {$data_peserta.nama_provinsi|upper}
+				{elseif $data_peserta.idx_lokasi_id eq 'D'}
+					{if $data_peserta.idx_flag_kab_kota eq '1' }
+						KOTA {$data_peserta.nama_kabupaten|upper}
+					{elseif $data_peserta.idx_flag_kab_kota eq '2' }
+						KABUPATEN {$data_peserta.nama_kabupaten|upper}
+					{/if}
+				{/if}
+				
 			</td>
 		</tr>
 	</table>
@@ -135,11 +146,6 @@
 		<tr>
 			<td width="100%" align='center' colspan='3' style='font-size:14px;'>
 				<br/>
-				{*
-				<font style='font-size:16px;font-style: italic;'>
-					{$data_peserta.no_registrasi}
-				</font>
-				*}
 				<br/>
 				<br/>
 				<br/>
@@ -163,19 +169,24 @@
 		<tr>
 			<td width="100%" align='center' style='font-size:14px;'>
 				{if $lulus_tidak eq 'L'}
-					Sertifikat ini merupakan bukti bahwa yang bersangkutan telah lulus Sertifikasi Jabatan Fungsional <br/>
-					Pengawas Pemerintahan dan dapat dipertimbangkan untuk dinaikkan jabatannya menjadi <br/>
-					Pengawas Pemerintah Jenjang Muda. Masa berlaku Sertifikat ini adalah <br/>
-					3 (tiga) tahun sejak tanggal ditetapkan.
+					{$data_sertifikasi.caption_lulus}
 				{elseif $lulus_tidak eq 'TL'}
-					Sertifikat kelulusan belum bisa diberikan dikarenakan anda tidak bisa menyelesaikan sertifikasi dengan baik.<br>
-					Oleh karena itu silahkan anda mempersiapkan diri kembali sebaik-baiknya, kemudian anda dipersilahkan mendaftar kembali sertifikasi.<br>
-					<br>
+					{$data_sertifikasi.caption_tidak_lulus}
 				{/if}
 			</td>
 		</tr>		
 	</table>
-	<table width="100%" style="margin-top:50px;font-family:arial; ">
+    <table width="100%" style="margin-top:10px;font-family:arial; ">
+        <tr>
+            <td width="50%" align='center' style='font-size:14px;'>
+                &nbsp;
+            </td>
+            <td width="50%" align='center' style='font-size:14px;'>
+                Jakarta, {$tanggal_penetapan|date_format:"%d-%m-%Y"}
+            </td>
+        </tr>
+    </table>
+	<table width="100%" style="margin-top:5px;font-family:arial; ">
 		<tr>
 			<td width="50%" align='center' style='font-size:14px;font-weight:bold;'>
 				INSPEKTUR JENDERAL <br/>
@@ -229,16 +240,25 @@
 		<tr>
 			<td width="50%" align='left' style='font-size:14px;font-weight:bold;'>
 				<div style='width:90px; height:115px; background:#EEEEEE;text-align:left;'>
-					<img src='__repository/dokumen_peserta/{$data_peserta.no_registrasi}/file_data_diri/{$data_peserta.foto_profil}' style='width:180px; height:225x;'>
+					{if $data_peserta.foto_profil}
+						<img src='__repository/dokumen_peserta/{$data_peserta.no_registrasi}/file_data_diri/{$data_peserta.foto_profil}' style='width:113px; height:151px;'>
+					{/if}
 				</div>
 			</td>
 			<td width="50%" align='center' style='font-size:14px;'>
-				Jakarta, {$tanggal_penetapan|date_format:"%d-%m-%Y"}<br/>
+				Jakarta, {$tanggal_penetapan|date_format:"%d-%m-%Y"}<br/><br/>
 				<font style='font-weight:bold;'>
+					{*
 					KEPALA PUSAT  <br/>
-					STANDARISASI DAN SERTIFIKASI <br/>
+					STANDARDISASI DAN SERTIFIKASI <br/>
 					SELAKU <br/>
 					PENANGGUNG JAWAB LSP PEMDA
+					*}
+					
+					KEPALA BADAN PENDIDIKAN DAN PELATIHAN <br/>
+					DAERAH PROVINSI JAWA BARAT <br/>
+					SELAKU PENANGGUNG JAWAB <br/>
+					LSP PEMDA PROVINSI JAWA BARAT
 				</font>
 				<br/>
 				<br/>
@@ -247,11 +267,12 @@
 				<br/>
 				<br/>
 				<br/>
-				<br/>
-				<br/>
-				<br/>
 				<font style='font-weight:bold;'>
+					{*
 					Drs. Dindin Wahidin, M.Si.
+					*}
+					
+					Dr. H. HERRI HUDAYA
 				</font>
 			</td>
 		</tr>		

@@ -68,8 +68,8 @@ class mpak extends SHIPMENT_Model{
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM angka_unsur_utama) AS char)))) AS angka_unsur_utama,
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM total_angka_diajukan) AS char)))) AS total_angka_diajukan, 
 					(TRIM(TRAILING '.' FROM(CAST(TRIM(TRAILING '0' FROM total_angka_diterima) AS char)))) AS total_angka_diterima,
-					a.keputusan, a.instansi, DATE_FORMAT(a.masa_penilaian, '%d-%m-%Y') as masa_penilaian, 
-					DATE_FORMAT(a.tmt, '%d-%m-%Y') as tmt, pejabat_berwenang, ditetapkan_di, nomor_sk_keputusan, k.masa_kerja as masa_kerja_diterima
+					a.keputusan, a.instansi, DATE_FORMAT(a.masa_penilaian, '%d-%m-%Y') as masa_penilaian,DATE_FORMAT(a.masa_penilaian_sd, '%d-%m-%Y') as masa_penilaian_sd, 
+					DATE_FORMAT(a.tmt, '%d-%m-%Y') as tmt, pejabat_berwenang,pejabat_pak, ditetapkan_di, nomor_sk_keputusan, k.masa_kerja as masa_kerja_diterima
 					FROM tbl_pengajuan_pak_inpassing a
 					LEFT JOIN idx_masa_kerja b ON b.id = a.id_masa_kerja
 					LEFT JOIN idx_angka_kredit_inpassing i ON i.id = a.id_angka_kredit_diterima
@@ -89,7 +89,8 @@ class mpak extends SHIPMENT_Model{
 			break;
 			case 'data_pribadi_peserta':
 				$sql = "SELECT d.id, d.no_registrasi, d.nama_lengkap, d.nip, p.nama_pendidikan, t.nama_pangkat, n.nama_aparatur as nama_tingkat, d.tempat_lahir, 
-					DATE_FORMAT(d.tanggal_lahir, '%d-%m-%Y') as tgl_lahir, IF(d.jenis_kelamin = 'L','Laki Laki', 'Perempuan') as sex
+					DATE_FORMAT(d.tanggal_lahir, '%d-%m-%Y') as tgl_lahir, IF(d.jenis_kelamin = 'L','Laki Laki', 'Perempuan') as sex,
+					l.tgl_tmt_pangkat
 					FROM tbl_data_peserta d
 					LEFT JOIN idx_pendidikan p ON p.id = d.idx_pendidikan_id
 					LEFT JOIN tbl_data_diklat l ON l.tbl_data_peserta_id = d.id

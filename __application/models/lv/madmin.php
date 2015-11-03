@@ -161,8 +161,8 @@ class madmin extends SHIPMENT_Model{
 				LEFT JOIN idx_aparatur_sipil_negara a ON a.id = j.idx_sertifikasi_id
 				LEFT JOIN idx_tuk t ON t.id = j.idx_tuk_id
 				-- WHERE status = 'A'
-				GROUP BY txt
-                                ORDER BY j.id DESC";
+				-- GROUP BY txt
+                ORDER BY j.id DESC";
 			break;
 			case "laporan":
 				//$where = '';
@@ -227,7 +227,7 @@ class madmin extends SHIPMENT_Model{
 				//$where = '';\
                                 $where_jadwal = 'AND T.tbl_jadwal_wawancara_id =  j.id AND S.idx_sertifikasi_id = a.id';
 				$where_admin = '';
-                                $where_aktif = "AND J.status = 'A'";
+                                $where_aktif = "AND j.status = 'A'";
 				if ($p1){
                                     $where = " AND j.id = '".$p1."' "; 
                                     $where_jadwal = 'AND T.tbl_jadwal_wawancara_id = '.$p1.' AND S.idx_sertifikasi_id = a.id';
@@ -265,7 +265,7 @@ class madmin extends SHIPMENT_Model{
 				//$where = '';\
                                 $where_jadwal = 'AND T.tbl_jadwal_wawancara_id =  j.id AND S.idx_sertifikasi_id = a.id';
 				$where_admin = '';
-                                $where_aktif = "AND J.status = 'A'";
+                                $where_aktif = "AND j.status = 'A'";
 				if ($p1){
                                     $where = " AND j.id = '".$p1."' "; 
                                     $where_jadwal = 'AND T.tbl_jadwal_wawancara_id = '.$p1.' AND S.idx_sertifikasi_id = a.id';

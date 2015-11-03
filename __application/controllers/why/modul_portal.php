@@ -683,8 +683,17 @@ class modul_portal extends SHIPMENT_Controller{
 		
 		if($type == "registrasi"){
 			//block check data double
-			$cek_data = $this->db->get_where('tbl_data_peserta', array('nip'=>$post['ed_nonip']) )->row_array();
-			if($cek_data){
+			$username = str_replace(" ", "", $post['ed_nonip']);
+			$nama = trim($post['ed_namalengkap']);
+			
+			$cek_data1 = $this->db->get_where('tbl_data_peserta', array('username'=>$username) )->row_array();
+			if($cek_data1){
+				echo -1;
+				exit;
+			}
+			
+			$cek_data2 = $this->db->get_where('tbl_data_peserta', array('nama_lengkap'=>$nama) )->row_array();
+			if($cek_data2){
 				echo -1;
 				exit;
 			}

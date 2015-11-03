@@ -96,12 +96,83 @@
 							</div>
 						</div>
 						{/if}
+						
+						<br/>
+						<h4>Asesor Yang Bertugas</h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						{if $editstatus eq  'edit'}
+							<div class="form-group">
+								<label class="col-sm-2 control-label">List Asesor </label>
+								<div class="col-sm-8">
+									{foreach from=$data_asesor item=rows}
+										<div id='div_{$rows.real_name}'>
+											{$rows.real_name} &nbsp;&nbsp; <a href=''>x</a>
+										</div>
+									{/foreach}
+								</div>
+							</div>
+						{/if}
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Asesor Tersedia</label>
+							<div class="col-sm-8">
+								<select id="as-list" name='as_list[]' multiple="multiple" style='width:500px !important;'>
+									{$cmb_asesor}
+								</select>
+							</div>
+						</div>
+						
+						<br/>
+						<h4>Pejabat Berwenang <small>Untuk Generate Sertifikat</small></h4>
+						<div class="hr-12 hr-double hr-dotted"></div>
+						
+						<h5>Pejabat Hal. 1 Kiri Bawah</h5>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Label</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="label1" name='label1' value="{$data.label_pejabat1|default:''}">
+							</div>
+						</div><div class="form-group">
+							<label class="col-sm-2 control-label">Nama Pejabat</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="pejabat1" name='pejabat1' value="{$data.pejabat1|default:''}">
+							</div>
+						</div>
+						
+						<h5>Pejabat Hal. 1 Kanan Bawah</h5>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Label</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="label2" name='label2' value="{$data.label_pejabat2|default:''}">
+							</div>
+						</div><div class="form-group">
+							<label class="col-sm-2 control-label">Nama Pejabat</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="pejabat2" name='pejabat2' value="{$data.pejabat2|default:''}">
+							</div>
+						</div>
+						
+						<h5>Pejabat Hal. 2 Kanan Bawah</h5>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">Label</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="label3" name='label3' value="{$data.label_pejabat3|default:''}">
+							</div>
+						</div><div class="form-group">
+							<label class="col-sm-2 control-label">Nama Pejabat</label>
+							<div class="col-sm-8">
+								<input class='form-control' type="text" id="pejabat3" name='pejabat3' value="{$data.pejabat3|default:''}">
+							</div>
+						</div>
+						
+						<br/>
+						<div style="color:red;" id='warning-data'></div>
+						
 					</div>
 				</div>
 			</form>
 			<div class="form-actions ">
 				<button id='btnnya' class="btn btn-primary" onClick="event.preventDefault();sbmjdw();">Submit</button>
-				<button class="btn btn-info" onclick="loadUrl('{$host}penjadwalan-peserta');">Cancel</button>
+				<button class="btn btn-info" onclick="loadUrl('{$host}penjadwalan-grid');">Cancel</button>
 			</div>			
 			
 		</div>
@@ -112,4 +183,5 @@
 	$('#tggw').datepicker({
 		dateFormat: "yy-mm-dd"
     });  
+	$("#as-list").select2();
 </script>

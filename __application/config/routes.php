@@ -28,7 +28,7 @@ $route['verifikasi-pembayaran'] = "why/modul_admin/simpansavedbx/ver_konfpembaya
 
 $route['penjadwalan-peserta'] = "why/modul_admin/getdisplay/penjadwalan/";
 $route['tambah-data-wawancara'] = "why/modul_admin/getdisplay/form_penjadwalan/add";
-$route['edit-data-wawancara/(:any)'] = "why/modul_admin/getdisplay/form_penjadwalan/edit/$1";
+$route['edit-data-wawancara'] = "why/modul_admin/getdisplay/form_penjadwalan/edit/";
 $route['hapus-data-wawancara'] = "why/modul_admin/simpansavedbx/deletejadwal";
 $route['submit-penjadwalan'] = "why/modul_admin/simpansavedbx/savejadwal";
 
@@ -91,6 +91,7 @@ $route['paging-data/(:any)'] = "why/modul_admin/gettabelpaging/$1";
 $route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_peserta";
 $route['hasil-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/hasil_akhir";
 $route['cetak-sertifikat-grid'] = "why/modul_admin/getdisplay/datagridview/cetak_sertifikat";
+$route['penjadwalan-grid'] = "why/modul_admin/getdisplay/datagridview/penjadwalan";
 $route['administrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/administrasi_peserta";
 $route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
 $route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";

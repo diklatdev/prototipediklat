@@ -166,6 +166,13 @@ class mportal extends SHIPMENT_Model{
 					$where
 				";
 			break;
+			case "list_asesor":
+				$sql = "
+					SELECT id as kode, real_name as txt
+					FROM tbl_user_admin
+					WHERE level_admin = '2'
+				";
+			break;
 			//end combobox
 			//untuk data login peserta
 			case "data_login":
@@ -690,10 +697,19 @@ class mportal extends SHIPMENT_Model{
 					";
 					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
 					
+					/*
 					$sql_asesor = "
 						SELECT id
 						FROM tbl_user_admin
 						WHERE idx_tuk_id = '".$data_jadwal['idx_tuk_id']."' AND idx_keahlian = '".$code_sert."'
+						ORDER BY RAND() LIMIT 1
+					";
+					*/
+					
+					$sql_asesor = "
+						SELECT tbl_user_admin_id as id
+						FROM tbl_jadwal_to_asesor 
+						WHERE tbl_jadwal_wawancara_id = '".$post['tku_dxi']."'
 						ORDER BY RAND() LIMIT 1
 					";
 					$query_asesor = $this->db->query($sql_asesor)->row_array();
@@ -723,6 +739,7 @@ class mportal extends SHIPMENT_Model{
 						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
 						"is_hadir" => 0,
 						"is_cetak_sertifikat" => 0,
+						"tbl_jadwal_wawancara_id" => $post['tku_dxi'],
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					

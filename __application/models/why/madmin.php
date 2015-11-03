@@ -596,6 +596,15 @@ class madmin extends SHIPMENT_Model{
 					WHERE id = '".$p1."'
 				";
 			break;
+			
+			case "tbl_jadwal_to_asesor":
+				$sql = "
+					SELECT B.real_name
+					FROM tbl_jadwal_to_asesor A
+					LEFT JOIN tbl_user_admin B ON B.id = A.tbl_user_admin_id
+					WHERE A.tbl_jadwal_wawancara_id = '".$p1."'
+				";
+			break;
 			//End Master Data						
 		}
 		
@@ -703,6 +712,15 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN tbl_jadwal_wawancara H ON F.tbl_jadwal_wawancara_id = H.id
 					WHERE B.step_hasil = '1' AND D.siap_cetak = 'Y' 
 					$where
+				";
+			break;
+			case "penjadwalan":
+				$sql = "
+					SELECT A.*, DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_sertifikasi,
+						B.nama_tuk, C.nama_aparatur
+					FROM tbl_jadwal_wawancara A
+					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
+					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
 				";
 			break;
 		}
@@ -888,12 +906,6 @@ class madmin extends SHIPMENT_Model{
 			break;
 			
 			case "savejadwal":
-				$cekdata = $this->db->get_where('tbl_jadwal_wawancara', array("idx_tuk_id" => $post['edtuk'],"tanggal_wawancara" => $post['tggw'],"status"=>'A') )->row_array();
-				if($cekdata){
-					return 2;
-					exit;
-				}
-				
 				if(isset($post['sbxx_ap_tk4'])){
 					$kode_sertifikasi = $post['sbxx_ap_tk4'];
 				}else{
@@ -904,26 +916,109 @@ class madmin extends SHIPMENT_Model{
 					}
 				}
 				
+				if($post['broedst'] == 'add'){
+					$cekdata = $this->db->get_where('tbl_jadwal_wawancara', array("idx_tuk_id" => $post['edtuk'],"tanggal_wawancara" => $post['tggw'], "idx_sertifikasi_id"=>$kode_sertifikasi, "status"=>'A') )->row_array();
+					if($cekdata){
+						return 2;
+						exit;
+					}
+					
+					$htmlcek = "";
+					$cekdata_syarat_registrasi = $this->db->get_where('idx_persyaratan_registrasi', array("idx_asn_id" => $kode_sertifikasi) )->result_array();
+					if( !$cekdata_syarat_registrasi ){
+						$htmlcek .= "
+							Data Persyaratan Sertifikasi Tidak Ada, <br/>
+						";
+					}
+					
+					$cekdata_unit_kompetensi = $this->db->get_where('idx_unit_kompetensi', array("idx_aparatur_id" => $kode_sertifikasi) )->result_array();
+					if( !$cekdata_unit_kompetensi ){
+						$htmlcek .= "
+							Data Unit Kompetensi Asesmen Mandiri Tidak Ada, <br/>
+						";
+					}
+					
+					$cekdata_soal_cat = $this->db->get_where('idx_bank_soal', array("idx_aparatur_negara" => $kode_sertifikasi) )->result_array();
+					if( !$cekdata_soal_cat ){
+						$htmlcek .= "
+							Data Soal Uji CAT Tidak Ada, <br/>
+						";
+					}
+					
+					$cekdata_soal_simulasi = $this->db->get_where('idx_bank_soal_simulasi', array("idx_sertifikasi_id" => $kode_sertifikasi) )->result_array();
+					if( !$cekdata_soal_simulasi ){
+						$htmlcek .= "
+							Data Soal Uji Simulasi Tidak Ada, <br/>
+						";
+					}
+					
+					if($htmlcek != ""){
+						return $htmlcek;
+						exit;
+					}
+					
+				}
+				
+				$kode_gen = $this->lib->randomString(10);
+				
 				$array_save = array(
 					"idx_tuk_id" => $post['edtuk'],
 					"idx_sertifikasi_id" => $kode_sertifikasi,
 					"tanggal_wawancara" => $post['tggw'],
 					"jam" => $post['jmg'],
 					"kuota" => $post['ktpp'],
+					"label_pejabat1" => $post['label1'],
+					"pejabat1" => $post['pejabat1'],
+					"label_pejabat2" => $post['label2'],
+					"pejabat2" => $post['pejabat2'],
+					"label_pejabat3" => $post['label3'],
+					"pejabat3" => $post['pejabat3'],
 				);
 				
 				if($post['broedst'] == 'add'){
 					$array_save['status'] = 'A';
+					$array_save['kode_gen'] = strtoupper($kode_gen);
 					$this->db->insert('tbl_jadwal_wawancara', $array_save);
+					$dt_jadwal = $this->db->get_where('tbl_jadwal_wawancara', array('kode_gen'=>$kode_gen) )->row_array();
+					$id_jadwal = $dt_jadwal['id'];
 				}elseif($post['broedst'] == 'edit'){
 					$id = $post['broedid'];
 					$array_save['status'] = $post['sts'];
 					$this->db->update('tbl_jadwal_wawancara', $array_save, array('id'=>$id) );
+					$id_jadwal = $id;
 				}
+				
+				if( isset($post['as_list']) ){
+					$count = count($post['as_list'])-1;
+					$array_batch = array();
+					for($i = 0; $i <= $count; $i++){
+						$cek_data = $this->db->get_where('tbl_jadwal_to_asesor', array('tbl_jadwal_wawancara_id'=>$id_jadwal, 'tbl_user_admin_id'=>$post['as_list'][$i]) )->row_array();
+						if(!$cek_data){
+							$array_insert = array(
+								'tbl_jadwal_wawancara_id' => $id_jadwal,
+								'tbl_user_admin_id' => $post['as_list'][$i],
+							);
+							array_push($array_batch, $array_insert);
+						}
+					}
+					
+					if($array_batch){
+						$this->db->insert_batch('tbl_jadwal_to_asesor', $array_batch);
+					}
+					
+				}
+				
+				
 			break;	
 			case "deletejadwal":
 				$id = $post['idx_jd'];
+				$cek_data_diklat = $this->db->get_where('tbl_data_diklat', array('tbl_jadwal_wawancara_id'=>$id) )->result_array();
+				if($cek_data_diklat){
+					return 2;
+					exit;
+				}
 				$this->db->delete('tbl_jadwal_wawancara', array('id'=>$id) );
+				$this->db->delete('tbl_jadwal_to_asesor', array('tbl_jadwal_wawancara_id'=>$id) );
 			break;	
 			case "savevoucher":
 				$jml = ($post['jml']-1);

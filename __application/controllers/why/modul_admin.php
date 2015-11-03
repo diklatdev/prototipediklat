@@ -250,12 +250,16 @@ class modul_admin extends SHIPMENT_Controller{
 			case "form_penjadwalan":
 				$content = "modul-admin/penjadwalan/form-penjadwalan.html";
 				if($p1 == 'edit'){
-					$id = $p2;
+					$id = $this->input->post('id');
 					$data = $this->madmin->get_data("tbl_penjadwalan","row_array",$id);
+					$data_asesor = $this->madmin->get_data('tbl_jadwal_to_asesor', "result_array", $id);
 					$this->smarty->assign("data", $data);
+					$this->smarty->assign("data_asesor", $data_asesor);
 				}elseif($p1 == 'add'){
 					$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
 				}
+				
+				$this->smarty->assign('cmb_asesor', $this->fillcombo('list_asesor', 'return') );
 				$this->smarty->assign('cmbtuk', $this->fillcombo('idx_tuk', 'return', ($p1 == 'edit' ? $data['idx_tuk_id'] : "") ) );
 				$this->smarty->assign("editstatus", $p1);
 			break;
@@ -534,6 +538,9 @@ class modul_admin extends SHIPMENT_Controller{
 				}elseif($p1 == 'cetak_sertifikat'){
 					$this->smarty->assign('breadcumb', "Cetak Sertifikat");
 					$this->smarty->assign('tinggi', "80px");
+				}elseif($p1 == 'penjadwalan'){
+					$this->smarty->assign('breadcumb', "Manajemen Jadwal Sertifikasi");
+					$this->smarty->assign('tinggi', "40px");
 				}
 				
 				$this->smarty->assign('jadwal', $this->fillcombo('jadwal_ujian_tuk', 'return', $p1) );

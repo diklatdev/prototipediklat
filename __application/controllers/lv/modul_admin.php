@@ -313,11 +313,23 @@ class modul_admin extends SHIPMENT_Controller{
 					$this->smarty->assign('tuk', $tuk);
                                         $content = "modul-admin/laporan/biodata.html";
 				}
+                        break;                        
+                        case "datagridview":
+                            $content = "modul-admin/manajemen_admin/grid.html";
+                            if($p1 == 'data_user'){
+                                $this->smarty->assign('breadcumb', "Manajemen User");
+                                $this->smarty->assign('tinggi', "40px");
+                            }
+                            $this->smarty->assign('tipe', $p1);
                         break;
                     
 		}
 		$this->smarty->assign('type', $type);
 		$this->smarty->display($content);
+	}
+	
+	function getdatagrid($type){
+		echo $this->madmin->get_data_grid($type);
 	}
 	
 	function displayCombo($kode="", $content){		

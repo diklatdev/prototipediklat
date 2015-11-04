@@ -115,6 +115,68 @@ function processCmb(type,p1){
 		break;
 	}
 }
+//Levi
+function gridView(modnya, lebarnya, tingginya){
+	if(lebarnya == undefined){
+		lebarnya = getClientWidth-230;
+	}
+	if(tingginya == undefined){
+		tingginya = getClientHeight-300
+	}
+        
+        var kolom ={};
+	var frozen ={};
+	var judulnya;
+	var param={};
+	var urlnya;
+	var urlglobal="";
+	var fitnya;
+	var pagesizeboy = 10;
+	
+	switch(modnya){
+		case "data_user":
+                    judulnya = "";
+                    fitnya = true;
+                    pagesizeboy = 50;
+                    kolom[modnya] = [	
+                            {field:'real_name',title:'Nama User',width:250, halign:'center',align:'left'},
+                            {field:'username',title:'Username',width:200, halign:'center',align:'left'},
+                            {field:'nama_level',title:'Level User',width:150, halign:'center',align:'center'},
+                            {field:'stats',title:'Status',width:150, halign:'center',align:'center'},
+                            {field:'id',title:'Action',width:250, halign:'center',align:'center',
+                                formatter: function(value,row,index){                                   
+                                    return "<a style ='margin-left:15px' href='#' onClick='loadMan_edit(\"us_ed\",\""+hostir+"edit-admin\", \"tMain\", \""+value+"\")' class='btn btn-inverse'><i class='fa fa-pencil icon-only'></i> Edit</a> \n\
+                                            <a style ='margin-right:15px' href='#' onClick='tampo_data(\"ureng\",\""+hostir+"delete-admin\", \""+value+"\")' class='btn btn-danger'><i class='fa fa-times icon-only'></i> Hapus</a>";
+                                    
+                                }
+                            }
+                    ];
+                break;
+        }
+        $("#"+modnya).datagrid({
+		title:judulnya,
+        height:tingginya,
+        width:lebarnya,
+		rownumbers:true,
+		iconCls:'database',
+        fit:fitnya,
+        striped:true,
+        pagination:true,
+        remoteSort: false,
+        url: hostir+'datagridlv/'+modnya,
+		nowrap: true,
+        singleSelect:true,
+		pageSize:pagesizeboy,
+		pageList:[10,20,30,40,50,75,100,200],
+		queryParams:param,
+		columns:[
+            kolom[modnya]
+        ],
+		toolbar: '#toolbar_'+modnya,
+	});
+                        
+    
+}
 
 function genGrid(modnya, lebarnya, tingginya){
 	if(lebarnya == undefined){
@@ -1561,7 +1623,7 @@ function tampo_data(type, urlnya, p1, p2, p3, p4, p5, p6, p7){
 				$.post(urlnya, { 'kode' : p1 }, function(resp){
 					if (resp == 1){					
 						alert('Data Admin Berahasil Dihapus!.');
-						loadUrl(hostir+'manajemen-admin');
+						loadUrl(hostir+'data-user-grid');
 					}else{
 						alert(resp);
 					}

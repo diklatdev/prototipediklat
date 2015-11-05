@@ -134,24 +134,46 @@ function gridView(modnya, lebarnya, tingginya){
 	var pagesizeboy = 10;
 	
 	switch(modnya){
-		case "data_user":
-                    judulnya = "";
-                    fitnya = true;
-                    pagesizeboy = 50;
-                    kolom[modnya] = [	
-                            {field:'real_name',title:'Nama User',width:250, halign:'center',align:'left'},
-                            {field:'username',title:'Username',width:200, halign:'center',align:'left'},
-                            {field:'nama_level',title:'Level User',width:150, halign:'center',align:'center'},
-                            {field:'stats',title:'Status',width:150, halign:'center',align:'center'},
-                            {field:'id',title:'Action',width:250, halign:'center',align:'center',
-                                formatter: function(value,row,index){                                   
-                                    return "<a style ='margin-left:15px' href='#' onClick='loadMan_edit(\"us_ed\",\""+hostir+"edit-admin\", \"tMain\", \""+value+"\")' class='btn btn-inverse'><i class='fa fa-pencil icon-only'></i> Edit</a> \n\
-                                            <a style ='margin-right:15px' href='#' onClick='tampo_data(\"ureng\",\""+hostir+"delete-admin\", \""+value+"\")' class='btn btn-danger'><i class='fa fa-times icon-only'></i> Hapus</a>";
-                                    
-                                }
+            case "data_user":
+                judulnya = "";
+                fitnya = true;
+                pagesizeboy = 50;
+                kolom[modnya] = [	
+                        {field:'real_name',title:'Nama User',width:250, halign:'center',align:'left'},
+                        {field:'username',title:'Username',width:200, halign:'center',align:'left'},
+                        {field:'nama_level',title:'Level User',width:150, halign:'center',align:'center'},
+                        {field:'stats',title:'Status',width:150, halign:'center',align:'center'},
+                        {field:'id',title:'Action',width:250, halign:'center',align:'center',
+                            formatter: function(value,row,index){                                   
+                                return "<div class='btn-group btn-group-xs' >\n\
+                                    <a style ='margin-left:15px' href='#' onClick='loadMan_edit(\"us_ed\",\""+hostir+"edit-admin\", \"tMain\", \""+value+"\")' class='btn btn-inverse'><i class='fa fa-pencil icon-only'></i> Edit</a> \n\
+                                    <a style ='margin-right:15px' href='#' onClick='tampo_data(\"ureng\",\""+hostir+"delete-admin\", \""+value+"\")' class='btn btn-danger'><i class='fa fa-times icon-only'></i> Hapus</a>\n\
+                                    </div>";
+
                             }
-                    ];
-                break;
+                        }
+                ];
+            break;
+            case "master_tuk":
+                judulnya = "";
+                fitnya = true;
+                pagesizeboy = 50;
+                kolom[modnya] = [	
+                        {field:'nama_tuk',title:'Nama TUK',width:250, halign:'center',align:'left'},
+                        {field:'prop',title:'Propinsi',width:200, halign:'center',align:'left'},
+                        {field:'alamat_tuk',title:'Alamat',width:250, halign:'center',align:'left'},
+                        {field:'stats',title:'Status',width:150, halign:'center',align:'center'},
+                        {field:'id',title:'Action',width:100, halign:'center',align:'center',
+                            formatter: function(value,row,index){                                   
+                                return "<div class='btn-group btn-group-xs' >\n\
+                                    <a style ='margin-left:15px' href='#' onClick='loadMan_edit(\"tuk_ed\",\""+hostir+"edit-tuk\", \"tMain\", \""+value+"\")' class='btn btn-inverse'><i class='fa fa-pencil icon-only'></i></a> \n\
+                                    <a style ='margin-right:15px' href='#' onClick='' class='btn btn-danger'><i class='fa fa-times icon-only'></i></a>\n\
+                                    </div>";
+
+                            }
+                        }
+                ];
+            break;
         }
         $("#"+modnya).datagrid({
 		title:judulnya,
@@ -434,8 +456,13 @@ function genGrid(modnya, lebarnya, tingginya){
 function previewData(type, p1, p2, p3, p4, p5, p6, p7){
 	switch(type){
 		case "registrasi":
+                    if (p4){
+                        $('#txtheader').html("<h1>Data Registrasi Peserta Sertifikasi</h1>");
+			loadUrl_adds('ps_det', hostir+'peserta-detail', 'konten_grid', p1, p2, p3, p4);
+                    }else{
 			$('#txtheader').html("<h1>Validasi Data Registrasi Peserta Sertifikasi</h1>");
 			loadUrl_adds('ps_det', hostir+'peserta-detail', 'konten_grid', p1, p2, p3);
+                    }
 		break;
 		case "lhkps":
 			$("#konten_grid").html("").addClass("loading");
@@ -501,9 +528,15 @@ function loadUrl_adds(type, urlnya, domnya, p1, p2, p3, p4, p5, p6, p7){
 	
 	switch(type){
 		case "ps_det":
+                    if (p4){
+			$.post(urlnya, { 'id_u' : p1 , 'idx_s' : p2, 'kdr' : p3, 'func': p4 }, function(resp){
+				$("#"+domnya).html(resp).removeClass("loading");
+			});                        
+                    }else{
 			$.post(urlnya, { 'id_u' : p1 , 'idx_s' : p2, 'kdr' : p3 }, function(resp){
 				$("#"+domnya).html(resp).removeClass("loading");
 			});
+                    }
 		break;
 		case "as_dt":
 			$.post(urlnya, { 'id_uny' : p1, 'nm_l':p2, 'ap_n':p3, 'rg':p4, 'id_sert':p5, 'kdr':p6 }, function(resp){

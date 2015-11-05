@@ -331,10 +331,17 @@ class madmin extends SHIPMENT_Model{
                 switch($type){
                     case 'data_user':					
                         $sql = "SELECT A.id, A.real_name, A.username, A.level_admin, A.aktif, A.nip_user, A.email, 
-                        A.password, A.level_admin, if (A.aktif = 1, 'Aktif', 'Tidak Aktif') as stats, A.idx_tuk_id, A.idx_keahlian,
-                        B.nama_level 
-                        FROM tbl_user_admin A 
-                        LEFT JOIN idx_level_user B ON A.level_admin = B.id";
+                            A.password, A.level_admin, if (A.aktif = 1, 'Aktif', 'Tidak Aktif') as stats, A.idx_tuk_id, A.idx_keahlian,
+                            B.nama_level 
+                            FROM tbl_user_admin A 
+                            LEFT JOIN idx_level_user B ON A.level_admin = B.id";
+                    break;
+                    case 'master_tuk':					
+                        $sql = "SELECT A.id, A.nama_tuk, P.name as prop, k.name as kab, A.alamat_tuk, 
+                            A.idx_provinsi_id, A.idx_kab_id, A.is_aktif, if (A.is_aktif = 1, 'Aktif', 'Tidak Aktif') as stats
+                            FROM idx_tuk A 
+                            LEFT JOIN idx_area P ON P.idprov = A.idx_provinsi_id AND P.level = 1
+                            LEFT JOIN idx_area k ON k.id = A.idx_kab_id AND k.level = 2";
                     break;
                 }
 		//echo $sql;exit;

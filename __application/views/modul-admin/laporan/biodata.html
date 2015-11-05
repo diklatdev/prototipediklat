@@ -1,11 +1,11 @@
 <!-- BEGIN PAGE HEADING ROW -->
 <div class="row">
     <div class="col-lg-12">
-        <div class="page-header title" style="">
+        <div class="page-header title" style=""  id="txtheader">
             <!-- PAGE TITLE ROW -->
             <h1>Laporan Biodata Peserta</h1>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-12" id="konten_grid">
             <select class="form-control" onchange="tampil_view('biodata_peserta', '{$host}biodata_peserta', 'laporan')" id="select_tuk">
                     <option value="">Pilih Lokasi TUK</option>
                     {foreach from=$jadwal item=row}

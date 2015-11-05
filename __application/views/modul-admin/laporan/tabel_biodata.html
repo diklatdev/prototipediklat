@@ -3,7 +3,7 @@
 		<div class="well white" style="margin-bottom:0px !important;">
 			<label>Daftar Peserta di TUK {$tuk}</label> 
 		</div>
-		<div class="portlet"><!-- /Portlet -->
+		<div class="portlet" ><!-- /Portlet -->
 			<div id="basic" class="panel-collapse collapse in">
 				<div class="portlet-body no-padding">
 					<table class="table table-bordered table-hover tc-table">
@@ -29,7 +29,8 @@
 										<td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
 										<td class="col-medium center">
                                                                                     <div class="btn-group btn-group-xs ">
-                                                                                        <a href="{$host}lv/modul_admin/biodata_pdf/{$rows.id}"  class="btn btn-info" target="_blank"><i class="fa fa-search-plus"> Cetak Biodata</i></a>
+                                                                                        <!--<a href="{$host}lv/modul_admin/biodata_pdf/{$rows.id}"  class="btn btn-info" target="_blank"><i class="fa fa-search-plus"> Cetak Biodata</i></a>-->
+                                                                                        <a href="#"  class="btn btn-info" onclick="previewData('registrasi', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}', 'biodata');"><i class="fa fa-search-plus"> Lihat Biodata</i></a>
                                                                                     </div>	
 										</td>
 									</tr>

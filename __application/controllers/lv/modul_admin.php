@@ -320,6 +320,10 @@ class modul_admin extends SHIPMENT_Controller{
                                 $this->smarty->assign('breadcumb', "Manajemen User");
                                 $this->smarty->assign('tinggi', "40px");
                             }
+                            if($p1 == 'master_tuk'){
+                                $this->smarty->assign('breadcumb', "Manajemen TUK");
+                                $this->smarty->assign('tinggi', "40px");
+                            }
                             $this->smarty->assign('tipe', $p1);
                         break;
                     

@@ -183,6 +183,7 @@ $route['combos/(:any)'] = "why/modul_portal/fillcombo/$1/echo";
 $route['datagridlv/(:any)'] = "lv/modul_admin/getdatagrid/$1";
 
 $route['data-user-grid'] = "lv/modul_admin/getdisplay/datagridview/data_user";
+$route['master-tuk-grid'] = "lv/modul_admin/getdisplay/datagridview/master_tuk";
 
 $route['manajemen-admin'] = "lv/modul_admin/getdisplay/manajemen_admin/";
 $route['form-admin'] = "lv/modul_admin/getdisplay/form_admin/";

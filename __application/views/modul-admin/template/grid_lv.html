@@ -13,12 +13,10 @@
 	<div id='{$tipe_grid}'></div>
 	<div id='toolbar_{$tipe_grid}' style='padding:3px;height:{$tinggi}'>
 		{if $tipe_grid eq 'data_user'}
-<!--                    <a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="loadUrl_adds('tm_jd','{$host}tambah-data-wawancara', 'konten_grid')">
-                        <span class="l-btn-left l-btn-icon-left">
-                            <span class="l-btn-text">Tambah</span><span class="l-btn-icon icon-add">&nbsp;</span>
-                        </span>
-                    </a>-->
                     <a class="btn btn-success" href="#" onClick="loadUrl('{$host}form-admin');" id="id-btn-dialog1"><i class="fa fa-plus icon-only"></i> Tambah </a>
+		{/if}
+		{if $tipe_grid eq 'master_tuk'}
+                    <a class="btn btn-success" href="#" onClick="loadUrl('{$host}form-tuk');" id="id-btn-dialog1"><i class="fa fa-plus icon-only"></i> Tambah </a>
 		{/if}
 	</div>
 </div>

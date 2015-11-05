@@ -87,6 +87,8 @@ class modul_admin extends SHIPMENT_Controller{
 				$userid = $this->input->post("id_u");
 				$idxsertifikasi_id = $this->input->post("idx_s");
 				$kdreg_diklat = $this->input->post("kdr");
+                                $func = '';
+				$func = $this->input->post("func");
 				
 				$content = "modul-admin/manajemen_peserta/form-det-peserta.html";
 				$data = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $userid);
@@ -94,6 +96,8 @@ class modul_admin extends SHIPMENT_Controller{
 				$folder_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $idxsertifikasi_id);
 				$folder = $folder_sertifikasi['kode_sertifikasi']."-".strtolower( str_replace(" ", "_", $folder_sertifikasi['nama_aparatur']) );
 				
+                                
+				$this->smarty->assign("func", $func);
 				$this->smarty->assign("data", $data);
 				$this->smarty->assign("data_file_persyaratan", $data_file_persyaratan);
 				$this->smarty->assign("folder_sertifikasi", $folder);

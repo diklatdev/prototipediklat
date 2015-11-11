@@ -208,4 +208,16 @@ class lib {
 		} 
 	}
 	
+	function removeDir($path) {
+		// Normalise $path.
+		$path = rtrim($path, '/') . '/';
+		// Remove all child files and directories.
+		$items = glob($path . '*');
+		foreach($items as $item) {
+			is_dir($item) ? $this->removeDir($item) : unlink($item);
+		}
+		// Remove directory.
+		rmdir($path);
+	}
+	
 }

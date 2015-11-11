@@ -13,6 +13,11 @@ $route['peserta-detail'] = "why/modul_admin/getdisplay/detail_peserta/";
 $route['verifikasi-registrasi'] = "why/modul_admin/simpansavedbx/ver_reg/";
 $route['verifikasi-dokumen-syarat'] = "why/modul_admin/simpansavedbx/ver_dok_peryaratan/";
 
+$route['edit-data-peserta'] = "why/modul_admin/getdisplay/edit_peserta/";
+$route['submit-edit-peserta'] = "why/modul_admin/simpansavedbx/edit_data_peserta/";
+$route['hapus-data-peserta'] = "why/modul_admin/simpansavedbx/hapus_data_peserta/";
+$route['generate-persyaratan'] = "why/modul_admin/simpansavedbx/generate_persyaratan/";
+
 $route['asesmen-peserta'] = "why/modul_admin/getdisplay/asesmen_mandiri/";
 $route['asesmen-detail'] = "why/modul_admin/getdisplay/detail_asesmen/";
 $route['verifikasi-asesmen'] = "why/modul_admin/simpansavedbx/ver_ass/";

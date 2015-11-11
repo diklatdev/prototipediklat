@@ -286,9 +286,9 @@ class madmin extends SHIPMENT_Model{
 					$select = " A.id, A.no_registrasi, A.nama_lengkap, A.nip, A.status ";
 				}elseif($type == "tbl_data_peserta_detail"){
 					$select = " 
-						A.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
+						A.*, B.*, H.nama_pendidikan, I.nama_programstudi, C.name as nama_provinsi, D.name as nama_kabupaten, 
 						E.nama_instansi, F.nama_pangkat, G.nama_aparatur, B.jabatan, B.alamat_instansi, B.idx_sertifikasi_id, B.file_pak, B.kdreg_diklat,  
-						J.nama_kementerian, K.nama_formasi, B.idx_lokasi_id, L.nama_tuk, M.real_name as nama_asesor
+						J.nama_kementerian, K.nama_formasi, B.idx_lokasi_id, L.nama_tuk, M.real_name as nama_asesor, A.id as peserta_id, B.id as diklat_id
 					";
 					$where .= " AND A.id = '".$p1."' ";
 					$join .= "
@@ -668,7 +668,8 @@ class madmin extends SHIPMENT_Model{
 			break;
 			case 'administrasi_peserta' :
 				$sql = "
-					SELECT A.id as idnya_data_peserta, A.nama_lengkap, B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat,
+					SELECT A.id as idnya_data_peserta, A.nama_lengkap, A.no_registrasi,  
+						B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat,
 						B.is_hadir, C.step_uji_test, C.step_uji_simulasi, A.no_handphone, A.email
 					FROM tbl_data_peserta A
 					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
@@ -1174,6 +1175,89 @@ class madmin extends SHIPMENT_Model{
 				}
 				
 				$this->db->update('tbl_data_diklat', array('is_hadir'=>$absensi), array('tbl_data_peserta_id'=>$tbl_data_peserta_id, 'idx_sertifikasi_id'=>$idx_sertifikasi_id) );
+			break;
+			case "edit_data_peserta":
+				$post_bnr = array();
+				$post_bnr['nama_lengkap'] = $post['ed_namalengkap'];
+				$post_bnr['nip'] = $post['ed_nonip'];
+				$post_bnr['nik'] = $post['ed_nonik'];
+				$post_bnr['tempat_lahir'] = $post['ed_tmpLahir'];
+				$post_bnr['tanggal_lahir'] = $post['thn_lahir']."-".$post['bln_lahir']."-".$post['tgl_lahir'];
+				$post_bnr['jenis_kelamin'] = $post['ed_jnsKel'];
+				$post_bnr['kebangsaan'] = $post['ed_bangsa'];
+				$post_bnr['alamat_rumah'] = $post['ed_alamatRmh'];
+				$post_bnr['kode_pos'] = $post['ed_kdPosRmh'];
+				$post_bnr['no_telepon'] = $post['ed_tlpRmh'];
+				$post_bnr['no_handphone'] = $post['ed_hempon'];
+				$post_bnr['email'] = $post['ed_mailer'];
+				$post_bnr['idx_pendidikan_id'] = $post['ed_pend'];
+				$post_bnr['idx_programstudi_id'] = $post['ed_prodi'];
+				$post_bnr['tahun_lulus'] = $post['ed_thLulus'];
+				
+				$username = str_replace(" ", "", $post['ed_nonip']);
+				$post_bnr['username'] = $username;
+				
+				$array_sert = array(
+					"idx_kementerian_id" => $post['kmnt'],
+					"idx_formasi_id" => $post['frms'],
+					"idx_lokasi_id" => $post['lks'],
+					"idx_provinsi_instansi_id" => $post['prv'],
+					"idx_flag_kab_kota" => $post['ka_ko'],
+					"idx_kabupaten_instansi_id" => $post['ka'],
+					"idx_instansi_id" => $post['ins'],
+					"idx_pangkat_id" => $post['ed_pangkat'],
+					"jabatan" => $post['ed_jabatan'],
+					"alamat_instansi" => $post['ed_alamatKtr'],
+					"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
+				);
+				
+				$this->db->update('tbl_data_peserta', $post_bnr, array('id'=>$post['idxst']) );
+				$this->db->update('tbl_data_diklat', $array_sert, array('tbl_data_peserta_id'=>$post['idxst'], 'idx_sertifikasi_id'=>$post['idxser']) );
+				
+			break;
+			case "hapus_data_peserta":
+				$this->db->delete('tbl_data_peserta', array('id'=>$post['idxps']) );
+				$this->db->delete('tbl_data_diklat', array('tbl_data_peserta_id'=>$post['idxps'], 'idx_sertifikasi_id'=>$post['idxsert']) );
+				$this->db->delete('tbl_daftar_test', array('tbl_data_peserta_id'=>$post['idxps'], 'idx_sertifikasi_id'=>$post['idxsert']) );
+				$this->db->delete('tbl_persyaratan_sertifikasi', array('tbl_data_peserta_id'=>$post['idxps'], 'idx_sertifikasi_id'=>$post['idxsert']) );
+				$this->db->delete('tbl_step_peserta', array('tbl_data_peserta_id'=>$post['idxps'], 'idx_sertifikasi_id'=>$post['idxsert']) );
+				
+				$path = "__repository/dokumen_peserta/".$post['nrege']."/";
+				if (file_exists($path)) {
+					$this->lib->removeDir($path);
+				}
+			break;
+			case "generate_persyaratan":
+				$data_persyaratan = $this->db->get_where('idx_persyaratan_registrasi', array('idx_asn_id'=>$post['idxsert']) )->result_array();
+				$sertifikasi = $this->db->get_where('idx_aparatur_sipil_negara', array('id'=>$post['idxsert']) )->row_array();
+				$nama_sertifikasi = str_replace(" ", "-", strtolower($sertifikasi['nama_aparatur']) );
+				$foldernya = $sertifikasi['kode_sertifikasi']."-".$nama_sertifikasi;
+				
+				$path = "__repository/dokumen_peserta/".$post['nrege']."/file_persyaratan/";
+				if (!file_exists($path.$foldernya."/")) {
+					mkdir($path.$foldernya."/");
+				}
+				if (!file_exists($path.$foldernya."/".$post['kdr']."/")) {
+					mkdir($path.$foldernya."/".$post['kdr']."/");
+				}
+				
+				$t = 0;
+				$array_batch = array();
+				foreach($data_persyaratan as $k => $v){
+					$array_insert = array(
+						"tbl_data_peserta_id" => $post['idxps'],
+						"idx_sertifikasi_id" => $post['idxsert'],
+						"idx_persyaratan_id" => $v['id'],
+						"flag" => 'V',
+						"nama_file" => 'file_persyaratan_'.$t."(".$v['id'].").pdf",
+						"kdreg_diklat" => $post['kdr'],
+						"status_penilaian" => 0
+					);
+					array_push($array_batch, $array_insert);
+				}
+				if($array_batch){
+					$this->db->insert_batch('tbl_persyaratan_sertifikasi', $array_batch); 
+				}
 			break;
 		}
 		

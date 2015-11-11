@@ -87,7 +87,7 @@ class modul_admin extends SHIPMENT_Controller{
 				$userid = $this->input->post("id_u");
 				$idxsertifikasi_id = $this->input->post("idx_s");
 				$kdreg_diklat = $this->input->post("kdr");
-                                $func = '';
+                $func = '';
 				$func = $this->input->post("func");
 				
 				$content = "modul-admin/manajemen_peserta/form-det-peserta.html";
@@ -95,13 +95,39 @@ class modul_admin extends SHIPMENT_Controller{
 				$data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $userid, $idxsertifikasi_id, $kdreg_diklat);
 				$folder_sertifikasi = $this->madmin->get_data('folder_sertifikasi', 'row_array', $idxsertifikasi_id);
 				$folder = $folder_sertifikasi['kode_sertifikasi']."-".strtolower( str_replace(" ", "_", $folder_sertifikasi['nama_aparatur']) );
-				
                                 
 				$this->smarty->assign("func", $func);
 				$this->smarty->assign("data", $data);
 				$this->smarty->assign("data_file_persyaratan", $data_file_persyaratan);
 				$this->smarty->assign("folder_sertifikasi", $folder);
 				$this->smarty->assign("kdreg_diklat", $kdreg_diklat);
+			break;
+			case "edit_peserta":
+				$userid = $this->input->post("idpsrtxx");
+				$data = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $userid);
+				$content = "modul-admin/manajemen_peserta/form-edit-peserta.html";
+				
+				$tgl_lahir = explode("-", $data['tanggal_lahir']);
+				
+				$this->smarty->assign('tgl_lahir', $this->fillcombo('tanggal', 'return', $tgl_lahir[2]) );
+				$this->smarty->assign('bulan_lahir', $this->fillcombo('bulan', 'return', $tgl_lahir[1]) );
+				$this->smarty->assign('tahun_lahir', $this->fillcombo('tahun_lahir', 'return', $tgl_lahir[0]) );
+				$this->smarty->assign('jenis_kelamin', $this->fillcombo('jenis_kelamin', 'return', $data['jenis_kelamin']) );
+				$this->smarty->assign('kebangsaan', $this->fillcombo('kebangsaan', 'return', $data['kebangsaan']) );
+				
+				$this->smarty->assign('idx_pendidikan_id', $this->fillcombo('idx_pendidikan', 'return', $data['idx_pendidikan_id']) );
+				$this->smarty->assign('idx_programstudi_id', $this->fillcombo('idx_programstudi', 'return', $data['idx_programstudi_id']) );
+				$this->smarty->assign('idx_provinsi_instansi_id', $this->fillcombo('idx_provinsi', 'return', $data['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kab', $this->fillcombo('ka', 'return', $data['idx_kabupaten_instansi_id'], $data['idx_provinsi_instansi_id']) );
+				$this->smarty->assign('idx_kementerian', $this->fillcombo('idx_kementerian', 'return', $data['idx_kementerian_id']) );
+				$this->smarty->assign('idx_formasi', $this->fillcombo('idx_formasi', 'return', $data['idx_formasi_id']) );
+				$this->smarty->assign('idx_lokasi', $this->fillcombo('lokasi', 'return', $data['idx_lokasi_id']) );
+				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $data['idx_instansi_id']) );
+				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $data['idx_pangkat_id']) );
+				$this->smarty->assign('idx_lingkup_instansi', $this->fillcombo('lingkup_instansi', 'return', $data['idx_flag_kab_kota']) );
+				
+				$this->smarty->assign('data', $data);
+				$this->smarty->assign('userid', $userid);
 			break;
 			case "asesmen_mandiri":
 				$content = "modul-admin/asesmen_mandiri/main-asesmen.html";
@@ -797,6 +823,36 @@ class modul_admin extends SHIPMENT_Controller{
 		
 		if($type == 'bulan'){
 			$data = arraydate('bulan');
+		}elseif($type == 'tahun_lahir'){
+			$data = arraydate('tahun_lahir');
+		}elseif($type == 'tahun'){
+			$data = arraydate('tahun');
+		}elseif($type == 'tanggal'){
+			$data = arraydate('tanggal');
+		}elseif($type == 'jenis_kelamin'){
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = array(
+				'0' => array('kode'=>'L','txt'=>'Laki-Laki'),
+				'1' => array('kode'=>'P','txt'=>'Perempuan'),
+			);
+		}elseif($type == 'kebangsaan'){
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = array(
+				'0' => array('kode'=>'WNI','txt'=>'Warga Negara Indonesia'),
+				'1' => array('kode'=>'WNA','txt'=>'Warga Negara Asing'),
+			);
+		}elseif($type == 'lokasi'){
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = array(
+				'0' => array('kode'=>'P','txt'=>'Pusat'),
+				'1' => array('kode'=>'D','txt'=>'Daerah'),
+			);
+		}elseif($type == 'lingkup_instansi'){
+			$optTemp = '<option value=""> -- Pilih -- </option>';
+			$data = array(
+				'0' => array('kode'=>'1','txt'=>'Kota'),
+				'1' => array('kode'=>'2','txt'=>'Kabupaten'),
+			);
 		}else{
 			$optTemp = '<option value=""> -- Pilih -- </option>';
 			$data = $this->mportal->get_data($type, 'result_array', $p1, $p2);

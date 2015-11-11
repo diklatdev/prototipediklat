@@ -323,7 +323,16 @@
 										{assign var=ind value=$ind+1}
 									{/foreach}
 									</tbody>
-								</table>								
+								</table>
+							{else}
+								<center>
+									<h3>
+										Data persyaratan registrasi tidak ada dalam database sistem.
+										<br/>
+										Silahkan tekan tombol generate di bawah
+										kemudian peserta diminta untuk upload ulang data persyaratan sertifikasi melalui akun portal peserta.
+									</h3>
+								</center>
 							{/if}
 						</div>
 					</div>
@@ -331,7 +340,11 @@
 			</form>
 			
 			<div class="form-actions ">				
-				<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.id}', '{$data.idx_sertifikasi_id}', '{$ind}' );">Verifikasi Data Ini</button>
+				{if $data_file_persyaratan}
+					<button id='btnnya' class="btn btn-success" onClick="kumpulPost('ver_r_ox', '{$data.peserta_id}', '{$data.idx_sertifikasi_id}', '{$ind}' );">Verifikasi Data Ini</button>
+				{else}
+					<button id='btnnya' class="btn btn-success" onClick="kumpulPost('gen_sya', '{$data.peserta_id}', '{$data.idx_sertifikasi_id}', '{$data.no_registrasi}', '{$data.kdreg_diklat}' );">Generate</button>
+				{/if}
 				<button id='btnnya_balik' class="btn btn-inverse" onClick="{if $func eq 'biodata'}loadUrl('{$host}biodata');{else}loadUrl('{$host}data-peserta-grid');{/if}">Kembali</button>
 			</div>
 

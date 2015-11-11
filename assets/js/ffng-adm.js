@@ -222,8 +222,10 @@ function genGrid(modnya, lebarnya, tingginya){
 			judulnya = "";
 			fitnya = true;
 			pagesizeboy = 50;
-			kolom[modnya] = [	
+			frozen[modnya] = [
 				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
+			];
+			kolom[modnya] = [	
 				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
 				{field:'step_registrasi',title:'Registrasi',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
@@ -299,8 +301,10 @@ function genGrid(modnya, lebarnya, tingginya){
 			judulnya = "";
 			fitnya = true;
 			pagesizeboy = 50;
-			kolom[modnya] = [	
+			frozen[modnya] = [
 				{field:'nama_lengkap',title:'Nama Peserta',width:300, halign:'center',align:'left'},
+			];
+			kolom[modnya] = [	
 				{field:'is_hadir',title:'Kehadiran Peserta',width:220, halign:'center',align:'center',
 					formatter: function(value,row,index){
 						if(row.is_hadir == 0){
@@ -344,9 +348,12 @@ function genGrid(modnya, lebarnya, tingginya){
 						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Lihat Data</button>";
 					}
 				},
-				{field:'id',title:'Ubah Data',width:150, halign:'center',align:'center',
+				{field:'id',title:'Action',width:250, halign:'center',align:'center',
 					formatter: function(value,row,index){
-						return "<button href='#' onClick='previewData(\"lhkps\", \""+row.idnya_data_peserta+"\");' >Ubah Data</button>";
+						buttonnya = "<button href='#' onClick='previewData(\"ubhdt\", \""+row.idnya_data_peserta+"\");' >Ubah Data</button>";
+						buttonnya += "&nbsp;/&nbsp;";
+						buttonnya += "<button href='#' onClick='kumpulPost(\"hpspsr\", \""+row.idnya_data_peserta+"\", \""+row.idx_sertifikasi_id+"\" , \""+row.no_registrasi+"\" );' >Hapus Data</button>";
+						return buttonnya;
 					}
 				},
 				{field:'no_handphone',title:'No. Handphone',width:150, halign:'center',align:'left'},
@@ -445,6 +452,9 @@ function genGrid(modnya, lebarnya, tingginya){
 		pageSize:pagesizeboy,
 		pageList:[10,20,30,40,50,75,100,200],
 		queryParams:param,
+		frozenColumns:[
+			frozen[modnya]
+		],
 		columns:[
             kolom[modnya]
         ],
@@ -479,10 +489,16 @@ function previewData(type, p1, p2, p3, p4, p5, p6, p7){
 		break
 		case "wawa":
 			loadUrl_adds('ww_dt', hostir+'wawancara-detail', 'konten_grid', p1, p2, p3);
-		break
+		break;
 		case "hsl":
 			loadUrl_adds('hs_dt', hostir+'hasil-detail', 'konten_grid', p1, p2, p3, p4, p5, p6);
-		break
+		break;
+		case "ubhdt":
+			$("#konten_grid").html("").addClass("loading");
+			$.post(hostir+'edit-data-peserta', { 'idpsrtxx' : p1 }, function(resp){
+				$("#konten_grid").html(resp).removeClass("loading");
+			});
+		break;
 	}
 }
 
@@ -855,6 +871,32 @@ function kumpulPost($type, p1, p2, p3, p4){
 				$('#administrasi_peserta').datagrid('reload');
 			 });
 		break;
+		case "hpspsr":
+			if (confirm("Anda Yakin Menghapus Data Peserta Ini?") == true) {
+				$.blockUI({ message: '<h5>..Harap Tunggu</h5>' });
+				$.post(hostir+'hapus-data-peserta', { 'idxps':p1, 'idxsert':p2, 'nrege':p3 }, function(pst){
+					if(pst == 1){
+						alert('Data Terhapus');
+					}else{
+						alert('Gagal Menghapus Data');
+					}
+					$.unblockUI();
+					$('#administrasi_peserta').datagrid('reload');
+				});
+			}
+		break;
+		case "gen_sya":
+			$.post(hostir+'generate-persyaratan', { 'idxps':p1, 'idxsert':p2, 'nrege':p3, 'kdr':p4 }, function(pst){
+				$.blockUI({ message: '<h5>..Harap Tunggu</h5>' });
+				if(pst == 1){
+					alert('Generate Persyaratan Berhasil');
+				}else{
+					alert('Gagal Generate Data');
+				}
+				$.unblockUI();
+				loadUrl(hostir+'data-peserta-grid');
+			});
+		break;
 		
 		
 
@@ -1013,6 +1055,21 @@ function asses(kl){
 			//alert(respo);
 			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server"});
 			loadUrl(hostir+'data-peserta-grid');
+		}
+	});
+}
+
+function upddt(){
+	ajxamsterfrm("regdiklat-upd", function(respo){
+		if(respo == 1){
+			alert("Data Tersimpan");
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan"});
+			loadUrl(hostir+'administrasi-peserta');
+		}else{
+			//alert(respo);
+			alert('Gagal Menyimpan');
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server"});
+			loadUrl(hostir+'administrasi-peserta');
 		}
 	});
 }
@@ -1471,7 +1528,7 @@ function processCombo(type){
 		break;		
 		case "prv":
 			fillCombo(hostir+"combo/ka/", 'ka', "", $('#'+type).val() );
-			fillCombo(hostir+"combo/ins/", 'ins', "", $('#'+type).val() );
+			//fillCombo(hostir+"combo/ins/", 'ins', "", $('#'+type).val() );
 		break;
 	}
 	//clr();

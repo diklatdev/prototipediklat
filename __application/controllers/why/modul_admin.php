@@ -675,7 +675,7 @@ class modul_admin extends SHIPMENT_Controller{
 	}
 	
 	function gen_sertifikat($p1="", $p2="", $p3="", $p4="", $p5=""){
-		/*
+		
 		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
 		if(!$cek_data){			
 			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );

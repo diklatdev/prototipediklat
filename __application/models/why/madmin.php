@@ -736,7 +736,7 @@ class madmin extends SHIPMENT_Model{
 					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id 
 					LEFT JOIN (SELECT * FROM tbl_hasil_akhir WHERE status_data = 1  ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id AND E.kdreg_diklat = D.kdreg_diklat
 					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
-					WHERE B.step_hasil = '1' AND status_penilaian = 'TL'
+					WHERE B.step_hasil = '1' AND status_penilaian = 'TL' AND sdh_remedial = 'N'
 				";
 			break;
 		}

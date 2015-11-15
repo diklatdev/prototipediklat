@@ -212,6 +212,40 @@ function sbtdl_reg(){
 }
 
 function sbtdl_reg_bars(){
+	if (confirm("Anda Yakin Akan Mendaftar Sertifikasi Lanjutan ?") == true) {
+		$.blockUI({ message: '<h5>..Validasi Inputan..</h5>' });
+		ajxfm("regdiklat_baru", function(respo){
+			$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
+			if(respo == 1){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
+				alert('Data Sukses Tersimpan Dalam Sistem');
+				location.href = host+'logout-peserta';
+			}else if(respo == -1){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+				alert('Data Anda Sudah Terdaftar Dalam Sistem Kami.');
+			}else if(respo == -2){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+				alert('Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain.');
+			}else if(respo == -3){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
+				alert('Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain');
+			}else if(respo == -4){
+				alert('Jadwal Ujian Tidak Boleh Kosong');
+			}else if(respo == -5){
+				alert('Anda Sudah Mengikuti Sertifikasi Ini, Silahkan Pilih Sertifikasi Lanjutannya');
+				$('#tku_dxi').val('');
+				$('#ed_nilaipak').val('');
+				$('#sertifikasi_1').html("");
+				$('#res-pak').html("");
+				$('#res-cku').html("");
+			}
+			//
+			$.unblockUI();
+		});
+		setTimeout(function () { $.unblockUI(); }, 1000);
+	}	
+	
+	/*
 	if($('#edFile_pak').val() == 0){
 		$('#edFile_pak').focus();
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File PAK Tidak Boleh Kosong!" });
@@ -329,11 +363,37 @@ function sbtdl_reg_bars(){
 			});
 		},
 	});	
-
+	*/
 }
 
 function sbtdl_reg_ngulang(){
+	if (confirm("Anda Yakin Akan Mendaftar Ulang Sertifikasi Yang Tidak Lulus Sebelumnya ?") == true) {
+		$.blockUI({ message: '<h5>..Validasi Inputan..</h5>' });
+		ajxfm("regdiklat_ngulang", function(respo){
+			$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
+			if(respo == 1){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Sukses Tersimpan Dalam Sistem" });
+				alert('Data Sukses Tersimpan Dalam Sistem');
+				location.href = host+'registrasi-berhasil';
+			}else if(respo == -1){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Anda Sudah Terdaftar Dalam Sistem Kami." });
+				alert('Data Anda Sudah Terdaftar Dalam Sistem Kami.');
+			}else if(respo == -2){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain." });
+				alert('Maaf Anda Terlambat Submit Data, Kuota Jadwal Ujian TUK Sudah Habis, Silahkan Pilih Jadwal Ujian TUK Lain.');
+			}else if(respo == -3){
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain" });
+				alert('Jadwal Sertifikasi Sudah Lewat, Silahkan Mendaftar di Jadwal Yang Lain');
+			}else if(respo == -4){
+				alert('Jadwal Ujian Tidak Boleh Kosong');
+			}
+			//
+			$.unblockUI();
+		});
+		setTimeout(function () { $.unblockUI(); }, 1000);
+	}
 	
+	/*
 	if($('#edFile_pak').val() == 0){
 		$('#edFile_pak').focus();
 		$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "File PAK Tidak Boleh Kosong!" });
@@ -436,7 +496,7 @@ function sbtdl_reg_ngulang(){
 			});
 		},
 	});	
-		
+	*/
 }
 
 function log_psrt(){
@@ -476,7 +536,8 @@ function regass(kl){
 	for (i = 0; i <= jm; i++) {
 		if($('#st_kmp_'+i+':checked').length == 0){
 			$('#st_kmp_'+i).focus();
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kolom Penilaian Diri No. "+(i+1)+" Tidak Boleh Kosong!" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kolom Penilaian Diri No. "+(i+1)+" Tidak Boleh Kosong!" });
+			alert("Kolom Penilaian Diri No. "+(i+1)+" Tidak Boleh Kosong!");
 			return false;
 		}
 	}
@@ -485,10 +546,12 @@ function regass(kl){
 	
 	ajxfm("asdik", function(respo){
 		if(respo == 1){
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Berhasil Tersimpan Dalam Sistem." });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Berhasil Tersimpan Dalam Sistem." });
+			alert('Data Asesmen Mandiri Anda Berhasil Tersimpan Dalam Sistem.');
 			location.href = host+'asesmen-berhasil';
 		}else{
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Gagal Tersimpan Dalam Sistem" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Asesmen Mandiri Anda Gagal Tersimpan Dalam Sistem. " });
+			alert('Data Asesmen Mandiri Anda Gagal Tersimpan Dalam Sistem.');
 			location.href = host+'asesmen-gagal';
 		}
 	});
@@ -593,9 +656,11 @@ function kumpulPoster(type, domnya, p1, p2, p3){
 			$.post(host+"sbm-sim", { 'idxpr':p2, 'jwxdi':jjww }, function(rsssp){
 				//$('#'+domnya).html(rsssp);
 				if(rsssp == 1){
-					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jawaban No. "+p1+" Tersimpan" });
+					//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Jawaban No. "+p1+" Tersimpan" });
+					alert("Jawaban No. "+p1+" Tersimpan");
 				}else{
-					$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Kesalahan Teknis" });
+					//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal, Kesalahan Teknis" });
+					alert("Gagal, Kesalahan Teknis");
 				}
 			});
 		break;
@@ -812,11 +877,13 @@ function sbst_sim(){
 				ajxfm("ujsim", function(respo){
 					$.blockUI({ message: '<h5>..Harap Tunggu, Data Sedang Dikirim..</h5>' });
 					if(respo == 1){
-						$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Sukses Tersimpan Dalam Sistem" });
+						//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Sukses Tersimpan Dalam Sistem" });
+						alert("Data Test Simulasi Sukses Tersimpan Dalam Sistem");
 						location.href = host+'test-simulasi-berhasil';
 					}else{
-						$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Gagal Tersimpan Dalam Sistem" });
-						//location.href = host+'test-simulasi-gagal';
+						//$.msg({fadeIn : 100,fadeOut : 100,bgPath : host+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Test Simulasi Gagal Tersimpan Dalam Sistem" });
+						alert("Data Test Simulasi Gagal Tersimpan Dalam Sistem");
+						location.href = host+'test-simulasi-gagal';
 					}
 					$.unblockUI();
 				});

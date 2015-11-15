@@ -380,12 +380,28 @@ function genGrid(modnya, lebarnya, tingginya){
 			judulnya = "";
 			fitnya = true;
 			pagesizeboy = 50;
+			frozen[modnya] = [
+				{field:'nama_lengkap',title:'Nama Peserta',width:300, halign:'center',align:'left'},
+			];
 			kolom[modnya] = [	
-				{field:'nama_lengkap',title:'Nama Peserta',width:250, halign:'center',align:'left'},
 				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
+				{field:'lulus_tidak',title:'Status Lulus',width:150, halign:'center',align:'left',
+					formatter: function(value,row,index){
+						if(value == 'L'){
+							return "<font color='green'>Lulus</font>";
+						}else if(value = 'TL'){
+							return "<font color='red'>Tidak Lulus</font>";
+						}
+					}
+				},
+				{field:'nama_tuk',title:'Jadwal',width:200, halign:'center',align:'left',
+					formatter: function(value,row,index){
+						return row.nama_tuk+' - '+row.tgl_wawancara;
+					}
+				},
 				{field:'tbl_data_peserta_id',title:'::',width:150, halign:'center',align:'center',
 					formatter: function(value,row,index){
-						return "<a style='color:#000 !important;' href='"+hostir+"generate-sertifikat/"+row.id+"/"+row.idx_sertifikasi_id+"/"+row.lulus_tidak+"/"+row.kdreg_diklat+"/"+row.no_registrasi+"' target='_blank' ><button>Cetak</button></a>";
+						return "<a href='javascript:void(0);' onClick='modalOpt(\"cetak_sertifikat\", \""+row.id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.lulus_tidak+"\", \""+row.kdreg_diklat+"\",  \""+row.no_registrasi+"\" );' ><button>Cetak</button></a>";
 					}
 				},
 				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
@@ -428,10 +444,27 @@ function genGrid(modnya, lebarnya, tingginya){
 						button += "<button href='#' onClick='loadUrl_adds(\"etm_jd\", \""+hostir+"edit-data-wawancara\", \"konten_grid\", \""+row.id+"\");' > Edit</button>";
 						button += "&nbsp;&nbsp;/&nbsp;&nbsp;";
 						button += "<button href='#' onClick='loadUrl_adds(\"htm_jd\", \""+hostir+"hapus-data-wawancara\", \"konten_grid\", \""+row.id+"\");' > Hapus</button>";
-						
 						return button;
 					}
 				},
+			];
+		break;
+		case "remedial":
+			judulnya = "";
+			fitnya = true;
+			pagesizeboy = 50;
+			frozen[modnya] = [
+				{field:'nama_lengkap',title:'Nama Peserta',width:300, halign:'center',align:'left'},
+			];
+			kolom[modnya] = [	
+				{field:'nama_aparatur',title:'Jenis Sertifikasi',width:200, halign:'center',align:'left'},
+				{field:'tbl_data_peserta_id',title:'::',width:150, halign:'center',align:'center',
+					formatter: function(value,row,index){
+						return "<button href='#' onClick='previewData(\"rmd\", \""+row.id+"\", \""+row.idx_sertifikasi_id+"\", \""+row.no_registrasi+"\", \""+row.nama_lengkap+"\", \""+row.nip+"\", \""+row.kdreg_diklat+"\"  );'>Lihat Data</button>";
+					}
+				},
+				{field:'no_handphone',title:'No. Handphone',width:150, halign:'center',align:'left'},
+				{field:'nama_asesor',title:'Petugas Asesor',width:200, halign:'center',align:'left'},
 			];
 		break;
 	}
@@ -492,6 +525,9 @@ function previewData(type, p1, p2, p3, p4, p5, p6, p7){
 		break;
 		case "hsl":
 			loadUrl_adds('hs_dt', hostir+'hasil-detail', 'konten_grid', p1, p2, p3, p4, p5, p6);
+		break;
+		case "rmd":
+			loadUrl_adds('hs_dt', hostir+'remedial-detail', 'konten_grid', p1, p2, p3, p4, p5, p6);
 		break;
 		case "ubhdt":
 			$("#konten_grid").html("").addClass("loading");
@@ -802,13 +838,14 @@ function kumpulPost($type, p1, p2, p3, p4){
 		
 		case "ijin_tpa":
 			if(p4 == 3){
-				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Simulasi, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Simulasi, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				alert("Peserta Sedang Mengerjakan Test Simulasi, Tidak Bisa 2 Tahapan Test Sekaligus.");
 				return false;
 			}else{
-		
 				$.post(hostir+"verifikasi-ujitulis-iktujian", { 'typ':'tpa', 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
 					if(rspp == 1){
-						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Potensi Akademik." });
+						//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Potensi Akademik." });
+						alert("Peserta Diperbolehkan Untuk Mengikuti Test Potensi Akademik.");
 						$('#administrasi_peserta').datagrid('reload');
 					}else{
 						alert(rspp);
@@ -819,13 +856,16 @@ function kumpulPost($type, p1, p2, p3, p4){
 		break;
 		case "ijin_sim":
 			if(p4 == 3){
-				$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Uji Online, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Sedang Mengerjakan Test Uji Online, Tidak Bisa 2 Tahapan Test Sekaligus." });
+				alert("Peserta Sedang Mengerjakan Test Uji Online, Tidak Bisa 2 Tahapan Test Sekaligus.");
 				return false;
 			}else{
 				$.post(hostir+"verifikasi-ujitulis-iktujian", { 'typ':'sim', 'usiid':p1, 'sertaidd':p2, 'kdr':p3 }, function(rspp){
 					if(rspp == 1){
 						//alert('Peserta Dipersilahkan Mengikuti Ujian!');
-						$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Simulasi Online." });
+						//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Peserta Diperbolehkan Untuk Mengikuti Test Simulasi Online." });
+						
+						alert("Peserta Diperbolehkan Untuk Mengikuti Test Simulasi Online.");
 						$('#administrasi_peserta').datagrid('reload');
 					}else{
 						alert(rspp);
@@ -897,7 +937,6 @@ function kumpulPost($type, p1, p2, p3, p4){
 				loadUrl(hostir+'data-peserta-grid');
 			});
 		break;
-		
 		
 
 //*******Levi
@@ -1025,18 +1064,18 @@ function asses(kl){
 	for (i = 0; i <= jm; i++) {
 		if($('#rek_'+i+':checked').length == 0){
 			$('#rek_'+i).focus();
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kolom Rekomendasi No. "+(i+1)+" Tidak Boleh Kosong!" });
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Kolom Rekomendasi No. "+(i+1)+" Tidak Boleh Kosong!" });
+			alert("Kolom Rekomendasi No. "+(i+1)+" Tidak Boleh Kosong!");
 			return false;
 		}
 	}
 	
 	if($('#hsl_as').val() == ""){
 		$("#hsl_as").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Isi Hasil Keputusan Ujian!" });
+		//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Isi Hasil Keputusan Ujian!" });
+		alert("Isi Hasil Keputusan Ujian!");
 		return false;
 	}
-	
-	
 	
 	/*
 	if($('#nilai_as').val() == ""){
@@ -1049,11 +1088,13 @@ function asses(kl){
 	ajxamsterfrm("detass", function(respo){
 		if(respo == 1){
 			//alert("Data Tersimpan");
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan"});
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Data Tersimpan"});
+			alert("Data Tersimpan");
 			loadUrl(hostir+'data-peserta-grid');
 		}else{
 			//alert(respo);
-			$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server"});
+			//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Gagal Tersimpan, Gangguan Server"});
+			alert("Gagal Tersimpan");
 			loadUrl(hostir+'data-peserta-grid');
 		}
 	});
@@ -1178,12 +1219,14 @@ function sbmjdw(){
 function smls(){
 	if($('#nl_ujsm').val() == ""){
 		$("#nl_ujsm").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Field Nilai Tidak Boleh Kosong!" });
+		//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Field Nilai Tidak Boleh Kosong!" });
+		alert("Field Nilai Tidak Boleh Kosong!");
 		return false;
 	}
 	if($('#hsl_ujsm').val() == ""){
 		$("#hsl_ujsm").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Hasil Keputusan Ujian Tidak Boleh Kosong!" });
+		//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Hasil Keputusan Ujian Tidak Boleh Kosong!" });
+		alert("Combo Hasil Keputusan Ujian Tidak Boleh Kosong!");
 		return false;
 	}
 	
@@ -1192,7 +1235,8 @@ function smls(){
 			alert("Data Tersimpan");
 			loadUrl(hostir+'data-peserta-grid');
 		}else{
-			alert(respo);
+			alert("Gagal Tersimpan");
+			loadUrl(hostir+'data-peserta-grid');
 		}
 	});
 }
@@ -1200,12 +1244,14 @@ function smls(){
 function wawanya(){
 	if($('#hsl_wa').val() == ""){
 		$("#hsl_wa").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Hasil Wawancara Tidak Boleh Kosong!" });
+		//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Combo Hasil Wawancara Tidak Boleh Kosong!" });
+		alert("Combo Hasil Wawancara Tidak Boleh Kosong!");
 		return false;
 	}
 	if($('#nilai_wa').val() == ""){
 		$("#nilai_wa").focus(); 
-		$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Field Nilai Tidak Boleh Kosong!" });
+		//$.msg({fadeIn : 100,fadeOut : 100,bgPath : hostir+"assets/js/plugins/msgplugin/", clickUnblock : false, content : "Field Nilai Tidak Boleh Kosong!" });
+		alert("Field Nilai Tidak Boleh Kosong!");
 		return false;
 	}
 
@@ -1214,7 +1260,8 @@ function wawanya(){
 			alert("Data Tersimpan");
 			loadUrl(hostir+'data-peserta-grid');
 		}else{
-			alert(respo);
+			alert("Gagal Tersimpan");
+			loadUrl(hostir+'data-peserta-grid');
 		}
 	});	
 }
@@ -1534,7 +1581,7 @@ function processCombo(type){
 	//clr();
 }
 
-function modalOpt($type){
+function modalOpt($type, p1, p2, p3, p4, p5){
 	//e.preventDefault();
 	switch($type){
 		case "aparat":
@@ -1587,6 +1634,26 @@ function modalOpt($type){
 							} 
 						}
 					]
+			});
+		break;
+		case "cetak_sertifikat":
+			$("#dialog-messages-cetak").removeClass('hide').dialog({
+				resizable: false,
+				draggable: false,
+				modal: true,
+				title: "<i class='fa fa-check text-danger'></i> Konfirmasi Tanggal",
+				title_html: true,
+				buttons: [ 
+						{
+							text: "Submit",
+							"class" : "btn btn-info btn-sm",
+							click: function() {
+								//return "<a style='color:#000 !important;' href='"+hostir+"generate-sertifikat/"+row.id+"/"+row.idx_sertifikasi_id+"/"+row.lulus_tidak+"/"+row.kdreg_diklat+"/"+row.no_registrasi+"' target='_blank' ><button>Cetak</button></a>";
+								var datenya = $("#tgl_penetapan").datepicker().val();
+								window.open(hostir+"generate-sertifikat/"+p1+"/"+p2+"/"+p3+"/"+p4+"/"+datenya, '_blank');
+							} 
+						},
+				]
 			});
 		break;
 	}

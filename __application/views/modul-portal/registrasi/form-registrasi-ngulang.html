@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-				<h1>Mengulang Diklat Terakhir Anda</h1>
+				<h1>Daftar Sertifikasi Yang Tidak Lulus</h1>
 			</div>
 		</div>
 	</div>
@@ -15,7 +15,7 @@
 				<div class="portlet">
 					<div class="well light">
 						
-						<form class="form-horizontal" role="form" name="regdiklat_ngulang" action="{$host}submit-registrasi-ngulang" method="post" enctype="multipart/form-data">
+						<form class="form-horizontal" role="form" name="regdiklat_ngulang" id='regdiklat_ngulang' action="{$host}submit-registrasi-ngulang" method="post" enctype="multipart/form-data">
 							<input type='hidden' name='idusrx' value='{$auth.id}'>
 							<input type='hidden' name='ktkregspso' value='{$auth.no_registrasi}'>
 							<input type='hidden' name='idxsr_lm' value='{$id_sertifikasi}'>
@@ -132,6 +132,7 @@
 									<div class="hr-12 hr-double hr-dotted"></div>
 									<h4>Data Pekerjaan Sekarang </h4>
 									<div class="hr-12 hr-double hr-dotted"></div>
+									{*
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Penentuan Angka Kredit (PAK) : </label>
 										<div class="col-sm-4">															
@@ -140,10 +141,11 @@
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
+									*}
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Kementerian : </label>
 										<div class="col-sm-4">															
-											<select id="kmnt" class="form-control" name="kmnt">
+											<select id="kmnt" class="form-control validatext" name="kmnt">
 												{$idx_kementerian}
 											</select>
 										</div>
@@ -152,7 +154,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Formasi : </label>
 										<div class="col-sm-4">															
-											<select id="frms" class="form-control" name="frms">
+											<select id="frms" class="form-control validatext" name="frms">
 												{$idx_formasi}
 											</select>
 										</div>
@@ -161,7 +163,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Lokasi : </label>
 										<div class="col-sm-4">															
-											<select id="lks" class="form-control" name="lks">
+											<select id="lks" class="form-control validatext" name="lks">
 												{$idx_lokasi}
 											</select>
 										</div>
@@ -170,7 +172,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Lembaga/Instansi : </label>
 										<div class="col-sm-4">															
-											<select class="form-control" name="ins">
+											<select class="form-control validatext" name="ins">
 												{$idx_instansi}
 											</select>
 										</div>
@@ -179,14 +181,14 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Provinsi : </label>
 										<div class="col-sm-4">															
-											<select id='prv' onChange="processCombo('prv');" class="form-control" name="prv">
+											<select id='prv' onChange="processCombo('prv');" class="form-control validatext" name="prv">
 												{$idx_provinsi_instansi_id}
 											</select>
 										</div>
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Kabupaten : </label>
+										<label class="col-sm-2 control-label">Kab. / Kota : </label>
 										<div class="col-sm-4">															
 											<select id='ka' class="form-control" name="ka">
 												{$idx_kabupaten_instansi_id}
@@ -195,13 +197,37 @@
 										<span class="help-block"><code>*) Harus Diisi</code></span>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+										<label class="col-sm-2 control-label">Lingkup Daerah : </label>
 										<div class="col-sm-4">															
-											<select id='ed_pangkat' class="form-control" name="ed_pangkat">
+											<select id='ka_ko' class="form-control" name="ka_ko">
+												{$idx_lingkup_instansi}
+											</select>
+										</div>
+										<span class="help-block"><code>*) Hanya Diisi Apabila Instansi Anda Berada Dalam Lingkup Kabupaten/Kota</code></span>
+									</div>									
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Pangkat/Golongan : </label>
+										<div class="col-sm-2">															
+											<select id='ed_pangkat' class="form-control validatext" name="ed_pangkat">
 												{$idx_pangkat_id}
 											</select>
 										</div>
-										<span class="help-block"><code>*) Harus Diisi</code></span>
+										<label class="col-sm-1 control-label">TMT : </label>
+										<div class="col-sm-1" >															
+											<select id='tgl_tmt' class="form-control validatext" name="tgl_tmt">
+												{$tgl_lahir}
+											</select> 
+										</div>
+										<div class="col-sm-2" >															
+											<select id='bln_tmt' class="form-control validatext" name="bln_tmt">
+												{$bulan_lahir}
+											</select>
+										</div>
+										<div class="col-sm-2" >															
+											<select id='thn_tmt' class="form-control validatext" name="thn_tmt">
+												{$tahun_lahir}
+											</select>
+										</div>
 									</div>
 									<div class="space-4"></div>	
 									<div class="form-group">
@@ -224,17 +250,18 @@
 									<h4>Data Permohonan Sertifikasi Yang Akan Diulang</h4>
 									<div class="hr-12 hr-double hr-dotted"></div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label">TUK Terdekat : </label>
-										<div class="col-sm-10">
-											<div class="col-sm-4">															
-												<select id='tku_dxi' onChange="processCombo('ck_tku')"; name='tku_dxi' class="form-control" >
-													{$idx_tuk}
-												</select>
-												<span class="help-block"><code>*) Harus Diisi</code></span>
+										<label class="col-sm-2 control-label">Nilai PAK Terakhir : </label>
+										<div class="col-sm-10">															
+											<div class="col-sm-2">	
+												<input type="text" id='ed_nilaipak' class="form-control validatextpak" placeholder="" name="ed_nilaipak">
 											</div>
+											<span class="help-block"><code>*) Harus Diisi Kecuali Pengajuan Inpassing</code></span>
+											
 											&nbsp;&nbsp;
-											<span id='res-cku'></span>
+											<span id='res-pak'></span>
+											
 										</div>
+										
 									</div>
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Jenjang Sertifikasi : </label>
@@ -242,6 +269,19 @@
 											<span class="form-control" style="border:none !important;">
 											{$sertifikasi|default:'-'}
 											</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Jadwal Ujian : </label>
+										<div class="col-sm-10">
+											<div class="col-sm-4">															
+												<select id='tku_dxi' onChange="processCombo('ck_tku')"; name='tku_dxi' class="form-control validatext" >
+													{$idx_tuk}
+												</select>
+												<span class="help-block"><code>*) Harus Diisi</code></span>
+											</div>
+											&nbsp;&nbsp;
+											<span id='res-cku'></span>
 										</div>
 									</div>
 									<div class="hr-12 hr-double hr-dotted"></div>
@@ -256,7 +296,7 @@
 													<label class='col-sm-12'>{$nonya}. {$rows.nama_persyaratan}</label><br/>
 													<input type='hidden' name="idprs[]" value="{$rows.id}" />
 													<div class="col-sm-12">
-														<input type="file" class='file-persyaratan-sertifikasi' id='fl_{$indexs}' onChange="chf('fl_{$indexs}', 1);" name='fl_prsyrt[]' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
+														<input type="file" class='file-persyaratan-sertifikasi validatext' id='fl_{$indexs}' onChange="chf('fl_{$indexs}', 1);" name='fl_prsyrt[]' style='padding:5px;width:500px;border:1px solid #E5E5E5;background:#fff'>
 														<span class="help-block"><code>format file harus .pdf, ukuran file maksimal 5 MB</code> <span id='fl_{$indexs}_sts'></span> </span>
 													</div>
 												</div>
@@ -281,3 +321,20 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	$('.validatext').validatebox({
+		required: true,
+		missingMessage : "Inputan Ini Harus Diisi !"
+	});
+	$('.validatextpak').validatebox({
+		required: true,
+		missingMessage : "Inputan Ini Harus Diisi, Kecuali Pengajuan Inpassing"
+	});
+	$('.validatextemail').validatebox({
+		required: true,
+		validType:'email',
+		missingMessage : "Inputan Ini Harus Diisi !",
+		invalidMessage : "Masukkan Alamat Email Dengan Benar !"
+	});
+</script>

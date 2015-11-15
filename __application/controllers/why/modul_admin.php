@@ -571,6 +571,9 @@ class modul_admin extends SHIPMENT_Controller{
 				}elseif($p1 == 'penjadwalan'){
 					$this->smarty->assign('breadcumb', "Manajemen Jadwal Sertifikasi");
 					$this->smarty->assign('tinggi', "40px");
+				}elseif($p1 == 'remedial'){
+					$this->smarty->assign('breadcumb', "Remedial Peserta Yang Tidak Lulus");
+					$this->smarty->assign('tinggi', "80px");
 				}
 				
 				$this->smarty->assign('jadwal', $this->fillcombo('jadwal_ujian_tuk', 'return', $p1) );
@@ -671,8 +674,8 @@ class modul_admin extends SHIPMENT_Controller{
 		$spdf->Output('repository/temp_sertifikat/'.$filename.'.pdf', 'I'); // view file
 	}
 	
-	function gen_sertifikat($p1="", $p2="", $p3="", $p4=""){
-
+	function gen_sertifikat($p1="", $p2="", $p3="", $p4="", $p5=""){
+		/*
 		$cek_data = $this->db->get_where('tbl_log_cetak_sertifikat', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2))->row_array();
 		if(!$cek_data){			
 			$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
@@ -681,6 +684,7 @@ class modul_admin extends SHIPMENT_Controller{
 			$this->db->update('tbl_pembayaran_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 			$this->db->update('tbl_daftar_test', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 			$this->db->update('tbl_ujitest_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
+			$this->db->update('tbl_uji_simulasi_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 			$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 			$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) );
 		}
@@ -693,7 +697,6 @@ class modul_admin extends SHIPMENT_Controller{
 			"kdreg_diklat" => $p4,
 		);
 		$this->db->insert('tbl_log_cetak_sertifikat', $array_log);
-		
 
 		//$this->load->helper('barcode_helper');
 		$this->load->library('mlpdf');
@@ -704,11 +707,19 @@ class modul_admin extends SHIPMENT_Controller{
 		$data_unit_kompetensi = $this->db->get_where('idx_unit_kompetensi', array('idx_aparatur_id'=>$p2) )->result_array();
 		
         $jadwal_peserta = $this->db->get_where('tbl_daftar_test', array('tbl_data_peserta_id'=>$p1, 'idx_sertifikasi_id'=>$p2, 'kdreg_diklat'=>$p4) )->row_array();
-        $tanggal_penetapan = $this->madmin->get_data('tanggal_penetapan_hasil', 'row_array', $jadwal_peserta['tbl_jadwal_wawancara_id']);
+		$data_jadwal = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$jadwal_peserta['tbl_jadwal_wawancara_id']) )->row_array();
+        
+		if($p5 == ""){
+			$tanggal_penetapan = $this->madmin->get_data('tanggal_penetapan_hasil', 'row_array', $jadwal_peserta['tbl_jadwal_wawancara_id']);
+			$tgl_penetapan = $tanggal_penetapan['tanggal_penetapan'];
+		}else{
+			$tgl_penetapan = date("d-m-Y", strtotime($p5));
+		}
 		
 		$this->smarty->assign('data_sertifikasi', $data_sertifikasi);
 		$this->smarty->assign('data_unit_kompetensi', $data_unit_kompetensi);
-		$this->smarty->assign('tanggal_penetapan', $tanggal_penetapan['tanggal_penetapan']);
+		$this->smarty->assign('data_jadwal', $data_jadwal);
+		$this->smarty->assign('tanggal_penetapan', $tgl_penetapan);
 		
 		//$barcode_isi = $this->auth['no_registrasi'];
 		//$nama_file_barcode = $this->auth['nip']."-".$this->auth['idx_tujuan_assesmen_id'];

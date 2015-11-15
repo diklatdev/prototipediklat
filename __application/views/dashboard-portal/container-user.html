@@ -302,6 +302,7 @@
 											<tr>
 												<th class="col-small center">No.</th>
 												<th class="col-medium center">Sertifikasi</th>
+												<th class="col-medium center">Kehadiran</th>
 												<th class="col-medium center">Status</th>
 												<th class="col-medium center">Tanggal Penetapan</th>
 											</tr>
@@ -314,6 +315,13 @@
 													<tr>
 														<td class="col-small center">{$ind}</td>
 														<td>{$rowsssss.nama_aparatur}</td>
+														<td>
+															{if $rowsssss.is_hadir eq '0' || $rowsssss.is_hadir eq null}
+																<font color='red'>TIDAK HADIR</font>
+															{else}
+																<font color='green'>HADIR</font>
+															{/if}
+														</td>
 														<td>
 															{if $rowsssss.penilaian eq 'L'}
 																{assign var=tombol value='L'}
@@ -332,9 +340,9 @@
 									</table>
 									
 									{if $tombol eq 'L'}
-										<a class="btn btn-primary" href="{$host}registrasi-diklat-baru">Daftar Diklat Baru</a>
+										<a class="btn btn-primary" href="{$host}registrasi-diklat-baru">Daftar Sertifikasi Baru</a>
 									{elseif $tombol eq 'TL'}
-										<a class="btn btn-primary" href="{$host}registrasi-mengulang-diklat">Mengulang Ujian Terakhir</a>
+										<a class="btn btn-primary" href="{$host}registrasi-mengulang-diklat">Daftar Ulang Sertifikasi</a>
 									{/if}
 									
 								{/if}

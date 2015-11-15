@@ -127,8 +127,14 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
 				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
-				$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
+				//$this->smarty->assign('idx_aparatur', $this->fillcombo('idx_aparatur', 'return') );
+				$this->smarty->assign('idx_lingkup_instansi', $this->fillcombo('lingkup_instansi', 'return', $datadiklat_terakhir['idx_flag_kab_kota']) );
 				
+				$tgl_tmt = explode('-', $datadiklat_terakhir['tgl_tmt_pangkat']);
+				$this->smarty->assign('tgl_lahir', $this->fillcombo('tanggal', 'return', $tgl_tmt[2] ) );
+				$this->smarty->assign('bulan_lahir', $this->fillcombo('bulan', 'return', $tgl_tmt[1]) );
+				$this->smarty->assign('tahun_lahir', $this->fillcombo('tahun_lahir', 'return', $tgl_tmt[0]) );
+								
 				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
 				$this->smarty->assign('jabatan', $datadiklat_terakhir['jabatan']);
 			break;
@@ -154,6 +160,12 @@ class modul_portal extends SHIPMENT_Controller{
 				$this->smarty->assign('idx_instansi', $this->fillcombo('idx_instansi', 'return', $datadiklat_terakhir['idx_instansi_id']) );
 				$this->smarty->assign('idx_pangkat_id', $this->fillcombo('idx_pangkat', 'return', $datadiklat_terakhir['idx_pangkat_id']) );
 				$this->smarty->assign('idx_tuk', $this->fillcombo('jadwal_ujian_tuk', 'return') );
+				$this->smarty->assign('idx_lingkup_instansi', $this->fillcombo('lingkup_instansi', 'return', $datadiklat_terakhir['idx_flag_kab_kota']) );
+				
+				$tgl_tmt = explode('-', $datadiklat_terakhir['tgl_tmt_pangkat']);
+				$this->smarty->assign('tgl_lahir', $this->fillcombo('tanggal', 'return', $tgl_tmt[2] ) );
+				$this->smarty->assign('bulan_lahir', $this->fillcombo('bulan', 'return', $tgl_tmt[1]) );
+				$this->smarty->assign('tahun_lahir', $this->fillcombo('tahun_lahir', 'return', $tgl_tmt[0]) );
 				
 				$this->smarty->assign('alamat_instansi', $datadiklat_terakhir['alamat_instansi']);
 				$this->smarty->assign('jabatan', $datadiklat_terakhir['jabatan']);
@@ -711,8 +723,8 @@ class modul_portal extends SHIPMENT_Controller{
 			if ($tgl_ujian > $tgl_sekarang) {
 				
 			}else{
-				//echo -3;
-				/////exit;
+				echo -3;
+				exit;
 			}
 			
 			if(!isset($post['tku_dxi'])){
@@ -720,6 +732,56 @@ class modul_portal extends SHIPMENT_Controller{
 				exit;
 			}
 			
+		}elseif($type == "registrasi_ngulang"){
+			//block check kuota penjadwalan
+			$cek_data_kuota = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$post['tku_dxi']) )->row_array();
+			if($cek_data_kuota['kuota'] == 0){
+				echo -2;
+				exit;
+			}
+			
+			//block check tanggal jadwal ujian
+			$tgl_sekarang = strtotime(date('Y-m-d'));
+			$tgl_ujian = strtotime($cek_data_kuota['tanggal_wawancara']);
+			if ($tgl_ujian > $tgl_sekarang) {
+				
+			}else{
+				echo -3;
+				exit;
+			}
+			
+			if(!isset($post['tku_dxi'])){
+				echo -4;
+				exit;
+			}
+		}elseif($type == "registrasi_baru"){
+			$cek_data_kuota = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$post['tku_dxi']) )->row_array();
+			if($cek_data_kuota['kuota'] == 0){
+				echo -2;
+				exit;
+			}
+			
+			//block check tanggal jadwal ujian
+			$tgl_sekarang = strtotime(date('Y-m-d'));
+			$tgl_ujian = strtotime($cek_data_kuota['tanggal_wawancara']);
+			if ($tgl_ujian > $tgl_sekarang) {
+				
+			}else{
+				echo -3;
+				exit;
+			}
+			
+			if(!isset($post['tku_dxi'])){
+				echo -4;
+				exit;
+			}
+			
+			//$jadwal = $this->db->get_where('tbl_jadwal_wawancara', array('id'=>$post['tku_dxi']) )->row_array();
+			$cek = $this->db->get_where('tbl_data_diklat', array('tbl_data_peserta_id'=>$post['idusrx'], 'idx_sertifikasi_id'=>$post['sertis_id'] ) )->result_array();
+			if($cek){
+				echo -5;
+				exit;
+			}
 		}elseif($type == "asesmen"){
 			if($this->auth){
 				//Checking Data Double
@@ -780,9 +842,10 @@ class modul_portal extends SHIPMENT_Controller{
 			}elseif($type == "savedaftarwawancara"){
 				echo $savenya;
 			}elseif($type == "registrasi_baru"){
-				$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
-				$this->session->sess_destroy();
-				header("Location: " . $this->host ."login-peserta");
+				//$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
+				//$this->session->sess_destroy();
+				//header("Location: " . $this->host ."login-peserta");
+				echo $savenya;
 			}elseif($type == "registrasi_ngulang"){
 				$this->session->unset_userdata('d1kl4tkem3nd49r1-p0rt4L', 'limit');
 				$this->session->sess_destroy();

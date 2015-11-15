@@ -97,6 +97,7 @@ $route['data-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/data_pese
 $route['hasil-peserta-grid'] = "why/modul_admin/getdisplay/datagridview/hasil_akhir";
 $route['cetak-sertifikat-grid'] = "why/modul_admin/getdisplay/datagridview/cetak_sertifikat";
 $route['penjadwalan-grid'] = "why/modul_admin/getdisplay/datagridview/penjadwalan";
+$route['remedial-grid'] = "why/modul_admin/getdisplay/datagridview/remedial";
 $route['administrasi-peserta'] = "why/modul_admin/getdisplay/datagridview/administrasi_peserta";
 $route['psswd'] = "why/modul_admin/getdisplay/lihat_password";
 $route['datagrid/(:any)'] = "why/modul_admin/getdatagrid/$1";

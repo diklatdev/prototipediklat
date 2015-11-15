@@ -819,11 +819,13 @@ class mportal extends SHIPMENT_Model{
 				if($this->auth){
 					$ci =& get_instance();
 					$ci->load->model('why/madmin');
+					/*
 					if(isset($post['sb_ap_tk3'])){
 						$code_sert = $post['sb_ap_tk3'];
 					}else{
 						$code_sert = $post['sb_ap_tk2'];
 					}
+					*/
 					
 					$id_peserta = $post['idusrx'];
 					$no_reg = $post['ktkregspso'];
@@ -835,15 +837,24 @@ class mportal extends SHIPMENT_Model{
 					";
 					$queryreg = $this->db->query($sqlreg)->row_array();
 					
+					$sqlgtjdwl = "
+						SELECT idx_sertifikasi_id
+						FROM tbl_jadwal_wawancara
+						WHERE id = '".$post['tku_dxi']."'
+					";
+					$querygtjdwl = $this->db->query($sqlgtjdwl)->row_array();
+					
+					$code_sert = $querygtjdwl['idx_sertifikasi_id'];
+					
 					$number_reg = $queryreg['reg'];
 					//$number_reg = sprintf('%07d', $number_reg);
 									
 					$kdreg_diklat = "DK.".$number_reg.".".$code_sert.".001";
 					
-					$querysert = $ci->madmin->get_data('folder_sertifikasi', 'row_array', $code_sert);
-					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
-					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);				
+					$n_sert = str_replace(" ", "_", $post['pnmpng_asp']);
+					$folder_sertifikasi = $post['sertis_id']."-".strtolower($n_sert);	
 					
+					/*
 					if(!empty($_FILES['edFile_pak']['name'])){
 						$pak_sertifikasi_path_1 = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/";
 						mkdir($pak_sertifikasi_path_1, 0777);
@@ -856,6 +867,7 @@ class mportal extends SHIPMENT_Model{
 					}else{
 						$filename_pak = "";
 					}				
+					*/
 					
 					$sql_asesor = "
 						SELECT id
@@ -880,6 +892,7 @@ class mportal extends SHIPMENT_Model{
 					);
 					$this->db->insert("tbl_step_peserta", $array_step);
 					
+					/*
 					$array_sert = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $id_peserta,
@@ -903,12 +916,8 @@ class mportal extends SHIPMENT_Model{
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
 					
-					$sql_datajadwal = "
-						SELECT A.*
-						FROM tbl_jadwal_wawancara A
-						WHERE A.idx_tuk_id = '".$post['tku_dxi']."' AND A.status = 'A'
-					";
-					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					/*
+					
 					$array_daftar_test = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $id_peserta,
@@ -916,6 +925,61 @@ class mportal extends SHIPMENT_Model{
 						'status_data'=> 1,
 						"kdreg_diklat" => $kdreg_diklat,
 					);
+					*/
+					
+					$sql_datajadwal = "
+						SELECT A.*
+						FROM tbl_jadwal_wawancara A
+						WHERE A.id = '".$post['tku_dxi']."' AND A.status = 'A'
+					";
+					$data_jadwal = $this->db->query($sql_datajadwal)->row_array();
+					
+					$sql_asesor = "
+						SELECT tbl_user_admin_id as id
+						FROM tbl_jadwal_to_asesor 
+						WHERE tbl_jadwal_wawancara_id = '".$post['tku_dxi']."'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					
+					$array_sert = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						//"file_pak" => $filename_pak,
+						"nilai_pak" => $post['ed_nilaipak'],
+						"idx_kementerian_id" => $post['kmnt'],
+						"idx_formasi_id" => $post['frms'],
+						"idx_lokasi_id" => $post['lks'],
+						"idx_provinsi_instansi_id" => $post['prv'],
+						"idx_flag_kab_kota" => $post['ka_ko'],
+						"idx_kabupaten_instansi_id" => $post['ka'],
+						"idx_instansi_id" => $post['ins'],
+						"idx_pangkat_id" => $post['ed_pangkat'],
+						"jabatan" => $post['ed_jabatan'],
+						"alamat_instansi" => $post['ed_alamatKtr'],
+						"status" => 1,
+						"tahun" => date('Y'),
+						"tanggal_daftar" => date('Y-m-d'),
+						"jml_coba" => 1,
+						"kdreg_diklat" => $kdreg_diklat,
+						"idx_tuk_id" => $data_jadwal['idx_tuk_id'],
+						"idx_asesor_id" => $query_asesor['id'],
+						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
+						"is_hadir" => 0,
+						"is_cetak_sertifikat" => 0,
+						"tbl_jadwal_wawancara_id" => $post['tku_dxi'],
+					);
+					$this->db->insert("tbl_data_diklat", $array_sert);
+					
+					$array_daftar_test = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						'tbl_jadwal_wawancara_id'=> $post['tku_dxi'],
+						'status_data'=> 1,
+						"tgl_daftar" => date('Y-m-d'),
+						"kdreg_diklat" => $kdreg_diklat,
+					);
+					
 					$kurangi_kuota = ($data_jadwal['kuota']-1);
 					$this->db->insert('tbl_daftar_test', $array_daftar_test);
 					$this->db->update('tbl_jadwal_wawancara', array('kuota'=>$kurangi_kuota), array('id'=>$data_jadwal['id']) );					
@@ -980,6 +1044,7 @@ class mportal extends SHIPMENT_Model{
 					$n_sert = str_replace(" ", "_", $post['sb_jns_sert']);
 					$folder_sertifikasi = $querysert['kode_sertifikasi']."-".strtolower($n_sert);
 					
+					/*
 					if(!empty($_FILES['edFile_pak']['name'])){
 						$pak_sertifikasi_path = "./__repository/dokumen_peserta/".$no_reg."/file_penentuan_angka_kredit/".$folder_sertifikasi."/".$kdreg_diklat."/";
 						mkdir($pak_sertifikasi_path, 0777);
@@ -990,10 +1055,20 @@ class mportal extends SHIPMENT_Model{
 						$filename_pak = "";
 					}
 					
+					/*
 					$sql_asesor = "
 						SELECT id
 						FROM tbl_user_admin
 						WHERE idx_tuk_id = '".$post['tku_dxi']."' AND idx_keahlian = '".$code_sert."'
+						ORDER BY RAND() LIMIT 1
+					";
+					$query_asesor = $this->db->query($sql_asesor)->row_array();
+					*/
+					
+					$sql_asesor = "
+						SELECT tbl_user_admin_id as id
+						FROM tbl_jadwal_to_asesor 
+						WHERE tbl_jadwal_wawancara_id = '".$post['tku_dxi']."'
 						ORDER BY RAND() LIMIT 1
 					";
 					$query_asesor = $this->db->query($sql_asesor)->row_array();
@@ -1013,6 +1088,7 @@ class mportal extends SHIPMENT_Model{
 					);
 					$this->db->insert("tbl_step_peserta", $array_step);
 					
+					/*
 					$array_sert = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $id_peserta,
@@ -1035,6 +1111,35 @@ class mportal extends SHIPMENT_Model{
 						"idx_asesor_id" => $query_asesor['id']
 					);
 					$this->db->insert("tbl_data_diklat", $array_sert);
+					*/
+					
+					$array_sert = array(
+						"idx_sertifikasi_id" => $code_sert,
+						"tbl_data_peserta_id" => $id_peserta,
+						"nilai_pak" => $post['ed_nilaipak'],
+						"idx_kementerian_id" => $post['kmnt'],
+						"idx_formasi_id" => $post['frms'],
+						"idx_lokasi_id" => $post['lks'],
+						"idx_provinsi_instansi_id" => $post['prv'],
+						"idx_flag_kab_kota" => $post['ka_ko'],
+						"idx_kabupaten_instansi_id" => $post['ka'],
+						"idx_instansi_id" => $post['ins'],
+						"idx_pangkat_id" => $post['ed_pangkat'],
+						"jabatan" => $post['ed_jabatan'],
+						"alamat_instansi" => $post['ed_alamatKtr'],
+						"status" => 1,
+						"tahun" => date('Y'),
+						"tanggal_daftar" => date('Y-m-d'),
+						"jml_coba" => $jml_coba,
+						"kdreg_diklat" => $kdreg_diklat,
+						"idx_tuk_id" => $post['tku_dxi'],
+						"idx_asesor_id" => $query_asesor['id'],
+						"tgl_tmt_pangkat" => $post['thn_tmt']."-".$post['bln_tmt']."-".$post['tgl_tmt'],
+						"is_hadir" => 0,
+						"is_cetak_sertifikat" => 0,
+						"tbl_jadwal_wawancara_id" => $post['tku_dxi'],
+					);
+					$this->db->insert("tbl_data_diklat", $array_sert);
 					
 					$sql_datajadwal = "
 						SELECT A.*
@@ -1045,7 +1150,7 @@ class mportal extends SHIPMENT_Model{
 					$array_daftar_test = array(
 						"idx_sertifikasi_id" => $code_sert,
 						"tbl_data_peserta_id" => $id_peserta,
-						'tbl_jadwal_wawancara_id'=> $data_jadwal['id'],
+						'tbl_jadwal_wawancara_id'=>  $post['tku_dxi'], //$data_jadwal['id'],
 						'status_data'=> 1,
 						"kdreg_diklat" => $kdreg_diklat,
 					);

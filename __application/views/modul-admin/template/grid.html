@@ -12,7 +12,7 @@
 <div id="div_{$tipe_grid}" style="width:101.3%">
 	<div id='{$tipe_grid}'></div>
 	<div id='toolbar_{$tipe_grid}' style='padding:3px;height:{$tinggi}'>
-		{if $tipe_grid eq 'data_peserta' || $tipe_grid eq 'administrasi_peserta' || $tipe_grid eq 'hasil_akhir' || $tipe_grid eq 'cetak_sertifikat'}
+		{if $tipe_grid eq 'data_peserta' || $tipe_grid eq 'administrasi_peserta' || $tipe_grid eq 'hasil_akhir' || $tipe_grid eq 'cetak_sertifikat' || $tipe_grid eq 'remedial'}
 			<label style='width:120px !important;'>Nama Peserta </label> : <input type='text' id='nmpsr' style='width:240px;padding:3px !important;margin-top:3px;' /> 
 			<a href="javascript:void(0)" class="l-btn l-btn-small l-btn-plain" group="" id="" onClick="kumpulPost('fltrdt', '{$tipe_grid}');">
 				<span class="l-btn-left l-btn-icon-left">
@@ -53,7 +53,17 @@
 	</div>
 </div>
 
+<div id="dialog-messages-cetak" class="hide">
+	<label>Set Tanggal Penetapan</label> <input type='text' id='tgl_penetapan' />
+	<br/>
+	Tanggal Default adalah tanggal pelaksanaan ujian ditambahkan 1 hari.
+</div>
+
 <script>
+	$('#tgl_penetapan').datepicker({
+		dateFormat: "yy-mm-dd"
+    });
+	
 	$('#div_{$tipe_grid}').css('height',(getClientHeight()-230));
 	genGrid('{$tipe_grid}');
 	

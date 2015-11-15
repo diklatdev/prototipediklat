@@ -189,8 +189,12 @@
 	<table width="100%" style="margin-top:5px;font-family:arial; ">
 		<tr>
 			<td width="50%" align='center' style='font-size:14px;font-weight:bold;'>
-				INSPEKTUR JENDERAL <br/>
-				KEMENTERIAN DALAM NEGERI
+				{if $data_jadwal.label_pejabat1}
+					{$data_jadwal.label_pejabat1}
+				{else}
+					INSPEKTUR JENDERAL
+					KEMENTERIAN DALAM NEGERI S
+				{/if}
 				<br/>
 				<br/>
 				<br/>
@@ -199,12 +203,20 @@
 				<br/>
 				<br/>
 				<br/>
-				TARMIZI A. KARIM
+				{if $data_jadwal.pejabat1}
+					{$data_jadwal.pejabat1}
+				{else}
+					TARMIZI A. KARIM S
+				{/if}
 			</td>
 			<td width="50%" align='center' style='font-size:14px;font-weight:bold;'>
-				Plt. KEPALA BADAN PENGEMBANGAN<br/>
-				SUMBER DAYA MANUSIA<br/>
-				KEMENTERIAN DALAM NEGERI
+				{if $data_jadwal.label_pejabat2}
+					{$data_jadwal.label_pejabat2}
+				{else}
+					Plt. KEPALA BADAN PENGEMBANGAN<br/>
+					SUMBER DAYA MANUSIA<br/>
+					KEMENTERIAN DALAM NEGERI S
+				{/if}				
 				<br/>
 				<br/>
 				<br/>
@@ -212,7 +224,11 @@
 				<br/>
 				<br/>
 				<br/>
-				LA ODE M. SALMAR
+				{if $data_jadwal.pejabat2}
+					{$data_jadwal.pejabat2}
+				{else}
+					LA ODE M. SALMAR S
+				{/if}
 			</td>
 		</tr>		
 	</table>
@@ -248,17 +264,15 @@
 			<td width="50%" align='center' style='font-size:14px;'>
 				Jakarta, {$tanggal_penetapan|date_format:"%d-%m-%Y"}<br/><br/>
 				<font style='font-weight:bold;'>
-					{*
-					KEPALA PUSAT  <br/>
-					STANDARDISASI DAN SERTIFIKASI <br/>
-					SELAKU <br/>
-					PENANGGUNG JAWAB LSP PEMDA
-					*}
+					{if $data_jadwal.label_pejabat3}
+						{$data_jadwal.label_pejabat3}
+					{else}
+						KEPALA PUSAT  <br/>
+						STANDARDISASI DAN SERTIFIKASI <br/>
+						SELAKU <br/>
+						PENANGGUNG JAWAB LSP PEMDA 
+					{/if}	
 					
-					KEPALA BADAN PENDIDIKAN DAN PELATIHAN <br/>
-					DAERAH PROVINSI JAWA BARAT <br/>
-					SELAKU PENANGGUNG JAWAB <br/>
-					LSP PEMDA PROVINSI JAWA BARAT
 				</font>
 				<br/>
 				<br/>
@@ -268,11 +282,11 @@
 				<br/>
 				<br/>
 				<font style='font-weight:bold;'>
-					{*
-					Drs. Dindin Wahidin, M.Si.
-					*}
-					
-					Dr. H. HERRI HUDAYA
+					{if $data_jadwal.pejabat3}
+						{$data_jadwal.pejabat3}
+					{else}
+						Drs. Dindin Wahidin, M.Si. S
+					{/if}
 				</font>
 			</td>
 		</tr>		

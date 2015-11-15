@@ -702,15 +702,17 @@ class madmin extends SHIPMENT_Model{
 			case "cetak_sertifikat":			
 				$sql = "
 					SELECT A.id, A.no_registrasi, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id,
-						D.status_penilaian as lulus_tidak, B.kdreg_diklat, G.real_name as nama_asesor, E.is_cetak_sertifikat
+						D.status_penilaian as lulus_tidak, B.kdreg_diklat, G.real_name as nama_asesor, E.is_cetak_sertifikat,
+						E.is_hadir, I.nama_tuk, DATE_FORMAT( H.tanggal_wawancara,  '%d-%m-%Y' ) AS tgl_wawancara
 					FROM tbl_data_peserta A
-					LEFT JOIN (SELECT * FROM tbl_step_peserta) B ON A.id = B.tbl_data_peserta_id
-					LEFT JOIN (SELECT * FROM tbl_data_diklat) E ON A.id = E.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_step_peserta where status='1') B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN (SELECT * FROM tbl_data_diklat where status='1') E ON A.id = E.tbl_data_peserta_id
 					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id
-					LEFT JOIN (SELECT * FROM tbl_hasil_akhir) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir where status_data='1') D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id
 					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
-					LEFT JOIN ( SELECT * FROM tbl_daftar_test ) AS F ON E.tbl_data_peserta_id = F.tbl_data_peserta_id AND E.idx_sertifikasi_id = F.idx_sertifikasi_id
+					LEFT JOIN ( SELECT * FROM tbl_daftar_test where status_data='1') AS F ON E.tbl_data_peserta_id = F.tbl_data_peserta_id AND E.idx_sertifikasi_id = F.idx_sertifikasi_id
 					LEFT JOIN tbl_jadwal_wawancara H ON F.tbl_jadwal_wawancara_id = H.id
+					LEFT JOIN idx_tuk  I ON H.idx_tuk_id = I.id 
 					WHERE B.step_hasil = '1' AND D.siap_cetak = 'Y' 
 					$where
 				";
@@ -722,6 +724,19 @@ class madmin extends SHIPMENT_Model{
 					FROM tbl_jadwal_wawancara A
 					LEFT JOIN idx_tuk B ON A.idx_tuk_id = B.id
 					LEFT JOIN idx_aparatur_sipil_negara C ON A.idx_sertifikasi_id = C.id
+				";
+			break;
+			case "remedial":
+			$sql = "
+					SELECT A.id, A.no_registrasi, A.no_handphone, A.nama_lengkap, A.nip, C.nama_aparatur, B.idx_sertifikasi_id, 
+							D.status_penilaian as lulus_tidak, B.kdreg_diklat, G.real_name as nama_asesor
+					FROM tbl_data_peserta A 
+					LEFT JOIN (SELECT * FROM tbl_step_peserta WHERE status = 1 ) B ON A.id = B.tbl_data_peserta_id 
+					LEFT JOIN (SELECT * FROM tbl_data_diklat WHERE status = 1) E ON A.id = E.tbl_data_peserta_id 
+					LEFT JOIN idx_aparatur_sipil_negara C ON B.idx_sertifikasi_id = C.id 
+					LEFT JOIN (SELECT * FROM tbl_hasil_akhir WHERE status_data = 1  ) D ON E.tbl_data_peserta_id = D.tbl_data_peserta_id AND E.idx_sertifikasi_id = D.idx_sertifikasi_id AND E.kdreg_diklat = D.kdreg_diklat
+					LEFT JOIN (SELECT * FROM tbl_user_admin WHERE level_admin = '2') AS G ON G.id = E.idx_asesor_id
+					WHERE B.step_hasil = '1' AND status_penilaian = 'TL'
 				";
 			break;
 		}

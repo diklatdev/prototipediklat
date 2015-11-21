@@ -155,9 +155,9 @@ class mportal extends SHIPMENT_Model{
 				";
 			break;
 			case "jadwal_ujian_tuk":
-				if($p1 != 'cetak_sertifikat'){
+				//if($p1 != 'cetak_sertifikat'){
 				    $where .= " WHERE A.status = 'A' ";
-				}
+				//}
                 $sql = "
 					SELECT A.id as kode, concat(B.nama_tuk, ' - ', C.nama_aparatur, ' (', DATE_FORMAT( A.tanggal_wawancara,  '%d-%m-%Y' ), ')' ) as txt
 					FROM tbl_jadwal_wawancara A

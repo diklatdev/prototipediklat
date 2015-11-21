@@ -672,12 +672,12 @@ class madmin extends SHIPMENT_Model{
 						B.tbl_data_peserta_id, B.idx_sertifikasi_id, B.kdreg_diklat,
 						B.is_hadir, C.step_uji_test, C.step_uji_simulasi, A.no_handphone, A.email
 					FROM tbl_data_peserta A
-					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1') AS B ON A.id = B.tbl_data_peserta_id
-					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1') AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
+					LEFT JOIN ( SELECT * FROM tbl_data_diklat WHERE `status` = '1' ) AS B ON A.id = B.tbl_data_peserta_id
+					LEFT JOIN ( SELECT * FROM tbl_step_peserta WHERE `status` = '1' ) AS C ON B.tbl_data_peserta_id = C.tbl_data_peserta_id AND B.idx_sertifikasi_id = B.idx_sertifikasi_id
 					LEFT JOIN ( SELECT * FROM tbl_daftar_test WHERE  status_data = '1' ) AS F ON B.tbl_data_peserta_id = F.tbl_data_peserta_id AND B.idx_sertifikasi_id = F.idx_sertifikasi_id
 					LEFT JOIN tbl_jadwal_wawancara G ON F.tbl_jadwal_wawancara_id = G.id
 					LEFT JOIN idx_tuk H ON B.idx_tuk_id = H.id
-					WHERE 1=1 $where 
+					WHERE 1=1 $where
 					$order
 				";
 			break;

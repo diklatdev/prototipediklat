@@ -329,9 +329,12 @@
 															{elseif $rowsssss.penilaian eq 'TL'}
 																{assign var=tombol value='TL'}
 																<font color='red'>TIDAK LULUS</font>
+															{elseif $rowsssss.penilaian eq ''}
+																{assign var=tombol value='TL'}
+																<font color='red'>TIDAK LULUS</font>
 															{/if}
 														</td>
-														<td>{$rowsssss.tanggal_hasil|date_format:"%d-%m-%Y"}</td>
+														<td>{$rowsssss.tanggal_hasil|date_format:"%d-%m-%Y"|default:'-'}</td>
 													</tr>
 													{assign var=ind value=$ind+1}
 												{/foreach}

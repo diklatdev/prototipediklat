@@ -941,5 +941,38 @@ class modul_admin extends SHIPMENT_Controller{
 			echo $this->email->print_debugger();		
 	}
 	
+	function nonaktifdata(){
+		$sql =  "
+			SELECT *
+			FROM tbl_data_diklat
+			WHERE status = '1' AND tbl_jadwal_wawancara_id IS NULL
+		";
+		$data = $this->db->query($sql)->result_array();
+		
+		$ok = 0;
+		$gok = 0;
+		
+		foreach($data as $k => $v){
+			$update = $this->db->update('tbl_data_diklat', array('status'=>0 ), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+			if($update){
+				$this->db->update('tbl_step_peserta', array('status'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_asessmen_mandiri_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_pembayaran_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_daftar_test', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_ujitest_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_uji_simulasi_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_wawancara_header', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				$this->db->update('tbl_hasil_akhir', array('status_data'=>0), array('tbl_data_peserta_id'=>$v['tbl_data_peserta_id'], 'idx_sertifikasi_id'=>$v['idx_sertifikasi_id'], 'kdreg_diklat'=>$v['kdreg_diklat']) );
+				
+				$ok++;
+			}else{
+				$gok++;
+			}
+		}
+		
+		echo "Nyang OK = ".$ok." / Nyang G OK = ".$gok; 
+		
+	}
+	
 	
 }

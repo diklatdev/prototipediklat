@@ -9,10 +9,11 @@ class modul_admin extends SHIPMENT_Controller{
 		
 		$this->smarty->assign('host',$this->host);
 		$this->smarty->assign('auth', $this->auth);
-		$this->load->model("lv/madmin");
-	}
+	}        
+      
 
 	function getdisplay($type="", $p1="", $p2="", $p3=""){
+		$this->load->model("lv/madmin");
 		$modul = "front/";
 		switch($type){
 		////////////////////////*****levi
@@ -391,16 +392,15 @@ class modul_admin extends SHIPMENT_Controller{
 		}
 
 	}
-	
-	
+        
+       	
 	function absensi_pdf($p1="", $p2="", $p3=""){
 		$this->load->model('lv/madmin');
 		$id_tuk = $p1;
 		$id_sertifikasi = $p2;
 		$id_jadwal = $p3;
 		if ($this->auth){
-			$this->load->library('mlpdf');
-			
+			$this->load->library('mlpdf');			
 			$tuk_prof = "SELECT t.nama_tuk as tuk, a.nama_aparatur as sertifikasi, 
 				DATE_FORMAT(w.tanggal_wawancara,'%d-%m-%Y') as tanggal_wawancara
 				FROM `tbl_jadwal_wawancara` w
@@ -488,18 +488,22 @@ class modul_admin extends SHIPMENT_Controller{
         
         function biodata_pdf($p1 = ''){
             $this->load->model('why/madmin');
+            $userid = $p1;
+            $userQry = $this->db->query("SELECT idx_sertifikasi_id, kdreg_diklat FROM tbl_data_diklat WHERE tbl_data_peserta_id = $userid")->row_array();
+            $idxsertifikasi_id = $userQry['idx_sertifikasi_id'];
+            $kdreg_diklat = $userQry['kdreg_diklat'];
+            
             if ($this->auth){
                     $this->load->library('mlpdf');
                     
-                    $detail = $this->madmin->get_data("tbl_data_peserta_detail","row_array", $p1);
-                    $this->smarty->assign('detail', $detail);
+                    $data = $this->madmin->get_data("tbl_data_peserta_detail", "row_array", $userid);
+                    $data_file_persyaratan = $this->madmin->get_data("tbl_persyaratan", "result_array", $userid, $idxsertifikasi_id, $kdreg_diklat);
+				
+                    $this->smarty->assign("data", $data);
+                    $this->smarty->assign("data_file_persyaratan", $data_file_persyaratan);
                     
-                    $biodata = $this->madmin->get_data("tbl_data_peserta","row_array", $p1);
-                    $this->smarty->assign('row', $biodata);
-                    
-                    //$htmlheader = $this->smarty->fetch('modul-admin/pak_inpassing/sertifikat_header.html');
                     $htmlcontent = $this->smarty->fetch('modul-admin/laporan/biodata_pdf.html');
-                    $filename = '';
+                    $filename = '$userid';
                     $this->show_pdf($htmlcontent,$filename);
 
             }else{

@@ -21,19 +21,19 @@
 							{if $data}
 								{assign var=ind value=1}
 								{foreach from=$data item=rows}
-									<tr>
-										<td class="col-small center">{$ind}</td>
-										<td>{$rows.nama_lengkap}</td>
-										<td class="hidden-xs">{$rows.nip}</td>
-										<td class="hidden-xs">{$rows.no_registrasi}</td>
-										<td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
-										<td class="col-medium center">
-                                                                                    <div class="btn-group btn-group-xs ">
-                                                                                        <!--<a href="{$host}lv/modul_admin/biodata_pdf/{$rows.id}"  class="btn btn-info" target="_blank"><i class="fa fa-search-plus"> Cetak Biodata</i></a>-->
-                                                                                        <a href="#"  class="btn btn-info" onclick="previewData('registrasi', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}', 'biodata');"><i class="fa fa-search-plus"> Lihat Biodata</i></a>
-                                                                                    </div>	
-										</td>
-									</tr>
+                                                        <tr>
+                                                                <td class="col-small center">{$ind}</td>
+                                                                <td>{$rows.nama_lengkap}</td>
+                                                                <td class="hidden-xs">{$rows.nip}</td>
+                                                                <td class="hidden-xs">{$rows.no_registrasi}</td>
+                                                                <td class="hidden-xs col-small center">{$rows.nama_aparatur}</td>
+                                                                <td class="col-medium center">
+                                                                    <div class="btn-group btn-group-xs">
+                                                                        <a href="#"  class="btn btn-info" onclick="previewData('registrasi', '{$rows.id}', '{$rows.idx_sertifikasi_id}', '{$rows.kdreg_diklat}', 'biodata');"><i class="fa fa-search-plus">Lihat</i></a>
+                                                                        <a href="{$host}lv/modul_admin/biodata_pdf/{$rows.id}"  class="btn btn-danger" target="_blank"><i class="fa fa-search-plus">Cetak</i></a>
+                                                                    </div>
+                                                                </td>
+                                                        </tr>
 									{assign var=ind value=$ind+1}
 								{/foreach}
 							{/if}

@@ -1,65 +1,75 @@
 <html>
 <head>
-<title>Daftar Hadir Peserta</title>
-<style>
-{literal}
-body {font-family: sans-serif;
-    font-size: 10pt;
-}
-p {    margin: 0pt;
-	font-family: sans-serif;
-    font-size: 10pt;
-}
-td { vertical-align: top; }
-.items td {
-    border-left: 0.1mm solid #000000;
-    border-right: 0.1mm solid #000000;
-}
-table thead td { background-color: #FCFCFC;
-    text-align: center;
-    border: 0.1mm solid #000000;
-}
-table tbody td { background-color: #FFFFFF;
-    text-align: left;
-    border: 0.1mm solid #000000;
-}
-.items td.blanktotal {
-    background-color: #FFFFFF;
-    border: 0.1mm solid #000000;
-    border-top: 0.1mm solid #000000;
-    border-right: 0.1mm solid #000000;
-}
-.items td.totals {
-    text-align: right;
-    border: 0.1mm solid #000000;
-}
-{/literal}
-</style>
+<title>Daftar Diri Peserta</title>
 </head>
-<body>
+<body style=" font-family:arial; font-size:11px;"> 
 
 <div id='header'>
     <table width="100%" >
             <tr>
                     <td align='center'>
                             <h4>DATA PESERTA</h4> 
-                            <h4>UJI KOMPETENSI {$detail.nama_aparatur}</h4>
+                            <h4>UJI KOMPETENSI {$data.nama_aparatur}</h4>
                     </td>
             </tr>
     </table>
     <br><br>
     <table width="100%">
-        <tr><td width="35%">Nama </td> <td width="1%">:</td><td> {$detail.nama_lengkap}</td></tr>
-        <tr><td width="35%">NIP </td> <td width="1%">:</td><td> {$detail.nip}</td></tr>
-        <tr><td width="35%">Pangkat / Golongan </td> <td width="1%">:</td><td> {$detail.nama_pangkat}</td></tr>
-        <tr><td width="35%">Tempat / Tanggal Lahir </td> <td width="1%">:</td><td> {$detail.tempat_lahir} / {$detail.tanggal_lahir|date_format:"%d-%m-%Y"}</td></tr>
-        <tr><td width="35%">Agama</td> <td width="1%">:</td><td></td></tr>
-        <tr><td width="35%">Jenis Kelamin</td> <td width="1%">:</td><td> {if $detail.jenis_kelamin eq 'L'}Laki-Laki{else}Perempuan{/if}</td></tr>
-        <tr><td width="35%">Jabatan </td> <td width="1%">:</td><td> {$detail.jabatan|lower|capitalize}</td></tr>
-        <tr><td width="35%">Nama dan Alamat Kantor</td> <td width="1%">:</td><td> {$detail.nama_instansi} Kab/Kota {$detail.nama_kabupaten|lower|capitalize}, {$detail.alamat_instansi|lower|capitalize}</td></tr>
-        <tr><td width="35%">Telepon / Fax Kantor </td> <td width="1%">:</td><td> </td></tr>
-        <tr><td width="35%">Alamat Rumah </td><td width="1%">:</td><td>{$detail.alamat_rumah|lower|capitalize}</td></tr>
-        <tr><td width="35%">Telepon Rumah/HP </td> <td width="1%">:</td><td> {$detail.no_telepon} / {$detail.no_handphone}</td></tr>
+        <tr><td width="35%" colspan="3"><h4>Data Pribadi</h4></td></tr>
+        <tr><td width="35%">Nama Lengkap</td> <td width="1%">:</td><td> {$data.nama_lengkap}</td></tr>
+        <tr><td width="35%">No Registrasi </td> <td width="1%">:</td><td> {$data.no_registrasi}</td></tr>
+        <tr><td width="35%">NIP </td> <td width="1%">:</td><td> {$data.nip}</td></tr>
+        <tr><td width="35%">Tempat / Tanggal Lahir </td> <td width="1%">:</td><td> {$data.tempat_lahir} / {$data.tanggal_lahir|date_format:"%d-%m-%Y"}</td></tr>
+        <tr><td width="35%">Jenis Kelamin</td> <td width="1%">:</td><td> {if $data.jenis_kelamin eq 'L'}Laki-Laki{else}Perempuan{/if}</td></tr>
+        <tr><td width="35%">Alamat Rumah </td><td width="1%">:</td><td>{$data.alamat_rumah|lower|capitalize}</td></tr>
+        <tr><td width="35%">Telepon Rumah/HP </td> <td width="1%">:</td><td> {$data.no_telepon} / {$data.no_handphone}</td></tr>
+        <tr><td width="35%">Email </td> <td width="1%">:</td><td> {$data.email}</td></tr>
+        <tr><td width="35%" colspan="3"><td></td></tr>
+        
+        <tr><td width="35%" colspan="3"><h4>Data Pendidikan</h4></td></tr>
+        <tr><td width="35%">Pendidikan Terakhir </td> <td width="1%">:</td><td> {$data.nama_pendidikan}</td></tr>
+        <tr><td width="35%">Program Studi </td> <td width="1%">:</td><td> {$data.nama_programstudi}</td></tr>
+        <tr><td width="35%">Tahun Lulus</td> <td width="1%">:</td><td> {$data.tahun_lulus}</td></tr>
+        <tr><td width="35%" colspan="3"><td></td></tr>
+        
+        <tr><td width="35%" colspan="3"><h4>Data Pekerjaan Sekarang</h4></td></tr>
+        <tr><td width="35%">Kementrian </td> <td width="1%">:</td><td> {$data.nama_kementerian}</td></tr>
+        <tr><td width="35%">Formasi </td> <td width="1%">:</td><td> {$data.nama_formasi}</td></tr>
+        <tr><td width="35%">Lokasi </td> <td width="1%">:</td><td> {if $data.idx_lokasi_id|default:'-' eq 'P'}Pusat{else}Daerah{/if}</td></tr>
+        <tr><td width="35%">Lembaga/Instansi </td> <td width="1%">:</td><td> {$data.nama_instansi}</td></tr>
+        <tr><td width="35%">Provinsi </td> <td width="1%">:</td><td> {$data.nama_provinsi}</td></tr>
+        <tr><td width="35%">Kabupaten </td> <td width="1%">:</td><td> {$data.nama_kabupaten}</td></tr>
+        <tr><td width="35%">Pangkat / Golongan </td> <td width="1%">:</td><td> {$data.nama_pangkat}</td></tr>
+        <tr><td width="35%">Jabatan </td> <td width="1%">:</td><td> {$data.jabatan|lower|capitalize}</td></tr>
+        <tr><td width="35%">Alamat Instansi</td> <td width="1%">:</td><td>{$data.alamat_instansi|lower|capitalize}</td></tr>
+        
+        <tr><td width="35%" colspan="3"><td></td></tr>
+    </table>
+    <table width="100%">
+        <tr><td width="35%" colspan="3"><h4>Data Permohonan Sertifikasi & Bukti Pendukung Persyaratan Sertifikasi</h4></td></tr>
+        <tr><td width="35%" colspan="3"><td></td></tr>
+        {if $data_file_persyaratan}
+        {foreach from=$data_file_persyaratan item=rows}
+            <tr>
+                <td width="75%">{$rows.nama_persyaratan} </td> <td width="1%">:</td>
+                <td> {if $rows.flag eq "BV"}
+                            <font color='red'>Belum Verifikasi</font>
+                    {elseif $rows.flag eq "V"}
+                            <font color='green'>Sudah Verifikasi</font>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+        {else}
+        <center>
+                <h3>
+                        Data persyaratan registrasi tidak ada dalam database sistem.
+                        <br/>
+                        Silahkan tekan tombol generate di bawah
+                        kemudian peserta diminta untuk upload ulang data persyaratan sertifikasi melalui akun portal peserta.
+                </h3>
+        </center>
+        {/if}
     </table>
 </div> 
 <br>
